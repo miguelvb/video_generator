@@ -530,13 +530,15 @@ SCENE-SPECIFIC VISUAL DIRECTION:
 
 {continuity_rule}
 VISUAL ANCHOR: {anchor or 'Keep the main subject visually consistent throughout the scene.'}
-CAMERA FOR THIS SCENE: {camera or camera_style or 'slow, restrained cinematic movement; locked when appropriate.'}
+CAMERA FOR AI VIDEO: LOCKED STATIC CAMERA. Do not pan, zoom, dolly, orbit, rotate, tilt, rack-focus, use handheld movement, or introduce camera shake. Ignore any conflicting camera movement suggestion in the scene or global style.
 
 This is clip {clip['clip_index']} of {clip_count}, covering approximately {clip['start_seconds']:.1f}s to {clip['end_seconds']:.1f}s of the scene. {motion}
 Narration context for this time window:
 {phase_text}
 
-Preserve the original illustration's composition, colors, linework, object identity and geometry. Do not redraw, morph, deform or reinterpret the artwork. Do not generate readable text, letters, numbers, labels, UI or captions. Use only subtle cinematic motion and minimal movement of already-existing visual elements. No camera shake, no handheld motion, no flicker, no warping, no morphing, no object deformation, no random zoom, no spinning camera, no new objects, no photorealism, no typography animation. Maintain the same visual style across the entire film."""
+Animate the subjects and existing visual elements instead of moving the camera: agents may move subtly, nodes may activate, communication lines may illuminate, data packets may travel, server indicators may change state, and selected objects may react. Keep the background, framing, perspective, composition and subject scale completely fixed.
+
+Preserve the original illustration's composition, colors, linework, object identity and geometry. Do not redraw, morph, deform or reinterpret the artwork. Do not generate readable text, letters, numbers, labels, UI or captions. No camera movement of any kind. No camera shake, no handheld motion, no flicker, no warping, no morphing, no object deformation, no random zoom, no spinning camera, no new objects, no photorealism, no typography animation. Maintain the same visual style across the entire film."""
 
 
 def video_prompt(scene: dict) -> str:

@@ -49,36 +49,15 @@ const Caption: React.FC<{text:string; quote?:boolean}> = ({text,quote=false}) =>
   return <div style={{position:'absolute',left:quote?60:45,right:quote?60:45,bottom:quote?65:25,padding:quote?'12px 16px':'8px 12px',background:quote?'rgba(247,238,218,.96)':'rgba(247,238,218,.90)',border:quote?'1px solid rgba(80,60,40,.52)':'1px solid rgba(80,60,40,.35)',boxShadow:'0 5px 15px rgba(50,35,20,.14)',fontFamily:quote?'Courier New, monospace':'Georgia, serif',fontSize:quote?17:14,lineHeight:1.28,color:ink,textAlign:quote?'center':'left',transform:`translateY(${y}px)`,opacity}}>{quote?`“${text}”`:text}</div>;
 };
 
-const SceneLabel: React.FC<{scene:any}> = ({scene}) => (
-  <div style={{position:'absolute',top:22,left:28,padding:'6px 10px',background:'rgba(247,238,218,.82)',border:'1px solid rgba(80,60,40,.28)',fontFamily:'Georgia, serif',fontSize:16,color:ink,letterSpacing:.3}}>{scene.title}</div>
-);
-
-const OverlayLabel: React.FC<{item:any}> = ({item}) => {
-  const frame = useCurrentFrame();
-  const start = Math.round(Number(item.start_seconds ?? 0) * FPS);
-  const fade = Math.max(1, Math.round(Number(item.fade_seconds ?? 0.35) * FPS));
-  const opacity = interpolate(frame, [start, start + fade], [0, 1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
-  const style = item.style === 'accent' ? {borderColor:'rgba(25,105,95,.55)', background:'rgba(220,239,230,.92)'} : {};
-  return <div style={{position:'absolute',left:`${item.x_percent ?? 8}%`,top:`${item.y_percent ?? 12}%`,padding:'6px 10px',border:'1px solid rgba(80,60,40,.35)',borderRadius:3,background:'rgba(247,238,218,.88)',fontFamily:'Courier New, monospace',fontSize:Number(item.font_size ?? 15),color:ink,opacity,...style}}>{item.text}</div>;
-};
-
-const StoryboardText: React.FC<{scene:any}> = ({scene}) => {
-  const labels = Array.isArray(scene.on_screen_text) ? scene.on_screen_text : [];
-  return <>{labels.map((item:any, index:number) => <OverlayLabel key={`${item.text}-${index}`} item={item} />)}</>;
-};
-
 const SegmentOverlay: React.FC<{segment:any; duration:number}> = ({segment,duration}) => {
-  const chunks = segment.kind === 'quote' ? [segment.text] : segment.text.match(/.{1,150}(?:\s|$)/g)?.map((x:string)=>x.trim()).filter(Boolean) ?? [segment.text];
-  const chunkFrames = Math.max(1, Math.floor(duration/chunks.length));
-  return <>{chunks.map((chunk:string,index:number)=><Sequence key={`${segment.id}-${index}`} from={index*chunkFrames} durationInFrames={index===chunks.length-1 ? duration-index*chunkFrames : chunkFrames+2}><Caption text={chunk} quote={segment.kind==='quote'} /></Sequence>)}</>;
+  if (segment.kind !== 'quote') return null;
+  return <Caption text={segment.text} quote />;
 };
 
 const Scene: React.FC<{scene:any; sceneIndex:number; duration:number}> = ({scene,sceneIndex,duration}) => {
   const timings=TIMINGS[scene.scene_id]?.segments ?? [];
   return <Paper>
     <AnimatedAIClip scene={scene} duration={duration}/>
-    <SceneLabel scene={scene}/>
-    <StoryboardText scene={scene}/>
     <Sequence from={0} durationInFrames={duration}>
       <Audio src={staticFile(TIMINGS[scene.scene_id].audioFile)} />
     </Sequence>
