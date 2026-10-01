@@ -21,18 +21,21 @@ def parse_script(path: Path) -> dict:
     lines = path.read_text(encoding="utf-8").splitlines()
     scenes: list[dict] = []
     settings: dict[str, str] = {}
+    models: dict[str, str] = {}
     current: dict | None = None
     current_section: str | None = None
     buffer: list[str] = []
     in_settings = False
+    in_models = False
 
     def flush() -> None:
         nonlocal buffer, current_section, current
-        if current_section == "settings":
+        if current_section in {"settings", "models"}:
             for line in buffer:
                 if ":" in line and line.strip() and not line.strip().startswith("#"):
                     key, value = line.split(":", 1)
-                    settings[key.strip()] = _clean(value)
+                    target = models if current_section == "models" else settings
+                    target[key.strip()] = _clean(value)
             buffer = []
             return
         if current is None or current_section is None:
@@ -53,6 +56,7 @@ def parse_script(path: Path) -> dict:
         if scene_match:
             flush()
             in_settings = False
+            in_models = False
             current = {"scene_id": scene_match.group(1).zfill(3), "title": _clean(scene_match.group(2)) or f"Scene {scene_match.group(1)}", "segments": []}
             scenes.append(current)
             current_section = None
@@ -63,6 +67,15 @@ def parse_script(path: Path) -> dict:
             current = None
             current_section = "settings"
             in_settings = True
+            in_models = False
+            continue
+
+        if re.match(r"^##\s+MODELS\s*$", line, re.I):
+            flush()
+            current = None
+            current_section = "models"
+            in_settings = False
+            in_models = True
             continue
 
         if current is None and not in_settings:
@@ -78,9 +91,10 @@ def parse_script(path: Path) -> dict:
                 current_section = f"{kind}:{language}"
                 continue
             normalized = re.sub(r"[^a-z0-9]+", "_", raw_heading.lower()).strip("_")
-            aliases = {"atmosphere_sfx": "atmosphere", "graphic_text_overlays": "overlays", "visual": "visual", "style": "style", "image_prompt": "image_prompt", "negative_prompt": "negative_prompt", "camera": "camera", "reference_images": "reference_images", "animation": "animation"}
+            aliases = {"atmosphere_sfx": "atmosphere", "graphic_text_overlays": "overlays", "visual": "visual", "style": "style", "image_prompt": "image_prompt", "negative_prompt": "negative_prompt", "camera": "camera", "reference_images": "reference_images", "animation": "animation", "ai_video_prompt": "animation", "ai_video": "animation"}
             current_section = aliases.get(normalized, normalized)
             in_settings = False
+            in_models = False
             continue
 
         if line.strip() == "---":
@@ -100,6 +114,15 @@ def parse_script(path: Path) -> dict:
     settings.setdefault("height", "1080")
     settings.setdefault("language", "es-ES")
     settings.setdefault("voice", "shimmer")
+    settings.setdefault("generation_mode", "remotion")
+
+    models.setdefault("image_provider", "")
+    models.setdefault("image_model", "")
+    models.setdefault("tts_provider", "")
+    models.setdefault("tts_model", "")
+    models.setdefault("tts_voice", "")
+    models.setdefault("video_provider", "")
+    models.setdefault("video_model", "")
 
     for scene in scenes:
         if not scene["segments"]:
@@ -108,4 +131,4 @@ def parse_script(path: Path) -> dict:
         if "visual" not in scene and "image_prompt" not in scene:
             raise ValueError(f"Scene {scene['scene_id']} needs a VISUAL or IMAGE PROMPT section.")
 
-    return {"version": "1.0.0", "source": str(path), "settings": settings, "scenes": scenes}
+    return {"version": "1.1.0", "source": str(path), "settings": settings, "models": models, "scenes": scenes}

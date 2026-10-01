@@ -3,12 +3,14 @@
   "private": true,
   "scripts": {
     "start": "remotion studio",
-    "render": "remotion render src/index.ts MainVideo output/prototype.mp4",
+    "render": "python scripts/orchestrator.py render project/script.md",
     "validate": "python scripts/validate_project.py",
     "build:content": "python scripts/orchestrator.py build project/script.md",
     "images": "python scripts/orchestrator.py images project/script.md",
     "audio": "python scripts/orchestrator.py audio project/script.md",
-    "all": "python scripts/orchestrator.py all project/script.md"
+    "all": "python scripts/orchestrator.py all project/script.md",
+    "audio-timings": "python scripts/orchestrator.py audio-timings project/script.md",
+    "video": "python scripts/orchestrator.py all project/script.md"
   },
   "dependencies": {
     "react": "19.3.0",

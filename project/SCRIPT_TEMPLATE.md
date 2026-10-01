@@ -7,6 +7,18 @@ width: 1920
 height: 1080
 language: es-ES
 voice: shimmer
+generation_mode: remotion
+
+## MODELS
+
+# Leave a value empty or set it to `default` to use .env defaults.
+image_provider: default
+image_model: default
+tts_provider: default
+tts_model: default
+tts_voice: default
+video_provider: default
+video_model: default
 
 ---
 
@@ -35,6 +47,10 @@ Prompt completo para generar la imagen de la escena.
 ### NEGATIVE PROMPT
 
 Elementos que el generador debe evitar.
+
+### AI VIDEO PROMPT
+
+Describe how the generated scene image should move. Preserve the composition and visual style.
 
 ### CAMERA
 

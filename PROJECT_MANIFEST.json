@@ -1,6 +1,6 @@
 {
   "name": "ai-video-engine-content-first",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "source_of_truth": "project/script.md",
   "engine": {
     "parser": "scripts/script_parser.py",
@@ -16,5 +16,17 @@
     "public/assets/generated/",
     "public/audio/"
   ],
-  "rule": "For a new video, edit project/script.md; do not edit generated JSON/TS artifacts manually."
+  "rule": "For a new video, edit project/script.md; do not edit generated JSON/TS artifacts manually.",
+  "configuration_precedence": [
+    "config/defaults.json",
+    "environment variables in .env",
+    "project/script.md overrides",
+    "resolved configuration recorded in build/runs"
+  ],
+  "asset_reuse": "Generated assets are reused only when their content/configuration hash matches the current script.",
+  "configuration_files": [
+    "config/defaults.json",
+    ".env",
+    "project/script.md"
+  ]
 }

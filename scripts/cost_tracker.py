@@ -47,14 +47,24 @@ class CostTracker:
             if r["cost_usd"] is not None:
                 by_provider[r["provider"]] = by_provider.get(r["provider"], 0.0) + float(r["cost_usd"])
 
+        resolved_configuration = {}
+        parsed_path = self.root / "build" / "parsed_script.json"
+        if parsed_path.exists():
+            try:
+                parsed = json.loads(parsed_path.read_text(encoding="utf-8"))
+                resolved_configuration = {"settings": parsed.get("settings", {}), "models": parsed.get("models", {})}
+            except Exception:
+                resolved_configuration = {}
+
         report = {
-            "version": "1.0.0",
+            "version": "1.1.0",
             "run_id": self.run_id,
             "command": self.command,
             "script": str(self.script),
             "started_at": self.started_at.isoformat(),
             "finished_at": self.finished_at.isoformat(),
             "currency": "USD",
+            "configuration": resolved_configuration,
             "costs": {
                 "known_total_usd": round(known, 8),
                 "unknown_count": unknown,

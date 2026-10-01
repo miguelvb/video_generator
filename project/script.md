@@ -3,10 +3,25 @@
 ## SETTINGS
 
 fps: 30
-width: 1920
-height: 1080
+width: 854
+height: 480
 language: es-ES
 voice: shimmer
+generation_mode: ai_video
+
+## MODELS
+
+# Leave a value empty or set it to `default` to use .env defaults.
+image_provider: default
+image_model: default
+tts_provider: default
+tts_model: default
+tts_voice: default
+video_provider: openrouter
+video_model: bytedance/seedance-2.0-mini
+video_resolution: 480p
+video_aspect_ratio: 16:9
+video_generate_audio: false
 
 ---
 
@@ -31,6 +46,10 @@ Create a clean 16:9 cinematic explainer frame derived from the supplied storyboa
 ### NEGATIVE PROMPT
 
 storyboard grid, split screen, chapter labels, voiceover text, SFX text, large text blocks, 3D render, photorealistic, CGI, dark cyberpunk, neon, glowing lights, glossy surfaces, realistic photography, volumetric lighting, digital UI, terminal screen, modern corporate presentation, hard geometric vector art, plastic, metallic, polished corporate design
+
+### AI VIDEO PROMPT
+
+Animate the supplied watercolor illustration as a subtle cinematic documentary shot. Preserve the exact composition, watercolor-and-ink style, paper texture, colors, linework, agent nodes and server schematic. Slowly pan from left to right across the network. Let a few ink connections gently appear and watercolor pigment subtly spread along them. Keep the movement restrained and organic. Do not add text, labels, UI, new objects or photorealistic elements.
 
 ### CAMERA
 
@@ -75,6 +94,10 @@ Create a clean 16:9 cinematic explainer frame derived from the supplied storyboa
 ### NEGATIVE PROMPT
 
 storyboard grid, split screen, chapter labels, voiceover text, SFX text, large text blocks, 3D, realistic computer monitor, terminal screen, dark background, photorealism, glossy, metallic, digital CRT glitch, neon, cyberpunk, modern UI, photorealistic server room, hard vector infographic, plastic, polished corporate design
+
+### AI VIDEO PROMPT
+
+Animate the supplied watercolor illustration as a subtle cinematic documentary shot. Preserve the exact composition, watercolor-and-ink style, paper texture, colors, folder tree, message board and agent icons. Slowly push toward the highlighted /message_board folder while ink arrows gently branch toward the message notes. Let watercolor stains breathe subtly. Keep all text-like diagram elements stable and do not invent readable text. No new objects, no UI, no photorealism.
 
 ### CAMERA
 

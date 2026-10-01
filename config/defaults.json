@@ -1,0 +1,15 @@
+{
+  "image": {
+    "provider": "openrouter",
+    "model": "google/gemini-3.1-flash-image"
+  },
+  "tts": {
+    "provider": "openai",
+    "model": "gpt-4o-mini-tts",
+    "voice": "shimmer"
+  },
+  "video": {
+    "provider": "",
+    "model": ""
+  }
+}
