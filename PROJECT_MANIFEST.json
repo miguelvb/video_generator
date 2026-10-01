@@ -1,162 +1,20 @@
 {
-  "status": "validated",
-  "problems": [],
-  "files": [
-    {
-      "path": ".env.example",
-      "extension": ".example",
-      "type": "Other",
-      "sha256_12": "468363b649d4"
-    },
-    {
-      "path": ".gitignore",
-      "extension": "",
-      "type": "Other",
-      "sha256_12": "5e3926cbc1ef"
-    },
-    {
-      "path": "README.md",
-      "extension": ".md",
-      "type": "Markdown",
-      "sha256_12": "d510076b3497"
-    },
-    {
-      "path": "assets/reference/scene_01_reference.png",
-      "extension": ".png",
-      "type": "PNG image",
-      "sha256_12": "c149dee7c91c"
-    },
-    {
-      "path": "assets/reference/scene_02_reference.png",
-      "extension": ".png",
-      "type": "PNG image",
-      "sha256_12": "d33de0a21f53"
-    },
-    {
-      "path": "assets/reference/storyboard.png",
-      "extension": ".png",
-      "type": "PNG image",
-      "sha256_12": "d577d2fcef54"
-    },
-    {
-      "path": "assets/shared/agent.svg",
-      "extension": ".svg",
-      "type": "SVG",
-      "sha256_12": "5f0bb5b9d7d8"
-    },
-    {
-      "path": "assets/shared/folder.svg",
-      "extension": ".svg",
-      "type": "SVG",
-      "sha256_12": "2648349be209"
-    },
-    {
-      "path": "assets/shared/message_board.svg",
-      "extension": ".svg",
-      "type": "SVG",
-      "sha256_12": "6af850d67237"
-    },
-    {
-      "path": "assets/shared/server.svg",
-      "extension": ".svg",
-      "type": "SVG",
-      "sha256_12": "3809a109097f"
-    },
-    {
-      "path": "audio/voiceover_manifest.json",
-      "extension": ".json",
-      "type": "JSON",
-      "sha256_12": "24fdbf52284d"
-    },
-    {
-      "path": "package.json",
-      "extension": ".json",
-      "type": "JSON",
-      "sha256_12": "9e5578b7759b"
-    },
-    {
-      "path": "project/project.json",
-      "extension": ".json",
-      "type": "JSON",
-      "sha256_12": "eee73b11a2ff"
-    },
-    {
-      "path": "project/script.md",
-      "extension": ".md",
-      "type": "Markdown",
-      "sha256_12": "296c19eff059"
-    },
-    {
-      "path": "project/style_bible.json",
-      "extension": ".json",
-      "type": "JSON",
-      "sha256_12": "a532ab0cb166"
-    },
-    {
-      "path": "public/assets/generated/.gitkeep",
-      "extension": "",
-      "type": "Other",
-      "sha256_12": "e3b0c44298fc"
-    },
-    {
-      "path": "requirements.txt",
-      "extension": ".txt",
-      "type": "Text",
-      "sha256_12": "fabc431d041b"
-    },
-    {
-      "path": "scenes/001/scene.json",
-      "extension": ".json",
-      "type": "JSON",
-      "sha256_12": "8e79dd3fa830"
-    },
-    {
-      "path": "scenes/002/scene.json",
-      "extension": ".json",
-      "type": "JSON",
-      "sha256_12": "4ff1fc14df26"
-    },
-    {
-      "path": "scripts/orchestrator.py",
-      "extension": ".py",
-      "type": "Python",
-      "sha256_12": "bcec932b9dd5"
-    },
-    {
-      "path": "scripts/validate_project.py",
-      "extension": ".py",
-      "type": "Python",
-      "sha256_12": "59de78a13e8f"
-    },
-    {
-      "path": "src/Root.tsx",
-      "extension": ".tsx",
-      "type": "TypeScript/TSX",
-      "sha256_12": "9851f7a9f862"
-    },
-    {
-      "path": "src/generated/audioTimings.ts",
-      "extension": ".ts",
-      "type": "TypeScript/TSX",
-      "sha256_12": "e0c814362111"
-    },
-    {
-      "path": "src/index.ts",
-      "extension": ".ts",
-      "type": "TypeScript/TSX",
-      "sha256_12": "a58f804bf74b"
-    },
-    {
-      "path": "src/remotion/MainVideo.tsx",
-      "extension": ".tsx",
-      "type": "TypeScript/TSX",
-      "sha256_12": "b932e4bb0d86"
-    },
-    {
-      "path": "tsconfig.json",
-      "extension": ".json",
-      "type": "JSON",
-      "sha256_12": "c3350f53f1da"
-    }
-  ]
+  "name": "ai-video-engine-content-first",
+  "version": "3.0.0",
+  "source_of_truth": "project/script.md",
+  "engine": {
+    "parser": "scripts/script_parser.py",
+    "orchestrator": "scripts/orchestrator.py",
+    "animation": "Remotion",
+    "encoding": "FFmpeg"
+  },
+  "generated_artifacts": [
+    "build/",
+    "src/generated/videoContent.ts",
+    "src/generated/videoConfig.ts",
+    "src/generated/audioTimings.ts",
+    "public/assets/generated/",
+    "public/audio/"
+  ],
+  "rule": "For a new video, edit project/script.md; do not edit generated JSON/TS artifacts manually."
 }

@@ -4,7 +4,11 @@
   "scripts": {
     "start": "remotion studio",
     "render": "remotion render src/index.ts MainVideo output/prototype.mp4",
-    "validate": "python scripts/validate_project.py"
+    "validate": "python scripts/validate_project.py",
+    "build:content": "python scripts/orchestrator.py build project/script.md",
+    "images": "python scripts/orchestrator.py images project/script.md",
+    "audio": "python scripts/orchestrator.py audio project/script.md",
+    "all": "python scripts/orchestrator.py all project/script.md"
   },
   "dependencies": {
     "react": "19.3.0",

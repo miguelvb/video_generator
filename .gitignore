@@ -5,3 +5,8 @@ public/assets/generated/*.png
 __pycache__/
 *.pyc
 .DS_Store
+build/
+public/audio/*.wav
+public/audio/*.mp3
+src/generated/videoContent.ts
+src/generated/videoConfig.ts
