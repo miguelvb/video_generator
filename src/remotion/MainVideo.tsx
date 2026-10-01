@@ -6,7 +6,6 @@ import {VIDEO_CONFIG} from '../generated/videoConfig';
 
 const FPS = Number(VIDEO_CONFIG.fps);
 const scenes = VIDEO_CONTENT.scenes;
-const GENERATION_MODE = String((VIDEO_CONFIG as any).generation_mode ?? 'remotion').toLowerCase();
 const TIMINGS = AUDIO_TIMINGS as Record<string, any>;
 const sceneFrames = scenes.map((scene) => Math.max(1, Math.ceil((TIMINGS[scene.scene_id]?.durationSeconds ?? 1) * FPS)));
 export const TOTAL_DURATION_FRAMES = sceneFrames.reduce((a, b) => a + b, 0);
@@ -52,11 +51,27 @@ const SegmentOverlay: React.FC<{segment:any; duration:number}> = ({segment,durat
 const Scene: React.FC<{scene:any; sceneIndex:number; duration:number}> = ({scene,sceneIndex,duration}) => {
   const timings=TIMINGS[scene.scene_id]?.segments ?? [];
   return <Paper>
-    {GENERATION_MODE === 'ai_video' ? <AnimatedAIClip scene={scene} duration={duration}/> : <WatercolorFallback scene={scene} index={sceneIndex} duration={duration}/>}
+    <AnimatedAIClip scene={scene} duration={duration}/>
     <Sequence from={0} durationInFrames={duration}>
       <Audio src={staticFile(TIMINGS[scene.scene_id].audioFile)} />
     </Sequence>
-    {timings.map((timing:any)=><Sequence key={timing.id} from={Math.round(timing.startSeconds*FPS)} durationInFrames={Math.max(1,Math.round(timing.durationSeconds*FPS))}><SegmentOverlay segment={timing} duration={Math.max(1,Math.round(timing.durationSeconds*FPS))}/></Sequence>)}
+    {timings.map((timing:any)=>{
+      // audioTimings.ts stores segment timing fields in snake_case.
+      // Validate them before converting to frames so Remotion never receives NaN.
+      const startSeconds=Number(timing.start_seconds);
+      const durationSeconds=Number(timing.duration_seconds);
+      if (!Number.isFinite(startSeconds) || !Number.isFinite(durationSeconds)) {
+        throw new Error(
+          `Invalid audio timing for scene ${scene.scene_id}, segment ${timing.id}: ` +
+          `start_seconds=${timing.start_seconds}, duration_seconds=${timing.duration_seconds}`
+        );
+      }
+      const startFrames=Math.max(0,Math.round(startSeconds*FPS));
+      const segmentFrames=Math.max(1,Math.round(durationSeconds*FPS));
+      return <Sequence key={timing.id} from={startFrames} durationInFrames={segmentFrames}>
+        <SegmentOverlay segment={timing} duration={segmentFrames}/>
+      </Sequence>;
+    })}
   </Paper>;
 };
 

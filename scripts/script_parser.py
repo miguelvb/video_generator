@@ -78,7 +78,7 @@ def parse_script(path: Path) -> dict:
             in_models = True
             continue
 
-        if current is None and not in_settings:
+        if current is None and not (in_settings or in_models):
             continue
 
         heading = re.match(r"^###\s+(.+)$", line)
