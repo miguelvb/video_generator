@@ -6,19 +6,19 @@
       "path": ".env.example",
       "extension": ".example",
       "type": "Other",
-      "sha256_12": "94bd6117c3fc"
+      "sha256_12": "468363b649d4"
     },
     {
       "path": ".gitignore",
       "extension": "",
       "type": "Other",
-      "sha256_12": "a5015e89b53f"
+      "sha256_12": "5e3926cbc1ef"
     },
     {
       "path": "README.md",
       "extension": ".md",
       "type": "Markdown",
-      "sha256_12": "3dfc052f0ee6"
+      "sha256_12": "d510076b3497"
     },
     {
       "path": "assets/reference/scene_01_reference.png",
@@ -66,19 +66,19 @@
       "path": "audio/voiceover_manifest.json",
       "extension": ".json",
       "type": "JSON",
-      "sha256_12": "aa79c4dee4cf"
+      "sha256_12": "24fdbf52284d"
     },
     {
       "path": "package.json",
       "extension": ".json",
       "type": "JSON",
-      "sha256_12": "6efd683af21e"
+      "sha256_12": "9e5578b7759b"
     },
     {
       "path": "project/project.json",
       "extension": ".json",
       "type": "JSON",
-      "sha256_12": "b33890ab999c"
+      "sha256_12": "eee73b11a2ff"
     },
     {
       "path": "project/script.md",
@@ -93,28 +93,34 @@
       "sha256_12": "a532ab0cb166"
     },
     {
+      "path": "public/assets/generated/.gitkeep",
+      "extension": "",
+      "type": "Other",
+      "sha256_12": "e3b0c44298fc"
+    },
+    {
       "path": "requirements.txt",
       "extension": ".txt",
       "type": "Text",
-      "sha256_12": "02b1e6796f56"
+      "sha256_12": "fabc431d041b"
     },
     {
       "path": "scenes/001/scene.json",
       "extension": ".json",
       "type": "JSON",
-      "sha256_12": "8c10b8649b16"
+      "sha256_12": "8e79dd3fa830"
     },
     {
       "path": "scenes/002/scene.json",
       "extension": ".json",
       "type": "JSON",
-      "sha256_12": "206741644c9d"
+      "sha256_12": "4ff1fc14df26"
     },
     {
       "path": "scripts/orchestrator.py",
       "extension": ".py",
       "type": "Python",
-      "sha256_12": "428de9ed1f0b"
+      "sha256_12": "bcec932b9dd5"
     },
     {
       "path": "scripts/validate_project.py",
@@ -126,19 +132,25 @@
       "path": "src/Root.tsx",
       "extension": ".tsx",
       "type": "TypeScript/TSX",
-      "sha256_12": "b3f1866f4232"
+      "sha256_12": "9851f7a9f862"
+    },
+    {
+      "path": "src/generated/audioTimings.ts",
+      "extension": ".ts",
+      "type": "TypeScript/TSX",
+      "sha256_12": "e0c814362111"
     },
     {
       "path": "src/index.ts",
       "extension": ".ts",
       "type": "TypeScript/TSX",
-      "sha256_12": "5462d3268136"
+      "sha256_12": "a58f804bf74b"
     },
     {
       "path": "src/remotion/MainVideo.tsx",
       "extension": ".tsx",
       "type": "TypeScript/TSX",
-      "sha256_12": "8529777da695"
+      "sha256_12": "b932e4bb0d86"
     },
     {
       "path": "tsconfig.json",

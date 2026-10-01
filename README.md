@@ -38,6 +38,8 @@ The exact source voiceover is stored in each scene JSON. The bilingual TTS confi
 npm install
 ```
 
+The project pins Remotion and `@remotion/cli` to the same version so a clean install has the CLI executable required by the render command.
+
 Validate:
 
 ```bash
@@ -78,6 +80,8 @@ Render:
 ```bash
 npm run render
 ```
+
+Generated scene images are written to `public/assets/generated/`, which is the directory Remotion serves through `staticFile()`.
 
 ## Voiceover
 

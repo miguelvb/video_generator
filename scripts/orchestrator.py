@@ -35,7 +35,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PROJECT_FILE = ROOT / "project" / "project.json"
 SCENE_DIR = ROOT / "scenes"
 AUDIO_DIR = ROOT / "audio"
-GENERATED_DIR = ROOT / "assets" / "generated"
+GENERATED_DIR = ROOT / "public" / "assets" / "generated"
 GENERATED_AUDIO_DIR = AUDIO_DIR / "generated"
 GENERATED_MANIFEST = AUDIO_DIR / "generated_voiceover_manifest.json"
 TIMINGS_TS = ROOT / "src" / "generated" / "audioTimings.ts"
@@ -520,12 +520,39 @@ def generate_audio() -> None:
 
 
 def render() -> None:
+    """Render using the project's locally installed Remotion CLI."""
+    require_command("node")
+
+    cli_name = "remotion.cmd" if os.name == "nt" else "remotion"
+    remotion_bin = ROOT / "node_modules" / ".bin" / cli_name
+    if not remotion_bin.exists():
+        raise RuntimeError(
+            "Remotion CLI is not installed in this project.\n\n"
+            "Run:\n"
+            "  npm install\n\n"
+            "Then run:\n"
+            "  python scripts/orchestrator.py --render"
+        )
+
+    generated_dir = ROOT / "public" / "assets" / "generated"
+    missing_images = [
+        generated_dir / f"scene_{scene_id}.png" for scene_id in SCENE_IDS
+        if not (generated_dir / f"scene_{scene_id}.png").exists()
+    ]
+    if missing_images:
+        names = ", ".join(path.name for path in missing_images)
+        raise RuntimeError(
+            f"Missing generated scene image(s): {names}.\n\n"
+            "Run:\n"
+            "  python scripts/orchestrator.py --images\n\n"
+            "before rendering."
+        )
+
     output = ROOT / "output" / "prototype.mp4"
     output.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run(
         [
-            "npx",
-            "remotion",
+            str(remotion_bin),
             "render",
             "src/index.ts",
             "MainVideo",
