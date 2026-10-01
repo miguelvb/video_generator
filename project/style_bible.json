@@ -1,0 +1,23 @@
+{
+  "style_name": "watercolor_ink_schematic",
+  "aspect_ratio": "16:9",
+  "palette": [
+    "deep indigo",
+    "cobalt blue",
+    "warm sepia",
+    "subtle emerald"
+  ],
+  "materials": [
+    "cold-press watercolor paper",
+    "black ink line art"
+  ],
+  "rules": [
+    "2D only.",
+    "Diagrammatic, hand-drawn and slightly imperfect.",
+    "No photorealism.",
+    "No 3D rendering.",
+    "No neon or cyberpunk aesthetic.",
+    "Readable text is rendered in post-production, never generated inside the AI image.",
+    "Keep the same paper texture and ink weight across scenes."
+  ]
+}

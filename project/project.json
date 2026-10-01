@@ -1,0 +1,40 @@
+{
+  "name": "ai_video_prototype",
+  "resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "fps": 30,
+  "language": "es-ES",
+  "pipeline": {
+    "orchestrator": "Python",
+    "llm": "OpenRouter",
+    "image_generation": "OpenRouter Image API",
+    "voiceover": "OpenAI gpt-4o-mini-tts (female-sounding, bilingual segmented)",
+    "animation": "Remotion",
+    "encoding": "FFmpeg"
+  },
+  "image_generation": {
+    "provider": "openrouter",
+    "endpoint": "https://openrouter.ai/api/v1/images",
+    "model": "google/gemini-3.1-flash-image",
+    "aspect_ratio": "16:9",
+    "resolution": "2K"
+  },
+  "render": {
+    "composition": "MainVideo",
+    "total_duration_seconds": 26,
+    "duration_source": "audio timing manifest; scene durations are minimums"
+  },
+  "voiceover": {
+    "provider": "openai",
+    "model": "gpt-4o-mini-tts",
+    "voice": "shimmer",
+    "voice_profile": "female_sounding",
+    "languages": {
+      "narration": "es-ES",
+      "english_quotes": "en-US"
+    },
+    "timing": "generated from actual audio segment durations"
+  }
+}

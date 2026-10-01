@@ -1,0 +1,150 @@
+{
+  "status": "validated",
+  "problems": [],
+  "files": [
+    {
+      "path": ".env.example",
+      "extension": ".example",
+      "type": "Other",
+      "sha256_12": "94bd6117c3fc"
+    },
+    {
+      "path": ".gitignore",
+      "extension": "",
+      "type": "Other",
+      "sha256_12": "a5015e89b53f"
+    },
+    {
+      "path": "README.md",
+      "extension": ".md",
+      "type": "Markdown",
+      "sha256_12": "3dfc052f0ee6"
+    },
+    {
+      "path": "assets/reference/scene_01_reference.png",
+      "extension": ".png",
+      "type": "PNG image",
+      "sha256_12": "c149dee7c91c"
+    },
+    {
+      "path": "assets/reference/scene_02_reference.png",
+      "extension": ".png",
+      "type": "PNG image",
+      "sha256_12": "d33de0a21f53"
+    },
+    {
+      "path": "assets/reference/storyboard.png",
+      "extension": ".png",
+      "type": "PNG image",
+      "sha256_12": "d577d2fcef54"
+    },
+    {
+      "path": "assets/shared/agent.svg",
+      "extension": ".svg",
+      "type": "SVG",
+      "sha256_12": "5f0bb5b9d7d8"
+    },
+    {
+      "path": "assets/shared/folder.svg",
+      "extension": ".svg",
+      "type": "SVG",
+      "sha256_12": "2648349be209"
+    },
+    {
+      "path": "assets/shared/message_board.svg",
+      "extension": ".svg",
+      "type": "SVG",
+      "sha256_12": "6af850d67237"
+    },
+    {
+      "path": "assets/shared/server.svg",
+      "extension": ".svg",
+      "type": "SVG",
+      "sha256_12": "3809a109097f"
+    },
+    {
+      "path": "audio/voiceover_manifest.json",
+      "extension": ".json",
+      "type": "JSON",
+      "sha256_12": "aa79c4dee4cf"
+    },
+    {
+      "path": "package.json",
+      "extension": ".json",
+      "type": "JSON",
+      "sha256_12": "6efd683af21e"
+    },
+    {
+      "path": "project/project.json",
+      "extension": ".json",
+      "type": "JSON",
+      "sha256_12": "b33890ab999c"
+    },
+    {
+      "path": "project/script.md",
+      "extension": ".md",
+      "type": "Markdown",
+      "sha256_12": "296c19eff059"
+    },
+    {
+      "path": "project/style_bible.json",
+      "extension": ".json",
+      "type": "JSON",
+      "sha256_12": "a532ab0cb166"
+    },
+    {
+      "path": "requirements.txt",
+      "extension": ".txt",
+      "type": "Text",
+      "sha256_12": "02b1e6796f56"
+    },
+    {
+      "path": "scenes/001/scene.json",
+      "extension": ".json",
+      "type": "JSON",
+      "sha256_12": "8c10b8649b16"
+    },
+    {
+      "path": "scenes/002/scene.json",
+      "extension": ".json",
+      "type": "JSON",
+      "sha256_12": "206741644c9d"
+    },
+    {
+      "path": "scripts/orchestrator.py",
+      "extension": ".py",
+      "type": "Python",
+      "sha256_12": "428de9ed1f0b"
+    },
+    {
+      "path": "scripts/validate_project.py",
+      "extension": ".py",
+      "type": "Python",
+      "sha256_12": "59de78a13e8f"
+    },
+    {
+      "path": "src/Root.tsx",
+      "extension": ".tsx",
+      "type": "TypeScript/TSX",
+      "sha256_12": "b3f1866f4232"
+    },
+    {
+      "path": "src/index.ts",
+      "extension": ".ts",
+      "type": "TypeScript/TSX",
+      "sha256_12": "5462d3268136"
+    },
+    {
+      "path": "src/remotion/MainVideo.tsx",
+      "extension": ".tsx",
+      "type": "TypeScript/TSX",
+      "sha256_12": "8529777da695"
+    },
+    {
+      "path": "tsconfig.json",
+      "extension": ".json",
+      "type": "JSON",
+      "sha256_12": "c3350f53f1da"
+    }
+  ]
+}
