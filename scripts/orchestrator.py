@@ -25,6 +25,7 @@ import subprocess
 import wave
 import hashlib
 import time
+import math
 from urllib.parse import urljoin
 from pathlib import Path
 
@@ -89,8 +90,9 @@ def resolve_models(project: dict) -> dict:
     }
     # script.md is the final authority: explicit values override both .env and defaults.json.
     for key, value in defaults.items():
-        if not models.get(key) or models[key].lower() == "default":
+        if not models.get(key) or str(models[key]).lower() == "default":
             models[key] = value
+    models["video_generate_audio"] = str(models.get("video_generate_audio", False)).lower() in {"1", "true", "yes", "on"}
     return models
 
 
@@ -123,9 +125,46 @@ def save_meta(path: Path, data: dict) -> None:
     save_json(path, data)
 
 
-def scene_image_identity(scene: dict, models: dict) -> str:
-    payload = {"image_model": models["image_model"], "image_provider": models["image_provider"], "image_prompt": scene.get("image_prompt"), "visual": scene.get("visual"), "negative_prompt": scene.get("negative_prompt"), "reference_images": scene.get("reference_images")}
+def scene_image_identity(scene: dict, models: dict, visual_style: dict | None = None) -> str:
+    visual_style = visual_style or {}
+    payload = {
+        "image_model": models["image_model"],
+        "image_provider": models["image_provider"],
+        "image_prompt": scene.get("image_prompt"),
+        "visual": scene.get("visual"),
+        "negative_prompt": scene.get("negative_prompt"),
+        "reference_images": scene.get("reference_images"),
+        "global_visual_identity": visual_style.get("global_visual_identity", ""),
+        "style_reference": visual_style.get("style_reference", ""),
+    }
     return sha256_text(json.dumps(payload, ensure_ascii=False, sort_keys=True))
+
+
+def _style_reference_paths(project: dict, scene: dict) -> list[Path]:
+    refs: list[str] = []
+    global_ref = str((project.get("visual_style") or {}).get("style_reference", "")).strip()
+    if global_ref:
+        refs.append(global_ref)
+    refs.extend([r.strip().lstrip("- ") for r in str(scene.get("reference_images", "")).splitlines() if r.strip()])
+    paths: list[Path] = []
+    seen: set[str] = set()
+    for ref in refs:
+        path = ROOT / ref
+        key = str(path.resolve())
+        if key not in seen:
+            paths.append(path)
+            seen.add(key)
+    return paths
+
+
+def _global_style_prompt(project: dict) -> str:
+    style = project.get("visual_style") or {}
+    parts = []
+    if style.get("global_visual_identity"):
+        parts.append("GLOBAL VISUAL IDENTITY:\n" + str(style["global_visual_identity"]).strip())
+    if style.get("camera_style"):
+        parts.append("GLOBAL CAMERA STYLE:\n" + str(style["camera_style"]).strip())
+    return "\n\n".join(parts)
 
 
 def scene_audio_identity(scene: dict, models: dict) -> str:
@@ -133,7 +172,14 @@ def scene_audio_identity(scene: dict, models: dict) -> str:
     return sha256_text(json.dumps(payload, ensure_ascii=False, sort_keys=True))
 
 
-def scene_video_identity(scene: dict, models: dict, image_identity: str, duration: int) -> str:
+def generation_mode(project: dict) -> str:
+    value = str(project.get("settings", {}).get("generation_mode", "remotion")).strip().lower()
+    if value not in {"remotion", "ai_video"}:
+        raise ValueError(f"Invalid generation_mode: {value}. Use remotion or ai_video.")
+    return value
+
+
+def scene_video_identity(scene: dict, models: dict, image_identity: str, duration: int, clip_index: int = 1, prompt: str = "") -> str:
     payload = {
         "video_provider": models["video_provider"],
         "video_model": models["video_model"],
@@ -141,9 +187,14 @@ def scene_video_identity(scene: dict, models: dict, image_identity: str, duratio
         "video_aspect_ratio": models["video_aspect_ratio"],
         "video_generate_audio": models["video_generate_audio"],
         "duration": duration,
+        "clip_index": clip_index,
         "image_identity": image_identity,
-        "animation_prompt": scene.get("animation") or scene.get("video_prompt") or scene.get("visual", ""),
+        "animation_prompt": prompt or scene.get("animation") or scene.get("video_prompt") or scene.get("visual", ""),
         "negative_prompt": scene.get("negative_prompt", ""),
+        "continuity": scene.get("continuity", ""),
+        "visual_anchor": scene.get("visual_anchor", ""),
+        "start_state": scene.get("start_state", ""),
+        "end_state": scene.get("end_state", ""),
     }
     return sha256_text(json.dumps(payload, ensure_ascii=False, sort_keys=True))
 SEGMENT_GAP_SECONDS = float(os.environ.get("TTS_SEGMENT_GAP_SECONDS", "0.12"))
@@ -201,6 +252,9 @@ def build(script_path: Path) -> dict:
 
     # Generated scene JSONs are compatibility/debug artifacts. The Markdown remains authoritative.
     for scene in project["scenes"]:
+        video_meta = load_meta(asset_meta_path("videos", scene["scene_id"]))
+        if generation_mode(project) == "ai_video" and video_meta and video_meta.get("clips"):
+            scene["video_clips"] = video_meta["clips"]
         scene_path = SCENE_DIR / scene["scene_id"] / "scene.json"
         save_json(scene_path, scene)
 
@@ -214,7 +268,7 @@ def generate_image(project: dict, scene: dict, tracker: CostTracker | None = Non
     models = resolve_models(project)
     output = GENERATED_DIR / f"scene_{scene['scene_id']}.png"
     meta_path = asset_meta_path("images", scene["scene_id"])
-    identity = scene_image_identity(scene, models)
+    identity = scene_image_identity(scene, models, project.get("visual_style"))
     existing = load_meta(meta_path)
     if output.exists() and existing and existing.get("content_hash") == identity:
         print(f"Reusing image: {output}")
@@ -224,15 +278,21 @@ def generate_image(project: dict, scene: dict, tracker: CostTracker | None = Non
     if not api_key:
         raise RuntimeError("OPENROUTER_API_KEY is not set. Put it in .env or export it in the shell.")
     prompt = scene.get("image_prompt") or scene.get("visual", "")
+    style_prompt = _global_style_prompt(project)
+    if style_prompt:
+        prompt = style_prompt + "\n\nSCENE-SPECIFIC VISUAL DIRECTION:\n" + prompt
+    continuity = str(scene.get("continuity", "")).strip()
+    anchor = str(scene.get("visual_anchor", "")).strip()
+    if continuity:
+        prompt += f"\n\nCONTINUITY MODE: {continuity}. Preserve the established visual language and composition appropriate to this mode."
+    if anchor:
+        prompt += f"\nVISUAL ANCHOR: {anchor}"
     negative = scene.get("negative_prompt")
     if negative:
         prompt += "\n\nAvoid the following:\n" + negative
     payload = {"model": models["image_model"], "prompt": prompt, "aspect_ratio": "16:9", "resolution": "2K", "usage": {"include": True}}
     references = []
-    for reference in scene.get("reference_images", "").splitlines():
-        reference = reference.strip().lstrip("- ")
-        if not reference: continue
-        reference_path = ROOT / reference
+    for reference_path in _style_reference_paths(project, scene):
         if not reference_path.exists(): raise FileNotFoundError(f"Reference image not found: {reference_path}")
         references.append({"type": "image_url", "image_url": {"url": image_data_url(reference_path)}})
     if references: payload["input_references"] = references
@@ -367,14 +427,120 @@ def rebuild_audio_timings(script_path: Path) -> None:
     TIMINGS_TS.parent.mkdir(parents=True,exist_ok=True); TIMINGS_TS.write_text("// AUTO-GENERATED from existing validated WAV files.\nexport const AUDIO_TIMINGS = "+json.dumps(timings,ensure_ascii=False,indent=2)+" as const;\n",encoding="utf-8")
     print(f"Rebuilt timings without generating audio: {TIMINGS_TS}")
 
+MAX_VIDEO_CLIP_SECONDS = 15
+MIN_VIDEO_CLIP_SECONDS = 4
+
+
+def _scene_duration_from_audio(scene: dict) -> float:
+    audio_path = PUBLIC_AUDIO_DIR / f"scene_{scene['scene_id']}.wav"
+    if not audio_path.exists():
+        raise RuntimeError(f"Missing audio for scene {scene['scene_id']}: {audio_path}")
+    return probe_duration(audio_path)
+
+
+def build_video_clip_plan(scene: dict, scene_duration: float) -> list[dict]:
+    """Split a scene into non-looped Seedance clips and attach the narration context.
+
+    The plan is deterministic and content-based. Long scenes are split into <=15s clips;
+    each clip receives the segment text that overlaps its time window so the motion prompt
+    follows the narration instead of repeating the same animation.
+    """
+    clips: list[dict] = []
+    start = 0.0
+    index = 1
+    segments = scene.get("segments", [])
+    # Timing is rebuilt from the actual concatenated TTS track. Use the manifest when available.
+    manifest = load_meta(GENERATED_MANIFEST) or {}
+    track = manifest.get("tracks", {}).get(scene["scene_id"], {})
+    timed_segments = track.get("segments", [])
+    if not timed_segments:
+        timed_segments = [{"id": s["id"], "text": s["text"], "kind": s["kind"], "language": s["language"], "start_seconds": 0.0, "duration_seconds": scene_duration} for s in segments[:1]]
+
+    while start < scene_duration - 0.001:
+        remaining = scene_duration - start
+        duration = min(float(MAX_VIDEO_CLIP_SECONDS), remaining)
+        if remaining > MAX_VIDEO_CLIP_SECONDS and remaining - MAX_VIDEO_CLIP_SECONDS < MIN_VIDEO_CLIP_SECONDS:
+            duration = remaining / 2.0
+        end = min(scene_duration, start + duration)
+        active = []
+        for seg in timed_segments:
+            seg_start = float(seg.get("start_seconds", 0.0))
+            seg_end = seg_start + float(seg.get("duration_seconds", 0.0))
+            if seg_end > start and seg_start < end:
+                active.append(seg)
+        clips.append({"clip_index": index, "start_seconds": round(start, 3), "duration_seconds": round(end - start, 3), "end_seconds": round(end, 3), "segments": active})
+        start = end
+        index += 1
+    return clips
+
+
+def build_motion_prompt(scene: dict, clip: dict, clip_count: int, project: dict | None = None) -> str:
+    project = project or {}
+    base = scene.get("animation") or scene.get("video_prompt") or scene.get("visual", "")
+    global_style = _global_style_prompt(project)
+    phase = []
+    for seg in clip.get("segments", []):
+        text = str(seg.get("text", "")).strip()
+        if len(text) > 260:
+            text = text[:257].rsplit(" ", 1)[0] + "..."
+        if text:
+            phase.append(f"{seg.get('kind','voiceover').upper()} ({seg.get('language','')}) idea: {text}")
+    phase_text = "\n".join(phase) if phase else "Follow the visual progression of this scene."
+    continuity = str(scene.get("continuity", "new_scene")).strip().lower() or "new_scene"
+    anchor = str(scene.get("visual_anchor", "")).strip()
+    start_state = str(scene.get("start_state", "")).strip()
+    end_state = str(scene.get("end_state", "")).strip()
+    camera = str(scene.get("camera", "")).strip()
+    camera_style = str((project.get("visual_style") or {}).get("camera_style", "")).strip()
+
+    if clip["clip_index"] == 1:
+        motion = "Begin with a calm establishing movement that introduces the main visual subject."
+        if start_state:
+            motion += f" Start from this state: {start_state}"
+    elif clip["clip_index"] == clip_count:
+        motion = "Conclude with a restrained movement toward the visual idea being discussed at the end of the scene."
+        if end_state:
+            motion += f" End in this state: {end_state}"
+    else:
+        motion = "Continue the same visual shot and motion language. Introduce only the minimum new movement needed to support the narration; do not reset the composition."
+
+    if continuity in {"continuous", "same_shot", "locked"}:
+        continuity_rule = (
+            "CONTINUITY IS CRITICAL: Treat all clips in this scene as one continuous shot. "
+            "Preserve the same framing, camera position, perspective, subject scale, lighting, palette, "
+            "and object layout. Do not create a new composition between clips. Only continue the existing motion."
+        )
+    elif continuity in {"transition", "linked"}:
+        continuity_rule = (
+            "CONTINUITY: Connect naturally to the previous visual idea. Preserve shared visual motifs, "
+            "palette, lighting and camera language while allowing the scene to evolve toward its new anchor."
+        )
+    else:
+        continuity_rule = (
+            "SCENE INTRODUCTION: Establish the same global visual language as the rest of the film. "
+            "Introduce this scene cleanly without changing the overall style."
+        )
+
+    return f"""Animate this supplied visual illustration as a stable documentary motion-graphics shot.
+
+{global_style}
+
+SCENE-SPECIFIC VISUAL DIRECTION:
+{base}
+
+{continuity_rule}
+VISUAL ANCHOR: {anchor or 'Keep the main subject visually consistent throughout the scene.'}
+CAMERA FOR THIS SCENE: {camera or camera_style or 'slow, restrained cinematic movement; locked when appropriate.'}
+
+This is clip {clip['clip_index']} of {clip_count}, covering approximately {clip['start_seconds']:.1f}s to {clip['end_seconds']:.1f}s of the scene. {motion}
+Narration context for this time window:
+{phase_text}
+
+Preserve the original illustration's composition, colors, linework, object identity and geometry. Do not redraw, morph, deform or reinterpret the artwork. Do not generate readable text, letters, numbers, labels, UI or captions. Use only subtle cinematic motion and minimal movement of already-existing visual elements. No camera shake, no handheld motion, no flicker, no warping, no morphing, no object deformation, no random zoom, no spinning camera, no new objects, no photorealism, no typography animation. Maintain the same visual style across the entire film."""
+
+
 def video_prompt(scene: dict) -> str:
-    prompt = scene.get("animation") or scene.get("video_prompt") or ""
-    if not prompt:
-        prompt = "Animate the supplied illustration naturally and subtly. Preserve the exact composition, visual style, objects, colors, linework, and paper texture. Add gentle cinematic camera motion only. Do not add text or new objects."
-    negative = scene.get("negative_prompt")
-    if negative:
-        prompt += "\n\nDo not introduce: " + negative
-    return prompt
+    return build_motion_prompt(scene, {"clip_index": 1, "start_seconds": 0, "end_seconds": 15, "segments": scene.get("segments", [])}, 1)
 
 
 def _video_data_url(path: Path) -> str:
@@ -436,60 +602,81 @@ def generate_video_for_scene(project: dict, scene: dict, tracker: CostTracker | 
     expected_audio_identity = scene_audio_identity(scene, models)
     if audio_meta.get("content_hash") != expected_audio_identity:
         raise RuntimeError(f"Audio for scene {scene['scene_id']} does not match the current script/TTS configuration. Run: python scripts/orchestrator.py audio project/script.md")
-    scene_duration = max(1, int(round(float(probe_duration(audio_path)))))
-    # Seedance 2.0 Mini supports 4–15 second clips. For longer narration, the Remotion layer loops the generated clip.
-    requested_duration = max(4, min(15, scene_duration))
-    image_identity = sha256_file(image_path)
-    identity = scene_video_identity(scene, models, image_identity, requested_duration)
-    output = GENERATED_VIDEO_DIR / f"scene_{scene['scene_id']}.mp4"
-    meta_path = asset_meta_path("videos", scene["scene_id"])
-    existing = load_meta(meta_path)
-    if output.exists() and existing and existing.get("content_hash") == identity:
-        print(f"Reusing video: {output}")
-        return
 
-    payload = {
-        "model": models["video_model"],
-        "prompt": video_prompt(scene),
-        "duration": requested_duration,
-        "resolution": models["video_resolution"],
-        "aspect_ratio": models["video_aspect_ratio"],
-        "generate_audio": bool(models["video_generate_audio"]),
-        # The generated scene image is the exact first frame for image-to-video.
-        "frame_images": [{"type": "image_url", "image_url": {"url": _video_data_url(image_path)}, "frame_type": "first_frame"}],
-    }
-    print(f"Generating AI video for scene {scene['scene_id']} ({requested_duration}s, {models['video_resolution']})...")
-    response = requests.post(f"{OPENROUTER_BASE_URL}/videos", headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}, json=payload, timeout=60)
-    if not response.ok:
-        raise RuntimeError(f"OpenRouter video generation failed ({response.status_code}):\n{response.text}")
-    submitted = response.json()
-    job_id = submitted.get("id")
-    polling_url = submitted.get("polling_url")
-    if not job_id or not polling_url:
-        raise RuntimeError(f"OpenRouter video response did not contain id/polling_url: {submitted}")
-    job_record = {"scene_id": scene["scene_id"], "job_id": job_id, "polling_url": polling_url, "model": models["video_model"], "status": submitted.get("status", "pending"), "submitted_at": time.time()}
-    save_json(VIDEO_JOBS_DIR / f"scene_{scene['scene_id']}.json", job_record)
-    completed = _poll_video_job(api_key, polling_url, job_id)
-    _download_video(api_key, completed, output)
-    usage = completed.get("usage") or {}
-    reported_cost = usage.get("cost")
-    if tracker is not None:
-        tracker.record(provider=models["video_provider"], operation="video_generation", model=models["video_model"], scene_id=scene["scene_id"], cost_usd=float(reported_cost) if reported_cost is not None else None, cost_status="provider_reported" if reported_cost is not None else "not_returned", usage=usage, request_id=job_id, note="OpenRouter asynchronous video generation")
-    save_meta(meta_path, {"version":"1.0.0", "kind":"video", "scene_id":scene["scene_id"], "content_hash":identity, "provider":models["video_provider"], "model":models["video_model"], "resolution":models["video_resolution"], "aspect_ratio":models["video_aspect_ratio"], "requested_duration":requested_duration, "generated_file":str(output.relative_to(ROOT)).replace("\\", "/"), "openrouter_job_id":job_id, "usage":usage})
-    print(f"Generated video: {output}")
+    scene_duration = _scene_duration_from_audio(scene)
+    plan = build_video_clip_plan(scene, scene_duration)
+    image_identity = sha256_file(image_path)
+    meta_path = asset_meta_path("videos", scene["scene_id"])
+    existing = load_meta(meta_path) or {}
+    existing_clips = existing.get("clips", [])
+    clip_records = []
+
+    for clip in plan:
+        clip_index = int(clip["clip_index"])
+        requested_duration = int(max(MIN_VIDEO_CLIP_SECONDS, min(MAX_VIDEO_CLIP_SECONDS, math.ceil(float(clip["duration_seconds"])))) )
+        prompt = build_motion_prompt(scene, clip, len(plan), project)
+        identity = scene_video_identity(scene, models, image_identity, round(requested_duration, 3), clip_index, prompt)
+        output = GENERATED_VIDEO_DIR / f"scene_{scene['scene_id']}_{clip_index:02d}.mp4"
+        old = next((c for c in existing_clips if int(c.get("clip_index", -1)) == clip_index), None)
+        if output.exists() and old and old.get("content_hash") == identity:
+            print(f"Reusing video clip: {output}")
+            clip_records.append({"clip_index": clip_index, "start_seconds": clip["start_seconds"], "duration_seconds": clip["duration_seconds"], "file": str(output.relative_to(ROOT)).replace("\\", "/"), "content_hash": identity})
+            continue
+
+        payload = {
+            "model": models["video_model"],
+            "prompt": prompt,
+            "duration": round(requested_duration, 3),
+            "resolution": models["video_resolution"],
+            "aspect_ratio": models["video_aspect_ratio"],
+            "generate_audio": bool(models["video_generate_audio"]),
+            "frame_images": [{"type": "image_url", "image_url": {"url": _video_data_url(image_path)}, "frame_type": "first_frame"}],
+        }
+        print(f"Generating AI video clip {scene['scene_id']}.{clip_index:02d} ({requested_duration:.1f}s, {models['video_resolution']})...")
+        response = requests.post(f"{OPENROUTER_BASE_URL}/videos", headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}, json=payload, timeout=60)
+        if not response.ok:
+            raise RuntimeError(f"OpenRouter video generation failed ({response.status_code}):\n{response.text}")
+        submitted = response.json()
+        job_id = submitted.get("id")
+        polling_url = submitted.get("polling_url")
+        if not job_id or not polling_url:
+            raise RuntimeError(f"OpenRouter video response did not contain id/polling_url: {submitted}")
+        job_record = {"scene_id": scene["scene_id"], "clip_index": clip_index, "job_id": job_id, "polling_url": polling_url, "model": models["video_model"], "status": submitted.get("status", "pending"), "submitted_at": time.time()}
+        save_json(VIDEO_JOBS_DIR / f"scene_{scene['scene_id']}_{clip_index:02d}.json", job_record)
+        completed = _poll_video_job(api_key, polling_url, job_id)
+        _download_video(api_key, completed, output)
+        # Normalize the downloaded clip to the exact narration window so clip boundaries
+        # remain deterministic even when the provider returns a slightly different duration.
+        target_seconds = float(clip["duration_seconds"])
+        normalized = output.with_suffix(".normalized.mp4")
+        ffmpeg = require_command("ffmpeg")
+        subprocess.run([ffmpeg, "-y", "-i", str(output), "-t", f"{target_seconds:.3f}", "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", str(normalized)], check=True, capture_output=True, text=True)
+        normalized.replace(output)
+        usage = completed.get("usage") or {}
+        reported_cost = usage.get("cost")
+        if tracker is not None:
+            tracker.record(provider=models["video_provider"], operation="video_generation", model=models["video_model"], scene_id=scene["scene_id"], cost_usd=float(reported_cost) if reported_cost is not None else None, cost_status="provider_reported" if reported_cost is not None else "not_returned", usage=usage, request_id=job_id, note=f"OpenRouter asynchronous video generation, clip {clip_index}")
+        clip_records.append({"clip_index": clip_index, "start_seconds": clip["start_seconds"], "duration_seconds": clip["duration_seconds"], "file": str(output.relative_to(ROOT)).replace("\\", "/"), "content_hash": identity, "openrouter_job_id": job_id})
+        print(f"Generated video clip: {output}")
+
+    meta = {"version":"2.0.0", "kind":"video", "scene_id":scene["scene_id"], "provider":models["video_provider"], "model":models["video_model"], "resolution":models["video_resolution"], "aspect_ratio":models["video_aspect_ratio"], "scene_duration_seconds":round(scene_duration,3), "clips":clip_records}
+    save_meta(meta_path, meta)
+    scene["video_clips"] = clip_records
 
 
 def generate_videos(script_path: Path, tracker: CostTracker | None = None) -> None:
     require_command("ffprobe")
     project = build(script_path)
-    if str(project.get("settings", {}).get("generation_mode", "remotion")).strip().lower() != "ai_video":
-        print("Generation mode is 'remotion'; skipping AI video generation.")
-        return
     models = resolve_models(project)
+    if generation_mode(project) != "ai_video":
+        print("generation_mode=remotion; skipping AI video generation.")
+        return
     if models.get("video_provider") in {"", "default"} or models.get("video_model") in {"", "default"}:
         raise RuntimeError("No video model configured. Add video_provider: openrouter and video_model: bytedance/seedance-2.0-mini to project/script.md.")
     for scene in project["scenes"]:
         generate_video_for_scene(project, scene, tracker)
+    write_generated_content(project)
+
 
 def render(script_path: Path) -> None:
     build(script_path)
@@ -505,11 +692,15 @@ def render(script_path: Path) -> None:
     if missing_audio:
         raise RuntimeError("Missing public audio file(s): " + ", ".join(missing_audio) + ". Run: python scripts/orchestrator.py audio project/script.md")
     models = resolve_models(project)
-    generation_mode = str(project.get("settings", {}).get("generation_mode", "remotion")).strip().lower()
-    if generation_mode == "ai_video" and models.get("video_provider") and models.get("video_model"):
-        missing_videos = [f"scene_{s['scene_id']}.mp4" for s in project["scenes"] if not (GENERATED_VIDEO_DIR / f"scene_{s['scene_id']}.mp4").exists()]
+    if generation_mode(project) == "ai_video":
+        missing_videos = []
+        for s in project["scenes"]:
+            meta = load_meta(asset_meta_path("videos", s["scene_id"])) or {}
+            for clip in meta.get("clips", []):
+                if not (ROOT / clip["file"]).exists():
+                    missing_videos.append(clip["file"])
         if missing_videos:
-            raise RuntimeError("Missing generated AI video(s): " + ", ".join(missing_videos) + ". Run: python scripts/orchestrator.py video project/script.md")
+            raise RuntimeError("Missing generated AI video clip(s): " + ", ".join(missing_videos) + ". Run: python scripts/orchestrator.py video project/script.md")
     try:
         rebuild_audio_timings(script_path)
     except RuntimeError as exc:
@@ -555,7 +746,7 @@ def main() -> None:
         build(script)
     elif command == "validate":
         validate(script)
-    elif command in {"images", "audio", "audio-timings", "render", "all"}:
+    elif command in {"images", "audio", "audio-timings", "video", "render", "all"}:
         tracker = CostTracker(ROOT, command, script)
         try:
             if command == "images":

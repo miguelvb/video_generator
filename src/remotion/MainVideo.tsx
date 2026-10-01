@@ -16,23 +16,30 @@ const Paper: React.FC<{children: React.ReactNode}> = ({children}) => (
 );
 
 const AnimatedAIClip: React.FC<{scene:any; duration:number}> = ({scene, duration}) => {
-  const src = staticFile(`video/scene_${scene.scene_id}.mp4`);
-  return (
-    <Video
-      src={src}
-      muted
-      loop
-      style={{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover'}}
-    />
-  );
-};
-
-const WatercolorFallback: React.FC<{scene:any; index:number; duration:number}> = ({scene,index,duration}) => {
-  const frame = useCurrentFrame();
-  const progress = duration <= 1 ? 0 : frame / duration;
-  const x = interpolate(progress, [0,1], index % 2 === 0 ? [18,-18] : [-12,12]);
-  const scale = interpolate(progress, [0,1], [1.02,1.08]);
-  return <img src={staticFile(`assets/generated/scene_${scene.scene_id}.png`)} style={{position:'absolute',inset:-30,width:'calc(100% + 60px)',height:'calc(100% + 60px)',objectFit:'cover',transform:`translate3d(${x}px,0,0) scale(${scale})`}} />;
+  const clips = Array.isArray(scene.video_clips) ? scene.video_clips : [];
+  if (!clips.length) {
+    const frame = useCurrentFrame();
+    const progress = duration <= 1 ? 0 : frame / duration;
+    const x = interpolate(progress, [0,1], [-12, 12]);
+    const scale = interpolate(progress, [0,1], [1.02, 1.08]);
+    return <img src={staticFile(`assets/generated/scene_${scene.scene_id}.png`)} style={{position:'absolute',inset:-30,width:'calc(100% + 60px)',height:'calc(100% + 60px)',objectFit:'cover',transform:`translate3d(${x}px,0,0) scale(${scale})`}} />;
+  }
+  let offset = 0;
+  return <AbsoluteFill>
+    {clips.map((clip:any, index:number) => {
+      if (offset >= duration) return null;
+      const clipFrames = Math.max(1, Math.min(duration - offset, Math.round(Number(clip.duration_seconds) * FPS)));
+      const currentOffset = offset;
+      offset += clipFrames;
+      return <Sequence key={`${scene.scene_id}-${clip.clip_index ?? index}`} from={currentOffset} durationInFrames={clipFrames}>
+        <Video
+          src={staticFile(clip.file.replace(/^public\//, ''))}
+          muted
+          style={{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover'}}
+        />
+      </Sequence>;
+    })}
+  </AbsoluteFill>;
 };
 
 const Caption: React.FC<{text:string; quote?:boolean}> = ({text,quote=false}) => {
@@ -40,6 +47,24 @@ const Caption: React.FC<{text:string; quote?:boolean}> = ({text,quote=false}) =>
   const opacity=interpolate(frame,[0,12],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
   const y=interpolate(frame,[0,12],[18,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
   return <div style={{position:'absolute',left:quote?60:45,right:quote?60:45,bottom:quote?65:25,padding:quote?'12px 16px':'8px 12px',background:quote?'rgba(247,238,218,.96)':'rgba(247,238,218,.90)',border:quote?'1px solid rgba(80,60,40,.52)':'1px solid rgba(80,60,40,.35)',boxShadow:'0 5px 15px rgba(50,35,20,.14)',fontFamily:quote?'Courier New, monospace':'Georgia, serif',fontSize:quote?17:14,lineHeight:1.28,color:ink,textAlign:quote?'center':'left',transform:`translateY(${y}px)`,opacity}}>{quote?`“${text}”`:text}</div>;
+};
+
+const SceneLabel: React.FC<{scene:any}> = ({scene}) => (
+  <div style={{position:'absolute',top:22,left:28,padding:'6px 10px',background:'rgba(247,238,218,.82)',border:'1px solid rgba(80,60,40,.28)',fontFamily:'Georgia, serif',fontSize:16,color:ink,letterSpacing:.3}}>{scene.title}</div>
+);
+
+const OverlayLabel: React.FC<{item:any}> = ({item}) => {
+  const frame = useCurrentFrame();
+  const start = Math.round(Number(item.start_seconds ?? 0) * FPS);
+  const fade = Math.max(1, Math.round(Number(item.fade_seconds ?? 0.35) * FPS));
+  const opacity = interpolate(frame, [start, start + fade], [0, 1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
+  const style = item.style === 'accent' ? {borderColor:'rgba(25,105,95,.55)', background:'rgba(220,239,230,.92)'} : {};
+  return <div style={{position:'absolute',left:`${item.x_percent ?? 8}%`,top:`${item.y_percent ?? 12}%`,padding:'6px 10px',border:'1px solid rgba(80,60,40,.35)',borderRadius:3,background:'rgba(247,238,218,.88)',fontFamily:'Courier New, monospace',fontSize:Number(item.font_size ?? 15),color:ink,opacity,...style}}>{item.text}</div>;
+};
+
+const StoryboardText: React.FC<{scene:any}> = ({scene}) => {
+  const labels = Array.isArray(scene.on_screen_text) ? scene.on_screen_text : [];
+  return <>{labels.map((item:any, index:number) => <OverlayLabel key={`${item.text}-${index}`} item={item} />)}</>;
 };
 
 const SegmentOverlay: React.FC<{segment:any; duration:number}> = ({segment,duration}) => {
@@ -52,26 +77,12 @@ const Scene: React.FC<{scene:any; sceneIndex:number; duration:number}> = ({scene
   const timings=TIMINGS[scene.scene_id]?.segments ?? [];
   return <Paper>
     <AnimatedAIClip scene={scene} duration={duration}/>
+    <SceneLabel scene={scene}/>
+    <StoryboardText scene={scene}/>
     <Sequence from={0} durationInFrames={duration}>
       <Audio src={staticFile(TIMINGS[scene.scene_id].audioFile)} />
     </Sequence>
-    {timings.map((timing:any)=>{
-      // audioTimings.ts stores segment timing fields in snake_case.
-      // Validate them before converting to frames so Remotion never receives NaN.
-      const startSeconds=Number(timing.start_seconds);
-      const durationSeconds=Number(timing.duration_seconds);
-      if (!Number.isFinite(startSeconds) || !Number.isFinite(durationSeconds)) {
-        throw new Error(
-          `Invalid audio timing for scene ${scene.scene_id}, segment ${timing.id}: ` +
-          `start_seconds=${timing.start_seconds}, duration_seconds=${timing.duration_seconds}`
-        );
-      }
-      const startFrames=Math.max(0,Math.round(startSeconds*FPS));
-      const segmentFrames=Math.max(1,Math.round(durationSeconds*FPS));
-      return <Sequence key={timing.id} from={startFrames} durationInFrames={segmentFrames}>
-        <SegmentOverlay segment={timing} duration={segmentFrames}/>
-      </Sequence>;
-    })}
+    {timings.map((timing:any)=><Sequence key={timing.id} from={Math.round(Number(timing.startSeconds ?? timing.start_seconds ?? 0)*FPS)} durationInFrames={Math.max(1,Math.round(Number(timing.durationSeconds ?? timing.duration_seconds ?? 1)*FPS))}><SegmentOverlay segment={timing} duration={Math.max(1,Math.round(Number(timing.durationSeconds ?? timing.duration_seconds ?? 1)*FPS))}/></Sequence>)}
   </Paper>;
 };
 

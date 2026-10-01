@@ -9,7 +9,10 @@
     "voice": "shimmer"
   },
   "video": {
-    "provider": "",
-    "model": ""
+    "provider": "openrouter",
+    "model": "bytedance/seedance-2.0-mini",
+    "resolution": "480p",
+    "aspect_ratio": "16:9",
+    "generate_audio": false
   }
 }

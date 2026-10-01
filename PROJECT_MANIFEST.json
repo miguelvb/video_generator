@@ -1,12 +1,13 @@
 {
   "name": "ai-video-engine-content-first",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "source_of_truth": "project/script.md",
   "engine": {
     "parser": "scripts/script_parser.py",
     "orchestrator": "scripts/orchestrator.py",
     "animation": "Remotion",
-    "encoding": "FFmpeg"
+    "encoding": "FFmpeg",
+    "ai_video": "OpenRouter asynchronous video API"
   },
   "generated_artifacts": [
     "build/",
@@ -14,7 +15,8 @@
     "src/generated/videoConfig.ts",
     "src/generated/audioTimings.ts",
     "public/assets/generated/",
-    "public/audio/"
+    "public/audio/",
+    "public/video/"
   ],
   "rule": "For a new video, edit project/script.md; do not edit generated JSON/TS artifacts manually.",
   "configuration_precedence": [
@@ -28,5 +30,7 @@
     "config/defaults.json",
     ".env",
     "project/script.md"
-  ]
+  ],
+  "video_model": "bytedance/seedance-2.0-mini",
+  "video_resolution": "480p"
 }

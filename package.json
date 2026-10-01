@@ -10,7 +10,8 @@
     "audio": "python scripts/orchestrator.py audio project/script.md",
     "all": "python scripts/orchestrator.py all project/script.md",
     "audio-timings": "python scripts/orchestrator.py audio-timings project/script.md",
-    "video": "python scripts/orchestrator.py all project/script.md"
+    "video": "python scripts/orchestrator.py all project/script.md",
+    "videos": "python scripts/orchestrator.py video project/script.md"
   },
   "dependencies": {
     "react": "19.3.0",

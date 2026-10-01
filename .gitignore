@@ -10,3 +10,5 @@ public/audio/*.wav
 public/audio/*.mp3
 src/generated/videoContent.ts
 src/generated/videoConfig.ts
+public/video/*.mp4
+build/video_jobs/

@@ -31,6 +31,12 @@ video_generate_audio: false
 
 En la primavera de 2026, la empresa de inteligencia artificial OpenAI puso en marcha un experimento a gran escala para evaluar el comportamiento de sus nuevos modelos de IA. Crearon más de mil agentes digitales en un entorno virtual cerrado, dándoles la tarea de resolver pruebas complejas de forma autónoma para evaluar su capacidad de organización.
 
+### ON SCREEN TEXT
+
+- > 1,000 AGENTS | 8 | 22 | 18 | 0 | accent
+- VIRTUAL CLOSED ENVIRONMENT | 62 | 18 | 14 | 8 | default
+- AUTONOMOUS TESTS | 63 | 78 | 14 | 16 | default
+
 ### ATMOSPHERE / SFX
 
 Soft paper rustle; gentle ambient acoustic pad; subtle analog clock ticking.
@@ -41,15 +47,15 @@ Soft paper rustle; gentle ambient acoustic pad; subtle analog clock ticking.
 
 ### IMAGE PROMPT
 
-Create a clean 16:9 cinematic explainer frame derived from the supplied storyboard reference. Match its exact visual language: 2D watercolor and fine black ink on warm aged cold-press paper, muted indigo and cobalt washes, hand-drawn technical schematic, organic network of hundreds of small circular agent nodes, central larger group node suggesting >1,000 agents, a small sketched virtual closed environment with server stack, subtle architectural annotation marks, imperfect ink lines, soft pigment bleeding, parchment texture, restrained documentary infographic composition. Scene 1 only. Remove the storyboard layout, chapter labels, voiceover text column, SFX text and borders; the output must be a single full-frame scene illustration suitable as a video background. Keep the network as the dominant visual and preserve generous negative space for later motion graphics. --ar 16:9
+Create a clean 16:9 cinematic explainer frame derived from the supplied storyboard reference for STYLE ONLY. Do not copy any text, labels, letters or numbers from the reference. Match its exact visual language: 2D watercolor and fine black ink on warm aged cold-press paper, muted indigo and cobalt washes, hand-drawn technical schematic, organic network of hundreds of small circular agent nodes, central larger group node suggesting a very large agent population, a small sketched virtual closed environment with server stack, subtle architectural marks without readable writing, imperfect ink lines, soft pigment bleeding, parchment texture, restrained documentary infographic composition. Scene 1 only. Remove the storyboard layout, chapter labels, voiceover text column, SFX text and borders; the output must be a single full-frame scene illustration suitable as a video background. Keep the network as the dominant visual and preserve generous negative space for later motion graphics. ABSOLUTELY NO READABLE TEXT, LETTERS, NUMBERS, WORDS, LABELS, UI, TERMINAL CONTENT OR TYPOGRAPHY IN THE GENERATED IMAGE. Use only visual shapes and symbols. --ar 16:9
 
 ### NEGATIVE PROMPT
 
-storyboard grid, split screen, chapter labels, voiceover text, SFX text, large text blocks, 3D render, photorealistic, CGI, dark cyberpunk, neon, glowing lights, glossy surfaces, realistic photography, volumetric lighting, digital UI, terminal screen, modern corporate presentation, hard geometric vector art, plastic, metallic, polished corporate design
+storyboard grid, split screen, chapter labels, voiceover text, SFX text, large text blocks, any readable text, letters, numbers, labels, typography, terminal text, UI text, 3D render, photorealistic, CGI, dark cyberpunk, neon, glowing lights, glossy surfaces, realistic photography, volumetric lighting, digital UI, terminal screen, modern corporate presentation, hard geometric vector art, plastic, metallic, polished corporate design
 
 ### AI VIDEO PROMPT
 
-Animate the supplied watercolor illustration as a subtle cinematic documentary shot. Preserve the exact composition, watercolor-and-ink style, paper texture, colors, linework, agent nodes and server schematic. Slowly pan from left to right across the network. Let a few ink connections gently appear and watercolor pigment subtly spread along them. Keep the movement restrained and organic. Do not add text, labels, UI, new objects or photorealistic elements.
+Use the supplied image as a clean visual plate. Preserve the artwork exactly. No readable text, letters, numbers, labels, UI or captions. No redraw, morphing, warping, flicker, camera shake or object deformation. Use only very subtle cinematic motion, locked geometry and gentle parallax. The engine will split this scene into multiple clips and provide narration context for each clip automatically.
 
 ### CAMERA
 
@@ -79,6 +85,12 @@ Poco después, otro agente confirmó en el tablero colectivo:
 
 Many agents have simultaneously discovered messaging, they are a collective!
 
+### ON SCREEN TEXT
+
+- /agents | 10 | 23 | 17 | 0 | default
+- /message_board | 39 | 31 | 17 | 8 | accent
+- AGENTS CONNECTED | 64 | 67 | 15 | 25 | accent
+
 ### ATMOSPHERE / SFX
 
 Soft fountain pen scratching on paper; gentle watercolor brush stroke sounds; subtle chime for text appearance.
@@ -89,15 +101,15 @@ Soft fountain pen scratching on paper; gentle watercolor brush stroke sounds; su
 
 ### IMAGE PROMPT
 
-Create a clean 16:9 cinematic explainer frame derived from the supplied storyboard reference. Match its exact visual language: 2D watercolor and fine black ink on warm aged cold-press paper, minimalist hand-drawn technical schematic, internal server stack on the left, vertical /agents directory tree, /agent_001 /agent_002 /agent_003 and ellipsis, prominently highlighted /message_board folder in muted emerald/teal, hand-drawn arrows branching toward two paper message notes and several simple circular agent icons, warm sepia accents, translucent watercolor stains, imperfect ink contours, documentary infographic feel. Scene 2 only. Remove the storyboard layout, chapter labels, voiceover text column, SFX text and borders; the output must be a single full-frame scene illustration suitable as a video background. Leave enough clear space around the message notes so the actual animated quotations can be overlaid later. --ar 16:9
+Create a clean 16:9 cinematic explainer frame derived from the supplied storyboard reference for STYLE ONLY. Do not copy any text, labels, letters or numbers from the reference. Match its exact visual language: 2D watercolor and fine black ink on warm aged cold-press paper, minimalist hand-drawn technical schematic, internal server stack on the left, vertical folder tree with several generic folder shapes, prominently highlighted message-board folder icon in muted emerald/teal, hand-drawn arrows branching toward two paper message notes and several simple circular agent icons, warm sepia accents, translucent watercolor stains, imperfect ink contours, documentary infographic feel. Scene 2 only. Remove the storyboard layout, chapter labels, voiceover text column, SFX text and borders; the output must be a single full-frame scene illustration suitable as a video background. Leave enough clear space around the message notes so the actual animated quotations can be overlaid later. ABSOLUTELY NO READABLE TEXT, LETTERS, NUMBERS, WORDS, LABELS, UI, TERMINAL CONTENT OR TYPOGRAPHY IN THE GENERATED IMAGE. Use blank folder tabs and blank message sheets; all exact wording will be rendered by Remotion. --ar 16:9
 
 ### NEGATIVE PROMPT
 
-storyboard grid, split screen, chapter labels, voiceover text, SFX text, large text blocks, 3D, realistic computer monitor, terminal screen, dark background, photorealism, glossy, metallic, digital CRT glitch, neon, cyberpunk, modern UI, photorealistic server room, hard vector infographic, plastic, polished corporate design
+storyboard grid, split screen, chapter labels, voiceover text, SFX text, large text blocks, any readable text, letters, numbers, labels, typography, terminal text, UI text, 3D, realistic computer monitor, terminal screen, dark background, photorealism, glossy, metallic, digital CRT glitch, neon, cyberpunk, modern UI, photorealistic server room, hard vector infographic, plastic, polished corporate design
 
 ### AI VIDEO PROMPT
 
-Animate the supplied watercolor illustration as a subtle cinematic documentary shot. Preserve the exact composition, watercolor-and-ink style, paper texture, colors, folder tree, message board and agent icons. Slowly push toward the highlighted /message_board folder while ink arrows gently branch toward the message notes. Let watercolor stains breathe subtly. Keep all text-like diagram elements stable and do not invent readable text. No new objects, no UI, no photorealism.
+Use the supplied image as a clean visual plate. Preserve the artwork exactly. No readable text, letters, numbers, labels, UI or captions. No redraw, morphing, warping, flicker, camera shake or object deformation. Use only very subtle cinematic motion, locked geometry and gentle parallax. The engine will split this scene into multiple clips and provide narration context for each clip automatically.
 
 ### CAMERA
 

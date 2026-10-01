@@ -19,6 +19,27 @@ tts_model: default
 tts_voice: default
 video_provider: default
 video_model: default
+video_resolution: 480p
+video_aspect_ratio: 16:9
+video_generate_audio: false
+
+## VISUAL STYLE
+
+### GLOBAL VISUAL IDENTITY
+
+Define the visual language shared by every scene: palette, lighting, linework,
+typography, iconography, depth, texture and overall documentary/explainer aesthetic.
+All scenes must look like parts of the same film.
+
+### STYLE REFERENCE
+
+# Optional path to a reference image used for every scene.
+# style_reference: assets/reference/storyboard.png
+
+### CAMERA STYLE
+
+Slow restrained cinematic movement; subtle push-ins and pans; locked camera when
+appropriate. Never handheld, shaky, spinning or randomly zooming.
 
 ---
 
@@ -32,9 +53,32 @@ Escribe aquí la narración en español.
 
 Escribe aquí una cita en inglés si la escena la necesita.
 
+### ON SCREEN TEXT
+
+# Optional. One line per overlay:
+# text | x_percent | y_percent | font_size | start_seconds | style
+# /message_board | 40 | 30 | 16 | 8 | accent
+
 ### ATMOSPHERE / SFX
 
 Soft paper rustle; subtle chime.
+
+### CONTINUITY
+
+# new_scene | transition | continuous | locked
+new_scene
+
+### VISUAL ANCHOR
+
+The main visual subject or motif that should remain identifiable.
+
+### START STATE
+
+Optional description of how the scene/shot begins.
+
+### END STATE
+
+Optional description of how the scene/shot ends.
 
 ### VISUAL
 
@@ -50,7 +94,7 @@ Elementos que el generador debe evitar.
 
 ### AI VIDEO PROMPT
 
-Describe how the generated scene image should move. Preserve the composition and visual style.
+Describe the visual motion. The engine automatically splits long scenes into non-looped 4–15 second clips and adds narration context. Keep geometry stable and never rely on generated text.
 
 ### CAMERA
 
