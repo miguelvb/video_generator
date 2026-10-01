@@ -29,6 +29,7 @@ import requests
 from dotenv import load_dotenv
 
 from script_parser import parse_script
+from cost_tracker import CostTracker
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SCRIPT = ROOT / "project" / "script.md"
@@ -110,7 +111,7 @@ def build(script_path: Path) -> dict:
     return project
 
 
-def generate_image(project: dict, scene: dict) -> None:
+def generate_image(project: dict, scene: dict, tracker: CostTracker | None = None) -> None:
     api_key = os.environ.get("OPENROUTER_API_KEY")
     if not api_key:
         raise RuntimeError("OPENROUTER_API_KEY is not set. Put it in .env or export it in the shell.")
@@ -125,6 +126,8 @@ def generate_image(project: dict, scene: dict) -> None:
         "prompt": prompt,
         "aspect_ratio": "16:9",
         "resolution": "2K",
+        # Ask OpenRouter to include provider-reported billing usage when available.
+        "usage": {"include": True},
     }
     references = []
     for reference in scene.get("reference_images", "").splitlines():
@@ -145,21 +148,32 @@ def generate_image(project: dict, scene: dict) -> None:
     )
     if not response.ok:
         raise RuntimeError(f"OpenRouter image generation failed ({response.status_code}):\n{response.text}")
-    data = (response.json().get("data") or [])
+    result = response.json()
+    data = (result.get("data") or [])
     if not data or not data[0].get("b64_json"):
         raise RuntimeError("OpenRouter response contains no data[0].b64_json.")
 
+    if tracker is not None:
+        usage = result.get("usage") or {}
+        reported_cost = usage.get("cost")
+        tracker.record(
+            provider="openrouter", operation="image_generation", model=payload["model"],
+            scene_id=scene["scene_id"], cost_usd=float(reported_cost) if reported_cost is not None else None,
+            cost_status="provider_reported" if reported_cost is not None else "not_returned",
+            usage=usage, request_id=response.headers.get("x-request-id"),
+            note=None if reported_cost is not None else "OpenRouter did not include usage.cost in this response.",
+        )
     output = GENERATED_DIR / f"scene_{scene['scene_id']}.png"
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_bytes(base64.b64decode(data[0]["b64_json"]))
     print(f"Generated image: {output}")
 
 
-def generate_images(script_path: Path) -> None:
+def generate_images(script_path: Path, tracker: CostTracker | None = None) -> None:
     project = build(script_path)
     GENERATED_DIR.mkdir(parents=True, exist_ok=True)
     for scene in project["scenes"]:
-        generate_image(project, scene)
+        generate_image(project, scene, tracker)
 
 
 def instructions_for(language: str, kind: str) -> str:
@@ -203,7 +217,7 @@ def build_voice_manifest(project: dict) -> dict:
     }
 
 
-def tts_request(segment: dict, output_path: Path) -> None:
+def tts_request(segment: dict, output_path: Path, tracker: CostTracker | None = None, scene_id: str | None = None) -> None:
     api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:
         raise RuntimeError("OPENAI_API_KEY is not set. Put it in .env or export it in the shell.")
@@ -224,6 +238,18 @@ def tts_request(segment: dict, output_path: Path) -> None:
         raise RuntimeError(f"OpenAI TTS failed ({response.status_code}) for {segment['id']}:\n{response.text}")
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_bytes(response.content)
+    if tracker is not None:
+        # The documented speech endpoint returns audio bytes, not a per-request
+        # usage/cost object. Keep the call in the report as explicitly unpriced
+        # rather than inventing an exact charge.
+        tracker.record(
+            provider="openai", operation="text_to_speech", model=OPENAI_TTS_MODEL,
+            scene_id=scene_id, segment_id=segment["id"], cost_usd=None,
+            cost_status="not_returned_by_endpoint",
+            usage={"input_characters": len(segment["text"])},
+            request_id=response.headers.get("x-request-id"),
+            note="OpenAI Speech API does not document a per-request cost field. Current model pricing is published separately.",
+        )
     print(f"Generated TTS: {output_path}")
 
 
@@ -251,7 +277,7 @@ def concat_audio(segment_paths: list[Path], output_path: Path) -> None:
         list_file.unlink(missing_ok=True); gap_file.unlink(missing_ok=True)
 
 
-def generate_audio(script_path: Path) -> None:
+def generate_audio(script_path: Path, tracker: CostTracker | None = None) -> None:
     require_command("ffmpeg"); require_command("ffprobe")
     project = build(script_path)
     config = build_voice_manifest(project)
@@ -263,7 +289,7 @@ def generate_audio(script_path: Path) -> None:
         cursor = 0.0
         for index, segment in enumerate(segments):
             path = scene_dir / f"{segment['id']}.wav"
-            tts_request(segment, path)
+            tts_request(segment, path, tracker, scene_id)
             duration = probe_duration(path)
             generated.append({**segment, "file": str(path.relative_to(BUILD_DIR)).replace("\\", "/"), "start_seconds": round(cursor, 3), "duration_seconds": round(duration, 3)})
             segment_paths.append(path)
@@ -342,13 +368,26 @@ def main() -> None:
     elif args.audio: command = "audio"
     elif args.render: command = "render"
 
-    if command == "build": build(script)
-    elif command == "images": generate_images(script)
-    elif command == "audio": generate_audio(script)
-    elif command == "render": render(script)
-    elif command == "validate": validate(script)
-    elif command == "all":
-        generate_images(script); generate_audio(script); render(script)
+    if command == "build":
+        build(script)
+    elif command == "validate":
+        validate(script)
+    elif command in {"images", "audio", "render", "all"}:
+        tracker = CostTracker(ROOT, command, script)
+        try:
+            if command == "images":
+                generate_images(script, tracker)
+            elif command == "audio":
+                generate_audio(script, tracker)
+            elif command == "render":
+                render(script)
+            else:
+                generate_images(script, tracker)
+                generate_audio(script, tracker)
+                render(script)
+        finally:
+            report = tracker.finish()
+            tracker.print_summary(report)
     else:
         parser.print_help()
 
