@@ -26,7 +26,7 @@ video_generate_audio: false
 
 enabled: true
 file: audio/m1_dubtechno_2.mp3
-volume: 0.10
+volume: 1.0
 ducking: true
 ducking_volume: 0.045
 fade_in_seconds: 2
