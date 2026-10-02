@@ -374,12 +374,25 @@ def instructions_for(language: str, kind: str, previous_text: str = "", next_tex
 def build_voice_manifest(project: dict) -> dict:
     models = resolve_models(project)
     tracks = {}
+
+    # Build one ordered narration stream so every TTS request knows what was
+    # spoken immediately before and after it, including across scene boundaries.
+    ordered = []
+    for scene in project["scenes"]:
+        for item in scene["segments"]:
+            ordered.append((scene["scene_id"], item))
+
+    neighbors = {}
+    for index, (scene_id, item) in enumerate(ordered):
+        previous_text = ordered[index - 1][1]["text"] if index > 0 else ""
+        next_text = ordered[index + 1][1]["text"] if index + 1 < len(ordered) else ""
+        neighbors[item["id"]] = (previous_text, next_text)
+
     for scene in project["scenes"]:
         segments = []
-        for index, item in enumerate(scene["segments"], 1):
+        for item in scene["segments"]:
             language = item["language"]
-            previous_text = scene["segments"][index - 2]["text"] if index > 1 else ""
-            next_text = scene["segments"][index]["text"] if index < len(scene["segments"]) else ""
+            previous_text, next_text = neighbors.get(item["id"], ("", ""))
             segments.append({
                 "id": item["id"],
                 "kind": item["kind"],
@@ -390,7 +403,7 @@ def build_voice_manifest(project: dict) -> dict:
                 "text": item["text"],
             })
         tracks[scene["scene_id"]] = segments
-    return {"version":"3.1.0","source_of_truth":"project/script.md","provider":models["tts_provider"],"model":models["tts_model"],"voice":models["tts_voice"],"voice_profile":"female_sounding","tracks":tracks}
+    return {"version":"3.2.0","source_of_truth":"project/script.md","provider":models["tts_provider"],"model":models["tts_model"],"voice":models["tts_voice"],"voice_profile":"female_sounding","tracks":tracks}
 
 def tts_request(segment: dict, output_path: Path, tracker: CostTracker | None = None, scene_id: str | None = None, models: dict | None = None) -> None:
     models = models or {"tts_provider":"openai", "tts_model":os.environ.get("DEFAULT_TTS_MODEL", "gpt-4o-mini-tts")}
