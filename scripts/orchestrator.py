@@ -813,8 +813,8 @@ def render(script_path: Path, scene_selection: str | None = None) -> None:
     render_props = {
         "sceneIds": [s["scene_id"] for s in scenes],
         "music": project.get("music") or {},
-        "ending": {} if isolated_scene_render else (project.get("ending") or {}),
-        "intro": {} if isolated_scene_render else (project.get("intro") or {}),
+        "ending": {"enabled": false} if isolated_scene_render else (project.get("ending") or {}),
+        "intro": {"enabled": false} if isolated_scene_render else (project.get("intro") or {}),
     }
     render_cmd.extend(["--props", json.dumps(render_props)])
     subprocess.run(render_cmd, cwd=ROOT, check=True, env=env)
