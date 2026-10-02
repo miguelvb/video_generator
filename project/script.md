@@ -32,6 +32,15 @@ ducking_volume: 0.045
 fade_in_seconds: 2
 fade_out_seconds: 4
 
+## INTRO
+
+enabled: true
+title: THE FIRST AUTOMATED AGENT COLLECTIVE ATTACK - JULY 2026
+subtitle: An investigation into autonomous AI agents
+hold_seconds: 4
+fade_in_seconds: 1.5
+fade_out_seconds: 2.5
+
 ## ENDING
 
 enabled: true
