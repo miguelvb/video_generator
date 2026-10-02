@@ -773,7 +773,6 @@ def render(script_path: Path, scene_selection: str | None = None) -> None:
     # Prepare deterministic low-cost SVG/Manim animation layers before Remotion.
     project_for_animation = build(script_path)
     prepare_animations(project_for_animation, parse_scene_selection(scene_selection, project_for_animation))
-    build(script_path)
     require_command("node")
     remotion_bin = ROOT / "node_modules" / ".bin" / ("remotion.cmd" if os.name == "nt" else "remotion")
     if not remotion_bin.exists():
