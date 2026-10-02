@@ -180,103 +180,63 @@ const SvgNetworkOverlay: React.FC<{duration:number}> = ({duration}) => {
 };
 
 const Scene006Network: React.FC<{duration:number}> = ({duration}) => {
+  // Prototype procedural network: background is separate; agents and message
+  // packet are animated objects generated deterministically by Remotion.
   const frame = useCurrentFrame();
-  const progress = interpolate(
-    frame,
-    [0, Math.max(1, Math.round(duration * 0.9))],
-    [0, 1],
-    {extrapolateLeft:'clamp', extrapolateRight:'clamp'}
-  );
+  const progress = interpolate(frame, [0, Math.max(1, Math.round(duration * 0.9))], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
 
   const nodes = [
-    {x:14,y:27,r:1.15}, {x:27,y:15,r:1.0}, {x:42,y:22,r:1.05},
-    {x:57,y:14,r:1.0}, {x:74,y:25,r:1.15}, {x:88,y:18,r:0.95},
-    {x:19,y:53,r:1.0}, {x:34,y:44,r:1.1}, {x:49,y:51,r:1.0},
-    {x:66,y:44,r:1.1}, {x:82,y:55,r:1.0}, {x:91,y:45,r:0.95},
-    {x:28,y:78,r:1.0}, {x:45,y:69,r:1.05}, {x:62,y:77,r:1.0},
-    {x:77,y:72,r:1.05}
+    {x:20,y:30}, {x:35,y:20}, {x:50,y:29}, {x:66,y:20},
+    {x:80,y:34}, {x:28,y:58}, {x:48,y:50}, {x:70,y:60},
   ];
-  const center = {x:50,y:50};
-  const edges = [
-    [0,1],[1,2],[2,3],[3,4],[4,5],
-    [0,6],[1,7],[2,7],[2,8],[3,8],[3,9],[4,9],[4,10],[5,11],
-    [6,7],[7,8],[8,9],[9,10],[10,11],
-    [6,12],[7,12],[7,13],[8,13],[8,14],[9,14],[9,15],[10,15],
-    [12,13],[13,14],[14,15]
-  ];
-
-  const connectionProgress = (i:number) =>
-    Math.max(0, Math.min(1, (progress - i * 0.025) / 0.34));
+  const edges = [[0,1],[1,2],[2,3],[3,4],[0,5],[1,6],[2,6],[3,7],[5,6],[6,7],[4,7]];
 
   const nodeProgress = (i:number) =>
-    Math.max(0, Math.min(1, (progress - i * 0.032) / 0.24));
+    Math.max(0, Math.min(1, (progress - i * 0.07) / 0.22));
+  const edgeProgress = (i:number) =>
+    Math.max(0, Math.min(1, (progress - 0.12 - i * 0.045) / 0.28));
 
-  const centerProgress = Math.max(0, Math.min(1, (progress - 0.08) / 0.25));
+  // One visible message travels from the first agent toward the collective.
+  const packetProgress = Math.max(0, Math.min(1, (progress - 0.42) / 0.38));
+  const packetPath = {x1:nodes[0].x, y1:nodes[0].y, x2:nodes[6].x, y2:nodes[6].y};
+  const packetX = packetPath.x1 + (packetPath.x2 - packetPath.x1) * packetProgress;
+  const packetY = packetPath.y1 + (packetPath.y2 - packetPath.y1) * packetProgress;
 
   return (
-    <svg
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none"
-      style={{
-        position:'absolute', inset:0, width:'100%', height:'100%',
-        pointerEvents:'none'
-      }}
-    >
-      <g opacity={interpolate(centerProgress,[0,1],[0,0.96],{extrapolateLeft:'clamp',extrapolateRight:'clamp'})}>
-        <circle cx={center.x} cy={center.y} r="5.2" fill="#ff0000" stroke="#ff0000" strokeWidth="1.2" />
-        <circle cx={center.x} cy={center.y} r="3.3" fill="none" stroke="#ff0000" strokeWidth="1.2" />
-        <circle cx={center.x} cy={center.y} r="1.05" fill="#ff0000" />
-      </g>
-
+    <svg viewBox="0 0 100 100" preserveAspectRatio="none"
+      style={{position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none'}}>
       {edges.map(([a,b], i) => {
-        const p = connectionProgress(i);
-        const [x1,y1] = [nodes[a].x,nodes[a].y];
-        const [x2,y2] = [nodes[b].x,nodes[b].y];
-        const length = Math.hypot(x2-x1,y2-y1);
-        const opacity = interpolate(p,[0,1],[0,0.55],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
-        return (
-          <line
-            key={`e-${i}`}
-            x1={x1} y1={y1} x2={x2} y2={y2}
-            stroke="#315b67"
-            strokeWidth="0.32"
-            opacity={opacity}
-            strokeDasharray={length}
-            strokeDashoffset={length * (1-p)}
-          />
-        );
+        const p = edgeProgress(i);
+        const x1 = nodes[a].x, y1 = nodes[a].y;
+        const x2 = nodes[b].x, y2 = nodes[b].y;
+        const length = Math.hypot(x2-x1, y2-y1);
+        return <line key={`e-${i}`} x1={x1} y1={y1} x2={x2} y2={y2}
+          stroke="#ff0000" strokeWidth="0.9" opacity={0.72 * p}
+          strokeDasharray={length} strokeDashoffset={length * (1-p)} />;
       })}
 
       {nodes.map((node,i) => {
         const p = nodeProgress(i);
-        const scale = interpolate(p,[0,1],[0.2,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
-        const pulse = 1 + 0.12 * Math.sin((frame + i * 11) / 7);
-        return (
-          <g key={`n-${i}`} transform={`translate(${node.x} ${node.y}) scale(${scale * pulse})`}>
-            <circle r={node.r + 0.75} fill="#ff0000" opacity="1" />
-            <circle r={node.r} fill="none" stroke="#ff0000" strokeWidth="1.0" />
-            <circle r={node.r * 0.34} fill="#ff0000" opacity="1" />
-          </g>
-        );
+        const pulse = 1 + 0.08 * Math.sin((frame + i * 13) / 8);
+        const scale = interpolate(p,[0,1],[0.2,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}) * pulse;
+        return <g key={`n-${i}`} transform={`translate(${node.x} ${node.y}) scale(${scale})`}>
+          <circle r="3.2" fill="#ffffff" stroke="#ff0000" strokeWidth="0.9" />
+          <circle r="1.0" fill="#ff0000" />
+        </g>;
       })}
 
-      {nodes.slice(0, 8).map((node,i) => {
-        const pulseStart = Math.max(0, progress - 0.25 - i * 0.045);
-        const pulse = Math.max(0, Math.min(1, pulseStart / 0.22));
-        const x = node.x + (center.x-node.x) * pulse;
-        const y = node.y + (center.y-node.y) * pulse;
-        return pulse > 0 && pulse < 1 ? (
-          <circle
-            key={`p-${i}`}
-            cx={x} cy={y} r="0.8"
-            fill="#ff0000" opacity={1}
-          />
-        ) : null;
-      })}
+      {packetProgress > 0 && packetProgress < 1 ? (
+        <g>
+          <circle cx={packetX} cy={packetY} r="2.1" fill="#ff0000" opacity="0.22" />
+          <circle cx={packetX} cy={packetY} r="1.05" fill="#ff0000" />
+        </g>
+      ) : null}
     </svg>
   );
 };
-
 const SceneVisual: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut:boolean}> = ({scene,duration,fadeIn,fadeOut}) => {
   const frame = useCurrentFrame();
   const fadeInOpacity = fadeIn
@@ -286,9 +246,8 @@ const SceneVisual: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut
   const fadeOutOpacity = fadeOut
     ? interpolate(frame, [fadeOutStart, duration], [1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
     : 1;
-  // TEMPORARY SVG TEST: scene 006 always gets the obvious red SVG overlay.
-  // This deliberately ignores script metadata so we can verify the rendering path.
-  const svgOverlay = String(scene.scene_id) === '006'
+  const animationType = String(scene.animation?.type ?? '').toLowerCase();
+  const svgOverlay = String(scene.scene_id) === '006' && animationType === 'network'
     ? <Scene006Network duration={duration}/>
     : null;
   return <AbsoluteFill style={{opacity: Math.min(fadeInOpacity, fadeOutOpacity)}}>
