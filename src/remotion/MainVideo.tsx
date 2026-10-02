@@ -241,27 +241,27 @@ const Scene006Network: React.FC<{duration:number}> = ({duration}) => {
         const x1 = nodes[a].x, y1 = nodes[a].y;
         const x2 = nodes[b].x, y2 = nodes[b].y;
         return <line key={`e-${i}`} x1={x1} y1={y1} x2={x2} y2={y2}
-          stroke="#ff0000" strokeWidth="1.2" opacity={0.95 * p}
-          strokeLinecap="round" />;
+          stroke="#315b67" strokeWidth="0.55" opacity={0.72 * p}
+          strokeLinecap="round" strokeDasharray="1.8 0.7" />;
       })}
       {nodes.map((node,i) => {
         const p = nodeProgress(i);
         const pulse = 1 + 0.08 * Math.sin((frame + i * 13) / 8);
         const scale = interpolate(p,[0,1],[0.2,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}) * pulse;
         return <g key={`n-${i}`} transform={`translate(${node.x} ${node.y}) scale(${scale})`}>
-          <circle r="3.6" fill="#ffffff" stroke="#ff0000" strokeWidth="1.0" />
-          <circle r="1.2" fill="#ff0000" />
+          <circle r="3.25" fill="#f2eadb" opacity="0.92" stroke="#315b67" strokeWidth="0.65" />
+          <circle r="0.95" fill="#527c7b" opacity="0.9" />
         </g>;
       })}
       {packetProgress > 0 && packetProgress < 1 ? (
         <circle cx={packetX} cy={packetY} r="1.5" fill="#ff0000" />
       ) : null}
       {discovery > 0 && discovery < 1 ? (
-        <circle cx={nodes[0].x} cy={nodes[0].y} r={5 + discovery * 3}
-          fill="none" stroke="#ff0000" strokeWidth="0.65" opacity={1-discovery} />
+        <circle cx={nodes[0].x} cy={nodes[0].y} r={4 + discovery * 2.5}
+          fill="none" stroke="#527c7b" strokeWidth="0.45" opacity={1-discovery} />
       ) : null}
       {collective > 0 && collective < 1 ? (
-        <circle cx={nodes[6].x} cy={nodes[6].y} r={4 + collective * 3}
+        <circle cx={nodes[6].x} cy={nodes[6].y} r={4 + collective * 2.5}
           fill="none" stroke="#ff0000" strokeWidth="0.65" opacity={1-collective} />
       ) : null}
     </svg>
