@@ -148,15 +148,17 @@ const SceneVisual: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut
   </AbsoluteFill>;
 };
 
-const Scene: React.FC<{scene:any; sceneIndex:number; duration:number; visualDuration:number}> = ({scene,sceneIndex,duration,visualDuration}) => {
+const Scene: React.FC<{scene:any; sceneIndex:number; duration:number; visualDuration:number; contentOffset:number}> = ({scene,sceneIndex,duration,visualDuration,contentOffset}) => {
   const timing = TIMINGS[timingKey(scene)];
   if (!timing?.audioFile) throw new Error(`Missing audio file timing for scene ${scene.scene_id}`);
   return <AbsoluteFill style={{background:'#efe5d0', overflow:'hidden'}}>
     <SceneVisual scene={scene} duration={visualDuration} fadeIn={sceneIndex > 0} fadeOut={sceneIndex < scenes.length - 1} />
-    <Sequence from={0} durationInFrames={duration}>
+    <Sequence from={contentOffset} durationInFrames={duration}>
       <Audio src={staticFile(timing.audioFile)} />
     </Sequence>
-    <QuoteSegments scene={scene} duration={duration}/>
+    <Sequence from={contentOffset} durationInFrames={duration}>
+      <QuoteSegments scene={scene} duration={duration}/>
+    </Sequence>
   </AbsoluteFill>;
 };
 
@@ -221,7 +223,7 @@ export const MainVideo: React.FC = () => {
       const visualStart = Math.max(0, currentOffset - overlap);
       const visualDuration = duration + overlap;
       return <Sequence key={scene.scene_id} from={visualStart} durationInFrames={visualDuration}>
-        <Scene scene={scene} sceneIndex={index} duration={duration} visualDuration={visualDuration}/>
+        <Scene scene={scene} sceneIndex={index} duration={duration} visualDuration={visualDuration} contentOffset={overlap}/>
       </Sequence>;
     })}
     {endingEnabled && <Sequence from={SCENE_TOTAL_FRAMES} durationInFrames={endingFrames}>
