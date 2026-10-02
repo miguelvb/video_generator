@@ -7,8 +7,7 @@
     "orchestrator": "scripts/orchestrator.py",
     "animation": [
       "Remotion",
-      "SVG",
-      "Manim"
+      "SVG"
     ],
     "encoding": "FFmpeg",
     "ai_video": "OpenRouter asynchronous video API (optional)"
@@ -36,8 +35,5 @@
     "project/script.md"
   ],
   "video_model": "bytedance/seedance-2.0-mini",
-  "video_resolution": "480p",
-  "optional_dependencies": {
-    "manim": "requirements-manim.txt"
-  }
+  "video_resolution": "480p"
 }
