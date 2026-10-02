@@ -33,6 +33,9 @@ const runtimeMusic = inputProps?.music ?? null;
 const runtimeEnding = inputProps?.ending ?? null;
 const music = runtimeMusic ?? (VIDEO_CONFIG as any).music ?? {};
 const ending = runtimeEnding ?? (VIDEO_CONFIG as any).ending ?? {};
+const intro = inputProps?.intro ?? (VIDEO_CONFIG as any).intro ?? {};
+const introEnabled = String(intro.enabled ?? 'true').toLowerCase() === 'true';
+const introFrames = introEnabled ? Math.max(1, Math.round(Number(intro.hold_seconds ?? 4) * FPS)) : 0;
 const musicEnabled = String(music.enabled ?? 'false').toLowerCase() === 'true';
 const endingEnabled = String(ending.enabled ?? 'true').toLowerCase() === 'true';
 
@@ -45,7 +48,7 @@ const endingFrames = endingEnabled
   ? Math.max(1, Math.round(Number(ending.hold_seconds ?? 4) * FPS))
   : 0;
 
-export const TOTAL_DURATION_FRAMES = SCENE_TOTAL_FRAMES + endingFrames;
+export const TOTAL_DURATION_FRAMES = introFrames + SCENE_TOTAL_FRAMES + endingFrames;
 
 const CameraImage: React.FC<{scene:any}> = ({scene}) => {
   const frame = useCurrentFrame();
@@ -234,6 +237,31 @@ const BackgroundMusic: React.FC = () => {
   </>;
 };
 
+const IntroCard: React.FC = () => {
+  if (!introEnabled) return null;
+  const frame = useCurrentFrame();
+  const fadeInFrames = Math.max(1, Math.round(Number(intro.fade_in_seconds ?? 1.5) * FPS));
+  const fadeOutFrames = Math.max(1, Math.round(Number(intro.fade_out_seconds ?? 2.5) * FPS));
+  const opacityIn = interpolate(frame, [0, fadeInFrames], [0, 1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
+  const fadeOutStart = Math.max(fadeInFrames + 1, introFrames - fadeOutFrames);
+  const opacityOut = interpolate(frame, [fadeOutStart, introFrames], [1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
+  const opacity = Math.min(opacityIn, opacityOut);
+  const firstScene = scenes[0];
+
+  return <AbsoluteFill style={{overflow:'hidden'}}>
+    <img
+      src={staticFile(`assets/generated/scene_${firstScene.scene_id}.png`)}
+      style={{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover'}}
+    />
+    <AbsoluteFill style={{background:'rgba(16,16,16,.28)', alignItems:'center', justifyContent:'center', opacity}}>
+      <div style={{width:'78%', textAlign:'center', color:'#f2eadb'}}>
+        <div style={{fontFamily:'Arial, sans-serif', fontSize:30, fontWeight:700, letterSpacing:1.2, lineHeight:1.18}}>{String(intro.title ?? '')}</div>
+        {String(intro.subtitle ?? '') && <div style={{marginTop:18, fontFamily:'Arial, sans-serif', fontSize:17, opacity:0.78, letterSpacing:0.5}}>{String(intro.subtitle)}</div>}
+      </div>
+    </AbsoluteFill>
+  </AbsoluteFill>;
+};
+
 const EndingCard: React.FC = () => {
   if (!endingEnabled) return null;
   const frame = useCurrentFrame();
@@ -258,9 +286,10 @@ const EndingCard: React.FC = () => {
 export const MainVideo: React.FC = () => {
   let offset=0;
   return <AbsoluteFill>
+    {introEnabled && <Sequence from={0} durationInFrames={introFrames}><IntroCard /></Sequence>}
     {scenes.map((scene:any,index:number)=>{
       const duration=sceneFrames[index];
-      const currentOffset=offset;
+      const currentOffset=offset + introFrames;
       offset+=duration;
       const overlap = index > 0 ? TRANSITION_FRAMES : 0;
       const visualStart = Math.max(0, currentOffset - overlap);
@@ -269,7 +298,7 @@ export const MainVideo: React.FC = () => {
         <Scene scene={scene} sceneIndex={index} duration={duration} visualDuration={visualDuration} contentOffset={overlap}/>
       </Sequence>;
     })}
-    {endingEnabled && <Sequence from={SCENE_TOTAL_FRAMES} durationInFrames={endingFrames}>
+    {endingEnabled && <Sequence from={introFrames + SCENE_TOTAL_FRAMES} durationInFrames={endingFrames}>
       <EndingCard />
     </Sequence>}
     <BackgroundMusic />
