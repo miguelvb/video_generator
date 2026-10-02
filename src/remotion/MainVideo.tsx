@@ -29,8 +29,10 @@ const sceneFrames = scenes.map((scene) => {
 });
 const SCENE_TOTAL_FRAMES = sceneFrames.reduce((a, b) => a + b, 0);
 
-const music = inputProps?.music ?? (VIDEO_CONFIG as any).music ?? {};
-const ending = inputProps?.ending ?? (VIDEO_CONFIG as any).ending ?? {};
+const runtimeMusic = inputProps?.music ?? null;
+const runtimeEnding = inputProps?.ending ?? null;
+const music = runtimeMusic ?? (VIDEO_CONFIG as any).music ?? {};
+const ending = runtimeEnding ?? (VIDEO_CONFIG as any).ending ?? {};
 const musicEnabled = String(music.enabled ?? 'false').toLowerCase() === 'true';
 const endingEnabled = String(ending.enabled ?? 'true').toLowerCase() === 'true';
 const endingFrames = endingEnabled
@@ -164,28 +166,38 @@ const Scene: React.FC<{scene:any; sceneIndex:number; duration:number; visualDura
 
 const BackgroundMusic: React.FC = () => {
   const frame = useCurrentFrame();
-  if (!musicEnabled) return null;
+  const props = getInputProps() as any;
+  // Read runtime props inside the component so the Remotion render always uses
+  // the configuration passed by orchestrator from project/script.md.
+  const music = props?.music ?? (VIDEO_CONFIG as any).music ?? {};
+  const ending = props?.ending ?? (VIDEO_CONFIG as any).ending ?? {};
+  const enabled = String(music.enabled ?? 'false').toLowerCase() === 'true';
+  if (!enabled) return null;
 
+  const maxVolume = Math.max(0, Math.min(1, Number(music.volume ?? 0.10)));
+  const duckedVolume = Math.max(0, Math.min(maxVolume, Number(music.ducking_volume ?? 0.045)));
   const fadeInFrames = Math.max(1, Math.round(Number(music.fade_in_seconds ?? 2) * FPS));
-  const fadeOutFrames = Math.max(1, Math.round(Number(music.fade_out_seconds ?? 4) * FPS));
-  const musicStart = interpolate(frame, [0, fadeInFrames], [0, Number(music.volume ?? 0.10)], {
+  const musicAtFadeIn = interpolate(frame, [0, fadeInFrames], [0, maxVolume], {
     extrapolateLeft: 'clamp', extrapolateRight: 'clamp'
   });
 
   const sceneEnd = SCENE_TOTAL_FRAMES;
-  const totalFadeFrames = Math.max(1, Math.round(Math.max(Number(music.fade_out_seconds ?? 4), Number(ending.music_fade_out_seconds ?? 4)) * FPS));
+  const totalFadeFrames = Math.max(
+    1,
+    Math.round(Math.max(Number(music.fade_out_seconds ?? 4), Number(ending.music_fade_out_seconds ?? 4)) * FPS)
+  );
   const totalFadeStart = Math.max(0, TOTAL_DURATION_FRAMES - totalFadeFrames);
   const endingFade = interpolate(frame, [totalFadeStart, TOTAL_DURATION_FRAMES], [1, 0], {
     extrapolateLeft:'clamp', extrapolateRight:'clamp'
   });
 
   const ducking = String(music.ducking ?? 'true').toLowerCase() === 'true';
-  const duckedVolume = Number(music.ducking_volume ?? 0.045);
-  const base = ducking && frame < sceneEnd ? duckedVolume : Number(music.volume ?? 0.10);
-  const volume = Math.max(0, Math.min(Number(music.volume ?? 0.10), musicStart, base) * endingFade);
+  const targetVolume = ducking && frame < sceneEnd ? duckedVolume : maxVolume;
+  const volume = Math.max(0, Math.min(musicAtFadeIn, targetVolume) * endingFade);
+  const file = String(music.file ?? 'audio/background_music.mp3').replace(/^public\//, '').replace(/^\//, '');
 
   return <Audio
-    src={staticFile(String(music.file ?? 'audio/background_music.mp3').replace(/^public\//, ''))}
+    src={staticFile(file)}
     loop
     volume={volume}
   />;
