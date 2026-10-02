@@ -804,8 +804,12 @@ def render(script_path: Path, scene_selection: str | None = None) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     env = os.environ.copy()
     render_cmd = [str(remotion_bin), "render", "src/index.ts", "MainVideo", str(output), "--concurrency=50%"]
-    if scene_selection:
-        render_cmd.extend(["--props", json.dumps({"sceneIds": [s["scene_id"] for s in scenes]})])
+    render_props = {
+        "sceneIds": [s["scene_id"] for s in scenes],
+        "music": project.get("music") or {},
+        "ending": project.get("ending") or {},
+    }
+    render_cmd.extend(["--props", json.dumps(render_props)])
     subprocess.run(render_cmd, cwd=ROOT, check=True, env=env)
     print(f"Rendered: {output}")
 
