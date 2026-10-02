@@ -331,11 +331,10 @@ assets/reference/storyboard.png
 transition
 
 ### ANIMATION
-engine: svg
 type: network
 
 ### VISUAL ANCHOR
-A wider network has formed around the same message-board anchor, with many agents now connected.
+A clean documentary background around the same message-board anchor, with open space reserved for animated agents and connections. The background itself contains no agents, no network, and no connecting lines.
 
 ### START STATE
 Stable composition before the described action begins.
@@ -359,7 +358,7 @@ Many agents have simultaneously discovered messaging, they are a collective!
 
 ### IMAGE PROMPT
 
-Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. A wider network has formed around the same message-board anchor, with many agents now connected. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
+Create a clean 16:9 cinematic documentary explainer background in the established global visual identity. Show only the environmental/background setting around the same message-board anchor. Leave generous clean space for animated agents and connections to be composited later. Do not draw any agents, network, nodes, connecting lines, packets, arrows, labels or interface text. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
 
 ### NEGATIVE PROMPT
 
@@ -369,7 +368,7 @@ readable text, letters, numbers, labels, typography, captions, subtitles, UI tex
 
 LOCKED STATIC CAMERA. Preserve the supplied illustration, composition, palette, linework, perspective and object geometry. Do not pan, zoom, dolly, orbit, rotate, shake or create camera parallax. Animate the existing subjects and graphical elements only.
 
-Connections multiply from the central message board. Several groups join almost simultaneously, making the collective nature visually obvious. End with the whole network active and stable.
+The animated layer will introduce agents and connections progressively. Preserve the supplied background and do not invent additional subjects.
 
 No readable text, no typography generation, no flicker, no morphing, no warping, no object deformation, no random new objects, no style change.
 
