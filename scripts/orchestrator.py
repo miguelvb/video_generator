@@ -168,7 +168,16 @@ def _global_style_prompt(project: dict) -> str:
 
 
 def scene_audio_identity(scene: dict, models: dict) -> str:
-    payload = {"tts_provider": models["tts_provider"], "tts_model": models["tts_model"], "tts_voice": models["tts_voice"], "segment_gap": SEGMENT_GAP_SECONDS, "segments": [{"kind": s["kind"], "language": s["language"], "text": s["text"]} for s in scene["segments"]]}
+    # TTS prosody depends on the surrounding narration context. Keep a versioned
+    # continuity marker here so old scene audio is regenerated after prosody changes.
+    payload = {
+        "tts_continuity_version": "2.0.0",
+        "tts_provider": models["tts_provider"],
+        "tts_model": models["tts_model"],
+        "tts_voice": models["tts_voice"],
+        "segment_gap": SEGMENT_GAP_SECONDS,
+        "segments": [{"kind": s["kind"], "language": s["language"], "text": s["text"]} for s in scene["segments"]],
+    }
     return sha256_text(json.dumps(payload, ensure_ascii=False, sort_keys=True))
 
 
@@ -333,17 +342,32 @@ def generate_images(script_path: Path, tracker: CostTracker | None = None, scene
         generate_image(project, scene, tracker)
 
 
-def instructions_for(language: str, kind: str) -> str:
+def instructions_for(language: str, kind: str, previous_text: str = "", next_text: str = "") -> str:
+    continuity = (
+        "This is one continuous documentary narration. The audio before and after this segment "
+        "belongs to the same uninterrupted narration. Preserve the same speaking energy, pitch, "
+        "rhythm, pacing and emotional register across the boundary. Do not reset the voice at the "
+        "start of this segment. Do not add an artificial opening cadence. If the text continues the "
+        "previous thought, begin naturally as a continuation. If the segment ends mid-thought, do "
+        "not add a concluding cadence. Let punctuation and meaning, not the scene boundary, control "
+        "intonation."
+    )
+    if previous_text:
+        continuity += f" Previous narration context (do not speak it): {previous_text.strip()}"
+    if next_text:
+        continuity += f" Following narration context (do not speak it): {next_text.strip()}"
     if language.lower().startswith("es"):
         return (
             "Speak as a warm, natural adult female narrator from Spain. "
             "Use a clearly native Spanish from Spain (Castilian) accent. "
-            "Documentary/explainer tone, calm, articulate, confident, with natural pauses."
+            "Documentary/explainer tone, calm, articulate, confident, with natural pauses. "
+            + continuity
         )
     return (
         "Speak as the same adult female narrator, using fully native American English pronunciation. "
         "Keep the delivery natural and idiomatic. For a quotation, sound like a factual documentary quote, "
-        "with appropriate emphasis but no exaggerated acting."
+        "with appropriate emphasis but no exaggerated acting. "
+        + continuity
     )
 
 
@@ -354,7 +378,17 @@ def build_voice_manifest(project: dict) -> dict:
         segments = []
         for index, item in enumerate(scene["segments"], 1):
             language = item["language"]
-            segments.append({"id": item["id"], "kind": item["kind"], "language": language, "voice": models["tts_voice"], "speed": 1.0, "instructions": instructions_for(language, item["kind"]), "text": item["text"]})
+            previous_text = scene["segments"][index - 2]["text"] if index > 1 else ""
+            next_text = scene["segments"][index]["text"] if index < len(scene["segments"]) else ""
+            segments.append({
+                "id": item["id"],
+                "kind": item["kind"],
+                "language": language,
+                "voice": models["tts_voice"],
+                "speed": 1.0,
+                "instructions": instructions_for(language, item["kind"], previous_text, next_text),
+                "text": item["text"],
+            })
         tracks[scene["scene_id"]] = segments
     return {"version":"3.1.0","source_of_truth":"project/script.md","provider":models["tts_provider"],"model":models["tts_model"],"voice":models["tts_voice"],"voice_profile":"female_sounding","tracks":tracks}
 
@@ -417,10 +451,22 @@ def generate_audio(script_path: Path, tracker: CostTracker | None = None, scene_
                     tracks[scene_id] = {**old_track, "duration_seconds": round(actual_duration, 3)}
                     continue
         segment_paths=[]; generated=[]; cursor=0.0
+        # The scene-local segments already receive neighboring narration context
+        # from build_voice_manifest(), so TTS preserves prosody within the scene.
         for segment in segments:
-            path=scene_dir/f"{segment['id']}.wav"; tts_request(segment,path,tracker,scene_id,models); duration=probe_duration(path)
-            generated.append({**segment,"file":str(path.relative_to(BUILD_DIR)).replace("\\","/"),"start_seconds":round(cursor,3),"duration_seconds":round(duration,3)}); segment_paths.append(path); cursor += duration
-            if segment is not segments[-1]: cursor += SEGMENT_GAP_SECONDS
+            path=scene_dir/f"{segment['id']}.wav"
+            tts_request(segment,path,tracker,scene_id,models)
+            duration=probe_duration(path)
+            generated.append({
+                **segment,
+                "file":str(path.relative_to(BUILD_DIR)).replace("\\","/"),
+                "start_seconds":round(cursor,3),
+                "duration_seconds":round(duration,3)
+            })
+            segment_paths.append(path)
+            cursor += duration
+            if segment is not segments[-1]:
+                cursor += SEGMENT_GAP_SECONDS
         concat_audio(segment_paths, final_path); final_duration=probe_duration(final_path); public_path.parent.mkdir(parents=True,exist_ok=True); shutil.copy2(final_path,public_path)
         tracks[scene_id]={"file":f"audio/{final_path.name}","duration_seconds":round(final_duration,3),"segments":generated}
         save_meta(scene_meta_path,{"version":"1.0.0","kind":"audio","scene_id":scene_id,"content_hash":scene_identity,"provider":models["tts_provider"],"model":models["tts_model"],"voice":models["tts_voice"],"file":str(public_path.relative_to(ROOT)).replace("\\","/")})
