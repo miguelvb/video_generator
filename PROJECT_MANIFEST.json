@@ -5,9 +5,13 @@
   "engine": {
     "parser": "scripts/script_parser.py",
     "orchestrator": "scripts/orchestrator.py",
-    "animation": "Remotion",
+    "animation": [
+      "Remotion",
+      "SVG",
+      "Manim"
+    ],
     "encoding": "FFmpeg",
-    "ai_video": "OpenRouter asynchronous video API"
+    "ai_video": "OpenRouter asynchronous video API (optional)"
   },
   "generated_artifacts": [
     "build/",
@@ -32,5 +36,8 @@
     "project/script.md"
   ],
   "video_model": "bytedance/seedance-2.0-mini",
-  "video_resolution": "480p"
+  "video_resolution": "480p",
+  "optional_dependencies": {
+    "manim": "requirements-manim.txt"
+  }
 }
