@@ -818,7 +818,18 @@ def render(script_path: Path, scene_selection: str | None = None) -> None:
     }
     render_cmd.extend(["--props", json.dumps(render_props)])
     subprocess.run(render_cmd, cwd=ROOT, check=True, env=env)
-    print(f"Rendered: {output}")
+    # Fail loudly if Remotion produced a video without an audio stream.
+    audio_probe = subprocess.run(
+        [require_command("ffprobe"), "-v", "error", "-select_streams", "a",
+         "-show_entries", "stream=index", "-of", "csv=p=0", str(output)],
+        capture_output=True, text=True, check=True,
+    )
+    if not audio_probe.stdout.strip():
+        raise RuntimeError(
+            f"Rendered video has no audio stream: {output}. "
+            "Check scene WAV files, background music, and Remotion audio rendering."
+        )
+    print(f"Rendered: {output} (audio stream verified)")
 
 
 def validate(script_path: Path) -> None:
