@@ -4,48 +4,13 @@ Content-first AI video generation engine. The source of truth is `project/script
 
 ## Pipeline
 
-`script.md → images → TTS → SVG/Manim/optional AI video → Remotion → MP4`
+`script.md → images → TTS → SVG/optional AI video → Remotion → MP4`
 
 - **Remotion mode** is the default and does not call the AI-video API.
 - **AI-video mode** uses OpenRouter / Seedance and keeps Remotion as the final compositor.
 - AI-video prompts enforce a **locked static camera**: no pan, zoom, dolly, orbit, rotation, shake or camera parallax. Motion happens inside the illustrated scene.
 - Normal subtitles, scene titles and informational overlays are not rendered. Exact `QUOTE` segments are rendered by Remotion.
 
-
-## Low-cost deterministic animation
-
-AI video is optional. Scenes can use deterministic animation engines that do not call a video-generation API:
-
-```markdown
-### ANIMATION
-engine: svg
-type: network
-```
-
-SVG animations are rendered frame-by-frame by Remotion, so they are deterministic and effectively free after the source image is generated.
-
-For mathematical graphs or more complex diagram animation:
-
-```markdown
-### ANIMATION
-engine: manim
-type: graph
-duration_seconds: 8
-```
-
-Manim is optional because it has native system dependencies. Install it with:
-
-```bash
-pip install -r requirements-manim.txt
-```
-
-Manim scenes are rendered to transparent WebM assets under `public/video/manim/` and composed by Remotion. If a scene does not need AI video, prefer SVG/Remotion or Manim. Reserve AI video for motion that genuinely benefits from generative video.
-
-The current project contains examples:
-- Scene 006: deterministic SVG network animation.
-- Scene 008: Manim graph animation.
-
-This keeps the architecture content-first: `project/script.md` declares the animation engine, while generated media remains an artifact.
 
 ## Current configuration
 
