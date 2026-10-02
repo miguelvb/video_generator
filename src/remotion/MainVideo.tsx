@@ -223,9 +223,9 @@ const Scene006Network: React.FC<{duration:number}> = ({duration}) => {
       }}
     >
       <g opacity={interpolate(centerProgress,[0,1],[0,0.96],{extrapolateLeft:'clamp',extrapolateRight:'clamp'})}>
-        <circle cx={center.x} cy={center.y} r="5.2" fill="#f2eadb" stroke="#263d4a" strokeWidth="0.5" />
-        <circle cx={center.x} cy={center.y} r="3.3" fill="none" stroke="#527c7b" strokeWidth="0.7" />
-        <circle cx={center.x} cy={center.y} r="1.05" fill="#315b67" />
+        <circle cx={center.x} cy={center.y} r="5.2" fill="#ff0000" stroke="#ff0000" strokeWidth="1.2" />
+        <circle cx={center.x} cy={center.y} r="3.3" fill="none" stroke="#ff0000" strokeWidth="1.2" />
+        <circle cx={center.x} cy={center.y} r="1.05" fill="#ff0000" />
       </g>
 
       {edges.map(([a,b], i) => {
@@ -253,9 +253,9 @@ const Scene006Network: React.FC<{duration:number}> = ({duration}) => {
         const pulse = 1 + 0.12 * Math.sin((frame + i * 11) / 7);
         return (
           <g key={`n-${i}`} transform={`translate(${node.x} ${node.y}) scale(${scale * pulse})`}>
-            <circle r={node.r + 0.75} fill="#f2eadb" opacity="0.82" />
-            <circle r={node.r} fill="none" stroke="#263d4a" strokeWidth="0.42" />
-            <circle r={node.r * 0.34} fill="#527c7b" opacity="0.9" />
+            <circle r={node.r + 0.75} fill="#ff0000" opacity="1" />
+            <circle r={node.r} fill="none" stroke="#ff0000" strokeWidth="1.0" />
+            <circle r={node.r * 0.34} fill="#ff0000" opacity="1" />
           </g>
         );
       })}
@@ -269,7 +269,7 @@ const Scene006Network: React.FC<{duration:number}> = ({duration}) => {
           <circle
             key={`p-${i}`}
             cx={x} cy={y} r="0.8"
-            fill="#527c7b" opacity={0.75}
+            fill="#ff0000" opacity={1}
           />
         ) : null;
       })}
@@ -286,7 +286,9 @@ const SceneVisual: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut
   const fadeOutOpacity = fadeOut
     ? interpolate(frame, [fadeOutStart, duration], [1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
     : 1;
-  const svgOverlay = String(scene.scene_id) === '006' && String(scene.animation?.engine ?? '').toLowerCase() === 'svg'
+  // TEMPORARY SVG TEST: scene 006 always gets the obvious red SVG overlay.
+  // This deliberately ignores script metadata so we can verify the rendering path.
+  const svgOverlay = String(scene.scene_id) === '006'
     ? <Scene006Network duration={duration}/>
     : null;
   return <AbsoluteFill style={{opacity: Math.min(fadeInOpacity, fadeOutOpacity)}}>
