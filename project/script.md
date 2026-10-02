@@ -25,7 +25,7 @@ video_generate_audio: false
 ## MUSIC
 
 enabled: true
-file: audio/generated_background_music.mp3
+file: audio/m1_dubtechno_2.mp3
 volume: 0.10
 ducking: true
 ducking_volume: 0.045
