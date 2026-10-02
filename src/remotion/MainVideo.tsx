@@ -246,8 +246,9 @@ const SceneVisual: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut
   const fadeOutOpacity = fadeOut
     ? interpolate(frame, [fadeOutStart, duration], [1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
     : 1;
-  const animationType = String(scene.animation?.type ?? '').toLowerCase();
-  const svgOverlay = String(scene.scene_id) === '006' && animationType === 'network'
+  // TEMPORARY PROCEDURAL TEST: force scene 006 network on.
+  // This removes script/parser metadata from the equation while validating the renderer.
+  const svgOverlay = String(scene.scene_id) === '006'
     ? <Scene006Network duration={duration}/>
     : null;
   return <AbsoluteFill style={{opacity: Math.min(fadeInOpacity, fadeOutOpacity)}}>
