@@ -39,7 +39,7 @@ const endingEnabled = String(ending.enabled ?? 'true').toLowerCase() === 'true';
 // TEMPORARY VISIBLE MUSIC DEBUG:
 // This deliberately puts the music state and exact file path on the rendered video.
 // Set to false once music playback has been verified.
-const SHOW_MUSIC_DEBUG = true;
+const SHOW_MUSIC_DEBUG = false;
 
 const endingFrames = endingEnabled
   ? Math.max(1, Math.round(Number(ending.hold_seconds ?? 4) * FPS))
