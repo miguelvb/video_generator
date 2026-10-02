@@ -35,7 +35,11 @@ const music = runtimeMusic ?? (VIDEO_CONFIG as any).music ?? {};
 const ending = runtimeEnding ?? (VIDEO_CONFIG as any).ending ?? {};
 const intro = inputProps?.intro ?? (VIDEO_CONFIG as any).intro ?? {};
 const introEnabled = String(intro.enabled ?? 'true').toLowerCase() === 'true';
-const introFrames = introEnabled ? Math.max(1, Math.round(Number(intro.hold_seconds ?? 4) * FPS)) : 0;
+const introHoldFrames = introEnabled ? Math.max(1, Math.round(Number(intro.hold_seconds ?? 4) * FPS)) : 0;
+const introFadeInFrames = introEnabled ? Math.max(1, Math.round(Number(intro.fade_in_seconds ?? 1.5) * FPS)) : 0;
+const introFadeOutFrames = introEnabled ? Math.max(1, Math.round(Number(intro.fade_out_seconds ?? 2.5) * FPS)) : 0;
+// INTRO hold_seconds is the fully-visible hold time; fades are added on top.
+const introFrames = introEnabled ? introFadeInFrames + introHoldFrames + introFadeOutFrames : 0;
 const musicEnabled = String(music.enabled ?? 'false').toLowerCase() === 'true';
 const endingEnabled = String(ending.enabled ?? 'true').toLowerCase() === 'true';
 
@@ -143,7 +147,7 @@ const QuoteSegments: React.FC<{scene:any; duration:number}> = ({scene,duration})
   })}</>;
 };
 
-const TRANSITION_FRAMES = Math.max(1, Math.round(0.7 * FPS));
+const TRANSITION_FRAMES = Math.max(1, Math.round(1.0 * FPS));
 
 const SceneVisual: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut:boolean}> = ({scene,duration,fadeIn,fadeOut}) => {
   const frame = useCurrentFrame();
@@ -240,10 +244,10 @@ const BackgroundMusic: React.FC = () => {
 const IntroCard: React.FC = () => {
   if (!introEnabled) return null;
   const frame = useCurrentFrame();
-  const fadeInFrames = Math.max(1, Math.round(Number(intro.fade_in_seconds ?? 1.5) * FPS));
-  const fadeOutFrames = Math.max(1, Math.round(Number(intro.fade_out_seconds ?? 2.5) * FPS));
+  const fadeInFrames = introFadeInFrames;
+  const fadeOutFrames = introFadeOutFrames;
   const opacityIn = interpolate(frame, [0, fadeInFrames], [0, 1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
-  const fadeOutStart = Math.max(fadeInFrames + 1, introFrames - fadeOutFrames);
+  const fadeOutStart = Math.max(fadeInFrames + introHoldFrames, introFrames - fadeOutFrames);
   const opacityOut = interpolate(frame, [fadeOutStart, introFrames], [1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
   const opacity = Math.min(opacityIn, opacityOut);
   const firstScene = scenes[0];
