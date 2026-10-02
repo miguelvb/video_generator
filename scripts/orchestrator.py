@@ -705,45 +705,6 @@ def generate_videos(script_path: Path, tracker: CostTracker | None = None, scene
     write_generated_content(project)
 
 
-def ensure_background_music(project: dict) -> None:
-    """Ensure a usable local background music bed exists when MUSIC is enabled.
-
-    If the configured file is present, it is used unchanged. If it is missing,
-    generate a subtle instrumental documentary bed locally with FFmpeg so the
-    engine never silently renders without music.
-    """
-    music_cfg = project.get("music") or {}
-    if str(music_cfg.get("enabled", "false")).lower() != "true":
-        return
-    music_file = str(music_cfg.get("file", "audio/generated_background_music.wav")).replace("\\\\", "/").lstrip("/")
-    music_path = ROOT / "public" / music_file
-    if music_path.exists():
-        return
-    music_path.parent.mkdir(parents=True, exist_ok=True)
-    ffmpeg = require_command("ffmpeg")
-    duration = 180
-    filter_complex = (
-        "[0:a]volume=0.16[a0];"
-        "[1:a]volume=0.07[a1];"
-        "[2:a]volume=0.045[a2];"
-        "[3:a]volume='0.025+0.015*sin(2*PI*0.5*t)'[a3];"
-        "[a0][a1][a2][a3]amix=inputs=4:duration=longest:normalize=0,"
-        "lowpass=f=2200,volume=0.55,afade=t=in:st=0:d=2,afade=t=out:st=176:d=4,"
-        "aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo[out]"
-    )
-    cmd = [
-        ffmpeg, "-y",
-        "-f", "lavfi", "-t", str(duration), "-i", "sine=frequency=55:sample_rate=44100",
-        "-f", "lavfi", "-t", str(duration), "-i", "sine=frequency=82.41:sample_rate=44100",
-        "-f", "lavfi", "-t", str(duration), "-i", "sine=frequency=123.47:sample_rate=44100",
-        "-f", "lavfi", "-t", str(duration), "-i", "sine=frequency=246.94:sample_rate=44100",
-        "-filter_complex", filter_complex, "-map", "[out]",
-        "-c:a", "libmp3lame", "-b:a", "128k", str(music_path),
-    ]
-    print(f"Background music file missing; generating: {music_path}")
-    subprocess.run(cmd, cwd=ROOT, check=True, capture_output=True, text=True)
-
-
 def render(script_path: Path, scene_selection: str | None = None) -> None:
     build(script_path)
     require_command("node")
