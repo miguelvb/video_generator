@@ -12,7 +12,20 @@ const scenes = sceneFilter
   ? VIDEO_CONTENT.scenes.filter((scene:any) => sceneFilter.has(String(scene.scene_id)))
   : VIDEO_CONTENT.scenes;
 const TIMINGS = AUDIO_TIMINGS as Record<string, any>;
-const sceneFrames = scenes.map((scene) => Math.max(1, Math.ceil((TIMINGS[scene.scene_id]?.durationSeconds ?? 1) * FPS)));
+const timingKey = (scene:any): string => {
+  const raw = String(scene.scene_id ?? '').trim();
+  if (TIMINGS[raw]) return raw;
+  const padded = raw.replace(/^0+/, '').padStart(3, '0');
+  if (TIMINGS[padded]) return padded;
+  const numeric = String(Number(raw));
+  if (TIMINGS[numeric]) return numeric;
+  return raw;
+};
+const sceneFrames = scenes.map((scene) => {
+  const timing = TIMINGS[timingKey(scene)];
+  if (!timing) throw new Error(`Missing audio timing for scene ${scene.scene_id}`);
+  return Math.max(1, Math.ceil(Number(timing.durationSeconds ?? timing.duration_seconds ?? 1) * FPS));
+});
 const SCENE_TOTAL_FRAMES = sceneFrames.reduce((a, b) => a + b, 0);
 
 const music = (VIDEO_CONFIG as any).music ?? {};
@@ -119,10 +132,12 @@ const QuoteSegments: React.FC<{scene:any; duration:number}> = ({scene,duration})
 };
 
 const Scene: React.FC<{scene:any; sceneIndex:number; duration:number}> = ({scene,sceneIndex,duration}) => {
+  const timing = TIMINGS[timingKey(scene)];
+  if (!timing?.audioFile) throw new Error(`Missing audio file timing for scene ${scene.scene_id}`);
   return <AbsoluteFill style={{background:'#efe5d0', overflow:'hidden'}}>
     <AnimatedAIClip scene={scene} duration={duration}/>
     <Sequence from={0} durationInFrames={duration}>
-      <Audio src={staticFile(TIMINGS[scene.scene_id].audioFile)} />
+      <Audio src={staticFile(timing.audioFile)} />
     </Sequence>
     <QuoteSegments scene={scene} duration={duration}/>
   </AbsoluteFill>;
