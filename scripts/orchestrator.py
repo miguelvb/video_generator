@@ -744,11 +744,10 @@ def render(script_path: Path, scene_selection: str | None = None) -> None:
     output = ROOT / "output" / output_name
     output.parent.mkdir(parents=True, exist_ok=True)
     env = os.environ.copy()
+    render_cmd = [str(remotion_bin), "render", "src/index.ts", "MainVideo", str(output), "--concurrency=50%"]
     if scene_selection:
-        env["AI_VIDEO_SCENE_FILTER"] = ",".join(s["scene_id"] for s in scenes)
-    else:
-        env.pop("AI_VIDEO_SCENE_FILTER", None)
-    subprocess.run([str(remotion_bin), "render", "src/index.ts", "MainVideo", str(output), "--concurrency=50%"], cwd=ROOT, check=True, env=env)
+        render_cmd.extend(["--props", json.dumps({"sceneIds": [s["scene_id"] for s in scenes]})])
+    subprocess.run(render_cmd, cwd=ROOT, check=True, env=env)
     print(f"Rendered: {output}")
 
 
