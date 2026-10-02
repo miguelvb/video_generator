@@ -39,17 +39,20 @@ There are two rendering strategies.
 ``` text
 script.md
     ↓
-scene image
+multiple visual shots / scene images
     ↓
 Remotion animation
-    ├── pan / zoom
-    ├── captions
-    ├── quotes
-    ├── labels
-    └── overlays
+    ├── controlled pan / zoom / drift
+    ├── quotes only
+    └── composition
     ↓
 final MP4
 ```
+
+The visual design can use multiple shots per chapter so image changes
+follow the narration and feel closer to a YouTube explainer/investigative
+video. Remotion camera movement is allowed and is independent from the
+AI-video camera rules.
 
 No AI video generation is required.
 
@@ -58,28 +61,34 @@ No AI video generation is required.
 ``` text
 script.md
     ↓
-scene image
+multiple visual shots / scene images
     ↓
-Seedance 2.0 Mini
+Seedance
     ↓
-AI animated visual background
+meaningful animation of the subjects
     ↓
 Remotion
     ├── AI video
-    ├── exact text
-    ├── quotes
-    ├── subtitles
-    └── overlays
+    ├── quotes only
+    └── final composition
     ↓
 final MP4
 ```
+
+For AI video, the camera is intentionally **locked/static**. The model
+should animate what the narration describes instead: agents, network
+connections, data packets, servers, signals, attacks, alerts, resets,
+and other meaningful elements. Do not ask Seedance to pan, zoom, dolly,
+or shake the camera.
 
 The important design rule is:
 
 **AI video creates the motion of the visual world. Remotion remains
 authoritative for information and text.**
 
-AI video should not be trusted to render exact readable text.
+AI video should not be trusted to render exact readable text. Normal
+scene text and subtitles are not rendered automatically. **Quotes are
+the intentional text overlay and remain exact.**
 
 ------------------------------------------------------------------------
 
@@ -342,6 +351,28 @@ assets/reference/storyboard.png
 Not every block is mandatory for every scene, but scenes need enough
 information to generate a valid visual and narration.
 
+## Visual shots
+
+A long chapter should normally be divided into several visual shots.
+A shot is a visual beat, not necessarily a new narration segment. The
+purpose is to change the visual when the meaning of the narration changes.
+
+For example:
+
+``` text
+Narration: agents discover the channel
+    ↓
+Shot 1: first agent finds the channel
+    ↓
+Shot 2: other agents connect
+    ↓
+Shot 3: messages propagate through the network
+```
+
+This shot-based structure is used by both rendering modes so that the
+Remotion-only and AI-video versions can be compared using the same
+visual source material.
+
 ------------------------------------------------------------------------
 
 # 10. Voiceover and quotations
@@ -388,24 +419,48 @@ The current engine accepts an explicit:
 ### AI VIDEO PROMPT
 ```
 
-The prompt should describe **motion**, not redesign the scene.
+The prompt should describe **meaningful subject motion**, not redesign
+the scene. It should be derived from what the narration is saying.
 
 Good:
 
 ``` text
-Slowly push toward the central network. Let a few ink connections
-appear gradually. Allow watercolor pigments to spread subtly.
-Preserve the composition and paper texture.
+Locked static camera. Several agents activate one after another.
+Thin network connections appear between them and data packets travel
+along the links. Keep the watercolor illustration, framing, geometry
+and paper texture stable.
 ```
 
-Avoid asking the video model to generate:
+Avoid asking the video model to:
 
--   subtitles
--   exact quotations
--   labels
--   UI text
--   readable diagrams
--   logos
+-   pan
+-   zoom
+-   dolly
+-   orbit
+-   rotate
+-   shake the camera
+-   morph the composition
+-   generate subtitles
+-   generate exact quotations
+-   generate normal labels or UI text
+-   generate readable diagrams
+-   generate logos
+
+The AI-video camera must remain locked. Motion should come from the
+things that matter to the story. Examples include:
+
+-   agents appearing, activating or communicating
+-   network links connecting
+-   packets travelling between nodes
+-   servers becoming overloaded or resetting
+-   firewall boundaries being breached
+-   external connections branching outward
+-   alerts activating
+-   processes stopping
+
+This is intentionally different from Remotion camera animation.
+Remotion may still use controlled pans, zooms and other camera movement
+when rendering the non-AI-video version.
 
 Those belong in Remotion.
 
@@ -682,7 +737,53 @@ the full generation again unnecessarily.**
 
 ------------------------------------------------------------------------
 
-# 22. Full generation
+# 22. Test rendering selected scenes
+
+Because AI video is the expensive part of the workflow, the engine
+supports partial/test runs. This should be used whenever comparing
+models, prompts, image styles or animation behavior.
+
+### Test the first two scenes
+
+``` bash
+python scripts/orchestrator.py images project/script.md --test
+python scripts/orchestrator.py audio project/script.md --test
+python scripts/orchestrator.py video project/script.md --test
+python scripts/orchestrator.py render project/script.md --test
+```
+
+`--test` selects the first two scenes only. The resulting test render
+is written separately from the normal full-project output.
+
+### Test specific scenes
+
+For example, to test scenes 003 and 004:
+
+``` bash
+python scripts/orchestrator.py images project/script.md --scenes 003,004
+python scripts/orchestrator.py audio project/script.md --scenes 003,004
+python scripts/orchestrator.py video project/script.md --scenes 003,004
+python scripts/orchestrator.py render project/script.md --scenes 003,004
+```
+
+A single scene can also be selected:
+
+``` bash
+python scripts/orchestrator.py video project/script.md --scenes 007
+```
+
+Without `--test` or `--scenes`, the command processes the complete
+project. This makes it possible to compare multiple video models using
+exactly the same one or two visual shots without generating the whole
+film.
+
+For an inexpensive Remotion composition test, use `generation_mode:
+remotion` and render only the selected scenes. For an AI-video model
+test, use `generation_mode: ai_video` and select one or two scenes.
+
+------------------------------------------------------------------------
+
+# 32. Full generation
 
 For a complete run:
 
@@ -720,11 +821,11 @@ The project also has:
 npm run video
 ```
 
-as an alias for the full workflow.
+which is an alias for the full workflow.
 
 ------------------------------------------------------------------------
 
-# 23. Cost tracking
+# 32. Cost tracking
 
 Each run gets a report under:
 
@@ -768,7 +869,7 @@ when the provider does not return one.
 
 ------------------------------------------------------------------------
 
-# 24. Understanding API cost during development
+# 32. Understanding API cost during development
 
 AI video is the expensive part of the current workflow.
 
@@ -786,7 +887,7 @@ generated assets are already correct.
 
 ------------------------------------------------------------------------
 
-# 25. The recommended development workflow
+# 32. The recommended development workflow
 
 For a new video:
 
@@ -820,7 +921,7 @@ For a new video:
 
 ------------------------------------------------------------------------
 
-# 26. If something goes wrong
+# 32. If something goes wrong
 
 ## Video generation failed
 
@@ -878,7 +979,7 @@ reusable.
 
 ------------------------------------------------------------------------
 
-# 27. File structure
+# 32. File structure
 
 The important structure is:
 
@@ -925,7 +1026,7 @@ output/
 
 ------------------------------------------------------------------------
 
-# 28. What a normal user should edit
+# 32. What a normal user should edit
 
 Normally edit only:
 
@@ -965,7 +1066,7 @@ Keep secrets in `.env`.
 
 ------------------------------------------------------------------------
 
-# 29. Minimal example of a new project
+# 32. Minimal example of a new project
 
 ``` markdown
 # VIDEO
@@ -1033,7 +1134,7 @@ python scripts/orchestrator.py all project/script.md
 
 ------------------------------------------------------------------------
 
-# 30. Current design principles
+# 32. Current design principles
 
 The engine is intentionally built around these principles:
 
@@ -1056,10 +1157,19 @@ The engine is intentionally built around these principles:
     can be adopted later.**
 14. **AI-generated video audio is disabled because OpenAI TTS is the
     authoritative narration/audio pipeline.**
+15. **Long story chapters are divided into multiple meaningful visual
+    shots so the image changes follow the narration.**
+16. **Remotion camera movement is allowed in Remotion-only mode.**
+17. **AI-video camera movement is locked; animation comes from meaningful
+    subject/object motion.**
+18. **Normal scene text and subtitles are disabled; exact QUOTE overlays
+    are retained.**
+19. **Selected-scene test runs are supported so expensive models can be
+    compared using only one or two scenes.**
 
 ------------------------------------------------------------------------
 
-# 31. Future direction
+# 32. Future direction
 
 The next major improvement discussed for the engine is an **AI
 animation-director step**.

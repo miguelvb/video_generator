@@ -5,25 +5,74 @@ import {AUDIO_TIMINGS} from '../generated/audioTimings';
 import {VIDEO_CONFIG} from '../generated/videoConfig';
 
 const FPS = Number(VIDEO_CONFIG.fps);
-const scenes = VIDEO_CONTENT.scenes;
+const sceneFilter = (typeof process !== 'undefined' && process.env.AI_VIDEO_SCENE_FILTER)
+  ? new Set(process.env.AI_VIDEO_SCENE_FILTER.split(',').map((s) => s.trim()).filter(Boolean))
+  : null;
+const scenes = sceneFilter
+  ? VIDEO_CONTENT.scenes.filter((scene:any) => sceneFilter.has(String(scene.scene_id)))
+  : VIDEO_CONTENT.scenes;
 const TIMINGS = AUDIO_TIMINGS as Record<string, any>;
 const sceneFrames = scenes.map((scene) => Math.max(1, Math.ceil((TIMINGS[scene.scene_id]?.durationSeconds ?? 1) * FPS)));
-export const TOTAL_DURATION_FRAMES = sceneFrames.reduce((a, b) => a + b, 0);
-const ink = '#2f2a24';
+const SCENE_TOTAL_FRAMES = sceneFrames.reduce((a, b) => a + b, 0);
 
-const Paper: React.FC<{children: React.ReactNode}> = ({children}) => (
-  <AbsoluteFill style={{background:'#efe5d0', overflow:'hidden'}}>{children}</AbsoluteFill>
-);
+const music = (VIDEO_CONFIG as any).music ?? {};
+const ending = (VIDEO_CONFIG as any).ending ?? {};
+const musicEnabled = String(music.enabled ?? 'false').toLowerCase() === 'true';
+const endingEnabled = String(ending.enabled ?? 'true').toLowerCase() === 'true';
+const endingFrames = endingEnabled
+  ? Math.max(1, Math.round(Number(ending.hold_seconds ?? 4) * FPS))
+  : 0;
+
+export const TOTAL_DURATION_FRAMES = SCENE_TOTAL_FRAMES + endingFrames;
+
+const CameraImage: React.FC<{scene:any}> = ({scene}) => {
+  const frame = useCurrentFrame();
+  const duration = Math.max(1, scene.__durationFrames ?? 1);
+  const progress = duration <= 1 ? 1 : frame / (duration - 1);
+  const mode = String(scene.remotion_camera ?? 'static').trim().toLowerCase();
+
+  let x = 0;
+  let y = 0;
+  let scale = 1.045;
+  switch (mode) {
+    case 'push_in':
+      scale = interpolate(progress, [0, 1], [1.045, 1.13], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
+      break;
+    case 'pull_out':
+      scale = interpolate(progress, [0, 1], [1.13, 1.045], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
+      break;
+    case 'pan_right':
+      x = interpolate(progress, [0, 1], [-18, 18], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
+      break;
+    case 'pan_left':
+      x = interpolate(progress, [0, 1], [18, -18], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
+      break;
+    case 'pan_down':
+      y = interpolate(progress, [0, 1], [-14, 14], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
+      break;
+    case 'diagonal_drift':
+      x = interpolate(progress, [0, 1], [-12, 12], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
+      y = interpolate(progress, [0, 1], [8, -8], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
+      scale = 1.065;
+      break;
+    case 'static':
+    default:
+      scale = 1.035;
+      break;
+  }
+
+  return <img
+    src={staticFile(`assets/generated/scene_${scene.scene_id}.png`)}
+    style={{
+      position:'absolute', inset:-36, width:'calc(100% + 72px)', height:'calc(100% + 72px)',
+      objectFit:'cover', transform:`translate3d(${x}px,${y}px,0) scale(${scale})`
+    }}
+  />;
+};
 
 const AnimatedAIClip: React.FC<{scene:any; duration:number}> = ({scene, duration}) => {
   const clips = Array.isArray(scene.video_clips) ? scene.video_clips : [];
-  if (!clips.length) {
-    const frame = useCurrentFrame();
-    const progress = duration <= 1 ? 0 : frame / duration;
-    const x = interpolate(progress, [0,1], [-12, 12]);
-    const scale = interpolate(progress, [0,1], [1.02, 1.08]);
-    return <img src={staticFile(`assets/generated/scene_${scene.scene_id}.png`)} style={{position:'absolute',inset:-30,width:'calc(100% + 60px)',height:'calc(100% + 60px)',objectFit:'cover',transform:`translate3d(${x}px,0,0) scale(${scale})`}} />;
-  }
+  if (!clips.length) return <CameraImage scene={{...scene, __durationFrames: duration}} />;
   let offset = 0;
   return <AbsoluteFill>
     {clips.map((clip:any, index:number) => {
@@ -42,30 +91,107 @@ const AnimatedAIClip: React.FC<{scene:any; duration:number}> = ({scene, duration
   </AbsoluteFill>;
 };
 
-const Caption: React.FC<{text:string; quote?:boolean}> = ({text,quote=false}) => {
+const QuoteOverlay: React.FC<{text:string; duration:number}> = ({text, duration}) => {
   const frame=useCurrentFrame();
-  const opacity=interpolate(frame,[0,12],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
-  const y=interpolate(frame,[0,12],[18,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
-  return <div style={{position:'absolute',left:quote?60:45,right:quote?60:45,bottom:quote?65:25,padding:quote?'12px 16px':'8px 12px',background:quote?'rgba(247,238,218,.96)':'rgba(247,238,218,.90)',border:quote?'1px solid rgba(80,60,40,.52)':'1px solid rgba(80,60,40,.35)',boxShadow:'0 5px 15px rgba(50,35,20,.14)',fontFamily:quote?'Courier New, monospace':'Georgia, serif',fontSize:quote?17:14,lineHeight:1.28,color:ink,textAlign:quote?'center':'left',transform:`translateY(${y}px)`,opacity}}>{quote?`“${text}”`:text}</div>;
+  const fadeIn=12;
+  const fadeOutStart=Math.max(fadeIn+1, duration-18);
+  const opacityIn=interpolate(frame,[0,fadeIn],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
+  const opacityOut=interpolate(frame,[fadeOutStart,duration],[1,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
+  const opacity=Math.min(opacityIn,opacityOut);
+  return <div style={{
+    position:'absolute',left:58,right:58,bottom:54,padding:'14px 18px',
+    background:'rgba(247,238,218,.94)',border:'1px solid rgba(80,60,40,.52)',
+    boxShadow:'0 5px 15px rgba(50,35,20,.14)',fontFamily:'Courier New, monospace',
+    fontSize:18,lineHeight:1.3,color:'#2f2a24',textAlign:'center',opacity
+  }}>{`“${text}”`}</div>;
 };
 
-const SegmentOverlay: React.FC<{segment:any; duration:number}> = ({segment,duration}) => {
-  if (segment.kind !== 'quote') return null;
-  return <Caption text={segment.text} quote />;
+const QuoteSegments: React.FC<{scene:any; duration:number}> = ({scene,duration}) => {
+  const timings=TIMINGS[scene.scene_id]?.segments ?? [];
+  return <>{timings.filter((t:any)=>t.kind==='quote').map((timing:any,index:number)=>{
+    const start=Math.round(Number(timing.startSeconds ?? timing.start_seconds ?? 0)*FPS);
+    const segDuration=Math.max(1,Math.round(Number(timing.durationSeconds ?? timing.duration_seconds ?? 1)*FPS));
+    if (start >= duration) return null;
+    return <Sequence key={`${timing.id}-${index}`} from={start} durationInFrames={Math.min(segDuration,duration-start)}>
+      <QuoteOverlay text={timing.text} duration={Math.min(segDuration,duration-start)} />
+    </Sequence>;
+  })}</>;
 };
 
 const Scene: React.FC<{scene:any; sceneIndex:number; duration:number}> = ({scene,sceneIndex,duration}) => {
-  const timings=TIMINGS[scene.scene_id]?.segments ?? [];
-  return <Paper>
+  return <AbsoluteFill style={{background:'#efe5d0', overflow:'hidden'}}>
     <AnimatedAIClip scene={scene} duration={duration}/>
     <Sequence from={0} durationInFrames={duration}>
       <Audio src={staticFile(TIMINGS[scene.scene_id].audioFile)} />
     </Sequence>
-    {timings.map((timing:any)=><Sequence key={timing.id} from={Math.round(Number(timing.startSeconds ?? timing.start_seconds ?? 0)*FPS)} durationInFrames={Math.max(1,Math.round(Number(timing.durationSeconds ?? timing.duration_seconds ?? 1)*FPS))}><SegmentOverlay segment={timing} duration={Math.max(1,Math.round(Number(timing.durationSeconds ?? timing.duration_seconds ?? 1)*FPS))}/></Sequence>)}
-  </Paper>;
+    <QuoteSegments scene={scene} duration={duration}/>
+  </AbsoluteFill>;
+};
+
+const BackgroundMusic: React.FC = () => {
+  const frame = useCurrentFrame();
+  if (!musicEnabled) return null;
+
+  const fadeInFrames = Math.max(1, Math.round(Number(music.fade_in_seconds ?? 2) * FPS));
+  const fadeOutFrames = Math.max(1, Math.round(Number(music.fade_out_seconds ?? 4) * FPS));
+  const musicStart = interpolate(frame, [0, fadeInFrames], [0, Number(music.volume ?? 0.10)], {
+    extrapolateLeft: 'clamp', extrapolateRight: 'clamp'
+  });
+
+  const sceneEnd = SCENE_TOTAL_FRAMES;
+  const totalFadeFrames = Math.max(1, Math.round(Math.max(Number(music.fade_out_seconds ?? 4), Number(ending.music_fade_out_seconds ?? 4)) * FPS));
+  const totalFadeStart = Math.max(0, TOTAL_DURATION_FRAMES - totalFadeFrames);
+  const endingFade = interpolate(frame, [totalFadeStart, TOTAL_DURATION_FRAMES], [1, 0], {
+    extrapolateLeft:'clamp', extrapolateRight:'clamp'
+  });
+
+  const ducking = String(music.ducking ?? 'true').toLowerCase() === 'true';
+  const duckedVolume = Number(music.ducking_volume ?? 0.045);
+  const base = ducking && frame < sceneEnd ? duckedVolume : Number(music.volume ?? 0.10);
+  const volume = Math.min(musicStart, base) * endingFade;
+
+  return <Audio
+    src={staticFile(String(music.file ?? 'audio/background_music.mp3').replace(/^public\//, ''))}
+    loop
+    volume={volume}
+  />;
+};
+
+const EndingCard: React.FC = () => {
+  if (!endingEnabled) return null;
+  const frame = useCurrentFrame();
+  const fadeInFrames = Math.max(1, Math.round(Number(ending.fade_in_seconds ?? 1.5) * FPS));
+  const fadeOutFrames = Math.max(1, Math.round(Number(ending.fade_out_seconds ?? 2.5) * FPS));
+  const title = String(ending.title ?? '');
+  const subtitle = String(ending.subtitle ?? '');
+
+  const opacityIn = interpolate(frame, [0, fadeInFrames], [0, 1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
+  const fadeOutStart = Math.max(fadeInFrames + 1, endingFrames - fadeOutFrames);
+  const opacityOut = interpolate(frame, [fadeOutStart, endingFrames], [1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
+  const opacity = Math.min(opacityIn, opacityOut);
+
+  return <AbsoluteFill style={{background:'#101010', alignItems:'center', justifyContent:'center', opacity}}>
+    <div style={{width:'78%', textAlign:'center', color:'#f2eadb'}}>
+      <div style={{fontFamily:'Arial, sans-serif', fontSize:30, fontWeight:700, letterSpacing:1.2, lineHeight:1.18}}>{title}</div>
+      {subtitle && <div style={{marginTop:18, fontFamily:'Arial, sans-serif', fontSize:17, opacity:0.78, letterSpacing:0.5}}>{subtitle}</div>}
+    </div>
+  </AbsoluteFill>;
 };
 
 export const MainVideo: React.FC = () => {
   let offset=0;
-  return <AbsoluteFill>{scenes.map((scene:any,index:number)=>{const duration=sceneFrames[index];const currentOffset=offset;offset+=duration;return <Sequence key={scene.scene_id} from={currentOffset} durationInFrames={duration}><Scene scene={scene} sceneIndex={index} duration={duration}/></Sequence>;})}</AbsoluteFill>;
+  return <AbsoluteFill>
+    {scenes.map((scene:any,index:number)=>{
+      const duration=sceneFrames[index];
+      const currentOffset=offset;
+      offset+=duration;
+      return <Sequence key={scene.scene_id} from={currentOffset} durationInFrames={duration}>
+        <Scene scene={scene} sceneIndex={index} duration={duration}/>
+      </Sequence>;
+    })}
+    {endingEnabled && <Sequence from={SCENE_TOTAL_FRAMES} durationInFrames={endingFrames}>
+      <EndingCard />
+    </Sequence>}
+    <BackgroundMusic />
+  </AbsoluteFill>;
 };

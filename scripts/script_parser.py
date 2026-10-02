@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Parse the content-first Markdown script into structured scene data."""
+"""Parse the content-first Markdown script into structured project/scene data."""
 from __future__ import annotations
 
 import re
@@ -17,21 +17,30 @@ def _parse_lang_heading(heading: str) -> tuple[str, str] | None:
     return m.group(1).lower(), m.group(2)
 
 
+def _parse_key_value_block(lines: list[str]) -> dict[str, str]:
+    result: dict[str, str] = {}
+    for line in lines:
+        if ":" in line and line.strip() and not line.strip().startswith("#"):
+            key, value = line.split(":", 1)
+            result[key.strip()] = _clean(value)
+    return result
+
+
 def parse_script(path: Path) -> dict:
     lines = path.read_text(encoding="utf-8").splitlines()
     scenes: list[dict] = []
     settings: dict[str, str] = {}
     models: dict[str, str] = {}
     visual_style: dict[str, str] = {}
-    in_visual_style = False
+    music: dict[str, str] = {}
+    ending: dict[str, str] = {}
     current: dict | None = None
     current_section: str | None = None
     buffer: list[str] = []
-    in_settings = False
-    in_models = False
+    project_block: str | None = None
 
     def flush() -> None:
-        nonlocal buffer, current_section, current
+        nonlocal buffer, current_section
         if current_section == "on_screen_text":
             items = []
             for line in buffer:
@@ -57,12 +66,18 @@ def parse_script(path: Path) -> dict:
             visual_style[key] = "\n".join(buffer).strip()
             buffer = []
             return
-        if current_section in {"settings", "models", "visual_style"}:
-            for line in buffer:
-                if ":" in line and line.strip() and not line.strip().startswith("#"):
-                    key, value = line.split(":", 1)
-                    target = models if current_section == "models" else (visual_style if current_section == "visual_style" else settings)
-                    target[key.strip()] = _clean(value)
+        if current_section in {"settings", "models", "music", "ending"}:
+            target = {
+                "settings": settings,
+                "models": models,
+                "music": music,
+                "ending": ending,
+            }[current_section]
+            target.update(_parse_key_value_block(buffer))
+            buffer = []
+            return
+        if current_section == "visual_style":
+            visual_style.update(_parse_key_value_block(buffer))
             buffer = []
             return
         if current is None or current_section is None:
@@ -82,56 +97,38 @@ def parse_script(path: Path) -> dict:
         scene_match = re.match(r"^##\s+(?:CHAPTER\s+\d+\s*/\s*)?SCENE\s+(\d+)\s*:?\s*(.*)$", line, re.I)
         if scene_match:
             flush()
-            in_settings = False
-            in_models = False
-            in_visual_style = False
-            current = {"scene_id": scene_match.group(1).zfill(3), "title": _clean(scene_match.group(2)) or f"Scene {scene_match.group(1)}", "segments": []}
+            project_block = None
+            current = {
+                "scene_id": scene_match.group(1).zfill(3),
+                "title": _clean(scene_match.group(2)) or f"Scene {scene_match.group(1)}",
+                "segments": [],
+            }
             scenes.append(current)
             current_section = None
             continue
 
-        if re.match(r"^##\s+VISUAL STYLE\s*$", line, re.I):
+        project_heading = re.match(r"^##\s+(.+?)\s*$", line)
+        if project_heading and current is None:
             flush()
-            current = None
-            current_section = "visual_style"
-            in_visual_style = True
-            in_settings = False
-            in_models = False
-            continue
+            normalized_project = re.sub(r"[^a-z0-9]+", "_", project_heading.group(1).lower()).strip("_")
+            if normalized_project in {"visual_style", "settings", "models", "music", "ending"}:
+                project_block = normalized_project
+                current_section = normalized_project
+                continue
 
-        if re.match(r"^##\s+SETTINGS\s*$", line, re.I):
-            flush()
-            current = None
-            current_section = "settings"
-            in_settings = True
-            in_models = False
-            in_visual_style = False
-            continue
-
-        if re.match(r"^##\s+MODELS\s*$", line, re.I):
-            flush()
-            current = None
-            current_section = "models"
-            in_settings = False
-            in_models = True
-            in_visual_style = False
-            continue
-
-        if current is None and not (in_settings or in_models or in_visual_style):
+        if current is None and project_block is None:
             continue
 
         heading = re.match(r"^###\s+(.+)$", line)
         if heading:
             flush()
             raw_heading = heading.group(1).strip()
-            if in_visual_style:
-                normalized_style = re.sub(r"[^a-z0-9]+", "_", raw_heading.lower()).strip("_")
-                style_aliases = {
-                    "global_visual_identity": "global_visual_identity",
-                    "style_reference": "style_reference",
-                    "camera_style": "camera_style",
-                }
-                current_section = "visual_style:" + style_aliases.get(normalized_style, normalized_style)
+            if current is None:
+                if project_block == "visual_style":
+                    normalized_style = re.sub(r"[^a-z0-9]+", "_", raw_heading.lower()).strip("_")
+                    current_section = "visual_style:" + normalized_style
+                else:
+                    current_section = project_block
                 continue
             lang_heading = _parse_lang_heading(raw_heading)
             if lang_heading:
@@ -139,14 +136,33 @@ def parse_script(path: Path) -> dict:
                 current_section = f"{kind}:{language}"
                 continue
             normalized = re.sub(r"[^a-z0-9]+", "_", raw_heading.lower()).strip("_")
-            aliases = {"atmosphere_sfx": "atmosphere", "graphic_text_overlays": "overlays", "on_screen_text": "on_screen_text", "screen_text": "on_screen_text", "visual": "visual", "style": "style", "image_prompt": "image_prompt", "negative_prompt": "negative_prompt", "camera": "camera", "reference_images": "reference_images", "style_reference": "style_reference", "continuity": "continuity", "visual_anchor": "visual_anchor", "start_state": "start_state", "end_state": "end_state", "animation": "animation", "ai_video_prompt": "animation", "ai_video": "animation"}
+            aliases = {
+                "atmosphere_sfx": "atmosphere",
+                "graphic_text_overlays": "overlays",
+                "on_screen_text": "on_screen_text",
+                "screen_text": "on_screen_text",
+                "visual": "visual",
+                "style": "style",
+                "image_prompt": "image_prompt",
+                "negative_prompt": "negative_prompt",
+                "camera": "camera",
+                "remotion_camera": "remotion_camera",
+                "reference_images": "reference_images",
+                "style_reference": "style_reference",
+                "continuity": "continuity",
+                "visual_anchor": "visual_anchor",
+                "start_state": "start_state",
+                "end_state": "end_state",
+                "animation": "animation",
+                "ai_video_prompt": "animation",
+                "ai_video": "animation",
+            }
             current_section = aliases.get(normalized, normalized)
-            in_settings = False
-            in_models = False
             continue
 
         if line.strip() == "---":
             flush()
+            project_block = None if current is None else project_block
             continue
 
         if current_section:
@@ -154,37 +170,15 @@ def parse_script(path: Path) -> dict:
 
     flush()
 
-    # Parse the project-level visual style independently so multiline style sections
-    # are robust even when other parser states are active.
-    style_start = None
-    for idx, raw in enumerate(lines):
-        if re.match(r"^##\s+VISUAL STYLE\s*$", raw.rstrip(), re.I):
-            style_start = idx + 1
-            break
-    if style_start is not None:
-        style_end = len(lines)
-        for idx in range(style_start, len(lines)):
-            if re.match(r"^##\s+", lines[idx].rstrip(), re.I):
-                style_end = idx
-                break
-        current_key = None
-        current_lines = []
-        for raw in lines[style_start:style_end]:
-            heading = re.match(r"^###\s+(.+)$", raw.rstrip())
-            if heading:
-                if current_key is not None:
-                    visual_style[current_key] = "\n".join(current_lines).strip()
-                key = re.sub(r"[^a-z0-9]+", "_", heading.group(1).strip().lower()).strip("_")
-                current_key = {
-                    "global_visual_identity": "global_visual_identity",
-                    "style_reference": "style_reference",
-                    "camera_style": "camera_style",
-                }.get(key, key)
-                current_lines = []
-            elif current_key is not None and raw.strip() != "---":
-                current_lines.append(raw)
-        if current_key is not None:
-            visual_style[current_key] = "\n".join(current_lines).strip()
+    # Normalize visual-style aliases and multiline style blocks.
+    aliases = {
+        "global_visual_identity": "global_visual_identity",
+        "style_reference": "style_reference",
+        "camera_style": "camera_style",
+        "text_policy": "text_policy",
+        "animation_philosophy": "animation_philosophy",
+    }
+    visual_style = {aliases.get(k, k): v for k, v in visual_style.items()}
 
     if not scenes:
         raise ValueError(f"No scenes found in Markdown script: {path}")
@@ -200,6 +194,22 @@ def parse_script(path: Path) -> dict:
     visual_style.setdefault("style_reference", "")
     visual_style.setdefault("camera_style", "")
 
+    music.setdefault("enabled", "false")
+    music.setdefault("file", "audio/background_music.mp3")
+    music.setdefault("volume", "0.10")
+    music.setdefault("ducking", "true")
+    music.setdefault("ducking_volume", "0.045")
+    music.setdefault("fade_in_seconds", "2")
+    music.setdefault("fade_out_seconds", "4")
+
+    ending.setdefault("enabled", "true")
+    ending.setdefault("title", "THE FIRST AUTOMATED AGENT COLLECTIVE ATTACK")
+    ending.setdefault("subtitle", "An investigation into autonomous AI agents")
+    ending.setdefault("hold_seconds", "4")
+    ending.setdefault("fade_in_seconds", "1.5")
+    ending.setdefault("fade_out_seconds", "2.5")
+    ending.setdefault("music_fade_out_seconds", "4")
+
     models.setdefault("image_provider", "")
     models.setdefault("image_model", "")
     models.setdefault("tts_provider", "")
@@ -211,8 +221,20 @@ def parse_script(path: Path) -> dict:
     for scene in scenes:
         if not scene["segments"]:
             raise ValueError(f"Scene {scene['scene_id']} has no VOICEOVER/QUOTE blocks.")
-        scene["segments"] = [{**segment, "id": f"{scene['scene_id']}_{segment['language'].lower()}_{index+1:02d}"} for index, segment in enumerate(scene["segments"])]
+        scene["segments"] = [
+            {**segment, "id": f"{scene['scene_id']}_{segment['language'].lower()}_{index+1:02d}"}
+            for index, segment in enumerate(scene["segments"])
+        ]
         if "visual" not in scene and "image_prompt" not in scene:
             raise ValueError(f"Scene {scene['scene_id']} needs a VISUAL or IMAGE PROMPT section.")
 
-    return {"version": "1.2.0", "source": str(path), "settings": settings, "models": models, "visual_style": visual_style, "scenes": scenes}
+    return {
+        "version": "1.3.0",
+        "source": str(path),
+        "settings": settings,
+        "models": models,
+        "visual_style": visual_style,
+        "music": music,
+        "ending": ending,
+        "scenes": scenes,
+    }

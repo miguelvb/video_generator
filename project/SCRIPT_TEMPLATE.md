@@ -23,6 +23,26 @@ video_resolution: 480p
 video_aspect_ratio: 16:9
 video_generate_audio: false
 
+## MUSIC
+
+enabled: false
+file: audio/background_music.mp3
+volume: 0.10
+ducking: true
+ducking_volume: 0.045
+fade_in_seconds: 2
+fade_out_seconds: 4
+
+## ENDING
+
+enabled: true
+title: THE FIRST AUTOMATED AGENT COLLECTIVE ATTACK
+subtitle: An investigation into autonomous AI agents
+hold_seconds: 4
+fade_in_seconds: 1.5
+fade_out_seconds: 2.5
+music_fade_out_seconds: 4
+
 ## VISUAL STYLE
 
 ### GLOBAL VISUAL IDENTITY

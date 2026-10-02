@@ -239,7 +239,7 @@ def write_generated_content(project: dict) -> None:
     config_path = ROOT / "src" / "generated" / "videoConfig.ts"
     config_path.write_text(
         "// AUTO-GENERATED from project/script.md. Do not edit manually.\n"
-        f"export const VIDEO_CONFIG = {json.dumps({**project['settings'], 'models': project.get('models', {})}, ensure_ascii=False, indent=2)} as const;\n",
+        f"export const VIDEO_CONFIG = {json.dumps({**project['settings'], 'models': project.get('models', {}), 'music': project.get('music', {}), 'ending': project.get('ending', {})}, ensure_ascii=False, indent=2)} as const;\n",
         encoding="utf-8",
     )
 
@@ -307,10 +307,29 @@ def generate_image(project: dict, scene: dict, tracker: CostTracker | None = Non
     save_meta(meta_path, {"version":"1.0.0","kind":"image","scene_id":scene["scene_id"],"content_hash":identity,"provider":models["image_provider"],"model":models["image_model"],"file":str(output.relative_to(ROOT)).replace("\\","/")})
     print(f"Generated image: {output}")
 
-def generate_images(script_path: Path, tracker: CostTracker | None = None) -> None:
+def parse_scene_selection(value: str | None, project: dict) -> list[str]:
+    """Return selected scene IDs, preserving script order. Empty selection means all scenes."""
+    if not value:
+        return [str(s["scene_id"]) for s in project["scenes"]]
+    requested = {part.strip() for part in value.split(",") if part.strip()}
+    available = [str(s["scene_id"]) for s in project["scenes"]]
+    unknown = sorted(requested - set(available))
+    if unknown:
+        raise ValueError(f"Unknown scene ID(s): {', '.join(unknown)}. Available: {', '.join(available)}")
+    return [sid for sid in available if sid in requested]
+
+
+def selected_scenes(project: dict, scene_selection: str | None) -> list[dict]:
+    ids = set(parse_scene_selection(scene_selection, project))
+    return [scene for scene in project["scenes"] if str(scene["scene_id"]) in ids]
+
+
+def generate_images(script_path: Path, tracker: CostTracker | None = None, scene_selection: str | None = None) -> None:
     project = build(script_path)
     GENERATED_DIR.mkdir(parents=True, exist_ok=True)
-    for scene in project["scenes"]:
+    scenes = selected_scenes(project, scene_selection)
+    print("Selected scenes: " + ", ".join(s["scene_id"] for s in scenes))
+    for scene in scenes:
         generate_image(project, scene, tracker)
 
 
@@ -375,10 +394,13 @@ def concat_audio(segment_paths: list[Path], output_path: Path) -> None:
         list_file.unlink(missing_ok=True); gap_file.unlink(missing_ok=True)
 
 
-def generate_audio(script_path: Path, tracker: CostTracker | None = None) -> None:
+def generate_audio(script_path: Path, tracker: CostTracker | None = None, scene_selection: str | None = None) -> None:
     require_command("ffmpeg"); require_command("ffprobe")
     project = build(script_path); models = resolve_models(project); config = build_voice_manifest(project); tracks = {}
+    selected_ids = set(parse_scene_selection(scene_selection, project))
     for scene_id, segments in config["tracks"].items():
+        if scene_id not in selected_ids:
+            continue
         scene = next(s for s in project["scenes"] if s["scene_id"] == scene_id)
         scene_dir = BUILD_DIR / "audio" / scene_id; scene_dir.mkdir(parents=True, exist_ok=True)
         scene_identity = scene_audio_identity(scene, models)
@@ -530,15 +552,13 @@ SCENE-SPECIFIC VISUAL DIRECTION:
 
 {continuity_rule}
 VISUAL ANCHOR: {anchor or 'Keep the main subject visually consistent throughout the scene.'}
-CAMERA FOR AI VIDEO: LOCKED STATIC CAMERA. Do not pan, zoom, dolly, orbit, rotate, tilt, rack-focus, use handheld movement, or introduce camera shake. Ignore any conflicting camera movement suggestion in the scene or global style.
+AI VIDEO CAMERA: LOCKED STATIC. Ignore any Remotion camera direction in the script. Never pan, zoom, dolly, orbit, rotate or shake the camera.
 
 This is clip {clip['clip_index']} of {clip_count}, covering approximately {clip['start_seconds']:.1f}s to {clip['end_seconds']:.1f}s of the scene. {motion}
 Narration context for this time window:
 {phase_text}
 
-Animate the subjects and existing visual elements instead of moving the camera: agents may move subtly, nodes may activate, communication lines may illuminate, data packets may travel, server indicators may change state, and selected objects may react. Keep the background, framing, perspective, composition and subject scale completely fixed.
-
-Preserve the original illustration's composition, colors, linework, object identity and geometry. Do not redraw, morph, deform or reinterpret the artwork. Do not generate readable text, letters, numbers, labels, UI or captions. No camera movement of any kind. No camera shake, no handheld motion, no flicker, no warping, no morphing, no object deformation, no random zoom, no spinning camera, no new objects, no photorealism, no typography animation. Maintain the same visual style across the entire film."""
+Preserve the original illustration's composition, colors, linework, object identity and geometry. Do not redraw, morph, deform or reinterpret the artwork. Do not generate readable text, letters, numbers, labels, UI or captions. Use meaningful, clearly visible animation of already-existing visual elements. Every motion should directly illustrate the narration: agents activate, packets travel, boundaries are crossed, systems saturate, nodes connect, alarms escalate, or processes shut down. No camera shake, no handheld motion, no flicker, no warping, no morphing, no object deformation, no random zoom, no spinning camera, no new objects, no photorealism, no typography animation. Maintain the same visual style across the entire film."""
 
 
 def video_prompt(scene: dict) -> str:
@@ -666,7 +686,7 @@ def generate_video_for_scene(project: dict, scene: dict, tracker: CostTracker | 
     scene["video_clips"] = clip_records
 
 
-def generate_videos(script_path: Path, tracker: CostTracker | None = None) -> None:
+def generate_videos(script_path: Path, tracker: CostTracker | None = None, scene_selection: str | None = None) -> None:
     require_command("ffprobe")
     project = build(script_path)
     models = resolve_models(project)
@@ -675,28 +695,36 @@ def generate_videos(script_path: Path, tracker: CostTracker | None = None) -> No
         return
     if models.get("video_provider") in {"", "default"} or models.get("video_model") in {"", "default"}:
         raise RuntimeError("No video model configured. Add video_provider: openrouter and video_model: bytedance/seedance-2.0-mini to project/script.md.")
-    for scene in project["scenes"]:
+    for scene in selected_scenes(project, scene_selection):
         generate_video_for_scene(project, scene, tracker)
     write_generated_content(project)
 
 
-def render(script_path: Path) -> None:
+def render(script_path: Path, scene_selection: str | None = None) -> None:
     build(script_path)
     require_command("node")
     remotion_bin = ROOT / "node_modules" / ".bin" / ("remotion.cmd" if os.name == "nt" else "remotion")
     if not remotion_bin.exists():
         raise RuntimeError("Remotion CLI is not installed. Run npm install first.")
     project = json.loads((BUILD_DIR / "parsed_script.json").read_text(encoding="utf-8"))
-    missing_images = [f"scene_{s['scene_id']}.png" for s in project["scenes"] if not (GENERATED_DIR / f"scene_{s['scene_id']}.png").exists()]
+    scenes = selected_scenes(project, scene_selection)
+    print("Selected scenes: " + ", ".join(s["scene_id"] for s in scenes))
+    missing_images = [f"scene_{s['scene_id']}.png" for s in scenes if not (GENERATED_DIR / f"scene_{s['scene_id']}.png").exists()]
     if missing_images:
         raise RuntimeError("Missing generated image(s): " + ", ".join(missing_images) + ". Run: python scripts/orchestrator.py images project/script.md")
-    missing_audio = [f"scene_{s['scene_id']}.wav" for s in project["scenes"] if not (PUBLIC_AUDIO_DIR / f"scene_{s['scene_id']}.wav").exists()]
+    missing_audio = [f"scene_{s['scene_id']}.wav" for s in scenes if not (PUBLIC_AUDIO_DIR / f"scene_{s['scene_id']}.wav").exists()]
     if missing_audio:
         raise RuntimeError("Missing public audio file(s): " + ", ".join(missing_audio) + ". Run: python scripts/orchestrator.py audio project/script.md")
+    music_cfg = project.get("music") or {}
+    if str(music_cfg.get("enabled", "false")).lower() == "true":
+        music_file = str(music_cfg.get("file", "audio/background_music.mp3")).replace("\\", "/").lstrip("/")
+        music_path = ROOT / "public" / music_file
+        if not music_path.exists():
+            raise RuntimeError(f"Background music is enabled but the file is missing: public/{music_file}. Add the music file or set `enabled: false` in the MUSIC section.")
     models = resolve_models(project)
     if generation_mode(project) == "ai_video":
         missing_videos = []
-        for s in project["scenes"]:
+        for s in scenes:
             meta = load_meta(asset_meta_path("videos", s["scene_id"])) or {}
             for clip in meta.get("clips", []):
                 if not (ROOT / clip["file"]).exists():
@@ -707,9 +735,15 @@ def render(script_path: Path) -> None:
         rebuild_audio_timings(script_path)
     except RuntimeError as exc:
         raise RuntimeError(str(exc))
-    output = ROOT / "output" / "prototype.mp4"
+    output_name = f"test_{'_'.join(s['scene_id'] for s in scenes)}.mp4" if scene_selection else "prototype.mp4"
+    output = ROOT / "output" / output_name
     output.parent.mkdir(parents=True, exist_ok=True)
-    subprocess.run([str(remotion_bin), "render", "src/index.ts", "MainVideo", str(output), "--concurrency=50%"], cwd=ROOT, check=True)
+    env = os.environ.copy()
+    if scene_selection:
+        env["AI_VIDEO_SCENE_FILTER"] = ",".join(s["scene_id"] for s in scenes)
+    else:
+        env.pop("AI_VIDEO_SCENE_FILTER", None)
+    subprocess.run([str(remotion_bin), "render", "src/index.ts", "MainVideo", str(output), "--concurrency=50%"], cwd=ROOT, check=True, env=env)
     print(f"Rendered: {output}")
 
 
@@ -730,6 +764,8 @@ def main() -> None:
     parser.add_argument("--audio", action="store_true")
     parser.add_argument("--render", action="store_true")
     parser.add_argument("--all", action="store_true")
+    parser.add_argument("--scenes", type=str, help="Comma-separated scene IDs to process/render, e.g. 001,002")
+    parser.add_argument("--test", action="store_true", help="Test mode: first two scenes only")
     args = parser.parse_args()
 
     if args.prepare:
@@ -738,6 +774,10 @@ def main() -> None:
     if not script.exists():
         raise SystemExit(f"Script not found: {script}")
 
+    scene_selection = args.scenes
+    if args.test:
+        full_project = build(script)
+        scene_selection = ",".join(str(s["scene_id"]) for s in full_project["scenes"][:2])
     command = args.command
     if args.all: command = "all"
     elif args.images: command = "images"
@@ -752,20 +792,20 @@ def main() -> None:
         tracker = CostTracker(ROOT, command, script)
         try:
             if command == "images":
-                generate_images(script, tracker)
+                generate_images(script, tracker, scene_selection)
             elif command == "audio":
-                generate_audio(script, tracker)
+                generate_audio(script, tracker, scene_selection)
             elif command == "audio-timings":
                 rebuild_audio_timings(script)
             elif command == "video":
-                generate_videos(script, tracker)
+                generate_videos(script, tracker, scene_selection)
             elif command == "render":
-                render(script)
+                render(script, scene_selection)
             else:
-                generate_images(script, tracker)
-                generate_audio(script, tracker)
-                generate_videos(script, tracker)
-                render(script)
+                generate_images(script, tracker, scene_selection)
+                generate_audio(script, tracker, scene_selection)
+                generate_videos(script, tracker, scene_selection)
+                render(script, scene_selection)
         finally:
             report = tracker.finish()
             tracker.print_summary(report)
