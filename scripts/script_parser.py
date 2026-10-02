@@ -67,6 +67,10 @@ def parse_script(path: Path) -> dict:
             visual_style[key] = "\n".join(buffer).strip()
             buffer = []
             return
+        if current_section == "animation" and current is not None:
+            current["animation"] = _parse_key_value_block(buffer)
+            buffer = []
+            return
         if current_section in {"settings", "models", "music", "ending", "intro"}:
             target = {
                 "settings": settings,
@@ -158,6 +162,8 @@ def parse_script(path: Path) -> dict:
                 "animation": "animation",
                 "ai_video_prompt": "animation",
                 "ai_video": "animation",
+                "animation_engine": "animation",
+                "animation_mode": "animation",
             }
             current_section = aliases.get(normalized, normalized)
             continue
@@ -234,6 +240,7 @@ def parse_script(path: Path) -> dict:
             {**segment, "id": f"{scene['scene_id']}_{segment['language'].lower()}_{index+1:02d}"}
             for index, segment in enumerate(scene["segments"])
         ]
+        scene.setdefault("animation", {})
         if "visual" not in scene and "image_prompt" not in scene:
             raise ValueError(f"Scene {scene['scene_id']} needs a VISUAL or IMAGE PROMPT section.")
 
