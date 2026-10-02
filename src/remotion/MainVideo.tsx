@@ -179,24 +179,6 @@ const SvgNetworkOverlay: React.FC<{duration:number}> = ({duration}) => {
   </svg>;
 };
 
-const AnimationLayer: React.FC<{scene:any; duration:number}> = ({scene,duration}) => {
-  const animation = scene.animation ?? {};
-  const engine = String(animation.engine ?? '').toLowerCase();
-  const type = String(animation.type ?? '').toLowerCase();
-  if (engine === 'svg') {
-    if (type === 'network' || type === 'agents' || type === '') return <SvgNetworkOverlay duration={duration} />;
-  }
-  if (engine === 'manim') {
-    return <Video
-      src={staticFile(`video/manim/scene_${scene.scene_id}.webm`)}
-      muted
-      loop
-      style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',pointerEvents:'none'}}
-    />;
-  }
-  return null;
-};
-
 const SceneVisual: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut:boolean}> = ({scene,duration,fadeIn,fadeOut}) => {
   const frame = useCurrentFrame();
   const fadeInOpacity = fadeIn
@@ -208,7 +190,6 @@ const SceneVisual: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut
     : 1;
   return <AbsoluteFill style={{opacity: Math.min(fadeInOpacity, fadeOutOpacity)}}>
     <AnimatedAIClip scene={{...scene, __durationFrames: duration}} duration={duration}/>
-    <AnimationLayer scene={scene} duration={duration}/>
   </AbsoluteFill>;
 };
 
