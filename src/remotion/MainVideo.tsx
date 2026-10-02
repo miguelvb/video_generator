@@ -29,8 +29,8 @@ const sceneFrames = scenes.map((scene) => {
 });
 const SCENE_TOTAL_FRAMES = sceneFrames.reduce((a, b) => a + b, 0);
 
-const music = (VIDEO_CONFIG as any).music ?? {};
-const ending = (VIDEO_CONFIG as any).ending ?? {};
+const music = inputProps?.music ?? (VIDEO_CONFIG as any).music ?? {};
+const ending = inputProps?.ending ?? (VIDEO_CONFIG as any).ending ?? {};
 const musicEnabled = String(music.enabled ?? 'false').toLowerCase() === 'true';
 const endingEnabled = String(ending.enabled ?? 'true').toLowerCase() === 'true';
 const endingFrames = endingEnabled
@@ -151,7 +151,7 @@ const SceneVisual: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut
 const Scene: React.FC<{scene:any; sceneIndex:number; duration:number; visualDuration:number; contentOffset:number}> = ({scene,sceneIndex,duration,visualDuration,contentOffset}) => {
   const timing = TIMINGS[timingKey(scene)];
   if (!timing?.audioFile) throw new Error(`Missing audio file timing for scene ${scene.scene_id}`);
-  return <AbsoluteFill style={{background:'#efe5d0', overflow:'hidden'}}>
+  return <AbsoluteFill style={{background:'transparent', overflow:'hidden'}}>
     <SceneVisual scene={scene} duration={visualDuration} fadeIn={sceneIndex > 0} fadeOut={sceneIndex < scenes.length - 1} />
     <Sequence from={contentOffset} durationInFrames={duration}>
       <Audio src={staticFile(timing.audioFile)} />
