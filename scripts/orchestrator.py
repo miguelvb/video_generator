@@ -812,6 +812,7 @@ def render(script_path: Path, scene_selection: str | None = None) -> None:
         "sceneIds": [s["scene_id"] for s in scenes],
         "music": project.get("music") or {},
         "ending": project.get("ending") or {},
+        "intro": project.get("intro") or {},
     }
     render_cmd.extend(["--props", json.dumps(render_props)])
     subprocess.run(render_cmd, cwd=ROOT, check=True, env=env)
