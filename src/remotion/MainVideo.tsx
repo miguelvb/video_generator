@@ -180,13 +180,31 @@ const SvgNetworkOverlay: React.FC<{duration:number}> = ({duration}) => {
 };
 
 const Scene006Network: React.FC<{duration:number}> = ({duration}) => {
-  // Explicit high-visibility validation layer. Keep this obvious until the
-  // isolated render path is confirmed again; styling comes afterwards.
+  // Scene 006 is driven by the real narration/quote timings, not by an
+  // arbitrary visual percentage. The animation therefore explains what is
+  // being said at the moment it is being said.
   const frame = useCurrentFrame();
-  const progress = interpolate(frame, [0, Math.max(1, Math.round(duration * 0.9))], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
+  const timing = TIMINGS['006'];
+  const segments = Array.isArray(timing?.segments) ? timing.segments : [];
+  const voice = segments.find((s:any) => s.kind === 'voiceover') ?? {startSeconds:0,durationSeconds:3.95};
+  const quote = segments.find((s:any) => s.kind === 'quote') ?? {startSeconds:4.07,durationSeconds:5.4};
+
+  const frameAt = (seconds:number) => Math.max(0, Math.round(seconds * FPS));
+  const voiceStart = frameAt(Number(voice.startSeconds ?? 0));
+  const voiceEnd = frameAt(Number(voice.startSeconds ?? 0) + Number(voice.durationSeconds ?? 1));
+  const quoteStart = frameAt(Number(quote.startSeconds ?? 4.07));
+  const quoteEnd = frameAt(Number(quote.startSeconds ?? 4.07) + Number(quote.durationSeconds ?? 5.4));
+
+  const reveal = (start:number, end:number) => interpolate(frame, [start, Math.max(start + 1, end)], [0,1], {
+    extrapolateLeft:'clamp', extrapolateRight:'clamp'
   });
+
+  // During the Spanish setup line: one agent discovers the shared channel
+  // and confirms it to another agent.
+  const discovery = reveal(voiceStart, voiceEnd);
+  // During the English quote: the collective rapidly expands and messaging
+  // propagates through the newly formed network.
+  const collective = reveal(quoteStart, quoteEnd);
 
   const nodes = [
     {x:20,y:30}, {x:35,y:20}, {x:50,y:29}, {x:66,y:20},
@@ -194,17 +212,30 @@ const Scene006Network: React.FC<{duration:number}> = ({duration}) => {
   ];
   const edges = [[0,1],[1,2],[2,3],[3,4],[0,5],[1,6],[2,6],[3,7],[5,6],[6,7],[4,7]];
 
-  const nodeProgress = (i:number) => Math.max(0, Math.min(1, (progress - i * 0.07) / 0.22));
-  const edgeProgress = (i:number) => Math.max(0, Math.min(1, (progress - 0.12 - i * 0.045) / 0.28));
+  const nodeProgress = (i:number) => {
+    if (i === 0) return reveal(voiceStart, voiceStart + Math.round((voiceEnd-voiceStart) * 0.28));
+    if (i === 1 || i === 6) return reveal(voiceStart + Math.round((voiceEnd-voiceStart) * 0.35), voiceEnd);
+    const delay = (i - 2) * Math.max(1, Math.round((quoteEnd-quoteStart) * 0.08));
+    return reveal(quoteStart + Math.max(0, delay), quoteEnd);
+  };
 
-  const packetProgress = Math.max(0, Math.min(1, (progress - 0.40) / 0.34));
-  const packetX = nodes[0].x + (nodes[6].x - nodes[0].x) * packetProgress;
-  const packetY = nodes[0].y + (nodes[6].y - nodes[0].y) * packetProgress;
+  const edgeProgress = (i:number) => {
+    if (i < 2) return reveal(voiceStart + Math.round((voiceEnd-voiceStart) * (0.42 + i * 0.12)), voiceEnd);
+    return reveal(quoteStart + Math.round((i - 2) * (quoteEnd-quoteStart) * 0.075), quoteEnd);
+  };
+
+  const packetProgress = reveal(
+    quoteStart + Math.round((quoteEnd-quoteStart) * 0.08),
+    quoteStart + Math.round((quoteEnd-quoteStart) * 0.52)
+  );
+
+  const packetPath = {x1:nodes[0].x, y1:nodes[0].y, x2:nodes[6].x, y2:nodes[6].y};
+  const packetX = packetPath.x1 + (packetPath.x2 - packetPath.x1) * packetProgress;
+  const packetY = packetPath.y1 + (packetPath.y2 - packetPath.y1) * packetProgress;
 
   return (
     <svg viewBox="0 0 100 100" preserveAspectRatio="none"
       style={{position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none', zIndex:50}}>
-      <rect x="0" y="0" width="100" height="100" fill="none" stroke="#ff0000" strokeWidth="1.2" />
       {edges.map(([a,b], i) => {
         const p = edgeProgress(i);
         const x1 = nodes[a].x, y1 = nodes[a].y;
@@ -224,6 +255,14 @@ const Scene006Network: React.FC<{duration:number}> = ({duration}) => {
       })}
       {packetProgress > 0 && packetProgress < 1 ? (
         <circle cx={packetX} cy={packetY} r="1.5" fill="#ff0000" />
+      ) : null}
+      {discovery > 0 && discovery < 1 ? (
+        <circle cx={nodes[0].x} cy={nodes[0].y} r={5 + discovery * 3}
+          fill="none" stroke="#ff0000" strokeWidth="0.65" opacity={1-discovery} />
+      ) : null}
+      {collective > 0 && collective < 1 ? (
+        <circle cx={nodes[6].x} cy={nodes[6].y} r={4 + collective * 3}
+          fill="none" stroke="#ff0000" strokeWidth="0.65" opacity={1-collective} />
       ) : null}
     </svg>
   );
