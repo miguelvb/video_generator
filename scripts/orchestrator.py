@@ -807,11 +807,14 @@ def render(script_path: Path, scene_selection: str | None = None) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     env = os.environ.copy()
     render_cmd = [str(remotion_bin), "render", "src/index.ts", "MainVideo", str(output), "--concurrency=50%"]
+    # When rendering a scene subset, render only those scenes. Do not include
+    # the project intro/ending cards around an isolated scene render.
+    isolated_scene_render = scene_selection is not None
     render_props = {
         "sceneIds": [s["scene_id"] for s in scenes],
         "music": project.get("music") or {},
-        "ending": project.get("ending") or {},
-        "intro": project.get("intro") or {},
+        "ending": {} if isolated_scene_render else (project.get("ending") or {}),
+        "intro": {} if isolated_scene_render else (project.get("intro") or {}),
     }
     render_cmd.extend(["--props", json.dumps(render_props)])
     subprocess.run(render_cmd, cwd=ROOT, check=True, env=env)
