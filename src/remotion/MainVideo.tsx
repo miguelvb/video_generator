@@ -132,11 +132,27 @@ const QuoteSegments: React.FC<{scene:any; duration:number}> = ({scene,duration})
   })}</>;
 };
 
-const Scene: React.FC<{scene:any; sceneIndex:number; duration:number}> = ({scene,sceneIndex,duration}) => {
+const TRANSITION_FRAMES = Math.max(1, Math.round(0.7 * FPS));
+
+const SceneVisual: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut:boolean}> = ({scene,duration,fadeIn,fadeOut}) => {
+  const frame = useCurrentFrame();
+  const fadeInOpacity = fadeIn
+    ? interpolate(frame, [0, TRANSITION_FRAMES], [0, 1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
+    : 1;
+  const fadeOutStart = Math.max(0, duration - TRANSITION_FRAMES);
+  const fadeOutOpacity = fadeOut
+    ? interpolate(frame, [fadeOutStart, duration], [1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
+    : 1;
+  return <AbsoluteFill style={{opacity: Math.min(fadeInOpacity, fadeOutOpacity)}}>
+    <AnimatedAIClip scene={{...scene, __durationFrames: duration}} duration={duration}/>
+  </AbsoluteFill>;
+};
+
+const Scene: React.FC<{scene:any; sceneIndex:number; duration:number; visualDuration:number}> = ({scene,sceneIndex,duration,visualDuration}) => {
   const timing = TIMINGS[timingKey(scene)];
   if (!timing?.audioFile) throw new Error(`Missing audio file timing for scene ${scene.scene_id}`);
   return <AbsoluteFill style={{background:'#efe5d0', overflow:'hidden'}}>
-    <AnimatedAIClip scene={scene} duration={duration}/>
+    <SceneVisual scene={scene} duration={visualDuration} fadeIn={sceneIndex > 0} fadeOut={sceneIndex < scenes.length - 1} />
     <Sequence from={0} durationInFrames={duration}>
       <Audio src={staticFile(timing.audioFile)} />
     </Sequence>
@@ -164,7 +180,7 @@ const BackgroundMusic: React.FC = () => {
   const ducking = String(music.ducking ?? 'true').toLowerCase() === 'true';
   const duckedVolume = Number(music.ducking_volume ?? 0.045);
   const base = ducking && frame < sceneEnd ? duckedVolume : Number(music.volume ?? 0.10);
-  const volume = Math.min(musicStart, base) * endingFade;
+  const volume = Math.max(0, Math.min(Number(music.volume ?? 0.10), musicStart, base) * endingFade);
 
   return <Audio
     src={staticFile(String(music.file ?? 'audio/background_music.mp3').replace(/^public\//, ''))}
@@ -201,8 +217,11 @@ export const MainVideo: React.FC = () => {
       const duration=sceneFrames[index];
       const currentOffset=offset;
       offset+=duration;
-      return <Sequence key={scene.scene_id} from={currentOffset} durationInFrames={duration}>
-        <Scene scene={scene} sceneIndex={index} duration={duration}/>
+      const overlap = index > 0 ? TRANSITION_FRAMES : 0;
+      const visualStart = Math.max(0, currentOffset - overlap);
+      const visualDuration = duration + overlap;
+      return <Sequence key={scene.scene_id} from={visualStart} durationInFrames={visualDuration}>
+        <Scene scene={scene} sceneIndex={index} duration={duration} visualDuration={visualDuration}/>
       </Sequence>;
     })}
     {endingEnabled && <Sequence from={SCENE_TOTAL_FRAMES} durationInFrames={endingFrames}>
