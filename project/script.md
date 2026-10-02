@@ -430,11 +430,6 @@ assets/reference/storyboard.png
 ### CONTINUITY
 transition
 
-### ANIMATION
-engine: manim
-type: graph
-duration_seconds: 8
-
 ### VISUAL ANCHOR
 Agent network combined with abstract mathematical structures and a test module. Use conceptual equations and patterns but no readable mathematical text.
 
