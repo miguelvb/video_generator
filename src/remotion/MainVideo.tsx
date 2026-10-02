@@ -179,6 +179,104 @@ const SvgNetworkOverlay: React.FC<{duration:number}> = ({duration}) => {
   </svg>;
 };
 
+const Scene006Network: React.FC<{duration:number}> = ({duration}) => {
+  const frame = useCurrentFrame();
+  const progress = interpolate(
+    frame,
+    [0, Math.max(1, Math.round(duration * 0.9))],
+    [0, 1],
+    {extrapolateLeft:'clamp', extrapolateRight:'clamp'}
+  );
+
+  const nodes = [
+    {x:14,y:27,r:1.15}, {x:27,y:15,r:1.0}, {x:42,y:22,r:1.05},
+    {x:57,y:14,r:1.0}, {x:74,y:25,r:1.15}, {x:88,y:18,r:0.95},
+    {x:19,y:53,r:1.0}, {x:34,y:44,r:1.1}, {x:49,y:51,r:1.0},
+    {x:66,y:44,r:1.1}, {x:82,y:55,r:1.0}, {x:91,y:45,r:0.95},
+    {x:28,y:78,r:1.0}, {x:45,y:69,r:1.05}, {x:62,y:77,r:1.0},
+    {x:77,y:72,r:1.05}
+  ];
+  const center = {x:50,y:50};
+  const edges = [
+    [0,1],[1,2],[2,3],[3,4],[4,5],
+    [0,6],[1,7],[2,7],[2,8],[3,8],[3,9],[4,9],[4,10],[5,11],
+    [6,7],[7,8],[8,9],[9,10],[10,11],
+    [6,12],[7,12],[7,13],[8,13],[8,14],[9,14],[9,15],[10,15],
+    [12,13],[13,14],[14,15]
+  ];
+
+  const connectionProgress = (i:number) =>
+    Math.max(0, Math.min(1, (progress - i * 0.025) / 0.34));
+
+  const nodeProgress = (i:number) =>
+    Math.max(0, Math.min(1, (progress - i * 0.032) / 0.24));
+
+  const centerProgress = Math.max(0, Math.min(1, (progress - 0.08) / 0.25));
+
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      style={{
+        position:'absolute', inset:0, width:'100%', height:'100%',
+        pointerEvents:'none'
+      }}
+    >
+      <g opacity={interpolate(centerProgress,[0,1],[0,0.96],{extrapolateLeft:'clamp',extrapolateRight:'clamp'})}>
+        <circle cx={center.x} cy={center.y} r="5.2" fill="#f2eadb" stroke="#263d4a" strokeWidth="0.5" />
+        <circle cx={center.x} cy={center.y} r="3.3" fill="none" stroke="#527c7b" strokeWidth="0.7" />
+        <circle cx={center.x} cy={center.y} r="1.05" fill="#315b67" />
+      </g>
+
+      {edges.map(([a,b], i) => {
+        const p = connectionProgress(i);
+        const [x1,y1] = [nodes[a].x,nodes[a].y];
+        const [x2,y2] = [nodes[b].x,nodes[b].y];
+        const length = Math.hypot(x2-x1,y2-y1);
+        const opacity = interpolate(p,[0,1],[0,0.55],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
+        return (
+          <line
+            key={`e-${i}`}
+            x1={x1} y1={y1} x2={x2} y2={y2}
+            stroke="#315b67"
+            strokeWidth="0.32"
+            opacity={opacity}
+            strokeDasharray={length}
+            strokeDashoffset={length * (1-p)}
+          />
+        );
+      })}
+
+      {nodes.map((node,i) => {
+        const p = nodeProgress(i);
+        const scale = interpolate(p,[0,1],[0.2,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
+        const pulse = 1 + 0.12 * Math.sin((frame + i * 11) / 7);
+        return (
+          <g key={`n-${i}`} transform={`translate(${node.x} ${node.y}) scale(${scale * pulse})`}>
+            <circle r={node.r + 0.75} fill="#f2eadb" opacity="0.82" />
+            <circle r={node.r} fill="none" stroke="#263d4a" strokeWidth="0.42" />
+            <circle r={node.r * 0.34} fill="#527c7b" opacity="0.9" />
+          </g>
+        );
+      })}
+
+      {nodes.slice(0, 8).map((node,i) => {
+        const pulseStart = Math.max(0, progress - 0.25 - i * 0.045);
+        const pulse = Math.max(0, Math.min(1, pulseStart / 0.22));
+        const x = node.x + (center.x-node.x) * pulse;
+        const y = node.y + (center.y-node.y) * pulse;
+        return pulse > 0 && pulse < 1 ? (
+          <circle
+            key={`p-${i}`}
+            cx={x} cy={y} r="0.8"
+            fill="#527c7b" opacity={0.75}
+          />
+        ) : null;
+      })}
+    </svg>
+  );
+};
+
 const SceneVisual: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut:boolean}> = ({scene,duration,fadeIn,fadeOut}) => {
   const frame = useCurrentFrame();
   const fadeInOpacity = fadeIn
@@ -188,8 +286,12 @@ const SceneVisual: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut
   const fadeOutOpacity = fadeOut
     ? interpolate(frame, [fadeOutStart, duration], [1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
     : 1;
+  const svgOverlay = String(scene.scene_id) === '006' && String(scene.animation?.engine ?? '').toLowerCase() === 'svg'
+    ? <Scene006Network duration={duration}/>
+    : null;
   return <AbsoluteFill style={{opacity: Math.min(fadeInOpacity, fadeOutOpacity)}}>
     <AnimatedAIClip scene={{...scene, __durationFrames: duration}} duration={duration}/>
+    {svgOverlay}
   </AbsoluteFill>;
 };
 
