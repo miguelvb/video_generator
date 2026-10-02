@@ -16,10 +16,10 @@ export const Root: React.FC = () => {
         height={Number(VIDEO_CONFIG.height)}
       />
       <Composition
-      id="MainVideo"
-      component={MainVideo}
-      durationInFrames={TOTAL_DURATION_FRAMES}
-      fps={Number(VIDEO_CONFIG.fps)}
+        id="MainVideo"
+        component={MainVideo}
+        durationInFrames={TOTAL_DURATION_FRAMES}
+        fps={Number(VIDEO_CONFIG.fps)}
         width={Number(VIDEO_CONFIG.width)}
         height={Number(VIDEO_CONFIG.height)}
       />
