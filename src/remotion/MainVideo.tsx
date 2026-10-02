@@ -231,7 +231,6 @@ const BackgroundMusic: React.FC = () => {
     )}
   </>;
 };
-};
 
 const EndingCard: React.FC = () => {
   if (!endingEnabled) return null;
