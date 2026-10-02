@@ -1,15 +1,16 @@
 import React from 'react';
-import {AbsoluteFill, Sequence, Audio, Video, staticFile, useCurrentFrame, interpolate} from 'remotion';
+import {AbsoluteFill, Sequence, Audio, Video, staticFile, useCurrentFrame, interpolate, getInputProps} from 'remotion';
 import {VIDEO_CONTENT} from '../generated/videoContent';
 import {AUDIO_TIMINGS} from '../generated/audioTimings';
 import {VIDEO_CONFIG} from '../generated/videoConfig';
 
 const FPS = Number(VIDEO_CONFIG.fps);
-const sceneFilter = (typeof process !== 'undefined' && process.env.AI_VIDEO_SCENE_FILTER)
-  ? new Set(process.env.AI_VIDEO_SCENE_FILTER.split(',').map((s) => s.trim()).filter(Boolean))
+const inputProps = getInputProps() as any;
+const inputSceneIds = Array.isArray(inputProps?.sceneIds)
+  ? new Set(inputProps.sceneIds.map((s:any) => String(s).trim()).filter(Boolean))
   : null;
-const scenes = sceneFilter
-  ? VIDEO_CONTENT.scenes.filter((scene:any) => sceneFilter.has(String(scene.scene_id)))
+const scenes = inputSceneIds
+  ? VIDEO_CONTENT.scenes.filter((scene:any) => inputSceneIds.has(String(scene.scene_id)))
   : VIDEO_CONTENT.scenes;
 const TIMINGS = AUDIO_TIMINGS as Record<string, any>;
 const timingKey = (scene:any): string => {
