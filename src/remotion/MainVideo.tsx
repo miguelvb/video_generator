@@ -197,8 +197,10 @@ const BackgroundMusic: React.FC = () => {
     extrapolateLeft:'clamp', extrapolateRight:'clamp'
   });
 
-  const ducking = String(music.ducking ?? 'true').toLowerCase() === 'true';
-  const targetVolume = ducking && frame < sceneEnd ? duckedVolume : maxVolume;
+  // MUSIC DIAGNOSTIC: force a clearly audible level for this test.
+  // If this is audible, the previous 0.045 ducked level was simply too low.
+  const ducking = false;
+  const targetVolume = maxVolume;
   const volume = Math.max(0, Math.min(musicAtFadeIn, targetVolume) * endingFade);
   const file = String(music.file ?? 'audio/background_music.mp3').replace(/^public\//, '').replace(/^\//, '');
 
