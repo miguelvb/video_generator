@@ -431,11 +431,16 @@ def generate_audio(script_path: Path, tracker: CostTracker | None = None, scene_
     print(f"Generated timings: {TIMINGS_TS}")
 
 
-def rebuild_audio_timings(script_path: Path) -> None:
-    """Rebuild timing metadata only from existing audio, never call TTS."""
+def rebuild_audio_timings(script_path: Path, scene_selection: str | None = None) -> None:
+    """Rebuild timing metadata only from existing audio, never call TTS.
+
+    When a scene selection is supplied (for example the two-scene test), only
+    those scenes are validated and written to the generated timing module.
+    """
     require_command("ffprobe")
     project=build(script_path); models=resolve_models(project); tracks={}; old=load_meta(GENERATED_MANIFEST) or {}
-    for scene in project["scenes"]:
+    scenes = selected_scenes(project, scene_selection)
+    for scene in scenes:
         sid=scene["scene_id"]; public_path=PUBLIC_AUDIO_DIR/f"scene_{sid}.wav"; meta=load_meta(asset_meta_path("audio",sid))
         identity=scene_audio_identity(scene,models)
         if not public_path.exists(): raise RuntimeError(f"Missing audio for scene {sid}: {public_path}")
@@ -732,7 +737,7 @@ def render(script_path: Path, scene_selection: str | None = None) -> None:
         if missing_videos:
             raise RuntimeError("Missing generated AI video clip(s): " + ", ".join(missing_videos) + ". Run: python scripts/orchestrator.py video project/script.md")
     try:
-        rebuild_audio_timings(script_path)
+        rebuild_audio_timings(script_path, scene_selection)
     except RuntimeError as exc:
         raise RuntimeError(str(exc))
     output_name = f"test_{'_'.join(s['scene_id'] for s in scenes)}.mp4" if scene_selection else "prototype.mp4"
