@@ -1,0 +1,5 @@
+# Optional dependency for deterministic Manim animations.
+# Install only if project/script.md contains scenes with:
+#   ### ANIMATION
+#   engine: manim
+manim
