@@ -35,6 +35,12 @@ const music = runtimeMusic ?? (VIDEO_CONFIG as any).music ?? {};
 const ending = runtimeEnding ?? (VIDEO_CONFIG as any).ending ?? {};
 const musicEnabled = String(music.enabled ?? 'false').toLowerCase() === 'true';
 const endingEnabled = String(ending.enabled ?? 'true').toLowerCase() === 'true';
+
+// TEMPORARY VISIBLE MUSIC DEBUG:
+// This deliberately puts the music state and exact file path on the rendered video.
+// Set to false once music playback has been verified.
+const SHOW_MUSIC_DEBUG = true;
+
 const endingFrames = endingEnabled
   ? Math.max(1, Math.round(Number(ending.hold_seconds ?? 4) * FPS))
   : 0;
@@ -196,11 +202,35 @@ const BackgroundMusic: React.FC = () => {
   const volume = Math.max(0, Math.min(musicAtFadeIn, targetVolume) * endingFade);
   const file = String(music.file ?? 'audio/background_music.mp3').replace(/^public\//, '').replace(/^\//, '');
 
-  return <Audio
-    src={staticFile(file)}
-    loop
-    volume={volume}
-  />;
+  return <>
+    <Audio
+      src={staticFile(file)}
+      loop
+      volume={volume}
+    />
+    {SHOW_MUSIC_DEBUG && (
+      <div style={{
+        position:'absolute',
+        top:18,
+        left:18,
+        zIndex:9999,
+        padding:'10px 14px',
+        background:'rgba(0,0,0,.82)',
+        color:'#fff',
+        border:'2px solid #fff',
+        borderRadius:6,
+        fontFamily:'Arial, sans-serif',
+        fontSize:16,
+        fontWeight:700,
+        lineHeight:1.35
+      }}>
+        ♫ MUSIC: ON<br/>
+        FILE: {file}<br/>
+        VOLUME: {volume.toFixed(3)}{ducking && frame < sceneEnd ? ' (DUCKED)' : ''}
+      </div>
+    )}
+  </>;
+};
 };
 
 const EndingCard: React.FC = () => {
