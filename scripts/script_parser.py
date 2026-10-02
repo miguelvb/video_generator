@@ -34,6 +34,7 @@ def parse_script(path: Path) -> dict:
     visual_style: dict[str, str] = {}
     music: dict[str, str] = {}
     ending: dict[str, str] = {}
+    intro: dict[str, str] = {}
     current: dict | None = None
     current_section: str | None = None
     buffer: list[str] = []
@@ -66,12 +67,13 @@ def parse_script(path: Path) -> dict:
             visual_style[key] = "\n".join(buffer).strip()
             buffer = []
             return
-        if current_section in {"settings", "models", "music", "ending"}:
+        if current_section in {"settings", "models", "music", "ending", "intro"}:
             target = {
                 "settings": settings,
                 "models": models,
                 "music": music,
                 "ending": ending,
+                "intro": intro,
             }[current_section]
             target.update(_parse_key_value_block(buffer))
             buffer = []
@@ -111,7 +113,7 @@ def parse_script(path: Path) -> dict:
         if project_heading and current is None:
             flush()
             normalized_project = re.sub(r"[^a-z0-9]+", "_", project_heading.group(1).lower()).strip("_")
-            if normalized_project in {"visual_style", "settings", "models", "music", "ending"}:
+            if normalized_project in {"visual_style", "settings", "models", "music", "ending", "intro"}:
                 project_block = normalized_project
                 current_section = normalized_project
                 continue
@@ -210,6 +212,13 @@ def parse_script(path: Path) -> dict:
     ending.setdefault("fade_out_seconds", "2.5")
     ending.setdefault("music_fade_out_seconds", "4")
 
+    intro.setdefault("enabled", "true")
+    intro.setdefault("title", "THE FIRST AUTOMATED AGENT COLLECTIVE ATTACK - JULY 2026")
+    intro.setdefault("subtitle", "An investigation into autonomous AI agents")
+    intro.setdefault("hold_seconds", "4")
+    intro.setdefault("fade_in_seconds", "1.5")
+    intro.setdefault("fade_out_seconds", "2.5")
+
     models.setdefault("image_provider", "")
     models.setdefault("image_model", "")
     models.setdefault("tts_provider", "")
@@ -236,5 +245,6 @@ def parse_script(path: Path) -> dict:
         "visual_style": visual_style,
         "music": music,
         "ending": ending,
+        "intro": intro,
         "scenes": scenes,
     }
