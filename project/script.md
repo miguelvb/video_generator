@@ -374,7 +374,6 @@ No readable text, no typography generation, no flicker, no morphing, no warping,
 
 ### REFERENCE IMAGES
 
-assets/reference/storyboard.png
 
 ---
 
