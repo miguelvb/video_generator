@@ -49,7 +49,7 @@ const Node: React.FC<{
 
   const pulseStart = (node.delay ?? 0) + 24;
   const pulse = clamp01((frame - pulseStart) / 16);
-  const pulseOpacity = pulse > 0 ? 0.75 * (1 - pulse) : 0;
+  const pulseOpacity = pulse > 0 ? 0.9 * (1 - pulse) : 0;
 
   return (
     <div
@@ -80,6 +80,7 @@ const Node: React.FC<{
           inset: 0,
           borderRadius: '50%',
           background: color,
+          border: `4px solid ${color}`,
           boxShadow: `0 0 28px ${color}`,
         }}
       />
@@ -121,8 +122,8 @@ const Edge: React.FC<{
       strokeWidth="7"
       strokeLinecap="round"
       opacity={opacity}
-      strokeDasharray="1000"
-      strokeDashoffset={1000 * (1 - progress)}
+      strokeDasharray="100 100"
+      strokeDashoffset={100 * (1 - progress)}
     />
   );
 };
