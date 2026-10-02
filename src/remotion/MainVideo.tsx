@@ -24,8 +24,17 @@ const timingKey = (scene:any): string => {
 };
 const sceneFrames = scenes.map((scene) => {
   const timing = TIMINGS[timingKey(scene)];
-  if (!timing) throw new Error(`Missing audio timing for scene ${scene.scene_id}`);
-  return Math.max(1, Math.ceil(Number(timing.durationSeconds ?? timing.duration_seconds ?? 1) * FPS));
+  // Keep the module loadable so unrelated Remotion compositions (for example
+  // MotionEngineTest) can render even when generated audio timings are stale.
+  // MainVideo still gets the correct duration whenever timing data exists.
+  const durationSeconds = Number(
+    timing?.durationSeconds ??
+      timing?.duration_seconds ??
+      scene.durationSeconds ??
+      scene.duration_seconds ??
+      1,
+  );
+  return Math.max(1, Math.ceil(durationSeconds * FPS));
 });
 const SCENE_TOTAL_FRAMES = sceneFrames.reduce((a, b) => a + b, 0);
 
