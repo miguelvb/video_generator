@@ -44,8 +44,8 @@ fade_out_seconds: 2.5
 ## ENDING
 
 enabled: true
-title: THE FIRST AUTOMATED AGENT COLLECTIVE ATTACK - JULY 2026
-subtitle: An investigation into autonomous AI agents
+title: EL PRIMER ATAQUE COLECTIVO AUTOMATIZADO DE AGENTES - JULIO DE 2026
+subtitle: Una investigación sobre agentes de IA autónomos
 hold_seconds: 4
 fade_in_seconds: 1.5
 fade_out_seconds: 2.5
