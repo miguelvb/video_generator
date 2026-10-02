@@ -24,7 +24,7 @@ video_generate_audio: false
 
 ## MUSIC
 
-enabled: false
+enabled: true
 file: audio/background_music.mp3
 volume: 0.10
 ducking: true
