@@ -34,7 +34,6 @@ from dotenv import load_dotenv
 
 from script_parser import parse_script
 from cost_tracker import CostTracker
-from animation_engine import prepare_animations
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SCRIPT = ROOT / "project" / "script.md"
@@ -770,9 +769,6 @@ def generate_videos(script_path: Path, tracker: CostTracker | None = None, scene
 
 
 def render(script_path: Path, scene_selection: str | None = None) -> None:
-    # Prepare deterministic low-cost SVG/Manim animation layers before Remotion.
-    project_for_animation = build(script_path)
-    prepare_animations(project_for_animation, parse_scene_selection(scene_selection, project_for_animation))
     require_command("node")
     remotion_bin = ROOT / "node_modules" / ".bin" / ("remotion.cmd" if os.name == "nt" else "remotion")
     if not remotion_bin.exists():
