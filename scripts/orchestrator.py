@@ -757,7 +757,7 @@ def validate(script_path: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Content-first AI Video Engine")
-    parser.add_argument("command", nargs="?", choices=["build", "images", "audio", "audio-timings", "video", "render", "validate", "all"])
+    parser.add_argument("command", nargs="?", choices=["build", "images", "audio", "audio-timings", "video", "render", "validate", "all", "test"])
     parser.add_argument("script", nargs="?", type=Path, default=DEFAULT_SCRIPT)
     parser.add_argument("--prepare", action="store_true")
     parser.add_argument("--images", action="store_true")
@@ -780,6 +780,11 @@ def main() -> None:
         scene_selection = ",".join(str(s["scene_id"]) for s in full_project["scenes"][:2])
     command = args.command
     if args.all: command = "all"
+    elif command == "test":
+        command = "all"
+        if not scene_selection:
+            full_project = build(script)
+            scene_selection = ",".join(str(s["scene_id"]) for s in full_project["scenes"][:2])
     elif args.images: command = "images"
     elif args.audio: command = "audio"
     elif args.render: command = "render"

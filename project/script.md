@@ -25,7 +25,7 @@ video_generate_audio: false
 ## MUSIC
 
 enabled: true
-file: audio/background_music.mp3
+file: audio/m1_dubtechno_2.mp3
 volume: 0.10
 ducking: true
 ducking_volume: 0.045
@@ -35,7 +35,7 @@ fade_out_seconds: 4
 ## ENDING
 
 enabled: true
-title: THE FIRST AUTOMATED AGENT COLLECTIVE ATTACK
+title: THE FIRST AUTOMATED AGENT COLLECTIVE ATTACK - JULY 2026
 subtitle: An investigation into autonomous AI agents
 hold_seconds: 4
 fade_in_seconds: 1.5
