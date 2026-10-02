@@ -234,30 +234,65 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
 };
 
 export const MotionEngineTest: React.FC = () => {
-  const nodes: MotionNode[] = [
-    {id: 'A', x: 18, y: 48, size: 72, delay: 0},
-    {id: 'B', x: 38, y: 28, size: 60, delay: 10},
-    {id: 'C', x: 58, y: 50, size: 66, delay: 20},
-    {id: 'D', x: 78, y: 28, size: 60, delay: 30},
-    {id: 'E', x: 78, y: 72, size: 60, delay: 40},
-    {id: 'F', x: 38, y: 74, size: 60, delay: 50},
-  ];
-
-  const edges: MotionEdge[] = [
-    {id: 'AB', from: 'A', to: 'B', delay: 18},
-    {id: 'BC', from: 'B', to: 'C', delay: 28},
-    {id: 'CD', from: 'C', to: 'D', delay: 38},
-    {id: 'CE', from: 'C', to: 'E', delay: 48},
-    {id: 'EF', from: 'E', to: 'F', delay: 58},
-    {id: 'FA', from: 'F', to: 'A', delay: 68},
-    {id: 'CF', from: 'C', to: 'F', delay: 78},
-  ];
+  const frame = useCurrentFrame();
+  const visible = frame >= 0;
 
   return (
-    <TwoDMotionEngine
-      nodes={nodes}
-      edges={edges}
-      durationInFrames={240}
-    />
+    <AbsoluteFill
+      style={{
+        backgroundColor: '#000',
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          left: 100,
+          top: 100,
+          width: 900,
+          height: 24,
+          backgroundColor: '#ff0000',
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          left: 100,
+          top: 300,
+          width: 220,
+          height: 220,
+          borderRadius: '50%',
+          backgroundColor: '#ff0000',
+          boxShadow: '0 0 60px #ff0000',
+          transform: `scale(${visible ? 1 : 0})`,
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          left: 700,
+          top: 500,
+          width: 220,
+          height: 220,
+          borderRadius: '50%',
+          backgroundColor: '#ff0000',
+          boxShadow: '0 0 60px #ff0000',
+          transform: `scale(${visible ? 1 : 0})`,
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          left: 120,
+          top: 30,
+          color: '#ff0000',
+          fontFamily: 'Arial, sans-serif',
+          fontSize: 36,
+          fontWeight: 900,
+        }}
+      >
+        2D MOTION ENGINE — SMOKE TEST
+      </div>
+    </AbsoluteFill>
   );
 };
