@@ -32,6 +32,18 @@ export const MOTION_ASSETS: Record<MotionAssetType, MotionAssetDefinition> = {
     label: 'Folder',
     category: 'infrastructure',
   },
+  'agent-ui': {
+    type: 'agent-ui',
+    path: 'assets/motion/agent-ui.svg',
+    label: 'Agent UI',
+    category: 'agent',
+  },
+  'server-ui': {
+    type: 'server-ui',
+    path: 'assets/motion/server-ui.svg',
+    label: 'Server UI',
+    category: 'infrastructure',
+  },
 };
 
 export const getMotionAsset = (type: MotionAssetType) =>
