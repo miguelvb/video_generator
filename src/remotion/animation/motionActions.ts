@@ -61,12 +61,15 @@ export const resolveMotionActions = (
       .map((action) => ({frame: action.frame, state: action.state as MotionNodeState}));
 
     let opacity = 1;
-    for (const appear of appears) {
-      const duration = appear.durationInFrames ?? 24;
-      opacity = Math.max(
-        opacity,
-        Math.max(0, Math.min(1, (frame - appear.startFrame) / Math.max(1, duration))),
-      );
+    if (appears.length > 0) {
+      opacity = 0;
+      for (const appear of appears) {
+        const duration = appear.durationInFrames ?? 24;
+        opacity = Math.max(
+          opacity,
+          Math.max(0, Math.min(1, (frame - appear.startFrame) / Math.max(1, duration))),
+        );
+      }
     }
 
     return {
