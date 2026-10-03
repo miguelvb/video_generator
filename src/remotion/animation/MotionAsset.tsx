@@ -1,10 +1,8 @@
 import React from 'react';
 import {Img, interpolate, staticFile} from 'remotion';
 import {nodeProgress} from './motionGeometry';
-import type {MotionAssetType, MotionNode} from './motionTypes';
-
-const assetPath = (asset: MotionAssetType) =>
-  staticFile(`assets/motion/${asset}.svg`);
+import type {MotionNode} from './motionTypes';
+import {getMotionAsset} from './assetRegistry';
 
 export const MotionAsset: React.FC<{
   node: MotionNode;
@@ -53,7 +51,7 @@ export const MotionAsset: React.FC<{
       )}
       {node.asset && (
         <Img
-          src={assetPath(node.asset)}
+          src={staticFile(getMotionAsset(node.asset).path)}
           style={{
             position: 'absolute',
             inset: 0,
