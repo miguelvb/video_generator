@@ -39,7 +39,7 @@ export const MotionConnection: React.FC<{
           ? '#ff0000'
           : color;
 
-  const strokeWidth = state === 'active' ? 3.5 : state === 'success' ? 3 : 1.8;
+  const strokeWidth = state === 'active' ? 0.7 : state === 'success' ? 0.65 : 0.45;
 
   return (
     <g opacity={opacity}>
@@ -48,9 +48,9 @@ export const MotionConnection: React.FC<{
           d={path}
           fill="none"
           stroke={stateColor}
-          strokeWidth="9"
+          strokeWidth="2.2"
           strokeLinecap="round"
-          opacity="0.28"
+          opacity="0.16"
         />
       )}
       <path
@@ -62,7 +62,6 @@ export const MotionConnection: React.FC<{
         pathLength="100"
         strokeDasharray="100 100"
         strokeDashoffset={100 * (1 - progress)}
-        markerEnd="url(#motion-arrow)"
       />
     </g>
   );
