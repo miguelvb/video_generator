@@ -32,7 +32,7 @@ export const MotionConnection: React.FC<{
           ? '#39f6ff'
           : color;
 
-  const strokeWidth = state === 'active' ? 0.55 : 0.42;
+  const strokeWidth = state === 'active' ? 0.75 : 0.55;
 
   return (
     <g opacity={opacity}>
