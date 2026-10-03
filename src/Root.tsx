@@ -5,10 +5,20 @@ import {VIDEO_CONFIG} from './generated/videoConfig';
 import {MotionEngineTest} from './remotion/animation/TwoDMotionEngine';
 import {MotionCameraTest} from './remotion/animation/MotionCameraTest';
 import {MotionSceneExample} from './remotion/animation/MotionSceneExample';
+import {MotionScriptScene} from './remotion/animation/MotionScriptScene';
+import {MOTION_SCENES} from './generated/motionScenes';
 
 export const Root: React.FC = () => {
   return (
     <>
+      <Composition
+        id="DemoCollective"
+        component={MotionScriptScene}
+        durationInFrames={Number(MOTION_SCENES['001'].durationInFrames)}
+        fps={Number(VIDEO_CONFIG.fps)}
+        width={Number(VIDEO_CONFIG.width)}
+        height={Number(VIDEO_CONFIG.height)}
+      />
       <Composition
         id="MotionSceneExample"
         component={MotionSceneExample}
