@@ -1,9 +1,9 @@
 import React from 'react';
 import {TwoDMotionEngine} from './TwoDMotionEngine';
 import {compileMotionScene, type MotionSceneDefinition} from './motionScene';
-import {MOTION_SCENES} from '../../generated/motionScenes';
+import {DEMO_COLLECTIVE_MOTION_SCENE} from '../../generated/demoCollectiveMotionScene';
 
-const scene = MOTION_SCENES['001'] as unknown as MotionSceneDefinition;
+const scene = DEMO_COLLECTIVE_MOTION_SCENE as unknown as MotionSceneDefinition;
 
 export const MotionScriptScene: React.FC = () => {
   if (!scene) {
