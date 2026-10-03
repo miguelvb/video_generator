@@ -26,10 +26,18 @@ export type MotionEdge = {
   curvature?: number;
 };
 
+export type MotionCameraFocus = {
+  groupId: string;
+  zoom: number;
+  startFrame?: number;
+  durationInFrames?: number;
+};
+
 export type TwoDMotionEngineProps = {
   nodes: MotionNode[];
   edges: MotionEdge[];
   groups?: MotionGroup[];
+  cameraFocus?: MotionCameraFocus;
   durationInFrames: number;
   color?: string;
 };
