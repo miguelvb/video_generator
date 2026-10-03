@@ -6,6 +6,7 @@
     "render": "python scripts/orchestrator.py render project/script.md",
     "validate": "python scripts/validate_project.py",
     "build:content": "python scripts/orchestrator.py build project/script.md",
+    "build:demo": "python scripts/orchestrator.py build project/demo_collective/script.md",
     "images": "python scripts/orchestrator.py images project/script.md",
     "audio": "python scripts/orchestrator.py audio project/script.md",
     "all": "python scripts/orchestrator.py all project/script.md",
