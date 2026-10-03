@@ -50,8 +50,11 @@ const Node: React.FC<{
   const pulseStart = (node.delay ?? 0) + 24;
   const pulseCycle = ((frame - pulseStart) % 48 + 48) % 48;
   const pulse = pulseCycle / 48;
-  const pulseOpacity = 0.7 * (1 - pulse);
-  const pulseScale = 1 + 0.28 * pulse;
+  // Deliberately exaggerated smoke-test pulse: the node body changes size
+  // dramatically and the surrounding ring expands even more.
+  const pulseOpacity = 0.95 * (1 - pulse);
+  const pulseScale = 0.65 + 0.95 * pulse;
+  const coreScale = 0.65 + 0.7 * (0.5 + 0.5 * Math.sin(pulse * Math.PI * 2));
 
   return (
     <div
@@ -87,8 +90,10 @@ const Node: React.FC<{
           inset: 0,
           borderRadius: '50%',
           background: color,
-          border: `4px solid ${color}`,
+          border: `6px solid ${color}`,
           boxShadow: `0 0 28px ${color}`,
+          transform: `scale(${coreScale})`,
+          transformOrigin: 'center',
         }}
       />
     </div>
