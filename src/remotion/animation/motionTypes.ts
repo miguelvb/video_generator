@@ -1,5 +1,7 @@
 export type MotionAssetType = 'agent' | 'message-board' | 'server' | 'folder';
 
+export type MotionNodeState = 'normal' | 'active' | 'success' | 'error';
+
 export type MotionNode = {
   id: string;
   x: number;
@@ -7,6 +9,7 @@ export type MotionNode = {
   size?: number;
   delay?: number;
   asset?: MotionAssetType;
+  state?: MotionNodeState;
 };
 
 export type MotionGroup = {
