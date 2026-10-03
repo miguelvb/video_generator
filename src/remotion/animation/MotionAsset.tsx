@@ -52,7 +52,7 @@ export const MotionAsset: React.FC<{
         width: size,
         height: size,
         transform: `translate(-50%, -50%) scale(${scale})`,
-        opacity,
+        opacity: opacity * (node.opacity ?? 1),
       }}
     >
       {node.asset === 'agent' && (
