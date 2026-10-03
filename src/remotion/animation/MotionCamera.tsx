@@ -13,8 +13,6 @@ export type MotionCameraProps = {
   startTarget?: MotionCameraTarget;
   startFrame?: number;
   durationInFrames?: number;
-  width: number;
-  height: number;
 };
 
 export const MotionCamera: React.FC<MotionCameraProps> = ({
@@ -23,8 +21,6 @@ export const MotionCamera: React.FC<MotionCameraProps> = ({
   startTarget = {x: 50, y: 50, scale: 1},
   startFrame = 0,
   durationInFrames = 30,
-  width,
-  height,
 }) => {
   const frame = useCurrentFrame();
   const progress = interpolate(
@@ -40,43 +36,30 @@ export const MotionCamera: React.FC<MotionCameraProps> = ({
     (startTarget.scale ?? 1) +
     ((target.scale ?? 1) - (startTarget.scale ?? 1)) * progress;
 
-  // Scale around the composition center while keeping the requested point
-  // centered in the viewport.
-  const translateX = ((50 - x) / 100) * width * scale;
-  const translateY = ((50 - y) / 100) * height * scale;
+  // Keep the stage exactly the size of the Remotion composition.
+  // The camera moves the stage itself; it must never introduce a second
+  // fixed-size 1920x1080 canvas inside the preview.
+  const translateX = (50 - x) * scale;
+  const translateY = (50 - y) * scale;
 
   return (
     <AbsoluteFill style={{overflow: 'hidden'}}>
       <div
         style={{
           position: 'absolute',
-          left: 0,
-          top: 0,
-          width,
-          height,
+          inset: 0,
           overflow: 'hidden',
         }}
       >
         <div
           style={{
             position: 'absolute',
-            left: 0,
-            top: 0,
-            width,
-            height,
-            transform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`,
+            inset: 0,
+            transform: `translate3d(${translateX}%, ${translateY}%, 0) scale(${scale})`,
             transformOrigin: 'center center',
           }}
         >
-          <div
-            style={{
-              position: 'relative',
-              width: '100%',
-              height: '100%',
-            }}
-          >
-            {children}
-          </div>
+          {children}
         </div>
       </div>
     </AbsoluteFill>
