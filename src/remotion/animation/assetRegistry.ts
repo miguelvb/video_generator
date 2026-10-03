@@ -26,6 +26,12 @@ export const MOTION_ASSETS: Record<MotionAssetType, MotionAssetDefinition> = {
     label: 'Server',
     category: 'infrastructure',
   },
+  folder: {
+    type: 'folder',
+    path: 'assets/motion/folder.svg',
+    label: 'Folder',
+    category: 'infrastructure',
+  },
 };
 
 export const getMotionAsset = (type: MotionAssetType) =>
