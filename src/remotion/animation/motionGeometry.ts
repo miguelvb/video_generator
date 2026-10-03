@@ -2,11 +2,23 @@ import type {MotionNode} from './motionTypes';
 
 export const clamp01 = (value: number) => Math.max(0, Math.min(1, value));
 
+export const easeInOutCubic = (value: number) => {
+  const t = clamp01(value);
+  return t < 0.5
+    ? 4 * t * t * t
+    : 1 - Math.pow(-2 * t + 2, 3) / 2;
+};
+
+export const smoothProgress = (frame: number, start: number, duration: number) =>
+  easeInOutCubic(
+    clamp01((frame - start) / Math.max(1, duration)),
+  );
+
 export const nodeProgress = (frame: number, delay: number) =>
-  clamp01((frame - delay) / 18);
+  smoothProgress(frame, delay, 18);
 
 export const edgeProgress = (frame: number, delay: number) =>
-  clamp01((frame - delay) / 24);
+  smoothProgress(frame, delay, 24);
 
 export const getQuadraticControlPoint = (
   from: MotionNode,
