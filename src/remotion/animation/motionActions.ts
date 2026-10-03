@@ -1,3 +1,4 @@
+import {moveProgress} from './motionGeometry';
 import type {
   MotionAction,
   MotionEdge,
@@ -40,12 +41,10 @@ export const resolveMotionActions = (
     let y = node.y;
 
     for (const move of moves) {
-      const progress = Math.max(
-        0,
-        Math.min(
-          1,
-          (frame - move.startFrame) / Math.max(1, move.durationInFrames),
-        ),
+      const progress = moveProgress(
+        frame,
+        move.startFrame,
+        move.durationInFrames,
       );
       x = x + (move.x - x) * progress;
       y = y + (move.y - y) * progress;
