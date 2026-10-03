@@ -156,7 +156,7 @@ export const MotionEngineTest: React.FC = () => {
       y: 50,
       size: 170,
       delay: 0,
-      asset: 'agent',
+      asset: 'agent-ui',
     },
     {
       id: 'server',
@@ -164,7 +164,7 @@ export const MotionEngineTest: React.FC = () => {
       y: 50,
       size: 190,
       delay: 0,
-      asset: 'server',
+      asset: 'server-ui',
     },
   ];
 
