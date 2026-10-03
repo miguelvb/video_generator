@@ -1,5 +1,6 @@
 import React from 'react';
-import {clamp01, getQuadraticControlPoint, getQuadraticPoint} from './motionGeometry';
+import {clamp01} from './motionGeometry';
+import {getQuadraticControlPoint, getQuadraticPoint} from './motionGeometry';
 import type {MotionEdge, MotionNode} from './motionTypes';
 
 export const MotionPacket: React.FC<{
@@ -23,18 +24,29 @@ export const MotionPacket: React.FC<{
   );
   const point = getQuadraticPoint(from, control, to, progress);
 
+  const state = edge.state ?? 'normal';
+  const packetColor =
+    state === 'error'
+      ? '#ff0000'
+      : state === 'success'
+        ? '#008000'
+        : state === 'active'
+          ? '#ff0000'
+          : color;
+
   return (
     <div
       style={{
         position: 'absolute',
         left: `${point.x}%`,
         top: `${point.y}%`,
-        width: 28,
-        height: 28,
+        width: state === 'active' ? 38 : 28,
+        height: state === 'active' ? 38 : 28,
         borderRadius: '50%',
-        background: color,
-        boxShadow: `0 0 26px 8px ${color}`,
+        background: packetColor,
+        boxShadow: `0 0 26px 8px ${packetColor}`,
         transform: 'translate(-50%, -50%)',
+        zIndex: 5,
       }}
     />
   );
