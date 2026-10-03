@@ -165,7 +165,7 @@ export const MotionEngineTest: React.FC = () => {
 
   const edges: MotionEdge[] = [
     {id: 'a-server', from: 'agent-a', to: 'server', delay: 70, curvature: 8},
-    {id: 'server-board', from: 'server', to: 'board', delay: 90, curvature: -10},
+    {id: 'server-board', from: 'server', to: 'board', delay: 90, curvature: -10, state: 'active'},
     {id: 'board-b', from: 'board', to: 'agent-b', delay: 110, curvature: 12},
     {id: 'board-c', from: 'board', to: 'agent-c', delay: 130, curvature: -12},
   ];
