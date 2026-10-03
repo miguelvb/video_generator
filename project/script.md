@@ -330,9 +330,51 @@ assets/reference/storyboard.png
 ### CONTINUITY
 transition
 
-### ANIMATION
-engine: svg
-type: network
+### MOTION SCENE
+
+```json
+{
+  "durationInFrames": 300,
+  "color": "#39f6ff",
+  "background": "assets/motion/demo-background.svg",
+  "nodes": [
+    {"id": "board", "asset": "message-board-ui", "x": 50, "y": 50, "size": 175},
+    {"id": "agent-a", "asset": "agent-ui", "x": 12, "y": 18, "size": 100},
+    {"id": "agent-b", "asset": "agent-ui", "x": 88, "y": 18, "size": 100},
+    {"id": "agent-c", "asset": "agent-ui", "x": 12, "y": 82, "size": 100},
+    {"id": "agent-d", "asset": "agent-ui", "x": 88, "y": 82, "size": 100}
+  ],
+  "connections": [
+    {"id": "a-board", "from": "agent-a", "to": "board", "curvature": -4},
+    {"id": "b-board", "from": "agent-b", "to": "board", "curvature": 4},
+    {"id": "c-board", "from": "agent-c", "to": "board", "curvature": 4},
+    {"id": "d-board", "from": "agent-d", "to": "board", "curvature": -4}
+  ],
+  "actions": [
+    {"type": "appear", "target": "board", "at": 0, "duration": 18},
+    {"type": "appear", "target": "agent-a", "at": 12, "duration": 18},
+    {"type": "move", "target": "agent-a", "at": 34, "duration": 34, "x": 26, "y": 28},
+    {"type": "connect", "target": "a-board", "at": 72},
+    {"type": "send", "target": "a-board", "at": 84, "duration": 28},
+    {"type": "activate", "target": "a-board", "at": 84},
+    {"type": "appear", "target": "agent-b", "at": 78, "duration": 18},
+    {"type": "move", "target": "agent-b", "at": 100, "duration": 34, "x": 74, "y": 28},
+    {"type": "connect", "target": "b-board", "at": 138},
+    {"type": "send", "target": "b-board", "at": 150, "duration": 28},
+    {"type": "activate", "target": "b-board", "at": 150},
+    {"type": "appear", "target": "agent-c", "at": 144, "duration": 18},
+    {"type": "move", "target": "agent-c", "at": 166, "duration": 34, "x": 26, "y": 72},
+    {"type": "connect", "target": "c-board", "at": 204},
+    {"type": "send", "target": "c-board", "at": 216, "duration": 28},
+    {"type": "activate", "target": "c-board", "at": 216},
+    {"type": "appear", "target": "agent-d", "at": 210, "duration": 18},
+    {"type": "move", "target": "agent-d", "at": 232, "duration": 34, "x": 74, "y": 72},
+    {"type": "connect", "target": "d-board", "at": 270},
+    {"type": "send", "target": "d-board", "at": 282, "duration": 18},
+    {"type": "activate", "target": "d-board", "at": 282}
+  ]
+}
+```
 
 ### VISUAL ANCHOR
 A wider network has formed around the same message-board anchor, with many agents now connected.
