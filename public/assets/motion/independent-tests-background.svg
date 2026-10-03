@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07131b"/><stop offset="1" stop-color="#100c18"/></linearGradient></defs>
+<rect width="1200" height="675" fill="url(#bg)"/>
+<g fill="none" stroke="#39f6ff" stroke-opacity=".08" stroke-width="1"><path d="M0 84h1200M0 168h1200M0 252h1200M0 336h1200M0 420h1200M0 504h1200M0 588h1200"/><path d="M100 0v675M200 0v675M300 0v675M400 0v675M500 0v675M600 0v675M700 0v675M800 0v675M900 0v675M1000 0v675M1100 0v675"/></g>
+<g fill="none" stroke="#9a7cff" stroke-opacity=".22" stroke-width="2"><rect x="48" y="72" width="1104" height="531" rx="26"/><rect x="86" y="112" width="300" height="190" rx="20"/><rect x="450" y="112" width="300" height="190" rx="20"/><rect x="814" y="112" width="300" height="190" rx="20"/><rect x="86" y="350" width="300" height="190" rx="20"/><rect x="450" y="350" width="300" height="190" rx="20"/><rect x="814" y="350" width="300" height="190" rx="20"/></g>
+<g fill="none" stroke="#39f6ff" stroke-opacity=".12"><ellipse cx="600" cy="336" rx="510" ry="255"/><ellipse cx="600" cy="336" rx="420" ry="205"/></g>
+</svg>
