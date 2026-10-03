@@ -3,23 +3,28 @@ import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {MotionAsset} from './MotionAsset';
 import {MotionConnection} from './MotionConnection';
 import {MotionPacket} from './MotionPacket';
+import {MotionGroup} from './MotionGroup';
+import {resolveGroupedNodes} from './motionGroups';
 import type {
   MotionEdge,
   MotionNode,
+  MotionGroup as MotionGroupType,
   TwoDMotionEngineProps,
 } from './motionTypes';
 
-export type {MotionAssetType, MotionEdge, MotionNode, TwoDMotionEngineProps} from './motionTypes';
+export type {MotionAssetType, MotionEdge, MotionGroup, MotionNode, TwoDMotionEngineProps} from './motionTypes';
 
 export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
   nodes,
   edges,
+  groups,
   durationInFrames,
   color = '#ff0000',
 }) => {
   const frame = useCurrentFrame();
+  const resolvedNodes = resolveGroupedNodes(nodes, groups ?? [], frame);
   const nodesById = Object.fromEntries(
-    nodes.map((node) => [node.id, node]),
+    resolvedNodes.map((node) => [node.id, node]),
   );
 
   void durationInFrames;
@@ -75,6 +80,16 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
         ))}
       </svg>
 
+      {(groups ?? []).map((group: MotionGroupType) => (
+        <MotionGroup
+          key={group.id}
+          group={group}
+          nodes={resolvedNodes.filter((node) => group.nodeIds.includes(node.id))}
+          frame={frame}
+          color={color}
+        />
+      ))}
+
       {edges.map((edge) => (
         <MotionPacket
           key={`packet-${edge.id}`}
@@ -112,6 +127,17 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
 };
 
 export const MotionEngineTest: React.FC = () => {
+  const groups: MotionGroupType[] = [
+    {
+      id: 'network-group',
+      nodeIds: ['agent-b', 'agent-c', 'board'],
+      offsetX: -5,
+      offsetY: 0,
+      delay: 150,
+      durationInFrames: 45,
+    },
+  ];
+
   const nodes: MotionNode[] = [
     {id: 'agent-a', x: 20, y: 48, size: 150, delay: 0, asset: 'agent'},
     {id: 'server', x: 50, y: 48, size: 180, delay: 15, asset: 'server'},
@@ -132,6 +158,7 @@ export const MotionEngineTest: React.FC = () => {
     <TwoDMotionEngine
       nodes={nodes}
       edges={edges}
+      groups={groups}
       durationInFrames={240}
       color="#ff0000"
     />
