@@ -6,6 +6,7 @@ import {MotionPacket} from './MotionPacket';
 import {MotionGroup} from './MotionGroup';
 import {resolveGroupedNodes} from './motionGroups';
 import {resolveNodePositions} from './motionPositions';
+import {resolveMotionActions} from './motionActions';
 import {MotionCamera} from './MotionCamera';
 import {resolveCameraFocus} from './motionCameraFocus';
 import type {
@@ -23,11 +24,14 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
   groups,
   cameraFocus,
   durationInFrames,
+  actions,
   color = '#ff0000',
 }) => {
   const frame = useCurrentFrame();
-  const positionedNodes = resolveNodePositions(nodes, frame);
+  const actionResult = resolveMotionActions(nodes, edges, actions, frame);
+  const positionedNodes = resolveNodePositions(actionResult.nodes, frame);
   const resolvedNodes = resolveGroupedNodes(positionedNodes, groups ?? [], frame);
+  const resolvedEdges = actionResult.edges;
   const nodesById = Object.fromEntries(
     resolvedNodes.map((node) => [node.id, node]),
   );
@@ -85,7 +89,7 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
           </marker>
         </defs>
 
-        {edges.map((edge) => (
+        {resolvedEdges.map((edge) => (
           <MotionConnection
             key={edge.id}
             edge={edge}
@@ -106,7 +110,7 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
         />
       ))}
 
-      {edges.map((edge) => (
+      {resolvedEdges.map((edge) => (
         <MotionPacket
           key={`packet-${edge.id}`}
           edge={edge}
@@ -157,9 +161,9 @@ export const MotionEngineTest: React.FC = () => {
   ];
 
   const nodes: MotionNode[] = [
-    {id: 'agent-a', x: 20, y: 48, size: 150, delay: 0, asset: 'agent', positionChanges: [{startFrame: 60, durationInFrames: 45, x: 50, y: 48}]},
+    {id: 'agent-a', x: 20, y: 48, size: 150, delay: 0, asset: 'agent'},
     {id: 'server', x: 50, y: 48, size: 180, delay: 15, asset: 'server'},
-    {id: 'board', x: 80, y: 48, size: 210, delay: 30, asset: 'message-board', stateChanges: [{frame: 120, state: 'active'}, {frame: 180, state: 'success'}]},
+    {id: 'board', x: 80, y: 48, size: 210, delay: 30, asset: 'message-board'},
     {id: 'agent-b', x: 65, y: 22, size: 130, delay: 45, asset: 'agent'},
     {id: 'agent-c', x: 65, y: 76, size: 130, delay: 60, asset: 'agent'},
     {id: 'folder', x: 50, y: 82, size: 150, delay: 75, asset: 'folder'},
@@ -167,7 +171,7 @@ export const MotionEngineTest: React.FC = () => {
 
   const edges: MotionEdge[] = [
     {id: 'a-server', from: 'agent-a', to: 'server', delay: 70, curvature: 8},
-    {id: 'server-board', from: 'server', to: 'board', delay: 90, curvature: -10, state: 'active'},
+    {id: 'server-board', from: 'server', to: 'board', delay: 90, curvature: -10},
     {id: 'board-b', from: 'board', to: 'agent-b', delay: 110, curvature: 12},
     {id: 'board-c', from: 'board', to: 'agent-c', delay: 130, curvature: -12},
   ];
@@ -177,6 +181,13 @@ export const MotionEngineTest: React.FC = () => {
       nodes={nodes}
       edges={edges}
       groups={groups}
+      actions={[
+        {type: 'move', targetId: 'agent-a', startFrame: 60, durationInFrames: 45, x: 50, y: 48},
+        {type: 'set-node-state', targetId: 'board', frame: 120, state: 'active'},
+        {type: 'set-node-state', targetId: 'board', frame: 180, state: 'success'},
+        {type: 'set-edge-state', targetId: 'server-board', frame: 120, state: 'active'},
+        {type: 'set-edge-state', targetId: 'server-board', frame: 180, state: 'success'},
+      ]}
       cameraFocus={{groupId: 'network-group', zoom: 'fit', startFrame: 150, durationInFrames: 45}}
       durationInFrames={240}
       color="#ff0000"
