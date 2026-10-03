@@ -1,4 +1,4 @@
-export type MotionAssetType = 'agent' | 'message-board' | 'server' | 'folder';
+export type MotionAssetType = 'agent' | 'message-board' | 'server' | 'folder' | 'agent-ui' | 'server-ui';
 
 export type MotionNodeState = 'normal' | 'active' | 'success' | 'error';
 export type MotionEdgeState = 'normal' | 'active' | 'success' | 'error';
