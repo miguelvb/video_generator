@@ -28,13 +28,35 @@ export const MotionConnection: React.FC<{
     extrapolateRight: 'clamp',
   });
 
+  const state = edge.state ?? 'normal';
+  const stateColor =
+    state === 'error'
+      ? '#ff0000'
+      : state === 'success'
+        ? '#008000'
+        : state === 'active'
+          ? '#ff0000'
+          : color;
+
+  const strokeWidth = state === 'active' ? 3.5 : state === 'success' ? 3 : 1.8;
+
   return (
     <g opacity={opacity}>
+      {state === 'active' && (
+        <path
+          d={path}
+          fill="none"
+          stroke={stateColor}
+          strokeWidth="9"
+          strokeLinecap="round"
+          opacity="0.28"
+        />
+      )}
       <path
         d={path}
         fill="none"
-        stroke={color}
-        strokeWidth="1.8"
+        stroke={stateColor}
+        strokeWidth={strokeWidth}
         strokeLinecap="round"
         pathLength="100"
         strokeDasharray="100 100"
