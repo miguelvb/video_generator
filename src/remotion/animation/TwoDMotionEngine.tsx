@@ -182,6 +182,12 @@ export const MotionEngineTest: React.FC = () => {
       edges={edges}
       groups={groups}
       actions={[
+        {type: 'appear', targetId: 'agent-a', startFrame: 0, durationInFrames: 18},
+        {type: 'appear', targetId: 'server', startFrame: 15, durationInFrames: 18},
+        {type: 'appear', targetId: 'board', startFrame: 30, durationInFrames: 18},
+        {type: 'appear', targetId: 'agent-b', startFrame: 45, durationInFrames: 18},
+        {type: 'appear', targetId: 'agent-c', startFrame: 60, durationInFrames: 18},
+        {type: 'appear', targetId: 'folder', startFrame: 75, durationInFrames: 18},
         {type: 'move', targetId: 'agent-a', startFrame: 60, durationInFrames: 45, x: 50, y: 48},
         {type: 'set-node-state', targetId: 'board', frame: 120, state: 'active'},
         {type: 'set-node-state', targetId: 'board', frame: 180, state: 'success'},
