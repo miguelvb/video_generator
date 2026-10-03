@@ -50,8 +50,8 @@ const Node: React.FC<{
   const pulseStart = (node.delay ?? 0) + 24;
   const pulseCycle = ((frame - pulseStart) % 48 + 48) % 48;
   const pulse = pulseCycle / 48;
-  const pulseOpacity = 0.28 * (1 - pulse);
-  const pulseScale = 1 + 0.12 * pulse;
+  const pulseOpacity = 0.7 * (1 - pulse);
+  const pulseScale = 1 + 0.28 * pulse;
 
   return (
     <div
@@ -69,8 +69,8 @@ const Node: React.FC<{
         <div
           style={{
             position: 'absolute',
-            inset: -10 * pulseScale,
-            border: `3px solid ${color}`,
+            inset: -18 * pulseScale,
+            border: `5px solid ${color}`,
             borderRadius: '50%',
             opacity: pulseOpacity,
           }}
