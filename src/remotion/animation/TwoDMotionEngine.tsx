@@ -157,7 +157,7 @@ export const MotionEngineTest: React.FC = () => {
   const nodes: MotionNode[] = [
     {id: 'agent-a', x: 20, y: 48, size: 150, delay: 0, asset: 'agent'},
     {id: 'server', x: 50, y: 48, size: 180, delay: 15, asset: 'server'},
-    {id: 'board', x: 80, y: 48, size: 210, delay: 30, asset: 'message-board', state: 'active'},
+    {id: 'board', x: 80, y: 48, size: 210, delay: 30, asset: 'message-board', stateChanges: [{frame: 120, state: 'active'}, {frame: 180, state: 'success'}]},
     {id: 'agent-b', x: 65, y: 22, size: 130, delay: 45, asset: 'agent'},
     {id: 'agent-c', x: 65, y: 76, size: 130, delay: 60, asset: 'agent'},
     {id: 'folder', x: 50, y: 82, size: 150, delay: 75, asset: 'folder'},
