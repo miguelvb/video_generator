@@ -5,12 +5,16 @@ import type {MotionNode} from './motionTypes';
 import {resolveMotionState} from './motionState';
 import {getMotionAsset} from './assetRegistry';
 
-const STATE_LABELS = {
-  normal: '',
-  active: 'ACTIVE',
-  success: 'SUCCESS',
-  error: 'ERROR',
-} as const;
+const getNodeLabel = (id: string) => {
+  if (id === 'board') return 'SHARED CHANNEL';
+  const match = id.match(/^agent-([a-z])$/i);
+  return match ? `agent-${match[1].toLowerCase()}` : id;
+};
+
+const getNodeIndex = (id: string) => {
+  const match = id.match(/^agent-([a-z])$/i);
+  return match ? `#00${match[1].toLowerCase().charCodeAt(0) - 96}` : '';
+};
 
 export const MotionAsset: React.FC<{
   node: MotionNode;
@@ -27,21 +31,17 @@ export const MotionAsset: React.FC<{
     extrapolateRight: 'clamp',
   });
 
-  const pulseStart = (node.delay ?? 0) + 30;
-  const cycle = ((frame - pulseStart) % 60 + 60) % 60;
-  const pulse = cycle / 60;
-  const ringScale = 0.8 + pulse * 1.25;
-  const ringOpacity = 0.8 * (1 - pulse);
-
   const state = resolveMotionState(node.state ?? 'normal', node.stateChanges, frame);
+  const isAgent = node.asset === 'agent-ui';
+  const isBoard = node.asset === 'message-board-ui';
   const stateColor =
     state === 'error'
-      ? '#ff0000'
+      ? '#ff5b67'
       : state === 'success'
-        ? '#008000'
+        ? '#8d7cff'
         : state === 'active'
-          ? '#ff0000'
-          : 'transparent';
+          ? '#39f6ff'
+          : '#39f6ff';
 
   return (
     <div
@@ -53,20 +53,9 @@ export const MotionAsset: React.FC<{
         height: size,
         transform: `translate(-50%, -50%) scale(${scale})`,
         opacity: opacity * (node.opacity ?? 1),
+        filter: state === 'active' ? `drop-shadow(0 0 12px ${stateColor})` : 'none',
       }}
     >
-      {node.asset === 'agent' && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            border: '7px solid #ff0000',
-            borderRadius: '50%',
-            opacity: ringOpacity,
-            transform: `scale(${ringScale})`,
-          }}
-        />
-      )}
       {node.asset && (
         <Img
           src={staticFile(getMotionAsset(node.asset).path)}
@@ -75,42 +64,81 @@ export const MotionAsset: React.FC<{
             inset: 0,
             width: '100%',
             height: '100%',
+            objectFit: 'contain',
           }}
         />
       )}
-      {state !== 'normal' && (
-        <>
-          <div
-            style={{
-              position: 'absolute',
-              inset: '-18%',
-              border: `10px solid ${stateColor}`,
-              borderRadius: 32,
-              boxSizing: 'border-box',
-              pointerEvents: 'none',
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              left: '50%',
-              top: '50%',
-              transform: 'translate(-50%, -50%)',
-              padding: '10px 18px',
-              border: `6px solid ${stateColor}`,
-              background: '#fff',
-              color: stateColor,
-              fontFamily: 'Arial, sans-serif',
-              fontSize: 24,
-              fontWeight: 900,
-              letterSpacing: 2,
-              whiteSpace: 'nowrap',
-              zIndex: 10,
-            }}
-          >
-            {STATE_LABELS[state]}
-          </div>
-        </>
+
+      {isAgent && (
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '34%',
+            transform: 'translate(-50%, -50%)',
+            color: '#d8fbff',
+            fontFamily: 'Arial, sans-serif',
+            fontSize: Math.max(10, size * 0.105),
+            fontWeight: 600,
+            letterSpacing: 0.3,
+            whiteSpace: 'nowrap',
+            textShadow: '0 0 8px rgba(57,246,255,.35)',
+          }}
+        >
+          {getNodeLabel(node.id)}
+        </div>
+      )}
+
+      {isAgent && (
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '48%',
+            transform: 'translateX(-50%)',
+            color: '#39f6ff',
+            fontFamily: 'Arial, sans-serif',
+            fontSize: Math.max(7, size * 0.06),
+            fontWeight: 500,
+            letterSpacing: 1,
+            opacity: 0.7,
+          }}
+        >
+          {getNodeIndex(node.id)}
+        </div>
+      )}
+
+      {isBoard && (
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '48%',
+            transform: 'translate(-50%, -50%)',
+            color: '#d8fbff',
+            fontFamily: 'Arial, sans-serif',
+            fontSize: Math.max(9, size * 0.075),
+            fontWeight: 600,
+            letterSpacing: 1.5,
+            whiteSpace: 'nowrap',
+            textShadow: '0 0 8px rgba(57,246,255,.35)',
+          }}
+        >
+          {getNodeLabel(node.id)}
+        </div>
+      )}
+
+      {state === 'active' && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: '-5%',
+            border: '2px solid rgba(57,246,255,.7)',
+            borderRadius: 24,
+            boxShadow: '0 0 18px rgba(57,246,255,.35)',
+            pointerEvents: 'none',
+          }}
+        />
       )}
     </div>
   );
