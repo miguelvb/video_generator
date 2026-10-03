@@ -1,5 +1,13 @@
 import React from 'react';
-import {AbsoluteFill, interpolate, useCurrentFrame} from 'remotion';
+import {
+  AbsoluteFill,
+  Img,
+  interpolate,
+  staticFile,
+  useCurrentFrame,
+} from 'remotion';
+
+export type MotionAssetType = 'agent' | 'message-board' | 'server';
 
 export type MotionNode = {
   id: string;
@@ -7,6 +15,7 @@ export type MotionNode = {
   y: number;
   size?: number;
   delay?: number;
+  asset?: MotionAssetType;
 };
 
 export type MotionEdge = {
@@ -26,19 +35,21 @@ export type TwoDMotionEngineProps = {
 const clamp01 = (value: number) => Math.max(0, Math.min(1, value));
 
 const nodeProgress = (frame: number, delay: number) =>
-  clamp01((frame - delay) / 12);
-
-const edgeProgress = (frame: number, delay: number) =>
   clamp01((frame - delay) / 18);
 
-const Node: React.FC<{
+const edgeProgress = (frame: number, delay: number) =>
+  clamp01((frame - delay) / 24);
+
+const assetPath = (asset: MotionAssetType) =>
+  staticFile(`assets/motion/${asset}.svg`);
+
+const MotionAsset: React.FC<{
   node: MotionNode;
   frame: number;
-  color: string;
-}> = ({node, frame, color}) => {
+}> = ({node, frame}) => {
   const progress = nodeProgress(frame, node.delay ?? 0);
-  const size = node.size ?? 56;
-  const scale = interpolate(progress, [0, 1], [0.15, 1], {
+  const size = node.size ?? 100;
+  const scale = interpolate(progress, [0, 1], [0.45, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -47,16 +58,11 @@ const Node: React.FC<{
     extrapolateRight: 'clamp',
   });
 
-  const pulseStart = (node.delay ?? 0) + 24;
-  const pulseCycle = ((frame - pulseStart) % 48 + 48) % 48;
-  const pulse = pulseCycle / 48;
-  // Deliberately exaggerated smoke-test pulse: the node body changes size
-  // dramatically and the surrounding ring expands even more.
-  const pulseOpacity = 0.95 * (1 - pulse);
-  const pulseScale = 0.65 + 0.95 * pulse;
-  const coreScale = pulse < 0.5
-    ? 0.55 + 1.0 * (pulse / 0.5)
-    : 1.55 - 1.0 * ((pulse - 0.5) / 0.5);
+  const pulseStart = (node.delay ?? 0) + 30;
+  const cycle = ((frame - pulseStart) % 60 + 60) % 60;
+  const pulse = cycle / 60;
+  const ringScale = 0.8 + pulse * 1.25;
+  const ringOpacity = 0.8 * (1 - pulse);
 
   return (
     <div
@@ -70,35 +76,29 @@ const Node: React.FC<{
         opacity,
       }}
     >
-      {pulseOpacity > 0 && (
+      {node.asset === 'agent' && (
         <div
           style={{
             position: 'absolute',
-            left: '50%',
-            top: '50%',
-            width: size * pulseScale,
-            height: size * pulseScale,
-            border: `5px solid ${color}`,
+            inset: 0,
+            border: '7px solid #ff0000',
             borderRadius: '50%',
-            opacity: pulseOpacity,
-            transform: 'translate(-50%, -50%)',
+            opacity: ringOpacity,
+            transform: `scale(${ringScale})`,
           }}
         />
       )}
-      <div
-        style={{
-          position: 'absolute',
-          width: size * coreScale,
-          height: size * coreScale,
-          left: '50%',
-          top: '50%',
-          borderRadius: '50%',
-          background: color,
-          border: `6px solid ${color}`,
-          boxShadow: `0 0 28px ${color}`,
-          transform: 'translate(-50%, -50%)',
-        }}
-      />
+      {node.asset && (
+        <Img
+          src={assetPath(node.asset)}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+          }}
+        />
+      )}
     </div>
   );
 };
@@ -119,22 +119,14 @@ const Edge: React.FC<{
     extrapolateRight: 'clamp',
   });
 
-  const dx = to.x - from.x;
-  const dy = to.y - from.y;
-  const length = Math.sqrt(dx * dx + dy * dy) || 1;
-  const nx = -dy / length;
-  const ny = dx / length;
-  const startX = from.x + nx * 0.0;
-  const startY = from.y + ny * 0.0;
-
   return (
     <line
-      x1={`${startX}%`}
-      y1={`${startY}%`}
-      x2={`${to.x}%`}
-      y2={`${to.y}%`}
+      x1=`${from.x}%`
+      y1=`${from.y}%`
+      x2=`${to.x}%`
+      y2=`${to.y}%`
       stroke={color}
-      strokeWidth="7"
+      strokeWidth="6"
       strokeLinecap="round"
       opacity={opacity}
       strokeDasharray="100 100"
@@ -153,8 +145,8 @@ const Packet: React.FC<{
   const to = nodesById[edge.to];
   if (!from || !to) return null;
 
-  const start = (edge.delay ?? 0) + 24;
-  const progress = clamp01((frame - start) / 36);
+  const start = (edge.delay ?? 0) + 30;
+  const progress = clamp01((frame - start) / 42);
   if (progress <= 0 || progress >= 1) return null;
 
   const x = from.x + (to.x - from.x) * progress;
@@ -166,11 +158,11 @@ const Packet: React.FC<{
         position: 'absolute',
         left: `${x}%`,
         top: `${y}%`,
-        width: 24,
-        height: 24,
+        width: 28,
+        height: 28,
         borderRadius: '50%',
         background: color,
-        boxShadow: `0 0 24px 8px ${color}`,
+        boxShadow: `0 0 26px 8px ${color}`,
         transform: 'translate(-50%, -50%)',
       }}
     />
@@ -181,13 +173,27 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
   nodes,
   edges,
   durationInFrames,
-  color = '#ff2020',
+  color = '#ff0000',
 }) => {
   const frame = useCurrentFrame();
   const nodesById = Object.fromEntries(nodes.map((node) => [node.id, node]));
 
   return (
-    <AbsoluteFill style={{background: '#111', overflow: 'hidden'}}>
+    <AbsoluteFill
+      style={{
+        background: '#f4efe3',
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background:
+            'radial-gradient(circle at 50% 45%, rgba(47,111,103,0.08), transparent 55%)',
+        }}
+      />
+
       <svg
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
@@ -220,29 +226,26 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
       ))}
 
       {nodes.map((node) => (
-        <Node
+        <MotionAsset
           key={node.id}
           node={node}
           frame={frame}
-          color={color}
         />
       ))}
 
       <div
         style={{
           position: 'absolute',
-          left: 24,
-          top: 20,
-          padding: '8px 12px',
-          border: `3px solid ${color}`,
-          color,
+          left: 32,
+          top: 28,
+          color: '#111',
           fontFamily: 'Arial, sans-serif',
-          fontSize: 18,
+          fontSize: 26,
           fontWeight: 800,
           letterSpacing: 1,
         }}
       >
-        2D MOTION ENGINE TEST
+        MOTION ASSET NETWORK TEST
       </div>
     </AbsoluteFill>
   );
@@ -250,18 +253,24 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
 
 export const MotionEngineTest: React.FC = () => {
   const nodes: MotionNode[] = [
-    {id: 'A', x: 18, y: 48, size: 96, delay: 0},
-    {id: 'B', x: 36, y: 25, size: 82, delay: 10},
-    {id: 'C', x: 54, y: 50, size: 110, delay: 20},
-    {id: 'D', x: 74, y: 25, size: 82, delay: 30},
-    {id: 'E', x: 78, y: 72, size: 82, delay: 40},
-    {id: 'F', x: 38, y: 75, size: 82, delay: 50},
+    {id: 'agent-a', x: 20, y: 48, size: 150, delay: 0, asset: 'agent'},
+    {id: 'server', x: 50, y: 48, size: 180, delay: 15, asset: 'server'},
+    {id: 'board', x: 80, y: 48, size: 210, delay: 30, asset: 'message-board'},
+    {id: 'agent-b', x: 65, y: 22, size: 130, delay: 45, asset: 'agent'},
+    {id: 'agent-c', x: 65, y: 76, size: 130, delay: 60, asset: 'agent'},
+  ];
+
+  const edges: MotionEdge[] = [
+    {id: 'a-server', from: 'agent-a', to: 'server', delay: 70},
+    {id: 'server-board', from: 'server', to: 'board', delay: 90},
+    {id: 'board-b', from: 'board', to: 'agent-b', delay: 110},
+    {id: 'board-c', from: 'board', to: 'agent-c', delay: 130},
   ];
 
   return (
     <TwoDMotionEngine
       nodes={nodes}
-      edges={[]}
+      edges={edges}
       durationInFrames={240}
       color="#ff0000"
     />
