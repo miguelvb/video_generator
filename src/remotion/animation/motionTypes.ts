@@ -2,6 +2,8 @@ export type MotionAssetType = 'agent' | 'message-board' | 'server' | 'folder';
 
 export type MotionNodeState = 'normal' | 'active' | 'success' | 'error';
 
+export type MotionEdgeState = 'normal' | 'active' | 'success' | 'error';
+
 export type MotionNode = {
   id: string;
   x: number;
@@ -27,6 +29,7 @@ export type MotionEdge = {
   to: string;
   delay?: number;
   curvature?: number;
+  state?: MotionEdgeState;
 };
 
 export type MotionCameraFocus = {
