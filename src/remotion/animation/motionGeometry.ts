@@ -14,6 +14,13 @@ export const smoothProgress = (frame: number, start: number, duration: number) =
     clamp01((frame - start) / Math.max(1, duration)),
   );
 
+export const moveProgress = (frame: number, start: number, duration: number) => {
+  const t = clamp01((frame - start) / Math.max(1, duration));
+  // Quintic smoothstep makes the acceleration/deceleration more visible
+  // than the softer cubic used by connection drawing and packets.
+  return 6 * t ** 5 - 15 * t ** 4 + 10 * t ** 3;
+};
+
 export const nodeProgress = (frame: number, delay: number) =>
   smoothProgress(frame, delay, 18);
 
