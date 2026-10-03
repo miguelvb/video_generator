@@ -40,21 +40,44 @@ export const MotionCamera: React.FC<MotionCameraProps> = ({
     (startTarget.scale ?? 1) +
     ((target.scale ?? 1) - (startTarget.scale ?? 1)) * progress;
 
-  const translateX = width / 2 - (x / 100) * width;
-  const translateY = height / 2 - (y / 100) * height;
+  // Scale around the composition center while keeping the requested point
+  // centered in the viewport.
+  const translateX = ((50 - x) / 100) * width * scale;
+  const translateY = ((50 - y) / 100) * height * scale;
 
   return (
     <AbsoluteFill style={{overflow: 'hidden'}}>
       <div
         style={{
           position: 'absolute',
+          left: 0,
+          top: 0,
           width,
           height,
-          transform: `translate(${translateX}px, ${translateY}px) scale(${scale})`,
-          transformOrigin: 'center center',
+          overflow: 'hidden',
         }}
       >
-        {children}
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            width,
+            height,
+            transform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`,
+            transformOrigin: 'center center',
+          }}
+        >
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+            }}
+          >
+            {children}
+          </div>
+        </div>
       </div>
     </AbsoluteFill>
   );
