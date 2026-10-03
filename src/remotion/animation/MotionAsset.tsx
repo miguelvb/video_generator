@@ -18,7 +18,7 @@ export const MotionAsset: React.FC<{
 }> = ({node, frame}) => {
   const progress = nodeProgress(frame, node.delay ?? 0);
   const size = node.size ?? 100;
-  const scale = interpolate(progress, [0, 1], [0.45, 1], {
+  const scale = interpolate(progress, [0, 1], [0.92, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
