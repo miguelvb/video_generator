@@ -56,6 +56,12 @@ export const MOTION_ASSETS: Record<MotionAssetType, MotionAssetDefinition> = {
     label: 'Task Module UI',
     category: 'infrastructure',
   },
+  'folder-ui': {
+    type: 'folder-ui',
+    path: 'assets/motion/folder-ui.svg',
+    label: 'Folder UI',
+    category: 'infrastructure',
+  },
 };
 
 export const getMotionAsset = (type: MotionAssetType) =>
