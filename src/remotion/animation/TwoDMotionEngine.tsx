@@ -192,6 +192,11 @@ export const MotionEngineTest: React.FC = () => {
           y: 50,
         },
         {
+          type: 'connect',
+          targetId: 'agent-server',
+          startFrame: 90,
+        },
+        {
           type: 'send',
           targetId: 'agent-server',
           startFrame: 105,
