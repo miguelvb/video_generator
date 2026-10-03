@@ -36,6 +36,7 @@ export type MotionSceneDefinition = {
   actions: MotionSceneAction[];
   durationInFrames: number;
   color?: string;
+  background?: string;
 };
 
 const compileAction = (action: MotionSceneAction): MotionAction => {
@@ -117,5 +118,6 @@ export const compileMotionScene = (
     actions: scene.actions.map(compileAction),
     durationInFrames: scene.durationInFrames,
     color: scene.color,
+    backgroundAsset: scene.background,
   };
 };
