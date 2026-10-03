@@ -3,6 +3,7 @@ import {AbsoluteFill, Sequence, Audio, Video, staticFile, useCurrentFrame, inter
 import {VIDEO_CONTENT} from '../generated/videoContent';
 import {AUDIO_TIMINGS} from '../generated/audioTimings';
 import {VIDEO_CONFIG} from '../generated/videoConfig';
+import {MotionScriptScene} from './animation/MotionScriptScene';
 
 const FPS = Number(VIDEO_CONFIG.fps);
 const inputProps = getInputProps() as any;
@@ -188,7 +189,13 @@ const SvgNetworkOverlay: React.FC<{duration:number}> = ({duration}) => {
   </svg>;
 };
 
-const SceneVisual: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut:boolean}> = ({scene,duration,fadeIn,fadeOut}) => {
+const SceneVisual: React.FC<{
+  scene:any;
+  duration:number;
+  fadeIn:boolean;
+  fadeOut:boolean;
+  contentOffset:number;
+}> = ({scene,duration,fadeIn,fadeOut,contentOffset}) => {
   const frame = useCurrentFrame();
   const fadeInOpacity = fadeIn
     ? interpolate(frame, [0, TRANSITION_FRAMES], [0, 1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
@@ -197,8 +204,15 @@ const SceneVisual: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut
   const fadeOutOpacity = fadeOut
     ? interpolate(frame, [fadeOutStart, duration], [1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
     : 1;
+  const motionScene = scene.motion_scene;
   return <AbsoluteFill style={{opacity: Math.min(fadeInOpacity, fadeOutOpacity)}}>
-    <AnimatedAIClip scene={{...scene, __durationFrames: duration}} duration={duration}/>
+    {motionScene ? (
+      <Sequence from={contentOffset} durationInFrames={duration}>
+        <MotionScriptScene scene={motionScene} durationInFrames={duration} />
+      </Sequence>
+    ) : (
+      <AnimatedAIClip scene={{...scene, __durationFrames: duration}} duration={duration}/>
+    )}
   </AbsoluteFill>;
 };
 
@@ -206,7 +220,13 @@ const Scene: React.FC<{scene:any; sceneIndex:number; duration:number; visualDura
   const timing = TIMINGS[timingKey(scene)];
   if (!timing?.audioFile) throw new Error(`Missing audio file timing for scene ${scene.scene_id}`);
   return <AbsoluteFill style={{background:'transparent', overflow:'hidden'}}>
-    <SceneVisual scene={scene} duration={visualDuration} fadeIn={sceneIndex > 0} fadeOut={sceneIndex < scenes.length - 1} />
+    <SceneVisual
+      scene={scene}
+      duration={duration}
+      fadeIn={sceneIndex > 0}
+      fadeOut={sceneIndex < scenes.length - 1}
+      contentOffset={contentOffset}
+    />
     <Sequence from={contentOffset} durationInFrames={duration}>
       <Audio src={staticFile(timing.audioFile)} />
     </Sequence>
