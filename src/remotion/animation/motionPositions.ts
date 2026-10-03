@@ -1,4 +1,5 @@
 import {interpolate} from 'remotion';
+import {easeInOutCubic} from './motionGeometry';
 import type {MotionNode} from './motionTypes';
 
 export const resolveNodePositions = (
@@ -17,7 +18,7 @@ export const resolveNodePositions = (
         frame,
         [change.startFrame, change.startFrame + change.durationInFrames],
         [0, 1],
-        {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'},
+        {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: easeInOutCubic},
       );
 
       x = x + (change.x - x) * progress;
