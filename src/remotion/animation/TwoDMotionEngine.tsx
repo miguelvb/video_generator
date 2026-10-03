@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, staticFile, useCurrentFrame} from 'remotion';
 import {MotionAsset} from './MotionAsset';
 import {MotionConnection} from './MotionConnection';
 import {MotionPacket} from './MotionPacket';
@@ -26,6 +26,7 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
   durationInFrames,
   actions,
   showDebugLabel = true,
+  backgroundAsset,
   color = '#ff0000',
 }) => {
   const frame = useCurrentFrame();
@@ -51,6 +52,20 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
         overflow: 'hidden',
       }}
     >
+      {backgroundAsset && (
+        <img
+          src={staticFile(backgroundAsset)}
+          alt=""
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            pointerEvents: 'none',
+          }}
+        />
+      )}
       <MotionCamera
         startTarget={{x: 50, y: 50, scale: 1}}
         target={cameraTarget}
