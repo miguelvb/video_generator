@@ -46,7 +46,7 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
   return (
     <AbsoluteFill
       style={{
-        background: '#f4efe3',
+        background: '#000',
         overflow: 'hidden',
       }}
     >
@@ -208,18 +208,7 @@ export const MotionEngineTest: React.FC = () => {
           frame: 105,
           state: 'active',
         },
-        {
-          type: 'set-edge-state',
-          targetId: 'agent-server',
-          frame: 150,
-          state: 'success',
-        },
-        {
-          type: 'set-node-state',
-          targetId: 'server',
-          frame: 150,
-          state: 'success',
-        },
+
       ]}
       durationInFrames={210}
       color="#ff0000"
