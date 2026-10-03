@@ -65,6 +65,33 @@ appropriate. Never handheld, shaky, spinning or randomly zooming.
 
 ## SCENE 001: Título de la escena
 
+### MOTION SCENE
+
+# Optional declarative deterministic animation.
+# This JSON is interpreted by the 2D motion engine.
+
+```json
+{
+  "durationInFrames": 180,
+  "color": "#39f6ff",
+  "nodes": [
+    {"id": "agent-a", "asset": "agent-ui", "x": 20, "y": 50, "size": 150},
+    {"id": "server", "asset": "server-ui", "x": 75, "y": 50, "size": 180}
+  ],
+  "connections": [
+    {"id": "agent-server", "from": "agent-a", "to": "server"}
+  ],
+  "actions": [
+    {"type": "appear", "target": "agent-a", "at": 0, "duration": 18},
+    {"type": "appear", "target": "server", "at": 18, "duration": 18},
+    {"type": "move", "target": "agent-a", "at": 36, "duration": 45, "x": 42, "y": 50},
+    {"type": "connect", "target": "agent-server", "at": 90},
+    {"type": "send", "target": "agent-server", "at": 105, "duration": 42},
+    {"type": "activate", "target": "agent-server", "at": 105}
+  ]
+}
+```
+
 ### VOICEOVER — ES — EXACT TEXT
 
 Escribe aquí la narración en español.
