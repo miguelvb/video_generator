@@ -2,6 +2,7 @@
 """Parse the content-first Markdown script into structured project/scene data."""
 from __future__ import annotations
 
+import json
 import re
 from pathlib import Path
 
@@ -69,6 +70,20 @@ def parse_script(path: Path) -> dict:
             return
         if current_section == "animation" and current is not None:
             current["animation"] = _parse_key_value_block(buffer)
+            buffer = []
+            return
+        if current_section == "motion_scene" and current is not None:
+            raw_motion = "\n".join(buffer).strip()
+            if raw_motion.startswith("```"):
+                raw_motion = re.sub(r"^```(?:json)?\s*", "", raw_motion)
+                raw_motion = re.sub(r"\s*```$", "", raw_motion)
+            if raw_motion:
+                try:
+                    current["motion_scene"] = json.loads(raw_motion)
+                except json.JSONDecodeError as exc:
+                    raise ValueError(
+                        f"Scene {current['scene_id']} has invalid MOTION SCENE JSON: {exc}"
+                    ) from exc
             buffer = []
             return
         if current_section in {"settings", "models", "music", "ending", "intro"}:
@@ -160,6 +175,7 @@ def parse_script(path: Path) -> dict:
                 "start_state": "start_state",
                 "end_state": "end_state",
                 "animation": "animation",
+                "motion_scene": "motion_scene",
                 "ai_video_prompt": "animation",
                 "ai_video": "animation",
                 "animation_engine": "animation",
