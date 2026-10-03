@@ -245,6 +245,18 @@ def write_generated_content(project: dict) -> None:
         f"export const VIDEO_CONTENT = {{scenes: {payload}}} as const;\n",
         encoding="utf-8",
     )
+    motion_scenes = {
+        str(scene["scene_id"]): scene["motion_scene"]
+        for scene in project["scenes"]
+        if scene.get("motion_scene")
+    }
+    motion_scenes_path = ROOT / "src" / "generated" / "motionScenes.ts"
+    motion_scenes_path.write_text(
+        "// AUTO-GENERATED from Markdown MOTION SCENE blocks. Do not edit manually.\n"
+        f"export const MOTION_SCENES = {json.dumps(motion_scenes, ensure_ascii=False, indent=2)} as const;\n",
+        encoding="utf-8",
+    )
+
     config_path = ROOT / "src" / "generated" / "videoConfig.ts"
     config_path.write_text(
         "// AUTO-GENERATED from project/script.md. Do not edit manually.\n"
