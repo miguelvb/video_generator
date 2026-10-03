@@ -9,6 +9,15 @@ export type MotionNode = {
   asset?: MotionAssetType;
 };
 
+export type MotionGroup = {
+  id: string;
+  nodeIds: string[];
+  offsetX?: number;
+  offsetY?: number;
+  delay?: number;
+  durationInFrames?: number;
+};
+
 export type MotionEdge = {
   id: string;
   from: string;
@@ -20,6 +29,7 @@ export type MotionEdge = {
 export type TwoDMotionEngineProps = {
   nodes: MotionNode[];
   edges: MotionEdge[];
+  groups?: MotionGroup[];
   durationInFrames: number;
   color?: string;
 };
