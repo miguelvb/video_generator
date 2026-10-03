@@ -78,25 +78,38 @@ export const MotionAsset: React.FC<{
         />
       )}
       {state !== 'normal' && (
-        <div
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '-28px',
-            transform: 'translateX(-50%)',
-            padding: '4px 8px',
-            border: `3px solid ${stateColor}`,
-            background: '#fff',
-            color: stateColor,
-            fontFamily: 'Arial, sans-serif',
-            fontSize: 14,
-            fontWeight: 900,
-            letterSpacing: 1,
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {STATE_LABELS[state]}
-        </div>
+        <>
+          <div
+            style={{
+              position: 'absolute',
+              inset: '-18%',
+              border: `10px solid ${stateColor}`,
+              borderRadius: 32,
+              boxSizing: 'border-box',
+              pointerEvents: 'none',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
+              padding: '10px 18px',
+              border: `6px solid ${stateColor}`,
+              background: '#fff',
+              color: stateColor,
+              fontFamily: 'Arial, sans-serif',
+              fontSize: 24,
+              fontWeight: 900,
+              letterSpacing: 2,
+              whiteSpace: 'nowrap',
+              zIndex: 10,
+            }}
+          >
+            {STATE_LABELS[state]}
+          </div>
+        </>
       )}
     </div>
   );
