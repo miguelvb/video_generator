@@ -3,10 +3,19 @@ import {Composition} from 'remotion';
 import {MainVideo, TOTAL_DURATION_FRAMES} from './remotion/MainVideo';
 import {VIDEO_CONFIG} from './generated/videoConfig';
 import {MotionEngineTest} from './remotion/animation/TwoDMotionEngine';
+import {MotionCameraTest} from './remotion/animation/MotionCameraTest';
 
 export const Root: React.FC = () => {
   return (
     <>
+      <Composition
+        id="MotionCameraTest"
+        component={MotionCameraTest}
+        durationInFrames={180}
+        fps={Number(VIDEO_CONFIG.fps)}
+        width={Number(VIDEO_CONFIG.width)}
+        height={Number(VIDEO_CONFIG.height)}
+      />
       <Composition
         id="MotionEngineTest"
         component={MotionEngineTest}
