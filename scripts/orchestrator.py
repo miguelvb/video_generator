@@ -257,6 +257,15 @@ def write_generated_content(project: dict) -> None:
         encoding="utf-8",
     )
 
+    if str(project.get("source", "")).replace("\\", "/").endswith("project/demo_collective/script.md"):
+        demo_path = ROOT / "src" / "generated" / "demoCollectiveMotionScene.ts"
+        demo_scene = project["scenes"][0].get("motion_scene")
+        demo_path.write_text(
+            "// AUTO-GENERATED from project/demo_collective/script.md. Do not edit manually.\n"
+            f"export const DEMO_COLLECTIVE_MOTION_SCENE = {json.dumps(demo_scene, ensure_ascii=False, indent=2)} as const;\n",
+            encoding="utf-8",
+        )
+
     config_path = ROOT / "src" / "generated" / "videoConfig.ts"
     config_path.write_text(
         "// AUTO-GENERATED from project/script.md. Do not edit manually.\n"
