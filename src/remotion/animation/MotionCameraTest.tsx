@@ -20,6 +20,7 @@ export const MotionCameraTest: React.FC = () => {
           style={{
             background: '#f4efe3',
             border: '18px solid #ff0000',
+            boxSizing: 'border-box',
           }}
         >
           <div
