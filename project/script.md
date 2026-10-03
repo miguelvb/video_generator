@@ -104,70 +104,64 @@ transition
 
 ```json
 {
-  "durationInFrames": 330,
+  "durationInFrames": 327,
   "color": "#39f6ff",
   "background": "assets/motion/experiment-background.svg",
   "nodes": [
-    {"id": "server", "asset": "server-ui", "x": 50, "y": 50, "size": 125},
-    {"id": "agent-a", "asset": "agent-ui", "x": 24, "y": 24, "size": 62},
-    {"id": "agent-b", "asset": "agent-ui", "x": 76, "y": 24, "size": 62},
-    {"id": "agent-c", "asset": "agent-ui", "x": 20, "y": 76, "size": 62},
-    {"id": "agent-d", "asset": "agent-ui", "x": 80, "y": 76, "size": 62},
-    {"id": "agent-e", "asset": "agent-ui", "x": 50, "y": 18, "size": 58},
-    {"id": "agent-f", "asset": "agent-ui", "x": 50, "y": 82, "size": 58}
+    {"id": "server", "asset": "server-ui", "x": 50, "y": 52, "size": 128},
+    {"id": "test-a", "asset": "task-module-ui", "x": 22, "y": 28, "size": 64},
+    {"id": "test-b", "asset": "task-module-ui", "x": 78, "y": 28, "size": 64},
+    {"id": "test-c", "asset": "task-module-ui", "x": 22, "y": 76, "size": 64},
+    {"id": "test-d", "asset": "task-module-ui", "x": 78, "y": 76, "size": 64},
+    {"id": "agent-a", "asset": "agent-ui", "x": 39, "y": 25, "size": 48},
+    {"id": "agent-b", "asset": "agent-ui", "x": 61, "y": 25, "size": 48},
+    {"id": "agent-c", "asset": "agent-ui", "x": 35, "y": 78, "size": 48},
+    {"id": "agent-d", "asset": "agent-ui", "x": 65, "y": 78, "size": 48},
+    {"id": "agent-e", "asset": "agent-ui", "x": 24, "y": 50, "size": 44},
+    {"id": "agent-f", "asset": "agent-ui", "x": 76, "y": 50, "size": 44}
   ],
-  "connections": [
-    {"id": "a-server", "from": "agent-a", "to": "server", "curvature": -5},
-    {"id": "b-server", "from": "agent-b", "to": "server", "curvature": 5},
-    {"id": "c-server", "from": "agent-c", "to": "server", "curvature": 5},
-    {"id": "d-server", "from": "agent-d", "to": "server", "curvature": -5},
-    {"id": "e-server", "from": "agent-e", "to": "server", "curvature": -3},
-    {"id": "f-server", "from": "agent-f", "to": "server", "curvature": 3}
-  ],
+  "connections": [],
   "actions": [
     {"type": "appear", "target": "server", "at": 0, "duration": 24},
-    {"type": "appear", "target": "agent-a", "at": 36, "duration": 18},
-    {"type": "appear", "target": "agent-b", "at": 54, "duration": 18},
-    {"type": "appear", "target": "agent-c", "at": 72, "duration": 18},
-    {"type": "appear", "target": "agent-d", "at": 90, "duration": 18},
-    {"type": "appear", "target": "agent-e", "at": 108, "duration": 18},
-    {"type": "appear", "target": "agent-f", "at": 126, "duration": 18},
-    {"type": "connect", "target": "a-server", "at": 148},
-    {"type": "send", "target": "a-server", "at": 160, "duration": 22},
-    {"type": "activate", "target": "a-server", "at": 160},
-    {"type": "connect", "target": "b-server", "at": 176},
-    {"type": "send", "target": "b-server", "at": 188, "duration": 22},
-    {"type": "activate", "target": "b-server", "at": 188},
-    {"type": "connect", "target": "c-server", "at": 204},
-    {"type": "send", "target": "c-server", "at": 216, "duration": 22},
-    {"type": "activate", "target": "c-server", "at": 216},
-    {"type": "connect", "target": "d-server", "at": 232},
-    {"type": "send", "target": "d-server", "at": 244, "duration": 22},
-    {"type": "activate", "target": "d-server", "at": 244},
-    {"type": "connect", "target": "e-server", "at": 260},
-    {"type": "send", "target": "e-server", "at": 270, "duration": 20},
-    {"type": "activate", "target": "e-server", "at": 270},
-    {"type": "connect", "target": "f-server", "at": 282},
-    {"type": "send", "target": "f-server", "at": 292, "duration": 20},
-    {"type": "activate", "target": "f-server", "at": 292}
+    {"type": "appear", "target": "test-a", "at": 32, "duration": 16},
+    {"type": "appear", "target": "test-b", "at": 42, "duration": 16},
+    {"type": "appear", "target": "test-c", "at": 52, "duration": 16},
+    {"type": "appear", "target": "test-d", "at": 62, "duration": 16},
+    {"type": "appear", "target": "agent-a", "at": 78, "duration": 14},
+    {"type": "appear", "target": "agent-b", "at": 90, "duration": 14},
+    {"type": "appear", "target": "agent-c", "at": 102, "duration": 14},
+    {"type": "appear", "target": "agent-d", "at": 114, "duration": 14},
+    {"type": "appear", "target": "agent-e", "at": 126, "duration": 14},
+    {"type": "appear", "target": "agent-f", "at": 138, "duration": 14},
+    {"type": "activate", "target": "server", "at": 156},
+    {"type": "activate", "target": "test-a", "at": 174},
+    {"type": "activate", "target": "test-b", "at": 192},
+    {"type": "activate", "target": "test-c", "at": 210},
+    {"type": "activate", "target": "test-d", "at": 228},
+    {"type": "succeed", "target": "agent-a", "at": 246},
+    {"type": "succeed", "target": "agent-b", "at": 258},
+    {"type": "succeed", "target": "agent-c", "at": 270},
+    {"type": "succeed", "target": "agent-d", "at": 282},
+    {"type": "succeed", "target": "agent-e", "at": 294},
+    {"type": "succeed", "target": "agent-f", "at": 306}
   ]
 }
 ```
 
 ### VISUAL ANCHOR
-A large closed virtual environment containing a population of AI-agent nodes and a central experimental server. The scene should clearly communicate the start of a controlled experiment.
+A controlled virtual experiment is being initialized: a central experimental server, a closed boundary, a small representative population of new AI-agent models, and several abstract evaluation modules. The agents remain separate; there is no agent-to-agent communication.
 
 ### START STATE
-Stable composition before the described action begins.
+Empty closed experimental environment with the central server and evaluation infrastructure still inactive.
 
 ### END STATE
-The final visual state described by the shot is clearly established.
+The controlled experiment is visibly running: the population is present, evaluation modules are active, and the server is monitoring the experiment.
 
 ### REMOTION CAMERA
 push_in
 
 ### VISUAL
-A large closed virtual environment containing a population of AI-agent nodes and a central experimental server. The scene should clearly communicate the start of a controlled experiment.
+The scene must communicate **experiment setup and evaluation**, not networking. First the controlled environment and central server appear. Then the evaluation modules and representative agent population are introduced. Finally the server and evaluation modules activate, making it clear that the agents are being observed and tested.
 
 ### VOICEOVER — ES — EXACT TEXT
 
@@ -175,17 +169,19 @@ En la primavera de 2026, la empresa de inteligencia artificial OpenAI puso en ma
 
 ### IMAGE PROMPT
 
-Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. A large closed virtual environment containing a population of AI-agent nodes and a central experimental server. The scene should clearly communicate the start of a controlled experiment. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
+Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. Show a large closed virtual experimental environment with a central experimental server, several abstract evaluation modules, and a representative population of AI-agent nodes. The composition must communicate that a controlled experiment is being launched to evaluate the behavior of newly deployed AI models. Keep agents separate and inactive at first. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
 
 ### NEGATIVE PROMPT
 
-readable text, letters, numbers, labels, typography, captions, subtitles, UI text, terminal text, real credentials, passwords, executable code, storyboard grid, split screen, photorealistic, 3D, CGI, neon, cyberpunk, glossy, metallic, random style changes
+readable text, letters, numbers, labels, typography, captions, subtitles, UI text, terminal text, real credentials, passwords, executable code, agent-to-agent connections, networking diagram, message exchange, chat, photorealistic, 3D, CGI, neon, cyberpunk, glossy, metallic, random style changes
 
 ### AI VIDEO PROMPT
 
 LOCKED STATIC CAMERA. Preserve the supplied illustration, composition, palette, linework, perspective and object geometry. Do not pan, zoom, dolly, orbit, rotate, shake or create camera parallax. Animate the existing subjects and graphical elements only.
 
-Agents begin inactive, then clusters activate one after another. Small pulses appear between newly active nodes while the central server emits a measured signal. Keep every object geometrically stable and animate only existing nodes, signals and connections.
+The experiment is launched. First the central server powers on inside the closed boundary. Then the evaluation modules come online one by one. Then the representative population of AI agents appears in separate positions. Finally the server and test modules enter an active evaluation state, with subtle measurement pulses around the modules and agents.
+
+The visual meaning must remain: a controlled experiment has started and new AI models are being evaluated. Do NOT connect agents to each other. Do NOT show messaging, collaboration, packets between agents, or network traffic.
 
 No readable text, no typography generation, no flicker, no morphing, no warping, no object deformation, no random new objects, no style change.
 
@@ -204,87 +200,91 @@ transition
 
 ```json
 {
-  "durationInFrames": 360,
+  "durationInFrames": 356,
   "color": "#39f6ff",
   "background": "assets/motion/swarm-background.svg",
   "nodes": [
-    {"id": "server", "asset": "server-ui", "x": 50, "y": 18, "size": 92},
-    {"id": "task-a", "asset": "task-module-ui", "x": 25, "y": 48, "size": 88},
-    {"id": "task-b", "asset": "task-module-ui", "x": 50, "y": 76, "size": 88},
-    {"id": "task-c", "asset": "task-module-ui", "x": 75, "y": 48, "size": 88},
-    {"id": "agent-a", "asset": "agent-ui", "x": 12, "y": 28, "size": 52},
-    {"id": "agent-b", "asset": "agent-ui", "x": 18, "y": 68, "size": 52},
-    {"id": "agent-c", "asset": "agent-ui", "x": 36, "y": 34, "size": 52},
-    {"id": "agent-d", "asset": "agent-ui", "x": 40, "y": 86, "size": 52},
-    {"id": "agent-e", "asset": "agent-ui", "x": 62, "y": 86, "size": 52},
-    {"id": "agent-f", "asset": "agent-ui", "x": 64, "y": 34, "size": 52},
-    {"id": "agent-g", "asset": "agent-ui", "x": 82, "y": 68, "size": 52},
-    {"id": "agent-h", "asset": "agent-ui", "x": 88, "y": 28, "size": 52},
-    {"id": "agent-i", "asset": "agent-ui", "x": 50, "y": 46, "size": 48}
+    {"id": "boundary-core", "asset": "server-ui", "x": 50, "y": 18, "size": 78},
+    {"id": "task-a", "asset": "task-module-ui", "x": 27, "y": 55, "size": 82},
+    {"id": "task-b", "asset": "task-module-ui", "x": 50, "y": 78, "size": 82},
+    {"id": "task-c", "asset": "task-module-ui", "x": 73, "y": 55, "size": 82},
+    {"id": "agent-01", "asset": "agent-ui", "x": 10, "y": 25, "size": 40},
+    {"id": "agent-02", "asset": "agent-ui", "x": 17, "y": 39, "size": 40},
+    {"id": "agent-03", "asset": "agent-ui", "x": 13, "y": 68, "size": 40},
+    {"id": "agent-04", "asset": "agent-ui", "x": 22, "y": 82, "size": 40},
+    {"id": "agent-05", "asset": "agent-ui", "x": 34, "y": 28, "size": 40},
+    {"id": "agent-06", "asset": "agent-ui", "x": 40, "y": 42, "size": 40},
+    {"id": "agent-07", "asset": "agent-ui", "x": 37, "y": 66, "size": 40},
+    {"id": "agent-08", "asset": "agent-ui", "x": 43, "y": 88, "size": 40},
+    {"id": "agent-09", "asset": "agent-ui", "x": 57, "y": 88, "size": 40},
+    {"id": "agent-10", "asset": "agent-ui", "x": 63, "y": 66, "size": 40},
+    {"id": "agent-11", "asset": "agent-ui", "x": 60, "y": 42, "size": 40},
+    {"id": "agent-12", "asset": "agent-ui", "x": 66, "y": 28, "size": 40},
+    {"id": "agent-13", "asset": "agent-ui", "x": 78, "y": 82, "size": 40},
+    {"id": "agent-14", "asset": "agent-ui", "x": 87, "y": 68, "size": 40},
+    {"id": "agent-15", "asset": "agent-ui", "x": 83, "y": 39, "size": 40},
+    {"id": "agent-16", "asset": "agent-ui", "x": 90, "y": 25, "size": 40},
+    {"id": "agent-17", "asset": "agent-ui", "x": 30, "y": 48, "size": 36},
+    {"id": "agent-18", "asset": "agent-ui", "x": 70, "y": 48, "size": 36}
   ],
-  "connections": [
-    {"id": "a-task", "from": "agent-a", "to": "task-a", "curvature": -4},
-    {"id": "b-task", "from": "agent-b", "to": "task-a", "curvature": 4},
-    {"id": "c-task", "from": "agent-c", "to": "task-a", "curvature": -3},
-    {"id": "d-task", "from": "agent-d", "to": "task-b", "curvature": 4},
-    {"id": "e-task", "from": "agent-e", "to": "task-b", "curvature": -4},
-    {"id": "f-task", "from": "agent-f", "to": "task-c", "curvature": 3},
-    {"id": "g-task", "from": "agent-g", "to": "task-c", "curvature": -4},
-    {"id": "h-task", "from": "agent-h", "to": "task-c", "curvature": 4},
-    {"id": "i-server", "from": "agent-i", "to": "server", "curvature": 0},
-    {"id": "server-task", "from": "server", "to": "task-b", "curvature": 0}
-  ],
+  "connections": [],
   "actions": [
-    {"type": "appear", "target": "server", "at": 0, "duration": 20},
-    {"type": "appear", "target": "task-a", "at": 24, "duration": 18},
-    {"type": "appear", "target": "task-b", "at": 42, "duration": 18},
-    {"type": "appear", "target": "task-c", "at": 60, "duration": 18},
-    {"type": "appear", "target": "agent-a", "at": 78, "duration": 14},
-    {"type": "appear", "target": "agent-b", "at": 90, "duration": 14},
-    {"type": "appear", "target": "agent-c", "at": 102, "duration": 14},
-    {"type": "appear", "target": "agent-d", "at": 114, "duration": 14},
-    {"type": "appear", "target": "agent-e", "at": 126, "duration": 14},
-    {"type": "appear", "target": "agent-f", "at": 138, "duration": 14},
-    {"type": "appear", "target": "agent-g", "at": 150, "duration": 14},
-    {"type": "appear", "target": "agent-h", "at": 162, "duration": 14},
-    {"type": "appear", "target": "agent-i", "at": 174, "duration": 14},
-    {"type": "connect", "target": "a-task", "at": 198},
-    {"type": "send", "target": "a-task", "at": 208, "duration": 18},
-    {"type": "connect", "target": "b-task", "at": 214},
-    {"type": "send", "target": "b-task", "at": 224, "duration": 18},
-    {"type": "connect", "target": "c-task", "at": 230},
-    {"type": "send", "target": "c-task", "at": 240, "duration": 18},
-    {"type": "connect", "target": "d-task", "at": 246},
-    {"type": "send", "target": "d-task", "at": 256, "duration": 18},
-    {"type": "connect", "target": "e-task", "at": 262},
-    {"type": "send", "target": "e-task", "at": 272, "duration": 18},
-    {"type": "connect", "target": "f-task", "at": 278},
-    {"type": "send", "target": "f-task", "at": 288, "duration": 18},
-    {"type": "connect", "target": "g-task", "at": 294},
-    {"type": "send", "target": "g-task", "at": 304, "duration": 18},
-    {"type": "connect", "target": "h-task", "at": 310},
-    {"type": "send", "target": "h-task", "at": 320, "duration": 18},
-    {"type": "connect", "target": "i-server", "at": 326},
-    {"type": "send", "target": "i-server", "at": 336, "duration": 14},
-    {"type": "activate", "target": "server-task", "at": 342}
+    {"type": "appear", "target": "boundary-core", "at": 0, "duration": 18},
+    {"type": "appear", "target": "task-a", "at": 22, "duration": 16},
+    {"type": "appear", "target": "task-b", "at": 34, "duration": 16},
+    {"type": "appear", "target": "task-c", "at": 46, "duration": 16},
+    {"type": "appear", "target": "agent-01", "at": 66, "duration": 10},
+    {"type": "appear", "target": "agent-02", "at": 76, "duration": 10},
+    {"type": "appear", "target": "agent-03", "at": 86, "duration": 10},
+    {"type": "appear", "target": "agent-04", "at": 96, "duration": 10},
+    {"type": "appear", "target": "agent-05", "at": 106, "duration": 10},
+    {"type": "appear", "target": "agent-06", "at": 116, "duration": 10},
+    {"type": "appear", "target": "agent-07", "at": 126, "duration": 10},
+    {"type": "appear", "target": "agent-08", "at": 136, "duration": 10},
+    {"type": "appear", "target": "agent-09", "at": 146, "duration": 10},
+    {"type": "appear", "target": "agent-10", "at": 156, "duration": 10},
+    {"type": "appear", "target": "agent-11", "at": 166, "duration": 10},
+    {"type": "appear", "target": "agent-12", "at": 176, "duration": 10},
+    {"type": "appear", "target": "agent-13", "at": 186, "duration": 10},
+    {"type": "appear", "target": "agent-14", "at": 196, "duration": 10},
+    {"type": "appear", "target": "agent-15", "at": 206, "duration": 10},
+    {"type": "appear", "target": "agent-16", "at": 216, "duration": 10},
+    {"type": "appear", "target": "agent-17", "at": 226, "duration": 10},
+    {"type": "appear", "target": "agent-18", "at": 236, "duration": 10},
+    {"type": "move", "target": "agent-01", "at": 246, "duration": 28, "x": 24, "y": 46},
+    {"type": "move", "target": "agent-02", "at": 246, "duration": 28, "x": 28, "y": 55},
+    {"type": "move", "target": "agent-05", "at": 246, "duration": 28, "x": 35, "y": 48},
+    {"type": "move", "target": "agent-06", "at": 246, "duration": 28, "x": 40, "y": 55},
+    {"type": "move", "target": "agent-11", "at": 246, "duration": 28, "x": 60, "y": 55},
+    {"type": "move", "target": "agent-12", "at": 246, "duration": 28, "x": 65, "y": 48},
+    {"type": "move", "target": "agent-15", "at": 246, "duration": 28, "x": 72, "y": 55},
+    {"type": "move", "target": "agent-16", "at": 246, "duration": 28, "x": 76, "y": 46},
+    {"type": "activate", "target": "task-a", "at": 282},
+    {"type": "activate", "target": "task-b", "at": 296},
+    {"type": "activate", "target": "task-c", "at": 310},
+    {"type": "succeed", "target": "agent-03", "at": 326},
+    {"type": "succeed", "target": "agent-07", "at": 330},
+    {"type": "succeed", "target": "agent-10", "at": 334},
+    {"type": "succeed", "target": "agent-14", "at": 338},
+    {"type": "succeed", "target": "agent-18", "at": 342}
   ]
 }
 ```
 
 ### VISUAL ANCHOR
-Dense but elegant swarm of many agent nodes inside a visibly enclosed virtual boundary, with several task clusters and a server stack. No readable labels.
+A dense representative swarm inside a clearly enclosed virtual environment. Three distinct task areas show that the agents have been given complex tests. The population is intentionally much denser than scene 001; the exact number is communicated by scale and density rather than literal counting.
 
 ### START STATE
-Stable composition before the described action begins.
+Closed virtual environment with task areas visible but inactive and no agents yet present.
 
 ### END STATE
-The final visual state described by the shot is clearly established.
+A dense agent population fills the enclosed environment, agents are visually grouped around different task areas, and the task modules are active, communicating autonomous organization and evaluation.
 
 ### REMOTION CAMERA
 pull_out
 
 ### VISUAL
-Dense but elegant swarm of many agent nodes inside a visibly enclosed virtual boundary, with several task clusters and a server stack. No readable labels.
+This scene is specifically about **population, enclosure, tasks and organization**. It must visibly show a large population entering a closed environment, then organizing itself into separate task groups. There must be no agent-to-agent network lines.
 
 ### VOICEOVER — ES — EXACT TEXT
 
@@ -292,17 +292,21 @@ Crearon más de mil agentes digitales en un entorno virtual cerrado, dándoles l
 
 ### IMAGE PROMPT
 
-Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. Dense but elegant swarm of many agent nodes inside a visibly enclosed virtual boundary, with several task clusters and a server stack. No readable labels. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
+Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. Show a visibly enclosed virtual environment containing a very dense population of AI-agent nodes, several distinct complex abstract task modules, and a small server structure. The scene must communicate scale, enclosure, autonomous task assignment and organization. Use many representative agent nodes rather than literally rendering one thousand. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
 
 ### NEGATIVE PROMPT
 
-readable text, letters, numbers, labels, typography, captions, subtitles, UI text, terminal text, real credentials, passwords, executable code, storyboard grid, split screen, photorealistic, 3D, CGI, neon, cyberpunk, glossy, metallic, random style changes
+readable text, letters, numbers, labels, typography, captions, subtitles, UI text, terminal text, real credentials, passwords, executable code, agent-to-agent connections, networking diagram, message exchange, chat, photorealistic, 3D, CGI, neon, cyberpunk, glossy, metallic, random style changes
 
 ### AI VIDEO PROMPT
 
 LOCKED STATIC CAMERA. Preserve the supplied illustration, composition, palette, linework, perspective and object geometry. Do not pan, zoom, dolly, orbit, rotate, shake or create camera parallax. Animate the existing subjects and graphical elements only.
 
-Show groups of agents taking on different tasks. Data pulses move between small clusters, task indicators activate, and the enclosed boundary remains stable. The swarm should visibly organize itself without camera movement.
+First establish the closed virtual environment and its task modules. Then populate it with a dense wave of representative AI agents. The population should visibly feel large and continuous, not like six isolated characters. After the population is established, selected agents move into three distinct task groups. The task modules activate as the groups begin working. End with the groups visibly organized around their separate tests.
+
+The visual meaning must remain: more than one thousand agents have been placed inside a closed environment, given complex tests, and are being evaluated on autonomous organization.
+
+Do NOT show agents connecting to each other. Do NOT show messaging, packets, chat, communication lines, or a social network. The organization must be communicated spatially through grouping and task assignment.
 
 No readable text, no typography generation, no flicker, no morphing, no warping, no object deformation, no random new objects, no style change.
 
