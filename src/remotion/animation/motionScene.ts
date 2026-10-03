@@ -94,9 +94,41 @@ const compileAction = (action: MotionSceneAction): MotionAction => {
   }
 };
 
+const scaleFrame = (frame: number, scale: number): number =>
+  Math.max(0, Math.round(frame * scale));
+
+const scaleMotionAction = (
+  action: MotionSceneAction,
+  scale: number,
+): MotionSceneAction => {
+  if (
+    action.type === 'appear' ||
+    action.type === 'connect' ||
+    action.type === 'activate' ||
+    action.type === 'succeed' ||
+    action.type === 'error'
+  ) {
+    return {...action, at: scaleFrame(action.at, scale)};
+  }
+
+  return {
+    ...action,
+    at: scaleFrame(action.at, scale),
+    duration: Math.max(1, scaleFrame(action.duration, scale)),
+  };
+};
+
 export const compileMotionScene = (
   scene: MotionSceneDefinition,
+  durationOverride?: number,
 ): TwoDMotionEngineProps => {
+  const authoredDuration = Math.max(1, scene.durationInFrames);
+  const durationInFrames = Math.max(
+    1,
+    Math.round(durationOverride ?? authoredDuration),
+  );
+  const scale = durationInFrames / authoredDuration;
+
   const nodes: MotionNode[] = scene.nodes.map((node) => ({
     id: node.id,
     x: node.x,
@@ -115,8 +147,10 @@ export const compileMotionScene = (
   return {
     nodes,
     edges,
-    actions: scene.actions.map(compileAction),
-    durationInFrames: scene.durationInFrames,
+    actions: scene.actions.map((action) =>
+      compileAction(scaleMotionAction(action, scale)),
+    ),
+    durationInFrames,
     color: scene.color,
     backgroundAsset: scene.background,
   };
