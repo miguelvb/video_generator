@@ -4,6 +4,13 @@ import {nodeProgress} from './motionGeometry';
 import type {MotionNode} from './motionTypes';
 import {getMotionAsset} from './assetRegistry';
 
+const STATE_LABELS = {
+  normal: '',
+  active: 'ACTIVE',
+  success: 'SUCCESS',
+  error: 'ERROR',
+} as const;
+
 export const MotionAsset: React.FC<{
   node: MotionNode;
   frame: number;
@@ -24,6 +31,16 @@ export const MotionAsset: React.FC<{
   const pulse = cycle / 60;
   const ringScale = 0.8 + pulse * 1.25;
   const ringOpacity = 0.8 * (1 - pulse);
+
+  const state = node.state ?? 'normal';
+  const stateColor =
+    state === 'error'
+      ? '#ff0000'
+      : state === 'success'
+        ? '#008000'
+        : state === 'active'
+          ? '#ff0000'
+          : 'transparent';
 
   return (
     <div
@@ -59,6 +76,27 @@ export const MotionAsset: React.FC<{
             height: '100%',
           }}
         />
+      )}
+      {state !== 'normal' && (
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '-28px',
+            transform: 'translateX(-50%)',
+            padding: '4px 8px',
+            border: `3px solid ${stateColor}`,
+            background: '#fff',
+            color: stateColor,
+            fontFamily: 'Arial, sans-serif',
+            fontSize: 14,
+            fontWeight: 900,
+            letterSpacing: 1,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {STATE_LABELS[state]}
+        </div>
       )}
     </div>
   );
