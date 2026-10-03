@@ -121,10 +121,10 @@ const Edge: React.FC<{
 
   return (
     <line
-      x1=`${from.x}%`
-      y1=`${from.y}%`
-      x2=`${to.x}%`
-      y2=`${to.y}%`
+      x1={`${from.x}%`}
+      y1={`${from.y}%`}
+      x2={`${to.x}%`}
+      y2={`${to.y}%`}
       stroke={color}
       strokeWidth="6"
       strokeLinecap="round"
