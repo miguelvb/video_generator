@@ -115,4 +115,5 @@ export type TwoDMotionEngineProps = {
   color?: string;
   actions?: MotionAction[];
   showDebugLabel?: boolean;
+  backgroundAsset?: string;
 };
