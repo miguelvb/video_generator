@@ -31,12 +31,12 @@ export type MotionSceneAction =
   | {type: 'error'; target: string; at: number};
 
 export type MotionSceneDefinition = {
-  nodes: MotionSceneNode[];
-  connections: MotionSceneConnection[];
-  actions: MotionSceneAction[];
-  durationInFrames: number;
-  color?: string;
-  background?: string;
+  readonly nodes: readonly MotionSceneNode[];
+  readonly connections: readonly MotionSceneConnection[];
+  readonly actions: readonly MotionSceneAction[];
+  readonly durationInFrames: number;
+  readonly color?: string;
+  readonly background?: string;
 };
 
 const compileAction = (action: MotionSceneAction): MotionAction => {
