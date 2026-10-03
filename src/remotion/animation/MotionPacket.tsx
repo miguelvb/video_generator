@@ -2,6 +2,7 @@ import React from 'react';
 import {clamp01} from './motionGeometry';
 import {getQuadraticControlPoint, getQuadraticPoint} from './motionGeometry';
 import type {MotionEdge, MotionNode} from './motionTypes';
+import {resolveMotionState} from './motionState';
 
 export const MotionPacket: React.FC<{
   edge: MotionEdge;
@@ -24,7 +25,7 @@ export const MotionPacket: React.FC<{
   );
   const point = getQuadraticPoint(from, control, to, progress);
 
-  const state = edge.state ?? 'normal';
+  const state = resolveMotionState(edge.state ?? 'normal', edge.stateChanges, frame);
   const packetColor =
     state === 'error'
       ? '#ff0000'
