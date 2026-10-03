@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, interpolate, useCurrentFrame} from 'remotion';
+import {interpolate, useCurrentFrame} from 'remotion';
 
 export type MotionCameraTarget = {
   x: number;
@@ -23,45 +23,53 @@ export const MotionCamera: React.FC<MotionCameraProps> = ({
   durationInFrames = 30,
 }) => {
   const frame = useCurrentFrame();
+
   const progress = interpolate(
     frame,
     [startFrame, startFrame + durationInFrames],
     [0, 1],
-    {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'},
+    {
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp',
+    },
   );
 
-  const x = startTarget.x + (target.x - startTarget.x) * progress;
-  const y = startTarget.y + (target.y - startTarget.y) * progress;
+  const x =
+    startTarget.x + (target.x - startTarget.x) * progress;
+  const y =
+    startTarget.y + (target.y - startTarget.y) * progress;
   const scale =
     (startTarget.scale ?? 1) +
     ((target.scale ?? 1) - (startTarget.scale ?? 1)) * progress;
 
-  // Keep the stage exactly the size of the Remotion composition.
-  // The camera moves the stage itself; it must never introduce a second
-  // fixed-size 1920x1080 canvas inside the preview.
+  // The stage always has the composition dimensions because it is sized
+  // with 100vw/100vh by its parent. Translation is expressed in percentages
+  // of the stage so the camera does not depend on a hard-coded resolution.
   const translateX = (50 - x) * scale;
   const translateY = (50 - y) * scale;
 
   return (
-    <AbsoluteFill style={{overflow: 'hidden'}}>
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+        width: '100%',
+        height: '100%',
+        overflow: 'hidden',
+      }}
+    >
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          overflow: 'hidden',
+          width: '100%',
+          height: '100%',
+          transformOrigin: 'center center',
+          transform: `translate3d(${translateX}%, ${translateY}%, 0) scale(${scale})`,
         }}
       >
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            transform: `translate3d(${translateX}%, ${translateY}%, 0) scale(${scale})`,
-            transformOrigin: 'center center',
-          }}
-        >
-          {children}
-        </div>
+        {children}
       </div>
-    </AbsoluteFill>
+    </div>
   );
 };
