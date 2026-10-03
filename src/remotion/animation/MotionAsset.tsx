@@ -2,6 +2,7 @@ import React from 'react';
 import {Img, interpolate, staticFile} from 'remotion';
 import {nodeProgress} from './motionGeometry';
 import type {MotionNode} from './motionTypes';
+import {resolveMotionState} from './motionState';
 import {getMotionAsset} from './assetRegistry';
 
 const STATE_LABELS = {
@@ -32,7 +33,7 @@ export const MotionAsset: React.FC<{
   const ringScale = 0.8 + pulse * 1.25;
   const ringOpacity = 0.8 * (1 - pulse);
 
-  const state = node.state ?? 'normal';
+  const state = resolveMotionState(node.state ?? 'normal', node.stateChanges, frame);
   const stateColor =
     state === 'error'
       ? '#ff0000'
