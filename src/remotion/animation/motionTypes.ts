@@ -1,4 +1,4 @@
-export type MotionAssetType = 'agent' | 'message-board' | 'server';
+export type MotionAssetType = 'agent' | 'message-board' | 'server' | 'folder';
 
 export type MotionNode = {
   id: string;
