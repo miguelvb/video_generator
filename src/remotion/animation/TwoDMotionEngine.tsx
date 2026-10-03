@@ -5,6 +5,8 @@ import {MotionConnection} from './MotionConnection';
 import {MotionPacket} from './MotionPacket';
 import {MotionGroup} from './MotionGroup';
 import {resolveGroupedNodes} from './motionGroups';
+import {MotionCamera} from './MotionCamera';
+import {resolveCameraFocus} from './motionCameraFocus';
 import type {
   MotionEdge,
   MotionNode,
@@ -18,6 +20,7 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
   nodes,
   edges,
   groups,
+  cameraFocus,
   durationInFrames,
   color = '#ff0000',
 }) => {
@@ -25,6 +28,11 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
   const resolvedNodes = resolveGroupedNodes(nodes, groups ?? [], frame);
   const nodesById = Object.fromEntries(
     resolvedNodes.map((node) => [node.id, node]),
+  );
+  const cameraTarget = resolveCameraFocus(
+    cameraFocus,
+    groups ?? [],
+    resolvedNodes,
   );
 
   void durationInFrames;
@@ -36,14 +44,20 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
         overflow: 'hidden',
       }}
     >
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background:
-            'radial-gradient(circle at 50% 45%, rgba(47,111,103,0.08), transparent 55%)',
-        }}
-      />
+      <MotionCamera
+        startTarget={{x: 50, y: 50, scale: 1}}
+        target={cameraTarget}
+        startFrame={cameraFocus?.startFrame ?? 0}
+        durationInFrames={cameraFocus?.durationInFrames ?? 1}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background:
+              'radial-gradient(circle at 50% 45%, rgba(47,111,103,0.08), transparent 55%)',
+          }}
+        />
 
       <svg
         viewBox="0 0 100 100"
@@ -108,6 +122,8 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
         />
       ))}
 
+      </MotionCamera>
+
       <div
         style={{
           position: 'absolute',
@@ -159,6 +175,7 @@ export const MotionEngineTest: React.FC = () => {
       nodes={nodes}
       edges={edges}
       groups={groups}
+      cameraFocus={{groupId: 'network-group', zoom: 1.8, startFrame: 150, durationInFrames: 45}}
       durationInFrames={240}
       color="#ff0000"
     />
