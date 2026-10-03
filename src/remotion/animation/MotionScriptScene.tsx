@@ -1,18 +1,21 @@
 import React from 'react';
 import {TwoDMotionEngine} from './TwoDMotionEngine';
 import {compileMotionScene, type MotionSceneDefinition} from './motionScene';
-import {DEMO_COLLECTIVE_MOTION_SCENE} from '../../generated/demoCollectiveMotionScene';
 
-const scene = DEMO_COLLECTIVE_MOTION_SCENE as unknown as MotionSceneDefinition;
+type MotionScriptSceneProps = {
+  scene: MotionSceneDefinition;
+  durationInFrames?: number;
+};
 
-export const MotionScriptScene: React.FC = () => {
-  if (!scene) {
-    return null;
-  }
+export const MotionScriptScene: React.FC<MotionScriptSceneProps> = ({
+  scene,
+  durationInFrames,
+}) => {
+  if (!scene) return null;
 
   return (
     <TwoDMotionEngine
-      {...compileMotionScene(scene)}
+      {...compileMotionScene(scene, durationInFrames)}
       showDebugLabel={false}
     />
   );
