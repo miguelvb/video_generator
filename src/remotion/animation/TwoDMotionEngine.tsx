@@ -149,54 +149,74 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
 };
 
 export const MotionEngineTest: React.FC = () => {
-  const groups: MotionGroupType[] = [
+  const nodes: MotionNode[] = [
     {
-      id: 'network-group',
-      nodeIds: ['agent-b', 'agent-c', 'board'],
-      offsetX: -5,
-      offsetY: 0,
-      delay: 150,
-      durationInFrames: 45,
+      id: 'agent-a',
+      x: 25,
+      y: 50,
+      size: 170,
+      delay: 0,
+      asset: 'agent',
+    },
+    {
+      id: 'server',
+      x: 75,
+      y: 50,
+      size: 190,
+      delay: 0,
+      asset: 'server',
     },
   ];
 
-  const nodes: MotionNode[] = [
-    {id: 'agent-a', x: 20, y: 48, size: 150, delay: 0, asset: 'agent'},
-    {id: 'server', x: 50, y: 48, size: 180, delay: 15, asset: 'server'},
-    {id: 'board', x: 80, y: 48, size: 210, delay: 30, asset: 'message-board'},
-    {id: 'agent-b', x: 65, y: 22, size: 130, delay: 45, asset: 'agent'},
-    {id: 'agent-c', x: 65, y: 76, size: 130, delay: 60, asset: 'agent'},
-    {id: 'folder', x: 50, y: 82, size: 150, delay: 75, asset: 'folder'},
-  ];
-
   const edges: MotionEdge[] = [
-    {id: 'a-server', from: 'agent-a', to: 'server', delay: 70, curvature: 8},
-    {id: 'server-board', from: 'server', to: 'board', delay: 90, curvature: -10},
-    {id: 'board-b', from: 'board', to: 'agent-b', delay: 110, curvature: 12},
-    {id: 'board-c', from: 'board', to: 'agent-c', delay: 130, curvature: -12},
+    {
+      id: 'agent-server',
+      from: 'agent-a',
+      to: 'server',
+      delay: 0,
+      curvature: 0,
+    },
   ];
 
   return (
     <TwoDMotionEngine
       nodes={nodes}
       edges={edges}
-      groups={groups}
       actions={[
-        {type: 'appear', targetId: 'agent-a', startFrame: 0, durationInFrames: 18},
-        {type: 'appear', targetId: 'server', startFrame: 15, durationInFrames: 18},
-        {type: 'appear', targetId: 'board', startFrame: 30, durationInFrames: 18},
-        {type: 'appear', targetId: 'agent-b', startFrame: 45, durationInFrames: 18},
-        {type: 'appear', targetId: 'agent-c', startFrame: 60, durationInFrames: 18},
-        {type: 'appear', targetId: 'folder', startFrame: 75, durationInFrames: 18},
-        {type: 'move', targetId: 'agent-a', startFrame: 60, durationInFrames: 45, x: 50, y: 48},
-        {type: 'set-node-state', targetId: 'board', frame: 120, state: 'active'},
-        {type: 'set-node-state', targetId: 'board', frame: 180, state: 'success'},
-        {type: 'send', targetId: 'server-board', startFrame: 120, durationInFrames: 42},
-        {type: 'set-edge-state', targetId: 'server-board', frame: 120, state: 'active'},
-        {type: 'set-edge-state', targetId: 'server-board', frame: 180, state: 'success'},
+        {
+          type: 'move',
+          targetId: 'agent-a',
+          startFrame: 45,
+          durationInFrames: 45,
+          x: 45,
+          y: 50,
+        },
+        {
+          type: 'send',
+          targetId: 'agent-server',
+          startFrame: 105,
+          durationInFrames: 42,
+        },
+        {
+          type: 'set-edge-state',
+          targetId: 'agent-server',
+          frame: 105,
+          state: 'active',
+        },
+        {
+          type: 'set-edge-state',
+          targetId: 'agent-server',
+          frame: 150,
+          state: 'success',
+        },
+        {
+          type: 'set-node-state',
+          targetId: 'server',
+          frame: 150,
+          state: 'success',
+        },
       ]}
-      cameraFocus={{groupId: 'network-group', zoom: 'fit', startFrame: 150, durationInFrames: 45}}
-      durationInFrames={240}
+      durationInFrames={210}
       color="#ff0000"
     />
   );
