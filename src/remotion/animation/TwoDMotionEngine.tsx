@@ -191,6 +191,7 @@ export const MotionEngineTest: React.FC = () => {
         {type: 'move', targetId: 'agent-a', startFrame: 60, durationInFrames: 45, x: 50, y: 48},
         {type: 'set-node-state', targetId: 'board', frame: 120, state: 'active'},
         {type: 'set-node-state', targetId: 'board', frame: 180, state: 'success'},
+        {type: 'send', targetId: 'server-board', startFrame: 120, durationInFrames: 42},
         {type: 'set-edge-state', targetId: 'server-board', frame: 120, state: 'active'},
         {type: 'set-edge-state', targetId: 'server-board', frame: 180, state: 'success'},
       ]}
