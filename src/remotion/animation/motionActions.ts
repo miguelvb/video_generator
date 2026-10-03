@@ -32,6 +32,7 @@ export const resolveMotionActions = (
   const moveActions = actions.filter((action) => action.type === 'move');
   const sendActions = actions.filter((action) => action.type === 'send');
   const connectActions = actions.filter((action) => action.type === 'connect');
+  const activateActions = actions.filter((action) => action.type === 'activate');
   const appearActions = actions.filter((action) => action.type === 'appear');
 
   const resolvedNodes = nodes.map((node) => {
@@ -41,11 +42,7 @@ export const resolveMotionActions = (
     let y = node.y;
 
     for (const move of moves) {
-      const progress = moveProgress(
-        frame,
-        move.startFrame,
-        move.durationInFrames,
-      );
+      const progress = moveProgress(frame, move.startFrame, move.durationInFrames);
       x = x + (move.x - x) * progress;
       y = y + (move.y - y) * progress;
       if (frame >= move.startFrame + move.durationInFrames) {
@@ -55,10 +52,7 @@ export const resolveMotionActions = (
     }
 
     const stateChanges = actions
-      .filter(
-        (action) =>
-          action.type === 'set-node-state' && action.targetId === node.id,
-      )
+      .filter((action) => action.type === 'set-node-state' && action.targetId === node.id)
       .map((action) => ({frame: action.frame, state: action.state as MotionNodeState}));
 
     let opacity = 1;
@@ -85,18 +79,28 @@ export const resolveMotionActions = (
   const resolvedEdges = edges.map((edge) => {
     const send = sendActions.find((action) => action.targetId === edge.id);
     const connect = connectActions.find((action) => action.targetId === edge.id);
+    const activate = activateActions.find((action) => action.targetId === edge.id);
     const stateChanges = actions
-      .filter(
-        (action) =>
-          action.type === 'set-edge-state' && action.targetId === edge.id,
-      )
+      .filter((action) => action.type === 'set-edge-state' && action.targetId === edge.id)
       .map((action) => ({frame: action.frame, state: action.state as MotionEdgeState}));
+
+    const activateChange = activate
+      ? {frame: activate.frame, state: 'active' as MotionEdgeState}
+      : undefined;
 
     return {
       ...edge,
-      sendAction: send ? {startFrame: send.startFrame, durationInFrames: send.durationInFrames} : edge.sendAction,
+      sendAction: send
+        ? {startFrame: send.startFrame, durationInFrames: send.durationInFrames}
+        : edge.sendAction,
       delay: connect ? connect.startFrame : edge.delay,
-      state: stateAt(edge.state ?? 'normal', stateChanges, frame),
+      state: stateAt(
+        edge.state ?? 'normal',
+        [...stateChanges, ...(activateChange ? [activateChange] : [])].sort(
+          (a, b) => a.frame - b.frame,
+        ),
+        frame,
+      ),
     };
   });
 
