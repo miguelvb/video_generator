@@ -36,6 +36,11 @@ export type MotionAction =
       frame: number;
     }
   | {
+      type: 'connect';
+      targetId: string;
+      startFrame: number;
+    }
+  | {
       type: 'send';
       targetId: string;
       startFrame: number;
