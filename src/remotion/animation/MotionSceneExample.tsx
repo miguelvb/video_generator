@@ -1,48 +1,43 @@
 import React from 'react';
 import {TwoDMotionEngine} from './TwoDMotionEngine';
-import type {MotionEdge, MotionNode} from './motionTypes';
+import {compileMotionScene, type MotionSceneDefinition} from './motionScene';
 
-export const MotionSceneExample: React.FC = () => {
-  const nodes: MotionNode[] = [
-    {id: 'agent-a', x: 18, y: 50, size: 150, asset: 'agent-ui'},
-    {id: 'server', x: 50, y: 50, size: 180, asset: 'server-ui'},
-    {id: 'agent-b', x: 82, y: 28, size: 150, asset: 'agent-ui'},
-    {id: 'agent-c', x: 82, y: 72, size: 150, asset: 'agent-ui'},
-  ];
-
-  const edges: MotionEdge[] = [
-    {id: 'a-server', from: 'agent-a', to: 'server', curvature: 0},
+const scene: MotionSceneDefinition = {
+  nodes: [
+    {id: 'agent-a', asset: 'agent-ui', x: 18, y: 50, size: 150},
+    {id: 'server', asset: 'server-ui', x: 50, y: 50, size: 180},
+    {id: 'agent-b', asset: 'agent-ui', x: 82, y: 28, size: 150},
+    {id: 'agent-c', asset: 'agent-ui', x: 82, y: 72, size: 150},
+  ],
+  connections: [
+    {id: 'a-server', from: 'agent-a', to: 'server'},
     {id: 'server-b', from: 'server', to: 'agent-b', curvature: -6},
     {id: 'server-c', from: 'server', to: 'agent-c', curvature: 6},
-  ];
+  ],
+  actions: [
+    {type: 'appear', target: 'agent-a', at: 0, duration: 18},
+    {type: 'appear', target: 'server', at: 18, duration: 18},
+    {type: 'move', target: 'agent-a', at: 30, duration: 36, x: 28, y: 50},
+    {type: 'connect', target: 'a-server', at: 72},
+    {type: 'send', target: 'a-server', at: 84, duration: 48},
+    {type: 'activate', target: 'a-server', at: 84},
 
-  return (
-    <TwoDMotionEngine
-      nodes={nodes}
-      edges={edges}
-      actions={[
-        {type: 'appear', targetId: 'agent-a', startFrame: 0, durationInFrames: 18},
-        {type: 'appear', targetId: 'server', startFrame: 18, durationInFrames: 18},
-        {type: 'move', targetId: 'agent-a', startFrame: 30, durationInFrames: 36, x: 28, y: 50},
-        {type: 'connect', targetId: 'a-server', startFrame: 72},
-        {type: 'send', targetId: 'a-server', startFrame: 84, durationInFrames: 48},
-        {type: 'set-edge-state', targetId: 'a-server', frame: 84, state: 'active'},
+    {type: 'appear', target: 'agent-b', at: 132, duration: 18},
+    {type: 'move', target: 'agent-b', at: 150, duration: 36, x: 72, y: 35},
+    {type: 'connect', target: 'server-b', at: 198},
+    {type: 'send', target: 'server-b', at: 210, duration: 48},
+    {type: 'activate', target: 'server-b', at: 210},
 
-        {type: 'appear', targetId: 'agent-b', startFrame: 132, durationInFrames: 18},
-        {type: 'move', targetId: 'agent-b', startFrame: 150, durationInFrames: 36, x: 72, y: 35},
-        {type: 'connect', targetId: 'server-b', startFrame: 198},
-        {type: 'send', targetId: 'server-b', startFrame: 210, durationInFrames: 48},
-        {type: 'set-edge-state', targetId: 'server-b', frame: 210, state: 'active'},
-
-        {type: 'appear', targetId: 'agent-c', startFrame: 252, durationInFrames: 18},
-        {type: 'move', targetId: 'agent-c', startFrame: 270, durationInFrames: 36, x: 72, y: 65},
-        {type: 'connect', targetId: 'server-c', startFrame: 318},
-        {type: 'send', targetId: 'server-c', startFrame: 330, durationInFrames: 48},
-        {type: 'set-edge-state', targetId: 'server-c', frame: 330, state: 'active'},
-      ]}
-      durationInFrames={390}
-      color="#39f6ff"
-      showDebugLabel={false}
-    />
-  );
+    {type: 'appear', target: 'agent-c', at: 252, duration: 18},
+    {type: 'move', target: 'agent-c', at: 270, duration: 36, x: 72, y: 65},
+    {type: 'connect', target: 'server-c', at: 318},
+    {type: 'send', target: 'server-c', at: 330, duration: 48},
+    {type: 'activate', target: 'server-c', at: 330},
+  ],
+  durationInFrames: 390,
+  color: '#39f6ff',
 };
+
+export const MotionSceneExample: React.FC = () => (
+  <TwoDMotionEngine {...compileMotionScene(scene)} showDebugLabel={false} />
+);
