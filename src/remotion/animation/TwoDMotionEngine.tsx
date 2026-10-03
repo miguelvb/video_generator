@@ -118,6 +118,7 @@ export const MotionEngineTest: React.FC = () => {
     {id: 'board', x: 80, y: 48, size: 210, delay: 30, asset: 'message-board'},
     {id: 'agent-b', x: 65, y: 22, size: 130, delay: 45, asset: 'agent'},
     {id: 'agent-c', x: 65, y: 76, size: 130, delay: 60, asset: 'agent'},
+    {id: 'folder', x: 50, y: 82, size: 150, delay: 75, asset: 'folder'},
   ];
 
   const edges: MotionEdge[] = [
