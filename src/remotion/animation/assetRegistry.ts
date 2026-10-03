@@ -50,6 +50,12 @@ export const MOTION_ASSETS: Record<MotionAssetType, MotionAssetDefinition> = {
     label: 'Server UI',
     category: 'infrastructure',
   },
+  'task-module-ui': {
+    type: 'task-module-ui',
+    path: 'assets/motion/task-module-ui.svg',
+    label: 'Task Module UI',
+    category: 'infrastructure',
+  },
 };
 
 export const getMotionAsset = (type: MotionAssetType) =>
