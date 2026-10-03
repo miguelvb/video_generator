@@ -8,6 +8,13 @@ export type MotionStateChange<T extends string> = {
   state: T;
 };
 
+export type MotionPositionChange = {
+  startFrame: number;
+  durationInFrames: number;
+  x: number;
+  y: number;
+};
+
 export type MotionNode = {
   id: string;
   x: number;
@@ -17,6 +24,7 @@ export type MotionNode = {
   asset?: MotionAssetType;
   state?: MotionNodeState;
   stateChanges?: MotionStateChange<MotionNodeState>[];
+  positionChanges?: MotionPositionChange[];
 };
 
 export type MotionGroup = {
