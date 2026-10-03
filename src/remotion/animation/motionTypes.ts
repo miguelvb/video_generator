@@ -28,7 +28,7 @@ export type MotionEdge = {
 
 export type MotionCameraFocus = {
   groupId: string;
-  zoom: number;
+  zoom: number | 'fit';
   startFrame?: number;
   durationInFrames?: number;
 };
