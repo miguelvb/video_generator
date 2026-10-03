@@ -69,10 +69,15 @@ const Node: React.FC<{
         <div
           style={{
             position: 'absolute',
-            inset: -18 * pulseScale,
+            left: 0,
+            top: 0,
+            width: size,
+            height: size,
             border: `5px solid ${color}`,
             borderRadius: '50%',
             opacity: pulseOpacity,
+            transform: `scale(${pulseScale})`,
+            transformOrigin: 'center',
           }}
         />
       )}
