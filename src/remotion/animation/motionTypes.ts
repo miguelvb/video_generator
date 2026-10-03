@@ -91,6 +91,7 @@ export type MotionEdge = {
   curvature?: number;
   state?: MotionEdgeState;
   stateChanges?: MotionStateChange<MotionEdgeState>[];
+  sendAction?: {startFrame: number; durationInFrames: number};
 };
 
 export type MotionCameraFocus = {
