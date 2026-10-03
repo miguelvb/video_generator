@@ -17,12 +17,36 @@ export type MotionPositionChange = {
 
 export type MotionAction =
   | {
+      type: 'appear';
+      targetId: string;
+      startFrame: number;
+      durationInFrames?: number;
+    }
+  | {
       type: 'move';
       targetId: string;
       startFrame: number;
       durationInFrames: number;
       x: number;
       y: number;
+    }
+  | {
+      type: 'activate' | 'succeed' | 'error';
+      targetId: string;
+      frame: number;
+    }
+  | {
+      type: 'send';
+      targetId: string;
+      startFrame: number;
+      durationInFrames: number;
+    }
+  | {
+      type: 'focus';
+      groupId: string;
+      startFrame: number;
+      durationInFrames: number;
+      zoom: number | 'fit';
     }
   | {
       type: 'set-node-state';
@@ -42,6 +66,7 @@ export type MotionNode = {
   x: number;
   y: number;
   size?: number;
+  opacity?: number;
   delay?: number;
   asset?: MotionAssetType;
   state?: MotionNodeState;
