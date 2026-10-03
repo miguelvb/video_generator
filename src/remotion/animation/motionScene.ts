@@ -72,7 +72,7 @@ const compileAction = (action: MotionSceneAction): MotionAction => {
       };
     case 'activate':
       return {
-        type: 'set-node-state',
+        type: 'set-edge-state',
         targetId: action.target,
         frame: action.at,
         state: 'active',
