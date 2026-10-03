@@ -30,6 +30,7 @@ export const resolveMotionActions = (
 
   const moveActions = actions.filter((action) => action.type === 'move');
   const sendActions = actions.filter((action) => action.type === 'send');
+  const connectActions = actions.filter((action) => action.type === 'connect');
   const appearActions = actions.filter((action) => action.type === 'appear');
 
   const resolvedNodes = nodes.map((node) => {
@@ -84,6 +85,7 @@ export const resolveMotionActions = (
 
   const resolvedEdges = edges.map((edge) => {
     const send = sendActions.find((action) => action.targetId === edge.id);
+    const connect = connectActions.find((action) => action.targetId === edge.id);
     const stateChanges = actions
       .filter(
         (action) =>
@@ -94,6 +96,7 @@ export const resolveMotionActions = (
     return {
       ...edge,
       sendAction: send ? {startFrame: send.startFrame, durationInFrames: send.durationInFrames} : edge.sendAction,
+      delay: connect ? connect.startFrame : edge.delay,
       state: stateAt(edge.state ?? 'normal', stateChanges, frame),
     };
   });
