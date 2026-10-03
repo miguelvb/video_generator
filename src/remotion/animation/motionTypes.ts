@@ -15,6 +15,28 @@ export type MotionPositionChange = {
   y: number;
 };
 
+export type MotionAction =
+  | {
+      type: 'move';
+      targetId: string;
+      startFrame: number;
+      durationInFrames: number;
+      x: number;
+      y: number;
+    }
+  | {
+      type: 'set-node-state';
+      targetId: string;
+      frame: number;
+      state: MotionNodeState;
+    }
+  | {
+      type: 'set-edge-state';
+      targetId: string;
+      frame: number;
+      state: MotionEdgeState;
+    };
+
 export type MotionNode = {
   id: string;
   x: number;
@@ -60,4 +82,5 @@ export type TwoDMotionEngineProps = {
   cameraFocus?: MotionCameraFocus;
   durationInFrames: number;
   color?: string;
+  actions?: MotionAction[];
 };
