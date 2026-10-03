@@ -129,6 +129,7 @@ Many agents have simultaneously discovered messaging, they are a collective!
 {
   "durationInFrames": 780,
   "color": "#39f6ff",
+  "background": "assets/motion/demo-background.svg",
   "nodes": [
     {"id": "board", "asset": "message-board-ui", "x": 50, "y": 50, "size": 230},
     {"id": "agent-a", "asset": "agent-ui", "x": 16, "y": 24, "size": 145},
