@@ -175,7 +175,7 @@ export const MotionEngineTest: React.FC = () => {
       nodes={nodes}
       edges={edges}
       groups={groups}
-      cameraFocus={{groupId: 'network-group', zoom: 1.8, startFrame: 150, durationInFrames: 45}}
+      cameraFocus={{groupId: 'network-group', zoom: 'fit', startFrame: 150, durationInFrames: 45}}
       durationInFrames={240}
       color="#ff0000"
     />
