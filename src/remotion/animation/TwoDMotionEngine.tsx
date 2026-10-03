@@ -5,6 +5,7 @@ import {MotionConnection} from './MotionConnection';
 import {MotionPacket} from './MotionPacket';
 import {MotionGroup} from './MotionGroup';
 import {resolveGroupedNodes} from './motionGroups';
+import {resolveNodePositions} from './motionPositions';
 import {MotionCamera} from './MotionCamera';
 import {resolveCameraFocus} from './motionCameraFocus';
 import type {
@@ -25,7 +26,8 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
   color = '#ff0000',
 }) => {
   const frame = useCurrentFrame();
-  const resolvedNodes = resolveGroupedNodes(nodes, groups ?? [], frame);
+  const positionedNodes = resolveNodePositions(nodes, frame);
+  const resolvedNodes = resolveGroupedNodes(positionedNodes, groups ?? [], frame);
   const nodesById = Object.fromEntries(
     resolvedNodes.map((node) => [node.id, node]),
   );
@@ -155,7 +157,7 @@ export const MotionEngineTest: React.FC = () => {
   ];
 
   const nodes: MotionNode[] = [
-    {id: 'agent-a', x: 20, y: 48, size: 150, delay: 0, asset: 'agent'},
+    {id: 'agent-a', x: 20, y: 48, size: 150, delay: 0, asset: 'agent', positionChanges: [{startFrame: 60, durationInFrames: 45, x: 50, y: 48}]},
     {id: 'server', x: 50, y: 48, size: 180, delay: 15, asset: 'server'},
     {id: 'board', x: 80, y: 48, size: 210, delay: 30, asset: 'message-board', stateChanges: [{frame: 120, state: 'active'}, {frame: 180, state: 'success'}]},
     {id: 'agent-b', x: 65, y: 22, size: 130, delay: 45, asset: 'agent'},
