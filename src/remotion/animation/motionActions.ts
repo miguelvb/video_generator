@@ -29,9 +29,11 @@ export const resolveMotionActions = (
   }
 
   const moveActions = actions.filter((action) => action.type === 'move');
+  const appearActions = actions.filter((action) => action.type === 'appear');
 
   const resolvedNodes = nodes.map((node) => {
     const moves = moveActions.filter((action) => action.targetId === node.id);
+    const appears = appearActions.filter((action) => action.targetId === node.id);
     let x = node.x;
     let y = node.y;
 
@@ -58,11 +60,21 @@ export const resolveMotionActions = (
       )
       .map((action) => ({frame: action.frame, state: action.state as MotionNodeState}));
 
+    let opacity = 1;
+    for (const appear of appears) {
+      const duration = appear.durationInFrames ?? 24;
+      opacity = Math.max(
+        opacity,
+        Math.max(0, Math.min(1, (frame - appear.startFrame) / Math.max(1, duration))),
+      );
+    }
+
     return {
       ...node,
       x,
       y,
       state: stateAt(node.state ?? 'normal', stateChanges, frame),
+      opacity,
     };
   });
 
