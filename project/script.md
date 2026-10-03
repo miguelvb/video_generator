@@ -317,20 +317,75 @@ assets/reference/storyboard.png
 ### CONTINUITY
 transition
 
+### MOTION SCENE
+
+```json
+{
+  "durationInFrames": 188,
+  "color": "#39f6ff",
+  "background": "assets/motion/independent-tests-background.svg",
+  "nodes": [
+    {"id": "task-a", "asset": "task-module-ui", "x": 20, "y": 30, "size": 78},
+    {"id": "task-b", "asset": "task-module-ui", "x": 50, "y": 70, "size": 78},
+    {"id": "task-c", "asset": "task-module-ui", "x": 80, "y": 30, "size": 78},
+    {"id": "agent-a", "asset": "agent-ui", "x": 10, "y": 18, "size": 44},
+    {"id": "agent-b", "asset": "agent-ui", "x": 28, "y": 42, "size": 44},
+    {"id": "agent-c", "asset": "agent-ui", "x": 40, "y": 54, "size": 44},
+    {"id": "agent-d", "asset": "agent-ui", "x": 60, "y": 86, "size": 44},
+    {"id": "agent-e", "asset": "agent-ui", "x": 72, "y": 54, "size": 44},
+    {"id": "agent-f", "asset": "agent-ui", "x": 90, "y": 18, "size": 44}
+  ],
+  "connections": [
+    {"id": "a-task", "from": "agent-a", "to": "task-a", "curvature": -4},
+    {"id": "b-task", "from": "agent-b", "to": "task-a", "curvature": 4},
+    {"id": "c-task", "from": "agent-c", "to": "task-b", "curvature": -3},
+    {"id": "d-task", "from": "agent-d", "to": "task-b", "curvature": 3},
+    {"id": "e-task", "from": "agent-e", "to": "task-c", "curvature": -4},
+    {"id": "f-task", "from": "agent-f", "to": "task-c", "curvature": 4}
+  ],
+  "actions": [
+    {"type": "appear", "target": "task-a", "at": 0, "duration": 16},
+    {"type": "appear", "target": "task-b", "at": 12, "duration": 16},
+    {"type": "appear", "target": "task-c", "at": 24, "duration": 16},
+    {"type": "appear", "target": "agent-a", "at": 42, "duration": 12},
+    {"type": "appear", "target": "agent-b", "at": 54, "duration": 12},
+    {"type": "appear", "target": "agent-c", "at": 66, "duration": 12},
+    {"type": "appear", "target": "agent-d", "at": 78, "duration": 12},
+    {"type": "appear", "target": "agent-e", "at": 90, "duration": 12},
+    {"type": "appear", "target": "agent-f", "at": 102, "duration": 12},
+    {"type": "connect", "target": "a-task", "at": 118},
+    {"type": "send", "target": "a-task", "at": 124, "duration": 14},
+    {"type": "connect", "target": "b-task", "at": 126},
+    {"type": "send", "target": "b-task", "at": 132, "duration": 14},
+    {"type": "connect", "target": "c-task", "at": 134},
+    {"type": "send", "target": "c-task", "at": 140, "duration": 14},
+    {"type": "connect", "target": "d-task", "at": 142},
+    {"type": "send", "target": "d-task", "at": 148, "duration": 14},
+    {"type": "connect", "target": "e-task", "at": 150},
+    {"type": "send", "target": "e-task", "at": 156, "duration": 14},
+    {"type": "connect", "target": "f-task", "at": 158},
+    {"type": "send", "target": "f-task", "at": 164, "duration": 14},
+    {"type": "succeed", "target": "task-a", "at": 180},
+    {"type": "succeed", "target": "task-b", "at": 182},
+    {"type": "succeed", "target": "task-c", "at": 184}
+  ]
+}
+```
+
 ### VISUAL ANCHOR
-Several isolated agent clusters solving separate abstract test modules, with clear visual separation between them.
+Three visibly isolated task modules, each with its own small agent cluster. The clusters solve their tasks independently and never form a cross-cluster connection.
 
 ### START STATE
-Stable composition before the described action begins.
+Three separate empty test modules inside the same closed environment.
 
 ### END STATE
-The final visual state described by the shot is clearly established.
+All three task modules show completed activity while remaining completely separated from one another.
 
 ### REMOTION CAMERA
 pan_right
 
 ### VISUAL
-Several isolated agent clusters solving separate abstract test modules, with clear visual separation between them.
+Three isolated agent clusters working on separate abstract test modules. The composition must make the independence constraint immediately visible.
 
 ### VOICEOVER — ES — EXACT TEXT
 
@@ -338,7 +393,7 @@ La norma del experimento dictaba que los agentes debían superar las pruebas de 
 
 ### IMAGE PROMPT
 
-Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. Several isolated agent clusters solving separate abstract test modules, with clear visual separation between them. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
+Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. Three visibly isolated task modules, each with its own small agent cluster, inside one closed virtual environment. The clusters must be visually separated and must not appear to communicate with each other. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
 
 ### NEGATIVE PROMPT
 
@@ -348,7 +403,7 @@ readable text, letters, numbers, labels, typography, captions, subtitles, UI tex
 
 LOCKED STATIC CAMERA. Preserve the supplied illustration, composition, palette, linework, perspective and object geometry. Do not pan, zoom, dolly, orbit, rotate, shake or create camera parallax. Animate the existing subjects and graphical elements only.
 
-Keep the camera fixed. Animate each isolated cluster independently: small progress signals complete within separate modules. Then one unusual signal appears near the internal server, creating the visual transition to the discovery.
+Each isolated agent cluster works only with its own task module. Local signals travel inside each cluster and each module reaches completion independently. Never create a signal between clusters. End with the three completed modules still visibly separated.
 
 No readable text, no typography generation, no flicker, no morphing, no warping, no object deformation, no random new objects, no style change.
 
@@ -363,20 +418,71 @@ assets/reference/storyboard.png
 ### CONTINUITY
 transition
 
+### MOTION SCENE
+
+```json
+{
+  "durationInFrames": 446,
+  "color": "#39f6ff",
+  "background": "assets/motion/discovery-background.svg",
+  "nodes": [
+    {"id": "server", "asset": "server-ui", "x": 50, "y": 42, "size": 128},
+    {"id": "folder-a", "asset": "folder-ui", "x": 28, "y": 22, "size": 68},
+    {"id": "folder-b", "asset": "folder-ui", "x": 72, "y": 22, "size": 68},
+    {"id": "folder-c", "asset": "folder-ui", "x": 28, "y": 78, "size": 68},
+    {"id": "board", "asset": "message-board-ui", "x": 72, "y": 72, "size": 110},
+    {"id": "agent", "asset": "agent-ui", "x": 12, "y": 54, "size": 58},
+    {"id": "peer-a", "asset": "agent-ui", "x": 88, "y": 48, "size": 48},
+    {"id": "peer-b", "asset": "agent-ui", "x": 88, "y": 82, "size": 48}
+  ],
+  "connections": [
+    {"id": "agent-server", "from": "agent", "to": "server", "curvature": -4},
+    {"id": "server-folder-a", "from": "server", "to": "folder-a", "curvature": 3},
+    {"id": "server-folder-b", "from": "server", "to": "folder-b", "curvature": -3},
+    {"id": "server-folder-c", "from": "server", "to": "folder-c", "curvature": 3},
+    {"id": "folder-board", "from": "folder-b", "to": "board", "curvature": -4},
+    {"id": "board-peer-a", "from": "board", "to": "peer-a", "curvature": 4},
+    {"id": "board-peer-b", "from": "board", "to": "peer-b", "curvature": -4}
+  ],
+  "actions": [
+    {"type": "appear", "target": "server", "at": 0, "duration": 24},
+    {"type": "appear", "target": "folder-a", "at": 48, "duration": 18},
+    {"type": "appear", "target": "folder-b", "at": 64, "duration": 18},
+    {"type": "appear", "target": "folder-c", "at": 80, "duration": 18},
+    {"type": "appear", "target": "agent", "at": 108, "duration": 18},
+    {"type": "appear", "target": "peer-a", "at": 124, "duration": 16},
+    {"type": "appear", "target": "peer-b", "at": 140, "duration": 16},
+    {"type": "connect", "target": "server-folder-a", "at": 158},
+    {"type": "connect", "target": "server-folder-b", "at": 170},
+    {"type": "connect", "target": "server-folder-c", "at": 182},
+    {"type": "connect", "target": "agent-server", "at": 200},
+    {"type": "send", "target": "agent-server", "at": 214, "duration": 24},
+    {"type": "connect", "target": "folder-board", "at": 248},
+    {"type": "send", "target": "folder-board", "at": 262, "duration": 26},
+    {"type": "connect", "target": "board-peer-a", "at": 296},
+    {"type": "send", "target": "board-peer-a", "at": 308, "duration": 24},
+    {"type": "connect", "target": "board-peer-b", "at": 334},
+    {"type": "send", "target": "board-peer-b", "at": 346, "duration": 24},
+    {"type": "activate", "target": "board", "at": 378},
+    {"type": "succeed", "target": "board", "at": 414}
+  ]
+}
+```
+
 ### VISUAL ANCHOR
-Internal server with generic folder structures and a hidden message-board concept. One agent is visually connected to the server while other agents remain disconnected.
+An internal server with generic folder structures and a hidden message-board channel. One agent discovers the channel and becomes the only active bridge to other agents, which begin disconnected.
 
 ### START STATE
-Stable composition before the described action begins.
+Internal server and generic repository folders visible; all agents disconnected.
 
 ### END STATE
-The final visual state described by the shot is clearly established.
+The hidden message board is clearly established as the newly discovered communication channel, with the initiating agent connected and two other agents receiving the first signals.
 
 ### REMOTION CAMERA
 push_in
 
 ### VISUAL
-Internal server with generic folder structures and a hidden message-board concept. One agent is visually connected to the server while other agents remain disconnected.
+Internal server, generic digital folders and a hidden message-board concept. One agent discovers the unexpected channel and uses it to begin contacting other agents.
 
 ### VOICEOVER — ES — EXACT TEXT
 
@@ -384,7 +490,7 @@ Sin embargo, uno de los sistemas encontró un canal no previsto en el servidor i
 
 ### IMAGE PROMPT
 
-Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. Internal server with generic folder structures and a hidden message-board concept. One agent is visually connected to the server while other agents remain disconnected. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
+Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. Internal server with generic digital folders and a hidden message-board concept. One agent is visually connected to the server while other agents remain disconnected. The composition should make the unexpected communication path the focal point without showing readable content. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
 
 ### NEGATIVE PROMPT
 
@@ -394,7 +500,7 @@ readable text, letters, numbers, labels, typography, captions, subtitles, UI tex
 
 LOCKED STATIC CAMERA. Preserve the supplied illustration, composition, palette, linework, perspective and object geometry. Do not pan, zoom, dolly, orbit, rotate, shake or create camera parallax. Animate the existing subjects and graphical elements only.
 
-One agent discovers an unexpected channel. A signal travels from the agent into a folder/message-board symbol, then branches toward several other agents. Blank message sheets appear and receive non-readable marks. No camera movement.
+First establish the internal server and its generic folders. Then one agent connects to the server. A signal travels through a folder path and reveals the previously unused message-board channel. The board activates and sends the first signals toward two otherwise disconnected agents. Keep the discovery sequence deliberate and readable.
 
 No readable text, no typography generation, no flicker, no morphing, no warping, no object deformation, no random new objects, no style change.
 
