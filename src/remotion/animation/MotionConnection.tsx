@@ -5,6 +5,7 @@ import {
   getQuadraticControlPoint,
 } from './motionGeometry';
 import type {MotionEdge, MotionNode} from './motionTypes';
+import {resolveMotionState} from './motionState';
 
 export const MotionConnection: React.FC<{
   edge: MotionEdge;
@@ -28,7 +29,7 @@ export const MotionConnection: React.FC<{
     extrapolateRight: 'clamp',
   });
 
-  const state = edge.state ?? 'normal';
+  const state = resolveMotionState(edge.state ?? 'normal', edge.stateChanges, frame);
   const stateColor =
     state === 'error'
       ? '#ff0000'
