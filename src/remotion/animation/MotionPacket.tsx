@@ -14,8 +14,10 @@ export const MotionPacket: React.FC<{
   const to = nodesById[edge.to];
   if (!from || !to) return null;
 
-  const start = (edge.delay ?? 0) + 30;
-  const progress = clamp01((frame - start) / 42);
+  const sendAction = edge.sendAction;
+  const start = sendAction ? sendAction.startFrame : (edge.delay ?? 0) + 30;
+  const duration = sendAction ? sendAction.durationInFrames : 42;
+  const progress = clamp01((frame - start) / duration);
   if (progress <= 0 || progress >= 1) return null;
 
   const control = getQuadraticControlPoint(
