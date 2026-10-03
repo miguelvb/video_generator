@@ -38,6 +38,12 @@ export const MOTION_ASSETS: Record<MotionAssetType, MotionAssetDefinition> = {
     label: 'Agent UI',
     category: 'agent',
   },
+  'message-board-ui': {
+    type: 'message-board-ui',
+    path: 'assets/motion/message-board-ui.svg',
+    label: 'Message Board UI',
+    category: 'communication',
+  },
   'server-ui': {
     type: 'server-ui',
     path: 'assets/motion/server-ui.svg',
