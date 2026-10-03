@@ -25,6 +25,7 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
   cameraFocus,
   durationInFrames,
   actions,
+  showDebugLabel = true,
   color = '#ff0000',
 }) => {
   const frame = useCurrentFrame();
@@ -130,20 +131,22 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
 
       </MotionCamera>
 
-      <div
-        style={{
-          position: 'absolute',
-          left: 32,
-          top: 28,
-          color: '#111',
-          fontFamily: 'Arial, sans-serif',
-          fontSize: 26,
-          fontWeight: 800,
-          letterSpacing: 1,
-        }}
-      >
-        MOTION ASSET NETWORK TEST
-      </div>
+      {showDebugLabel && (
+        <div
+          style={{
+            position: 'absolute',
+            left: 32,
+            top: 28,
+            color: '#39f6ff',
+            fontFamily: 'Arial, sans-serif',
+            fontSize: 26,
+            fontWeight: 800,
+            letterSpacing: 1,
+          }}
+        >
+          MOTION ASSET NETWORK TEST
+        </div>
+      )}
     </AbsoluteFill>
   );
 };
