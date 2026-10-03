@@ -54,7 +54,9 @@ const Node: React.FC<{
   // dramatically and the surrounding ring expands even more.
   const pulseOpacity = 0.95 * (1 - pulse);
   const pulseScale = 0.65 + 0.95 * pulse;
-  const coreScale = 0.65 + 0.7 * (0.5 + 0.5 * Math.sin(pulse * Math.PI * 2));
+  const coreScale = pulse < 0.5
+    ? 0.55 + 1.0 * (pulse / 0.5)
+    : 1.55 - 1.0 * ((pulse - 0.5) / 0.5);
 
   return (
     <div
@@ -72,28 +74,29 @@ const Node: React.FC<{
         <div
           style={{
             position: 'absolute',
-            left: 0,
-            top: 0,
-            width: size,
-            height: size,
+            left: '50%',
+            top: '50%',
+            width: size * pulseScale,
+            height: size * pulseScale,
             border: `5px solid ${color}`,
             borderRadius: '50%',
             opacity: pulseOpacity,
-            transform: `scale(${pulseScale})`,
-            transformOrigin: 'center',
+            transform: 'translate(-50%, -50%)',
           }}
         />
       )}
       <div
         style={{
           position: 'absolute',
-          inset: 0,
+          width: size * coreScale,
+          height: size * coreScale,
+          left: '50%',
+          top: '50%',
           borderRadius: '50%',
           background: color,
           border: `6px solid ${color}`,
           boxShadow: `0 0 28px ${color}`,
-          transform: `scale(${coreScale})`,
-          transformOrigin: 'center',
+          transform: 'translate(-50%, -50%)',
         }}
       />
     </div>
