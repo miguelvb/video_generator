@@ -130,18 +130,42 @@ const AnimatedAIClip: React.FC<{scene:any; duration:number}> = ({scene, duration
   </AbsoluteFill>;
 };
 
-const QuoteOverlay: React.FC<{text:string; duration:number}> = ({text, duration}) => {
+const QuoteOverlay: React.FC<{
+  text:string;
+  duration:number;
+  motionStyle?: boolean;
+}> = ({text, duration, motionStyle = false}) => {
   const frame=useCurrentFrame();
-  const fadeIn=12;
-  const fadeOutStart=Math.max(fadeIn+1, duration-18);
+  const fadeIn=10;
+  const fadeOutStart=Math.max(fadeIn+1, duration-14);
   const opacityIn=interpolate(frame,[0,fadeIn],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
   const opacityOut=interpolate(frame,[fadeOutStart,duration],[1,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
   const opacity=Math.min(opacityIn,opacityOut);
+  const translateY=interpolate(frame,[0,fadeIn],[6,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
+
   return <div style={{
-    position:'absolute',left:58,right:58,bottom:54,padding:'14px 18px',
-    background:'rgba(247,238,218,.94)',border:'1px solid rgba(80,60,40,.52)',
-    boxShadow:'0 5px 15px rgba(50,35,20,.14)',fontFamily:'Courier New, monospace',
-    fontSize:18,lineHeight:1.3,color:'#2f2a24',textAlign:'center',opacity
+    position:'absolute',
+    left: motionStyle ? '23%' : 58,
+    right: motionStyle ? '23%' : 58,
+    top: motionStyle ? 18 : 'auto',
+    bottom: motionStyle ? 'auto' : 54,
+    padding: motionStyle ? '7px 14px 8px' : '14px 18px',
+    background: motionStyle ? 'rgba(5,15,27,.82)' : 'rgba(247,238,218,.94)',
+    border: motionStyle ? '1px solid rgba(57,246,255,.48)' : '1px solid rgba(80,60,40,.52)',
+    borderRadius: motionStyle ? 8 : 0,
+    boxShadow: motionStyle
+      ? '0 0 14px rgba(57,246,255,.12), inset 0 0 18px rgba(57,246,255,.035)'
+      : '0 5px 15px rgba(50,35,20,.14)',
+    fontFamily: motionStyle ? 'Arial, sans-serif' : 'Courier New, monospace',
+    fontSize: motionStyle ? 13 : 18,
+    fontWeight: motionStyle ? 500 : 400,
+    lineHeight: motionStyle ? 1.25 : 1.3,
+    letterSpacing: motionStyle ? 0.2 : 0,
+    color: motionStyle ? '#d8fbff' : '#2f2a24',
+    textAlign:'center',
+    opacity,
+    transform: `translateY(${translateY}px)`,
+    textShadow: motionStyle ? '0 0 8px rgba(57,246,255,.18)' : 'none',
   }}>{`“${text}”`}</div>;
 };
 
@@ -152,7 +176,11 @@ const QuoteSegments: React.FC<{scene:any; duration:number}> = ({scene,duration})
     const segDuration=Math.max(1,Math.round(Number(timing.durationSeconds ?? timing.duration_seconds ?? 1)*FPS));
     if (start >= duration) return null;
     return <Sequence key={`${timing.id}-${index}`} from={start} durationInFrames={Math.min(segDuration,duration-start)}>
-      <QuoteOverlay text={timing.text} duration={Math.min(segDuration,duration-start)} />
+      <QuoteOverlay
+        text={timing.text}
+        duration={Math.min(segDuration,duration-start)}
+        motionStyle={Boolean(scene.motion_scene)}
+      />
     </Sequence>;
   })}</>;
 };
