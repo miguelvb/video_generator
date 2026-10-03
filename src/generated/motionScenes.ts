@@ -578,7 +578,7 @@ export const MOTION_SCENES = {
       }
     ]
   },
-  "003": {
+  "006": {
     "durationInFrames": 300,
     "color": "#39f6ff",
     "background": "assets/motion/demo-background.svg",
