@@ -100,7 +100,7 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
         />
       ))}
 
-      {nodes.map((node) => (
+      {resolvedNodes.map((node) => (
         <MotionAsset
           key={node.id}
           node={node}
