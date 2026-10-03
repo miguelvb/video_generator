@@ -2,7 +2,6 @@ import React from 'react';
 import {clamp01, easeInOutCubic} from './motionGeometry';
 import {getQuadraticControlPoint, getQuadraticPoint} from './motionGeometry';
 import type {MotionEdge, MotionNode} from './motionTypes';
-import {resolveMotionState} from './motionState';
 
 export const MotionPacket: React.FC<{
   edge: MotionEdge;
@@ -19,28 +18,15 @@ export const MotionPacket: React.FC<{
   const duration = sendAction ? sendAction.durationInFrames : 42;
   const rawProgress = clamp01((frame - start) / duration);
   if (rawProgress <= 0 || rawProgress >= 1) return null;
+
   const progress = easeInOutCubic(rawProgress);
   const edgeFade = Math.min(
     easeInOutCubic(rawProgress * 5),
     easeInOutCubic((1 - rawProgress) * 5),
   );
 
-  const control = getQuadraticControlPoint(
-    from,
-    to,
-    edge.curvature ?? 0,
-  );
+  const control = getQuadraticControlPoint(from, to, edge.curvature ?? 0);
   const point = getQuadraticPoint(from, control, to, progress);
-
-  const state = resolveMotionState(edge.state ?? 'normal', edge.stateChanges, frame);
-  const packetColor =
-    state === 'error'
-      ? '#ff0000'
-      : state === 'success'
-        ? '#008000'
-        : state === 'active'
-          ? '#ff0000'
-          : color;
 
   return (
     <div
@@ -48,11 +34,11 @@ export const MotionPacket: React.FC<{
         position: 'absolute',
         left: `${point.x}%`,
         top: `${point.y}%`,
-        width: state === 'active' ? 10 : 8,
-        height: state === 'active' ? 10 : 8,
+        width: 7,
+        height: 7,
         borderRadius: '50%',
-        background: packetColor,
-        boxShadow: `0 0 12px 3px ${packetColor}`,
+        background: color,
+        boxShadow: `0 0 10px 2px ${color}`,
         transform: 'translate(-50%, -50%)',
         opacity: edgeFade,
         zIndex: 5,
