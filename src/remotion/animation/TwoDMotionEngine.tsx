@@ -23,6 +23,7 @@ export type MotionEdge = {
   from: string;
   to: string;
   delay?: number;
+  curvature?: number;
 };
 
 export type TwoDMotionEngineProps = {
@@ -103,6 +104,44 @@ const MotionAsset: React.FC<{
   );
 };
 
+const getQuadraticControlPoint = (
+  from: MotionNode,
+  to: MotionNode,
+  curvature: number,
+) => {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const length = Math.sqrt(dx * dx + dy * dy) || 1;
+  const nx = -dy / length;
+  const ny = dx / length;
+  const midpointX = (from.x + to.x) / 2;
+  const midpointY = (from.y + to.y) / 2;
+
+  return {
+    x: midpointX + nx * curvature,
+    y: midpointY + ny * curvature,
+  };
+};
+
+const getQuadraticPoint = (
+  from: MotionNode,
+  control: {x: number; y: number},
+  to: MotionNode,
+  progress: number,
+) => {
+  const inverse = 1 - progress;
+  return {
+    x:
+      inverse * inverse * from.x +
+      2 * inverse * progress * control.x +
+      progress * progress * to.x,
+    y:
+      inverse * inverse * from.y +
+      2 * inverse * progress * control.y +
+      progress * progress * to.y,
+  };
+};
+
 const Edge: React.FC<{
   edge: MotionEdge;
   nodesById: Record<string, MotionNode>;
@@ -114,24 +153,37 @@ const Edge: React.FC<{
   if (!from || !to) return null;
 
   const progress = edgeProgress(frame, edge.delay ?? 0);
-  const opacity = interpolate(progress, [0, 1], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const control = getQuadraticControlPoint(
+    from,
+    to,
+    edge.curvature ?? 0,
+  );
+  const path = `M ${from.x} ${from.y} Q ${control.x} ${control.y} ${to.x} ${to.y}`;
 
   return (
-    <line
-      x1={`${from.x}%`}
-      y1={`${from.y}%`}
-      x2={`${to.x}%`}
-      y2={`${to.y}%`}
-      stroke={color}
-      strokeWidth="6"
-      strokeLinecap="round"
-      opacity={opacity}
-      strokeDasharray="100 100"
-      strokeDashoffset={100 * (1 - progress)}
-    />
+    <g opacity={progress}>
+      <path
+        d={path}
+        fill="none"
+        stroke={color}
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        pathLength="100"
+        strokeDasharray="100 100"
+        strokeDashoffset={100 * (1 - progress)}
+      />
+      <path
+        d={path}
+        fill="none"
+        stroke={color}
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        pathLength="100"
+        strokeDasharray="100 100"
+        strokeDashoffset={100 * (1 - progress)}
+        markerEnd="url(#motion-arrow)"
+      />
+    </g>
   );
 };
 
@@ -149,15 +201,19 @@ const Packet: React.FC<{
   const progress = clamp01((frame - start) / 42);
   if (progress <= 0 || progress >= 1) return null;
 
-  const x = from.x + (to.x - from.x) * progress;
-  const y = from.y + (to.y - from.y) * progress;
+  const control = getQuadraticControlPoint(
+    from,
+    to,
+    edge.curvature ?? 0,
+  );
+  const point = getQuadraticPoint(from, control, to, progress);
 
   return (
     <div
       style={{
         position: 'absolute',
-        left: `${x}%`,
-        top: `${y}%`,
+        left: `${point.x}%`,
+        top: `${point.y}%`,
         width: 28,
         height: 28,
         borderRadius: '50%',
@@ -204,6 +260,19 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
           height: '100%',
         }}
       >
+        <defs>
+          <marker
+            id="motion-arrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto-start-reverse"
+          >
+            <path d="M 0 0 L 10 5 L 0 10 z" fill={color} />
+          </marker>
+        </defs>
         {edges.map((edge) => (
           <Edge
             key={edge.id}
@@ -261,10 +330,10 @@ export const MotionEngineTest: React.FC = () => {
   ];
 
   const edges: MotionEdge[] = [
-    {id: 'a-server', from: 'agent-a', to: 'server', delay: 70},
-    {id: 'server-board', from: 'server', to: 'board', delay: 90},
-    {id: 'board-b', from: 'board', to: 'agent-b', delay: 110},
-    {id: 'board-c', from: 'board', to: 'agent-c', delay: 130},
+    {id: 'a-server', from: 'agent-a', to: 'server', delay: 70, curvature: 8},
+    {id: 'server-board', from: 'server', to: 'board', delay: 90, curvature: -10},
+    {id: 'board-b', from: 'board', to: 'agent-b', delay: 110, curvature: 12},
+    {id: 'board-c', from: 'board', to: 'agent-c', delay: 130, curvature: -12},
   ];
 
   return (
