@@ -1180,7 +1180,7 @@ continuation
       "size": 105
     },
     {
-      "id": "board",
+      "id": "artifactory",
       "asset": "artifactory-ui",
       "x": 63,
       "y": 50,
@@ -1189,9 +1189,9 @@ continuation
   ],
   "connections": [
     {
-      "id": "agent-board",
+      "id": "agent-artifactory",
       "from": "agent",
-      "to": "board",
+      "to": "artifactory",
       "curvature": 0
     }
   ],
@@ -1207,7 +1207,7 @@ continuation
     },
     {
       "type": "appear",
-      "target": "board",
+      "target": "artifactory",
       "cue": "004_es_01",
       "cueOffsetSeconds": 3,
       "cueDurationSeconds": 0.5,
@@ -1216,7 +1216,7 @@ continuation
     },
     {
       "type": "connect",
-      "target": "agent-board",
+      "target": "agent-artifactory",
       "cue": "004_es_01",
       "cueOffsetSeconds": 5,
       "cueWord": "empezó",
@@ -1224,7 +1224,7 @@ continuation
     },
     {
       "type": "send",
-      "target": "agent-board",
+      "target": "agent-artifactory",
       "cue": "004_es_01",
       "cueOffsetSeconds": 7,
       "cueDurationSeconds": 1.5
@@ -1269,7 +1269,7 @@ continuation
       "size": 92
     },
     {
-      "id": "board",
+      "id": "artifactory",
       "asset": "artifactory-ui",
       "x": 51,
       "y": 52,
@@ -1278,16 +1278,16 @@ continuation
   ],
   "connections": [
     {
-      "id": "agent-board",
+      "id": "agent-artifactory",
       "from": "agent",
-      "to": "board",
+      "to": "artifactory",
       "curvature": 0
     }
   ],
   "actions": [
     {
       "type": "send",
-      "target": "agent-board",
+      "target": "agent-artifactory",
       "cue": "005_en_01",
       "cueDurationSeconds": 1.8,
       "cueWord": "shared",
@@ -1347,7 +1347,7 @@ continuation
       "size": 64
     },
     {
-      "id": "board",
+      "id": "artifactory",
       "asset": "artifactory-ui",
       "x": 49,
       "y": 52,
@@ -1356,21 +1356,21 @@ continuation
   ],
   "connections": [
     {
-      "id": "a1-board",
+      "id": "a1-artifactory",
       "from": "agent1",
-      "to": "board",
+      "to": "artifactory",
       "curvature": -2
     },
     {
-      "id": "a2-board",
+      "id": "a2-artifactory",
       "from": "agent2",
-      "to": "board",
+      "to": "artifactory",
       "curvature": 0
     },
     {
-      "id": "a3-board",
+      "id": "a3-artifactory",
       "from": "agent3",
-      "to": "board",
+      "to": "artifactory",
       "curvature": 2
     }
   ],
@@ -1386,7 +1386,7 @@ continuation
     },
     {
       "type": "appear",
-      "target": "board",
+      "target": "artifactory",
       "cue": "006_es_01",
       "cueOffsetSeconds": 0.5,
       "cueDurationSeconds": 0.35,
@@ -1395,7 +1395,7 @@ continuation
     },
     {
       "type": "connect",
-      "target": "a1-board",
+      "target": "a1-artifactory",
       "cue": "006_es_01",
       "cueOffsetSeconds": 1.8,
       "cueWord": "confirmó",
@@ -1412,14 +1412,14 @@ continuation
     },
     {
       "type": "connect",
-      "target": "a2-board",
+      "target": "a2-artifactory",
       "cue": "006_en_02",
       "cueWord": "Many",
       "cueOccurrence": 1
     },
     {
       "type": "send",
-      "target": "a2-board",
+      "target": "a2-artifactory",
       "cue": "006_en_02",
       "cueDurationSeconds": 2.2,
       "cueWord": "Many"
@@ -1522,7 +1522,7 @@ continuation
       "size": 48
     },
     {
-      "id": "board",
+      "id": "artifactory",
       "asset": "artifactory-ui",
       "x": 46,
       "y": 52,
@@ -1531,40 +1531,40 @@ continuation
   ],
   "connections": [
     {
-      "id": "a1-board",
+      "id": "a1-artifactory",
       "from": "agent1",
-      "to": "board",
+      "to": "artifactory",
       "curvature": -5
     },
     {
-      "id": "a2-board",
+      "id": "a2-artifactory",
       "from": "agent2",
-      "to": "board",
+      "to": "artifactory",
       "curvature": -3
     },
     {
-      "id": "a3-board",
+      "id": "a3-artifactory",
       "from": "agent3",
-      "to": "board",
+      "to": "artifactory",
       "curvature": 0
     },
     {
-      "id": "a4-board",
+      "id": "a4-artifactory",
       "from": "agent4",
-      "to": "board",
+      "to": "artifactory",
       "curvature": 3
     },
     {
-      "id": "a5-board",
+      "id": "a5-artifactory",
       "from": "agent5",
-      "to": "board",
+      "to": "artifactory",
       "curvature": 5
     }
   ],
   "actions": [
     {
       "type": "appear",
-      "target": "board",
+      "target": "artifactory",
       "cue": "007_es_01",
       "cueOffsetSeconds": 0.2,
       "cueDurationSeconds": 0.3,
@@ -1582,7 +1582,7 @@ continuation
     },
     {
       "type": "connect",
-      "target": "a1-board",
+      "target": "a1-artifactory",
       "cue": "007_es_01",
       "cueOffsetSeconds": 1,
       "cueWord": "agentes",
@@ -1599,7 +1599,7 @@ continuation
     },
     {
       "type": "connect",
-      "target": "a2-board",
+      "target": "a2-artifactory",
       "cue": "007_es_01",
       "cueOffsetSeconds": 1.8,
       "cueWord": "encontraron",
@@ -1616,7 +1616,7 @@ continuation
     },
     {
       "type": "connect",
-      "target": "a3-board",
+      "target": "a3-artifactory",
       "cue": "007_es_01",
       "cueOffsetSeconds": 2.7,
       "cueWord": "secreto",
@@ -1633,7 +1633,7 @@ continuation
     },
     {
       "type": "connect",
-      "target": "a4-board",
+      "target": "a4-artifactory",
       "cue": "007_es_01",
       "cueOffsetSeconds": 3.6,
       "cueWord": "autorizado",
@@ -1650,7 +1650,7 @@ continuation
     },
     {
       "type": "connect",
-      "target": "a5-board",
+      "target": "a5-artifactory",
       "cue": "007_es_01",
       "cueOffsetSeconds": 4.5,
       "cueWord": "canal",
