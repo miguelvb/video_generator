@@ -1,5 +1,5 @@
 import React from 'react';
-import {Img, interpolate, staticFile} from 'remotion';
+import {Img, interpolate, staticFile, useCurrentFrame} from 'remotion';
 import {nodeProgress} from './motionGeometry';
 import type {MotionNode} from './motionTypes';
 import {resolveMotionState} from './motionState';
@@ -9,6 +9,7 @@ export const MotionAsset: React.FC<{
   node: MotionNode;
   frame: number;
 }> = ({node, frame}) => {
+  const currentFrame = useCurrentFrame();
   const progress = nodeProgress(frame, node.delay ?? 0);
   const size = node.size ?? 100;
   const scale = interpolate(progress, [0, 1], [0.92, 1], {
@@ -28,9 +29,14 @@ export const MotionAsset: React.FC<{
       ? '#ff5b67'
       : state === 'success'
         ? '#8d7cff'
-        : state === 'active'
-          ? '#39f6ff'
-          : '#39f6ff';
+        : '#39f6ff';
+  const activePhase = ((currentFrame % 18) / 18);
+  const activeBrightness = state === 'active'
+    ? interpolate(activePhase, [0, 0.5, 1], [1, 1.22, 1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
+    : 1;
+  const activeOpacity = state === 'active'
+    ? interpolate(activePhase, [0, 0.5, 1], [0.72, 1, 0.72], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
+    : 1;
 
   return (
     <div
@@ -41,8 +47,8 @@ export const MotionAsset: React.FC<{
         width: size,
         height: size,
         transform: `translate(-50%, -50%) scale(${scale})`,
-        opacity: opacity * (node.opacity ?? 1),
-        filter: state === 'active' ? `drop-shadow(0 0 12px ${stateColor})` : 'none',
+        opacity: opacity * (node.opacity ?? 1) * activeOpacity,
+        filter: state === 'active' ? `brightness(${activeBrightness}) drop-shadow(0 0 8px ${stateColor})` : 'none',
       }}
     >
       {node.asset && (
@@ -58,18 +64,6 @@ export const MotionAsset: React.FC<{
         />
       )}
 
-      {state === 'active' && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: '-5%',
-            border: '2px solid rgba(57,246,255,.7)',
-            borderRadius: 24,
-            boxShadow: '0 0 18px rgba(57,246,255,.35)',
-            pointerEvents: 'none',
-          }}
-        />
-      )}
     </div>
   );
 };
