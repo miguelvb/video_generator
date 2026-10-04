@@ -12,9 +12,10 @@ export const MotionPacket: React.FC<{
   const from = nodesById[edge.from];
   const to = nodesById[edge.to];
   if (!from || !to) return null;
+  if ((from.opacity ?? 1) <= 0 || (to.opacity ?? 1) <= 0) return null;
 
   const sendAction = edge.sendAction;
-  const start = sendAction ? sendAction.startFrame : (edge.delay ?? 0) + 30;
+  const start = sendAction ? Math.max(sendAction.startFrame, (edge.delay ?? 0) + 1) : (edge.delay ?? 0) + 30;
   const duration = sendAction ? sendAction.durationInFrames : 42;
   const rawProgress = clamp01((frame - start) / duration);
   if (rawProgress <= 0 || rawProgress >= 1) return null;
