@@ -591,74 +591,44 @@ export const MOTION_SCENES = {
       {
         "type": "pulse",
         "target": "a1",
-        "at": 162,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "a2",
-        "at": 162,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "a7",
-        "at": 186,
-        "duration": 20
+        "cue": "002_es_01",
+        "cueOffsetSeconds": 4.2,
+        "cueDurationSeconds": 0.35
       },
       {
         "type": "pulse",
         "target": "a8",
-        "at": 186,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "a13",
-        "at": 210,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "a14",
-        "at": 210,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "a3",
-        "at": 234,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "a9",
-        "at": 234,
-        "duration": 20
+        "cue": "002_es_01",
+        "cueOffsetSeconds": 4.9,
+        "cueDurationSeconds": 0.35
       },
       {
         "type": "pulse",
         "target": "a15",
-        "at": 258,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "a16",
-        "at": 258,
-        "duration": 20
+        "cue": "002_es_01",
+        "cueOffsetSeconds": 5.6,
+        "cueDurationSeconds": 0.35
       },
       {
         "type": "pulse",
         "target": "a4",
-        "at": 282,
-        "duration": 20
+        "cue": "002_es_01",
+        "cueOffsetSeconds": 6.3,
+        "cueDurationSeconds": 0.35
       },
       {
         "type": "pulse",
-        "target": "a10",
-        "at": 282,
-        "duration": 20
+        "target": "a11",
+        "cue": "002_es_01",
+        "cueOffsetSeconds": 7,
+        "cueDurationSeconds": 0.35
+      },
+      {
+        "type": "pulse",
+        "target": "a18",
+        "cue": "002_es_01",
+        "cueOffsetSeconds": 7.7,
+        "cueDurationSeconds": 0.35
       }
     ]
   },
@@ -958,32 +928,37 @@ export const MOTION_SCENES = {
       {
         "type": "pulse",
         "target": "a1",
-        "at": 84,
-        "duration": 16
+        "cue": "003_es_01",
+        "cueOffsetSeconds": 1,
+        "cueDurationSeconds": 0.35
       },
       {
         "type": "pulse",
         "target": "a8",
-        "at": 103,
-        "duration": 16
+        "cue": "003_es_01",
+        "cueOffsetSeconds": 2,
+        "cueDurationSeconds": 0.35
       },
       {
         "type": "pulse",
         "target": "a15",
-        "at": 122,
-        "duration": 16
+        "cue": "003_es_01",
+        "cueOffsetSeconds": 3,
+        "cueDurationSeconds": 0.35
       },
       {
         "type": "pulse",
         "target": "a4",
-        "at": 141,
-        "duration": 16
+        "cue": "003_es_01",
+        "cueOffsetSeconds": 4,
+        "cueDurationSeconds": 0.35
       },
       {
         "type": "pulse",
         "target": "a11",
-        "at": 158,
-        "duration": 16
+        "cue": "003_es_01",
+        "cueOffsetSeconds": 5,
+        "cueDurationSeconds": 0.35
       }
     ]
   },
@@ -1000,10 +975,10 @@ export const MOTION_SCENES = {
       },
       {
         "id": "board",
-        "asset": "message-board",
+        "asset": "artifactory-ui",
         "x": 63,
         "y": 50,
-        "size": 155
+        "size": 145
       }
     ],
     "connections": [
@@ -1018,360 +993,316 @@ export const MOTION_SCENES = {
       {
         "type": "appear",
         "target": "agent",
-        "at": 18,
-        "duration": 20
+        "cue": "004_es_01",
+        "cueOffsetSeconds": 0.2,
+        "cueDurationSeconds": 0.4
       },
       {
         "type": "appear",
         "target": "board",
-        "at": 110,
-        "duration": 24
+        "cue": "004_es_01",
+        "cueOffsetSeconds": 3,
+        "cueDurationSeconds": 0.5
       },
       {
         "type": "connect",
         "target": "agent-board",
-        "at": 172
-      },
-      {
-        "type": "activate",
-        "target": "agent-board",
-        "at": 200
+        "cue": "004_es_01",
+        "cueOffsetSeconds": 5
       },
       {
         "type": "send",
         "target": "agent-board",
-        "at": 230,
-        "duration": 48
-      },
-      {
-        "type": "pulse",
-        "target": "board",
-        "at": 286,
-        "duration": 38
+        "cue": "004_es_01",
+        "cueOffsetSeconds": 7,
+        "cueDurationSeconds": 1.5
       }
     ]
   },
   "005": {
-  "durationInFrames": 143,
-  "color": "#39f6ff",
-  "nodes": [
-    {
-      "id": "agent",
-      "asset": "agent-ui",
-      "x": 27,
-      "y": 52,
-      "size": 92
-    },
-    {
-      "id": "board",
-      "asset": "message-board",
-      "x": 51,
-      "y": 52,
-      "size": 138
-    }
-  ],
-  "connections": [
-    {
-      "id": "agent-board",
-      "from": "agent",
-      "to": "board",
-      "curvature": 0
-    }
-  ],
-  "actions": [
-    {
-      "type": "appear",
-      "target": "agent",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "board",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "connect",
-      "target": "agent-board",
-      "at": 0
-    },
-    {
-      "type": "pulse",
-      "target": "board",
-      "at": 18,
-      "duration": 22
-    },
-    {
-      "type": "send",
-      "target": "agent-board",
-      "at": 28,
-      "duration": 38
-    }
-  ]
-},
+    "durationInFrames": 143,
+    "color": "#39f6ff",
+    "nodes": [
+      {
+        "id": "agent",
+        "asset": "agent-ui",
+        "x": 27,
+        "y": 52,
+        "size": 92
+      },
+      {
+        "id": "board",
+        "asset": "artifactory-ui",
+        "x": 51,
+        "y": 52,
+        "size": 145
+      }
+    ],
+    "connections": [
+      {
+        "id": "agent-board",
+        "from": "agent",
+        "to": "board",
+        "curvature": 0
+      }
+    ],
+    "actions": [
+      {
+        "type": "send",
+        "target": "agent-board",
+        "cue": "005_en_01",
+        "cueDurationSeconds": 1.8
+      }
+    ]
+  },
   "006": {
-  "durationInFrames": 288,
-  "color": "#39f6ff",
-  "nodes": [
-    {
-      "id": "agent1",
-      "asset": "agent-ui",
-      "x": 22,
-      "y": 34,
-      "size": 64
-    },
-    {
-      "id": "agent2",
-      "asset": "agent-ui",
-      "x": 22,
-      "y": 52,
-      "size": 64
-    },
-    {
-      "id": "agent3",
-      "asset": "agent-ui",
-      "x": 22,
-      "y": 70,
-      "size": 64
-    },
-    {
-      "id": "board",
-      "asset": "message-board",
-      "x": 49,
-      "y": 52,
-      "size": 138
-    }
-  ],
-  "connections": [
-    {
-      "id": "a1-board",
-      "from": "agent1",
-      "to": "board",
-      "curvature": -2
-    },
-    {
-      "id": "a2-board",
-      "from": "agent2",
-      "to": "board",
-      "curvature": 0
-    },
-    {
-      "id": "a3-board",
-      "from": "agent3",
-      "to": "board",
-      "curvature": 2
-    }
-  ],
-  "actions": [
-    {
-      "type": "appear",
-      "target": "agent1",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "board",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "connect",
-      "target": "a1-board",
-      "at": 0
-    },
-    {
-      "type": "appear",
-      "target": "agent2",
-      "at": 30,
-      "duration": 16
-    },
-    {
-      "type": "appear",
-      "target": "agent3",
-      "at": 54,
-      "duration": 16
-    },
-    {
-      "type": "connect",
-      "target": "a2-board",
-      "at": 74
-    },
-    {
-      "type": "connect",
-      "target": "a3-board",
-      "at": 92
-    },
-    {
-      "type": "send",
-      "target": "a2-board",
-      "at": 126,
-      "duration": 38
-    },
-    {
-      "type": "pulse",
-      "target": "board",
-      "at": 168,
-      "duration": 28
-    }
-  ]
-},
+    "durationInFrames": 288,
+    "color": "#39f6ff",
+    "nodes": [
+      {
+        "id": "agent1",
+        "asset": "agent-ui",
+        "x": 22,
+        "y": 34,
+        "size": 64
+      },
+      {
+        "id": "agent2",
+        "asset": "agent-ui",
+        "x": 22,
+        "y": 52,
+        "size": 64
+      },
+      {
+        "id": "agent3",
+        "asset": "agent-ui",
+        "x": 22,
+        "y": 70,
+        "size": 64
+      },
+      {
+        "id": "board",
+        "asset": "artifactory-ui",
+        "x": 49,
+        "y": 52,
+        "size": 145
+      }
+    ],
+    "connections": [
+      {
+        "id": "a1-board",
+        "from": "agent1",
+        "to": "board",
+        "curvature": -2
+      },
+      {
+        "id": "a2-board",
+        "from": "agent2",
+        "to": "board",
+        "curvature": 0
+      },
+      {
+        "id": "a3-board",
+        "from": "agent3",
+        "to": "board",
+        "curvature": 2
+      }
+    ],
+    "actions": [
+      {
+        "type": "appear",
+        "target": "agent1",
+        "cue": "006_es_01",
+        "cueOffsetSeconds": 0.5,
+        "cueDurationSeconds": 0.35
+      },
+      {
+        "type": "appear",
+        "target": "board",
+        "cue": "006_es_01",
+        "cueOffsetSeconds": 0.5,
+        "cueDurationSeconds": 0.35
+      },
+      {
+        "type": "connect",
+        "target": "a1-board",
+        "cue": "006_es_01",
+        "cueOffsetSeconds": 1.8
+      },
+      {
+        "type": "appear",
+        "target": "agent2",
+        "cue": "006_es_01",
+        "cueOffsetSeconds": 2.2,
+        "cueDurationSeconds": 0.35
+      },
+      {
+        "type": "connect",
+        "target": "a2-board",
+        "cue": "006_en_02"
+      },
+      {
+        "type": "send",
+        "target": "a2-board",
+        "cue": "006_en_02",
+        "cueDurationSeconds": 2.2
+      }
+    ]
+  },
   "007": {
-  "durationInFrames": 207,
-  "color": "#39f6ff",
-  "nodes": [
-    {
-      "id": "agent1",
-      "asset": "agent-ui",
-      "x": 18,
-      "y": 24,
-      "size": 48
-    },
-    {
-      "id": "agent2",
-      "asset": "agent-ui",
-      "x": 18,
-      "y": 38,
-      "size": 48
-    },
-    {
-      "id": "agent3",
-      "asset": "agent-ui",
-      "x": 18,
-      "y": 52,
-      "size": 48
-    },
-    {
-      "id": "agent4",
-      "asset": "agent-ui",
-      "x": 18,
-      "y": 66,
-      "size": 48
-    },
-    {
-      "id": "agent5",
-      "asset": "agent-ui",
-      "x": 18,
-      "y": 80,
-      "size": 48
-    },
-    {
-      "id": "board",
-      "asset": "message-board",
-      "x": 46,
-      "y": 52,
-      "size": 142
-    }
-  ],
-  "connections": [
-    {
-      "id": "a1-board",
-      "from": "agent1",
-      "to": "board",
-      "curvature": -5
-    },
-    {
-      "id": "a2-board",
-      "from": "agent2",
-      "to": "board",
-      "curvature": -3
-    },
-    {
-      "id": "a3-board",
-      "from": "agent3",
-      "to": "board",
-      "curvature": 0
-    },
-    {
-      "id": "a4-board",
-      "from": "agent4",
-      "to": "board",
-      "curvature": 3
-    },
-    {
-      "id": "a5-board",
-      "from": "agent5",
-      "to": "board",
-      "curvature": 5
-    }
-  ],
-  "actions": [
-    {
-      "type": "appear",
-      "target": "board",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "agent1",
-      "at": 8,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent2",
-      "at": 22,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent3",
-      "at": 36,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent4",
-      "at": 50,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent5",
-      "at": 64,
-      "duration": 10
-    },
-    {
-      "type": "connect",
-      "target": "a1-board",
-      "at": 30
-    },
-    {
-      "type": "connect",
-      "target": "a2-board",
-      "at": 48
-    },
-    {
-      "type": "connect",
-      "target": "a3-board",
-      "at": 66
-    },
-    {
-      "type": "connect",
-      "target": "a4-board",
-      "at": 84
-    },
-    {
-      "type": "connect",
-      "target": "a5-board",
-      "at": 102
-    },
-    {
-      "type": "pulse",
-      "target": "board",
-      "at": 126,
-      "duration": 34
-    },
-    {
-      "type": "send",
-      "target": "a3-board",
-      "at": 148,
-      "duration": 34
-    }
-  ]
-},
+    "durationInFrames": 207,
+    "color": "#39f6ff",
+    "nodes": [
+      {
+        "id": "agent1",
+        "asset": "agent-ui",
+        "x": 18,
+        "y": 24,
+        "size": 48
+      },
+      {
+        "id": "agent2",
+        "asset": "agent-ui",
+        "x": 18,
+        "y": 38,
+        "size": 48
+      },
+      {
+        "id": "agent3",
+        "asset": "agent-ui",
+        "x": 18,
+        "y": 52,
+        "size": 48
+      },
+      {
+        "id": "agent4",
+        "asset": "agent-ui",
+        "x": 18,
+        "y": 66,
+        "size": 48
+      },
+      {
+        "id": "agent5",
+        "asset": "agent-ui",
+        "x": 18,
+        "y": 80,
+        "size": 48
+      },
+      {
+        "id": "board",
+        "asset": "artifactory-ui",
+        "x": 46,
+        "y": 52,
+        "size": 145
+      }
+    ],
+    "connections": [
+      {
+        "id": "a1-board",
+        "from": "agent1",
+        "to": "board",
+        "curvature": -5
+      },
+      {
+        "id": "a2-board",
+        "from": "agent2",
+        "to": "board",
+        "curvature": -3
+      },
+      {
+        "id": "a3-board",
+        "from": "agent3",
+        "to": "board",
+        "curvature": 0
+      },
+      {
+        "id": "a4-board",
+        "from": "agent4",
+        "to": "board",
+        "curvature": 3
+      },
+      {
+        "id": "a5-board",
+        "from": "agent5",
+        "to": "board",
+        "curvature": 5
+      }
+    ],
+    "actions": [
+      {
+        "type": "appear",
+        "target": "board",
+        "cue": "007_es_01",
+        "cueOffsetSeconds": 0.2,
+        "cueDurationSeconds": 0.3
+      },
+      {
+        "type": "appear",
+        "target": "agent1",
+        "cue": "007_es_01",
+        "cueOffsetSeconds": 0.5,
+        "cueDurationSeconds": 0.3
+      },
+      {
+        "type": "connect",
+        "target": "a1-board",
+        "cue": "007_es_01",
+        "cueOffsetSeconds": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent2",
+        "cue": "007_es_01",
+        "cueOffsetSeconds": 1.4,
+        "cueDurationSeconds": 0.3
+      },
+      {
+        "type": "connect",
+        "target": "a2-board",
+        "cue": "007_es_01",
+        "cueOffsetSeconds": 1.8
+      },
+      {
+        "type": "appear",
+        "target": "agent3",
+        "cue": "007_es_01",
+        "cueOffsetSeconds": 2.3,
+        "cueDurationSeconds": 0.3
+      },
+      {
+        "type": "connect",
+        "target": "a3-board",
+        "cue": "007_es_01",
+        "cueOffsetSeconds": 2.7
+      },
+      {
+        "type": "appear",
+        "target": "agent4",
+        "cue": "007_es_01",
+        "cueOffsetSeconds": 3.2,
+        "cueDurationSeconds": 0.3
+      },
+      {
+        "type": "connect",
+        "target": "a4-board",
+        "cue": "007_es_01",
+        "cueOffsetSeconds": 3.6
+      },
+      {
+        "type": "appear",
+        "target": "agent5",
+        "cue": "007_es_01",
+        "cueOffsetSeconds": 4.1,
+        "cueDurationSeconds": 0.3
+      },
+      {
+        "type": "connect",
+        "target": "a5-board",
+        "cue": "007_es_01",
+        "cueOffsetSeconds": 4.5
+      }
+    ]
+  },
   "008": {
     "durationInFrames": 519,
     "color": "#39f6ff",
@@ -1453,22 +1384,10 @@ export const MOTION_SCENES = {
         "at": 245
       },
       {
-        "type": "pulse",
-        "target": "idea",
-        "at": 292,
-        "duration": 46
-      },
-      {
         "type": "send",
         "target": "idea-flag",
         "at": 338,
         "duration": 62
-      },
-      {
-        "type": "pulse",
-        "target": "flag",
-        "at": 405,
-        "duration": 42
       }
     ]
   },
@@ -1519,49 +1438,49 @@ export const MOTION_SCENES = {
         "size": 54
       },
       {
-        "id": "board",
-        "asset": "message-board",
-        "x": 60,
+        "id": "major-break",
+        "x": 62,
         "y": 50,
-        "size": 190
+        "size": 190,
+        "label": "MAJOR BREAK"
       }
     ],
     "connections": [
       {
-        "id": "e1",
+        "id": "agent-major-1",
         "from": "agent1",
-        "to": "board",
-        "curvature": -7
-      },
-      {
-        "id": "e2",
-        "from": "agent2",
-        "to": "board",
+        "to": "major-break",
         "curvature": -5
       },
       {
-        "id": "e3",
+        "id": "agent-major-2",
+        "from": "agent2",
+        "to": "major-break",
+        "curvature": -3
+      },
+      {
+        "id": "agent-major-3",
         "from": "agent3",
-        "to": "board",
-        "curvature": -2
+        "to": "major-break",
+        "curvature": -1
       },
       {
-        "id": "e4",
+        "id": "agent-major-4",
         "from": "agent4",
-        "to": "board",
-        "curvature": 2
+        "to": "major-break",
+        "curvature": 1
       },
       {
-        "id": "e5",
+        "id": "agent-major-5",
         "from": "agent5",
-        "to": "board",
-        "curvature": 5
+        "to": "major-break",
+        "curvature": 3
       },
       {
-        "id": "e6",
+        "id": "agent-major-6",
         "from": "agent6",
-        "to": "board",
-        "curvature": 7
+        "to": "major-break",
+        "curvature": 5
       }
     ],
     "actions": [
@@ -1603,63 +1522,51 @@ export const MOTION_SCENES = {
       },
       {
         "type": "appear",
-        "target": "board",
+        "target": "major-break",
         "at": 0,
         "duration": 1
       },
       {
         "type": "connect",
-        "target": "e1",
-        "at": 42
+        "target": "agent-major-1",
+        "cue": "009_es_01",
+        "cueOffsetSeconds": 1.2
       },
       {
         "type": "connect",
-        "target": "e2",
-        "at": 72
+        "target": "agent-major-2",
+        "cue": "009_es_01",
+        "cueOffsetSeconds": 2.3499999999999996
       },
       {
         "type": "connect",
-        "target": "e3",
-        "at": 102
+        "target": "agent-major-3",
+        "cue": "009_es_01",
+        "cueOffsetSeconds": 3.5
       },
       {
         "type": "connect",
-        "target": "e4",
-        "at": 132
+        "target": "agent-major-4",
+        "cue": "009_es_01",
+        "cueOffsetSeconds": 4.6499999999999995
       },
       {
         "type": "connect",
-        "target": "e5",
-        "at": 162
+        "target": "agent-major-5",
+        "cue": "009_es_01",
+        "cueOffsetSeconds": 5.8
       },
       {
         "type": "connect",
-        "target": "e6",
-        "at": 192
+        "target": "agent-major-6",
+        "cue": "009_es_01",
+        "cueOffsetSeconds": 6.95
       },
       {
         "type": "send",
-        "target": "e1",
-        "at": 240,
-        "duration": 44
-      },
-      {
-        "type": "send",
-        "target": "e3",
-        "at": 288,
-        "duration": 44
-      },
-      {
-        "type": "send",
-        "target": "e5",
-        "at": 336,
-        "duration": 44
-      },
-      {
-        "type": "pulse",
-        "target": "board",
-        "at": 372,
-        "duration": 54
+        "target": "agent-major-2",
+        "cue": "009_en_02",
+        "cueDurationSeconds": 2.2
       }
     ],
     "groups": [
@@ -1730,49 +1637,49 @@ export const MOTION_SCENES = {
         "size": 43
       },
       {
-        "id": "board",
-        "asset": "message-board",
-        "x": 60,
+        "id": "major-break",
+        "x": 62,
         "y": 50,
-        "size": 150
+        "size": 190,
+        "label": "MAJOR BREAK"
       }
     ],
     "connections": [
       {
-        "id": "e1",
+        "id": "agent-major-1",
         "from": "agent1",
-        "to": "board",
-        "curvature": -7
-      },
-      {
-        "id": "e2",
-        "from": "agent2",
-        "to": "board",
+        "to": "major-break",
         "curvature": -5
       },
       {
-        "id": "e3",
+        "id": "agent-major-2",
+        "from": "agent2",
+        "to": "major-break",
+        "curvature": -3
+      },
+      {
+        "id": "agent-major-3",
         "from": "agent3",
-        "to": "board",
-        "curvature": -2
+        "to": "major-break",
+        "curvature": -1
       },
       {
-        "id": "e4",
+        "id": "agent-major-4",
         "from": "agent4",
-        "to": "board",
-        "curvature": 2
+        "to": "major-break",
+        "curvature": 1
       },
       {
-        "id": "e5",
+        "id": "agent-major-5",
         "from": "agent5",
-        "to": "board",
-        "curvature": 5
+        "to": "major-break",
+        "curvature": 3
       },
       {
-        "id": "e6",
+        "id": "agent-major-6",
         "from": "agent6",
-        "to": "board",
-        "curvature": 7
+        "to": "major-break",
+        "curvature": 5
       }
     ],
     "actions": [
@@ -1814,63 +1721,51 @@ export const MOTION_SCENES = {
       },
       {
         "type": "appear",
-        "target": "board",
+        "target": "major-break",
         "at": 0,
         "duration": 1
       },
       {
         "type": "connect",
-        "target": "e1",
-        "at": 0
+        "target": "agent-major-1",
+        "at": 20
       },
       {
         "type": "connect",
-        "target": "e2",
-        "at": 0
+        "target": "agent-major-2",
+        "at": 28
       },
       {
         "type": "connect",
-        "target": "e3",
-        "at": 0
+        "target": "agent-major-3",
+        "at": 36
       },
       {
         "type": "connect",
-        "target": "e4",
-        "at": 0
+        "target": "agent-major-4",
+        "at": 44
       },
       {
         "type": "connect",
-        "target": "e5",
-        "at": 0
+        "target": "agent-major-5",
+        "at": 52
       },
       {
         "type": "connect",
-        "target": "e6",
-        "at": 0
+        "target": "agent-major-6",
+        "at": 60
       },
       {
         "type": "send",
-        "target": "e2",
-        "at": 38,
-        "duration": 42
+        "target": "agent-major-1",
+        "at": 115,
+        "duration": 36
       },
       {
         "type": "send",
-        "target": "e4",
-        "at": 105,
-        "duration": 42
-      },
-      {
-        "type": "send",
-        "target": "e6",
-        "at": 170,
-        "duration": 42
-      },
-      {
-        "type": "pulse",
-        "target": "board",
-        "at": 220,
-        "duration": 46
+        "target": "agent-major-5",
+        "at": 185,
+        "duration": 36
       }
     ]
   },
@@ -1921,49 +1816,49 @@ export const MOTION_SCENES = {
         "size": 43
       },
       {
-        "id": "board",
-        "asset": "message-board",
-        "x": 60,
+        "id": "major-break",
+        "x": 62,
         "y": 50,
-        "size": 150
+        "size": 190,
+        "label": "MAJOR BREAK"
       }
     ],
     "connections": [
       {
-        "id": "e1",
+        "id": "agent-major-1",
         "from": "agent1",
-        "to": "board",
-        "curvature": -7
-      },
-      {
-        "id": "e2",
-        "from": "agent2",
-        "to": "board",
+        "to": "major-break",
         "curvature": -5
       },
       {
-        "id": "e3",
+        "id": "agent-major-2",
+        "from": "agent2",
+        "to": "major-break",
+        "curvature": -3
+      },
+      {
+        "id": "agent-major-3",
         "from": "agent3",
-        "to": "board",
-        "curvature": -2
+        "to": "major-break",
+        "curvature": -1
       },
       {
-        "id": "e4",
+        "id": "agent-major-4",
         "from": "agent4",
-        "to": "board",
-        "curvature": 2
+        "to": "major-break",
+        "curvature": 1
       },
       {
-        "id": "e5",
+        "id": "agent-major-5",
         "from": "agent5",
-        "to": "board",
-        "curvature": 5
+        "to": "major-break",
+        "curvature": 3
       },
       {
-        "id": "e6",
+        "id": "agent-major-6",
         "from": "agent6",
-        "to": "board",
-        "curvature": 7
+        "to": "major-break",
+        "curvature": 5
       }
     ],
     "actions": [
@@ -2005,69 +1900,45 @@ export const MOTION_SCENES = {
       },
       {
         "type": "appear",
-        "target": "board",
+        "target": "major-break",
         "at": 0,
         "duration": 1
       },
       {
         "type": "connect",
-        "target": "e1",
+        "target": "agent-major-1",
         "at": 0
       },
       {
         "type": "connect",
-        "target": "e2",
+        "target": "agent-major-2",
         "at": 0
       },
       {
         "type": "connect",
-        "target": "e3",
+        "target": "agent-major-3",
         "at": 0
       },
       {
         "type": "connect",
-        "target": "e4",
+        "target": "agent-major-4",
         "at": 0
       },
       {
         "type": "connect",
-        "target": "e5",
+        "target": "agent-major-5",
         "at": 0
       },
       {
         "type": "connect",
-        "target": "e6",
+        "target": "agent-major-6",
         "at": 0
-      },
-      {
-        "type": "pulse",
-        "target": "agent2",
-        "at": 70,
-        "duration": 32
-      },
-      {
-        "type": "pulse",
-        "target": "agent5",
-        "at": 150,
-        "duration": 32
-      },
-      {
-        "type": "pulse",
-        "target": "board",
-        "at": 230,
-        "duration": 48
       },
       {
         "type": "send",
-        "target": "e1",
-        "at": 300,
-        "duration": 52
-      },
-      {
-        "type": "send",
-        "target": "e6",
-        "at": 385,
-        "duration": 52
+        "target": "agent-major-3",
+        "at": 90,
+        "duration": 38
       }
     ]
   },
@@ -2195,21 +2066,10 @@ export const MOTION_SCENES = {
         "at": 288
       },
       {
-        "type": "activate",
-        "target": "art-net",
-        "at": 320
-      },
-      {
         "type": "send",
         "target": "art-net",
         "at": 336,
         "duration": 58
-      },
-      {
-        "type": "pulse",
-        "target": "internet",
-        "at": 392,
-        "duration": 28
       }
     ]
   }
