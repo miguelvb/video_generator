@@ -106,392 +106,139 @@ transition
 {
   "durationInFrames": 327,
   "color": "#39f6ff",
-  "background": "assets/motion/swarm-background.svg",
   "nodes": [
     {
-      "id": "agent-01",
+      "id": "openai",
+      "asset": "openai-ui",
+      "x": 39,
+      "y": 18,
+      "size": 82
+    },
+    {
+      "id": "a1",
       "asset": "agent-ui",
-      "x": 43,
-      "y": 42,
-      "size": 22
+      "x": 28,
+      "y": 36,
+      "size": 54
     },
     {
-      "id": "agent-02",
+      "id": "a2",
       "asset": "agent-ui",
-      "x": 46,
-      "y": 42,
-      "size": 22
+      "x": 39,
+      "y": 36,
+      "size": 54
     },
     {
-      "id": "agent-03",
+      "id": "a3",
       "asset": "agent-ui",
-      "x": 49,
-      "y": 42,
-      "size": 22
+      "x": 50,
+      "y": 36,
+      "size": 54
     },
     {
-      "id": "agent-04",
+      "id": "a4",
       "asset": "agent-ui",
-      "x": 52,
-      "y": 42,
-      "size": 22
+      "x": 28,
+      "y": 50,
+      "size": 54
     },
     {
-      "id": "agent-05",
+      "id": "a5",
       "asset": "agent-ui",
-      "x": 55,
-      "y": 42,
-      "size": 22
+      "x": 39,
+      "y": 50,
+      "size": 54
     },
     {
-      "id": "agent-06",
+      "id": "a6",
       "asset": "agent-ui",
-      "x": 58,
-      "y": 42,
-      "size": 22
+      "x": 50,
+      "y": 50,
+      "size": 54
     },
     {
-      "id": "agent-07",
+      "id": "a7",
       "asset": "agent-ui",
-      "x": 43,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "agent-08",
-      "asset": "agent-ui",
-      "x": 46,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "agent-09",
-      "asset": "agent-ui",
-      "x": 49,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "agent-10",
-      "asset": "agent-ui",
-      "x": 52,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "agent-11",
-      "asset": "agent-ui",
-      "x": 55,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "agent-12",
-      "asset": "agent-ui",
-      "x": 58,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "agent-13",
-      "asset": "agent-ui",
-      "x": 43,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "agent-14",
-      "asset": "agent-ui",
-      "x": 46,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "agent-15",
-      "asset": "agent-ui",
-      "x": 49,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "agent-16",
-      "asset": "agent-ui",
-      "x": 52,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "agent-17",
-      "asset": "agent-ui",
-      "x": 55,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "agent-18",
-      "asset": "agent-ui",
-      "x": 58,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "agent-19",
-      "asset": "agent-ui",
-      "x": 43,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "agent-20",
-      "asset": "agent-ui",
-      "x": 46,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "agent-21",
-      "asset": "agent-ui",
-      "x": 49,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "agent-22",
-      "asset": "agent-ui",
-      "x": 52,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "agent-23",
-      "asset": "agent-ui",
-      "x": 55,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "agent-24",
-      "asset": "agent-ui",
-      "x": 58,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "ellipsis",
-      "asset": "ellipsis",
-      "x": 60,
-      "y": 62,
-      "size": 26
-    },
-    {
-      "id": "test-a",
-      "asset": "task-module-ui",
-      "x": 68,
-      "y": 40,
-      "size": 62
-    },
-    {
-      "id": "test-b",
-      "asset": "task-module-ui",
-      "x": 68,
-      "y": 52,
-      "size": 62
-    },
-    {
-      "id": "test-c",
-      "asset": "task-module-ui",
-      "x": 68,
+      "x": 28,
       "y": 64,
-      "size": 62
+      "size": 54
+    },
+    {
+      "id": "a8",
+      "asset": "agent-ui",
+      "x": 39,
+      "y": 64,
+      "size": 54
+    },
+    {
+      "id": "a9",
+      "asset": "agent-ui",
+      "x": 50,
+      "y": 64,
+      "size": 54
     }
   ],
   "connections": [],
   "actions": [
     {
       "type": "appear",
-      "target": "agent-01",
-      "at": 32,
-      "duration": 10
+      "target": "openai",
+      "at": 12,
+      "duration": 22
     },
     {
       "type": "appear",
-      "target": "agent-02",
-      "at": 35,
-      "duration": 10
+      "target": "a1",
+      "at": 42,
+      "duration": 14
     },
     {
       "type": "appear",
-      "target": "agent-03",
-      "at": 38,
-      "duration": 10
+      "target": "a2",
+      "at": 54,
+      "duration": 14
     },
     {
       "type": "appear",
-      "target": "agent-04",
-      "at": 41,
-      "duration": 10
+      "target": "a3",
+      "at": 66,
+      "duration": 14
     },
     {
       "type": "appear",
-      "target": "agent-05",
-      "at": 44,
-      "duration": 10
+      "target": "a4",
+      "at": 78,
+      "duration": 14
     },
     {
       "type": "appear",
-      "target": "agent-06",
-      "at": 47,
-      "duration": 10
+      "target": "a5",
+      "at": 90,
+      "duration": 14
     },
     {
       "type": "appear",
-      "target": "agent-07",
-      "at": 32,
-      "duration": 10
+      "target": "a6",
+      "at": 102,
+      "duration": 14
     },
     {
       "type": "appear",
-      "target": "agent-08",
-      "at": 35,
-      "duration": 10
+      "target": "a7",
+      "at": 114,
+      "duration": 14
     },
     {
       "type": "appear",
-      "target": "agent-09",
-      "at": 38,
-      "duration": 10
+      "target": "a8",
+      "at": 126,
+      "duration": 14
     },
     {
       "type": "appear",
-      "target": "agent-10",
-      "at": 41,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent-11",
-      "at": 44,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent-12",
-      "at": 47,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent-13",
-      "at": 32,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent-14",
-      "at": 35,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent-15",
-      "at": 38,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent-16",
-      "at": 41,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent-17",
-      "at": 44,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent-18",
-      "at": 47,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent-19",
-      "at": 32,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent-20",
-      "at": 35,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent-21",
-      "at": 38,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent-22",
-      "at": 41,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent-23",
-      "at": 44,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent-24",
-      "at": 47,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "test-a",
-      "at": 92,
-      "duration": 16
-    },
-    {
-      "type": "appear",
-      "target": "test-b",
-      "at": 112,
-      "duration": 16
-    },
-    {
-      "type": "appear",
-      "target": "test-c",
-      "at": 132,
-      "duration": 16
-    },
-    {
-      "type": "appear",
-      "target": "ellipsis",
-      "at": 158,
-      "duration": 16
-    },
-    {
-      "type": "pulse",
-      "target": "test-a",
-      "at": 190,
-      "duration": 24
-    },
-    {
-      "type": "pulse",
-      "target": "test-b",
-      "at": 220,
-      "duration": 24
-    },
-    {
-      "type": "pulse",
-      "target": "test-c",
-      "at": 250,
-      "duration": 24
+      "target": "a9",
+      "at": 138,
+      "duration": 14
     }
   ]
 }
@@ -523,427 +270,192 @@ continuation
 {
   "durationInFrames": 356,
   "color": "#39f6ff",
-  "background": "assets/motion/swarm-background.svg",
   "nodes": [
     {
-      "id": "swarm-01",
+      "id": "openai",
+      "asset": "openai-ui",
+      "x": 39,
+      "y": 18,
+      "size": 82
+    },
+    {
+      "id": "a1",
       "asset": "agent-ui",
-      "x": 43,
-      "y": 42,
-      "size": 22
+      "x": 28,
+      "y": 36,
+      "size": 54
     },
     {
-      "id": "swarm-02",
+      "id": "a2",
       "asset": "agent-ui",
-      "x": 46,
-      "y": 42,
-      "size": 22
+      "x": 39,
+      "y": 36,
+      "size": 54
     },
     {
-      "id": "swarm-03",
+      "id": "a3",
       "asset": "agent-ui",
-      "x": 49,
-      "y": 42,
-      "size": 22
+      "x": 50,
+      "y": 36,
+      "size": 54
     },
     {
-      "id": "swarm-04",
+      "id": "a4",
       "asset": "agent-ui",
-      "x": 52,
-      "y": 42,
-      "size": 22
+      "x": 28,
+      "y": 50,
+      "size": 54
     },
     {
-      "id": "swarm-05",
+      "id": "a5",
       "asset": "agent-ui",
-      "x": 55,
-      "y": 42,
-      "size": 22
+      "x": 39,
+      "y": 50,
+      "size": 54
     },
     {
-      "id": "swarm-06",
+      "id": "a6",
       "asset": "agent-ui",
-      "x": 58,
-      "y": 42,
-      "size": 22
+      "x": 50,
+      "y": 50,
+      "size": 54
     },
     {
-      "id": "swarm-07",
+      "id": "a7",
       "asset": "agent-ui",
-      "x": 43,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "swarm-08",
-      "asset": "agent-ui",
-      "x": 46,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "swarm-09",
-      "asset": "agent-ui",
-      "x": 49,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "swarm-10",
-      "asset": "agent-ui",
-      "x": 52,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "swarm-11",
-      "asset": "agent-ui",
-      "x": 55,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "swarm-12",
-      "asset": "agent-ui",
-      "x": 58,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "swarm-13",
-      "asset": "agent-ui",
-      "x": 43,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "swarm-14",
-      "asset": "agent-ui",
-      "x": 46,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "swarm-15",
-      "asset": "agent-ui",
-      "x": 49,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "swarm-16",
-      "asset": "agent-ui",
-      "x": 52,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "swarm-17",
-      "asset": "agent-ui",
-      "x": 55,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "swarm-18",
-      "asset": "agent-ui",
-      "x": 58,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "swarm-19",
-      "asset": "agent-ui",
-      "x": 43,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "swarm-20",
-      "asset": "agent-ui",
-      "x": 46,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "swarm-21",
-      "asset": "agent-ui",
-      "x": 49,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "swarm-22",
-      "asset": "agent-ui",
-      "x": 52,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "swarm-23",
-      "asset": "agent-ui",
-      "x": 55,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "swarm-24",
-      "asset": "agent-ui",
-      "x": 58,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "ellipsis",
-      "asset": "ellipsis",
-      "x": 60,
-      "y": 62,
-      "size": 26
-    },
-    {
-      "id": "test-a",
-      "asset": "task-module-ui",
-      "x": 68,
-      "y": 40,
-      "size": 62
-    },
-    {
-      "id": "test-b",
-      "asset": "task-module-ui",
-      "x": 68,
-      "y": 52,
-      "size": 62
-    },
-    {
-      "id": "test-c",
-      "asset": "task-module-ui",
-      "x": 68,
+      "x": 28,
       "y": 64,
-      "size": 62
+      "size": 54
+    },
+    {
+      "id": "a8",
+      "asset": "agent-ui",
+      "x": 39,
+      "y": 64,
+      "size": 54
+    },
+    {
+      "id": "a9",
+      "asset": "agent-ui",
+      "x": 50,
+      "y": 64,
+      "size": 54
     }
   ],
   "connections": [],
   "actions": [
     {
       "type": "appear",
-      "target": "swarm-01",
+      "target": "openai",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "swarm-02",
+      "target": "a1",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "swarm-03",
+      "target": "a2",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "swarm-04",
+      "target": "a3",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "swarm-05",
+      "target": "a4",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "swarm-06",
+      "target": "a5",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "swarm-07",
+      "target": "a6",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "swarm-08",
+      "target": "a7",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "swarm-09",
+      "target": "a8",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "swarm-10",
+      "target": "a9",
       "at": 0,
       "duration": 1
     },
     {
-      "type": "appear",
-      "target": "swarm-11",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-12",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-13",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-14",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-15",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-16",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-17",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-18",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-19",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-20",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-21",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-22",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-23",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-24",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "ellipsis",
-      "at": 5,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "test-a",
+      "type": "pulse",
+      "target": "a1",
       "at": 28,
-      "duration": 14
-    },
-    {
-      "type": "appear",
-      "target": "test-b",
-      "at": 48,
-      "duration": 14
-    },
-    {
-      "type": "appear",
-      "target": "test-c",
-      "at": 68,
-      "duration": 14
+      "duration": 18
     },
     {
       "type": "pulse",
-      "target": "test-a",
-      "at": 104,
-      "duration": 24
+      "target": "a2",
+      "at": 56,
+      "duration": 18
     },
     {
       "type": "pulse",
-      "target": "swarm-03",
+      "target": "a3",
+      "at": 84,
+      "duration": 18
+    },
+    {
+      "type": "pulse",
+      "target": "a4",
       "at": 112,
       "duration": 18
     },
     {
       "type": "pulse",
-      "target": "test-b",
-      "at": 144,
-      "duration": 24
-    },
-    {
-      "type": "pulse",
-      "target": "swarm-12",
-      "at": 152,
+      "target": "a5",
+      "at": 140,
       "duration": 18
     },
     {
       "type": "pulse",
-      "target": "test-c",
-      "at": 184,
-      "duration": 24
-    },
-    {
-      "type": "pulse",
-      "target": "swarm-21",
-      "at": 192,
+      "target": "a6",
+      "at": 168,
       "duration": 18
     },
     {
       "type": "pulse",
-      "target": "swarm-06",
+      "target": "a7",
+      "at": 196,
+      "duration": 18
+    },
+    {
+      "type": "pulse",
+      "target": "a8",
       "at": 224,
       "duration": 18
     },
     {
       "type": "pulse",
-      "target": "swarm-17",
-      "at": 250,
-      "duration": 18
-    },
-    {
-      "type": "pulse",
-      "target": "swarm-24",
-      "at": 276,
+      "target": "a9",
+      "at": 252,
       "duration": 18
     }
   ]
@@ -976,442 +488,193 @@ continuation
 {
   "durationInFrames": 188,
   "color": "#39f6ff",
-  "background": "assets/motion/swarm-background.svg",
   "nodes": [
     {
-      "id": "agent-a",
-      "asset": "agent-ui",
-      "x": 29,
-      "y": 43,
-      "size": 72
+      "id": "openai",
+      "asset": "openai-ui",
+      "x": 39,
+      "y": 18,
+      "size": 82
     },
     {
-      "id": "agent-b",
+      "id": "a1",
+      "asset": "agent-ui",
+      "x": 28,
+      "y": 36,
+      "size": 54
+    },
+    {
+      "id": "a2",
+      "asset": "agent-ui",
+      "x": 39,
+      "y": 36,
+      "size": 54
+    },
+    {
+      "id": "a3",
       "asset": "agent-ui",
       "x": 50,
-      "y": 43,
-      "size": 72
+      "y": 36,
+      "size": 54
     },
     {
-      "id": "agent-c",
+      "id": "a4",
       "asset": "agent-ui",
-      "x": 71,
-      "y": 43,
-      "size": 72
+      "x": 28,
+      "y": 50,
+      "size": 54
     },
     {
-      "id": "test-a",
-      "asset": "task-module-ui",
-      "x": 29,
-      "y": 62,
-      "size": 72
+      "id": "a5",
+      "asset": "agent-ui",
+      "x": 39,
+      "y": 50,
+      "size": 54
     },
     {
-      "id": "test-b",
-      "asset": "task-module-ui",
+      "id": "a6",
+      "asset": "agent-ui",
       "x": 50,
-      "y": 62,
-      "size": 72
+      "y": 50,
+      "size": 54
     },
     {
-      "id": "test-c",
-      "asset": "task-module-ui",
-      "x": 71,
-      "y": 62,
-      "size": 72
-    },
-    {
-      "id": "background-01",
+      "id": "a7",
       "asset": "agent-ui",
-      "x": 43,
-      "y": 42,
-      "size": 22
+      "x": 28,
+      "y": 64,
+      "size": 54
     },
     {
-      "id": "background-02",
+      "id": "a8",
       "asset": "agent-ui",
-      "x": 46,
-      "y": 42,
-      "size": 22
+      "x": 39,
+      "y": 64,
+      "size": 54
     },
     {
-      "id": "background-03",
+      "id": "a9",
       "asset": "agent-ui",
-      "x": 49,
-      "y": 42,
-      "size": 22
-    },
-    {
-      "id": "background-04",
-      "asset": "agent-ui",
-      "x": 52,
-      "y": 42,
-      "size": 22
-    },
-    {
-      "id": "background-05",
-      "asset": "agent-ui",
-      "x": 55,
-      "y": 42,
-      "size": 22
-    },
-    {
-      "id": "background-06",
-      "asset": "agent-ui",
-      "x": 58,
-      "y": 42,
-      "size": 22
-    },
-    {
-      "id": "background-07",
-      "asset": "agent-ui",
-      "x": 43,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "background-08",
-      "asset": "agent-ui",
-      "x": 46,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "background-09",
-      "asset": "agent-ui",
-      "x": 49,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "background-10",
-      "asset": "agent-ui",
-      "x": 52,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "background-11",
-      "asset": "agent-ui",
-      "x": 55,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "background-12",
-      "asset": "agent-ui",
-      "x": 58,
-      "y": 47,
-      "size": 22
-    },
-    {
-      "id": "background-13",
-      "asset": "agent-ui",
-      "x": 43,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "background-14",
-      "asset": "agent-ui",
-      "x": 46,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "background-15",
-      "asset": "agent-ui",
-      "x": 49,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "background-16",
-      "asset": "agent-ui",
-      "x": 52,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "background-17",
-      "asset": "agent-ui",
-      "x": 55,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "background-18",
-      "asset": "agent-ui",
-      "x": 58,
-      "y": 52,
-      "size": 22
-    },
-    {
-      "id": "background-19",
-      "asset": "agent-ui",
-      "x": 43,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "background-20",
-      "asset": "agent-ui",
-      "x": 46,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "background-21",
-      "asset": "agent-ui",
-      "x": 49,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "background-22",
-      "asset": "agent-ui",
-      "x": 52,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "background-23",
-      "asset": "agent-ui",
-      "x": 55,
-      "y": 57,
-      "size": 22
-    },
-    {
-      "id": "background-24",
-      "asset": "agent-ui",
-      "x": 58,
-      "y": 57,
-      "size": 22
+      "x": 50,
+      "y": 64,
+      "size": 54
     }
   ],
   "connections": [],
   "actions": [
     {
       "type": "appear",
-      "target": "background-01",
+      "target": "openai",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "background-02",
+      "target": "a1",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "background-03",
+      "target": "a2",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "background-04",
+      "target": "a3",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "background-05",
+      "target": "a4",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "background-06",
+      "target": "a5",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "background-07",
+      "target": "a6",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "background-08",
+      "target": "a7",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "background-09",
+      "target": "a8",
       "at": 0,
       "duration": 1
     },
     {
       "type": "appear",
-      "target": "background-10",
+      "target": "a9",
       "at": 0,
       "duration": 1
     },
     {
-      "type": "appear",
-      "target": "background-11",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "background-12",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "background-13",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "background-14",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "background-15",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "background-16",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "background-17",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "background-18",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "background-19",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "background-20",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "background-21",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "background-22",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "background-23",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "background-24",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "agent-a",
+      "type": "pulse",
+      "target": "a1",
       "at": 18,
-      "duration": 12
-    },
-    {
-      "type": "appear",
-      "target": "agent-b",
-      "at": 32,
-      "duration": 12
-    },
-    {
-      "type": "appear",
-      "target": "agent-c",
-      "at": 46,
-      "duration": 12
-    },
-    {
-      "type": "appear",
-      "target": "test-a",
-      "at": 62,
-      "duration": 12
-    },
-    {
-      "type": "appear",
-      "target": "test-b",
-      "at": 76,
-      "duration": 12
-    },
-    {
-      "type": "appear",
-      "target": "test-c",
-      "at": 90,
-      "duration": 12
+      "duration": 14
     },
     {
       "type": "pulse",
-      "target": "agent-a",
-      "at": 108,
-      "duration": 20
+      "target": "a4",
+      "at": 34,
+      "duration": 14
     },
     {
       "type": "pulse",
-      "target": "test-a",
-      "at": 108,
-      "duration": 20
+      "target": "a7",
+      "at": 50,
+      "duration": 14
     },
     {
       "type": "pulse",
-      "target": "agent-b",
-      "at": 128,
-      "duration": 20
+      "target": "a2",
+      "at": 66,
+      "duration": 14
     },
     {
       "type": "pulse",
-      "target": "test-b",
-      "at": 128,
-      "duration": 20
+      "target": "a5",
+      "at": 82,
+      "duration": 14
     },
     {
       "type": "pulse",
-      "target": "agent-c",
-      "at": 148,
-      "duration": 20
+      "target": "a8",
+      "at": 98,
+      "duration": 14
     },
     {
       "type": "pulse",
-      "target": "test-c",
-      "at": 148,
-      "duration": 20
+      "target": "a3",
+      "at": 114,
+      "duration": 14
     },
     {
       "type": "pulse",
-      "target": "agent-a",
-      "at": 172,
-      "duration": 12
+      "target": "a6",
+      "at": 130,
+      "duration": 14
+    },
+    {
+      "type": "pulse",
+      "target": "a9",
+      "at": 146,
+      "duration": 14
     }
   ]
 }
@@ -1443,179 +706,64 @@ continuation
 {
   "durationInFrames": 446,
   "color": "#39f6ff",
-  "background": "assets/motion/swarm-background.svg",
   "nodes": [
     {
-      "id": "focus-agent",
+      "id": "agent",
       "asset": "agent-ui",
-      "x": 24,
-      "y": 45,
+      "x": 30,
+      "y": 50,
       "size": 105
     },
     {
-      "id": "server",
-      "asset": "server-ui",
-      "x": 68,
-      "y": 32,
-      "size": 92
-    },
-    {
-      "id": "folder",
-      "asset": "folder-ui",
-      "x": 68,
-      "y": 55,
-      "size": 88
-    },
-    {
       "id": "board",
-      "asset": "message-board-ui",
-      "x": 50,
-      "y": 76,
-      "size": 145
-    },
-    {
-      "id": "peer-a",
-      "asset": "agent-ui",
-      "x": 20,
-      "y": 78,
-      "size": 64
-    },
-    {
-      "id": "peer-b",
-      "asset": "agent-ui",
-      "x": 82,
-      "y": 78,
-      "size": 64
+      "asset": "message-board",
+      "x": 63,
+      "y": 50,
+      "size": 155
     }
   ],
   "connections": [
     {
-      "id": "agent-server",
-      "from": "focus-agent",
-      "to": "server",
-      "curvature": -3
-    },
-    {
-      "id": "server-folder",
-      "from": "server",
-      "to": "folder",
-      "curvature": 2
-    },
-    {
-      "id": "folder-board",
-      "from": "folder",
+      "id": "agent-board",
+      "from": "agent",
       "to": "board",
-      "curvature": -3
-    },
-    {
-      "id": "board-peer-a",
-      "from": "board",
-      "to": "peer-a",
-      "curvature": 3
-    },
-    {
-      "id": "board-peer-b",
-      "from": "board",
-      "to": "peer-b",
-      "curvature": -3
+      "curvature": 0
     }
   ],
   "actions": [
     {
       "type": "appear",
-      "target": "focus-agent",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "pulse",
-      "target": "focus-agent",
-      "at": 24,
-      "duration": 22
-    },
-    {
-      "type": "appear",
-      "target": "server",
-      "at": 52,
-      "duration": 18
-    },
-    {
-      "type": "connect",
-      "target": "agent-server",
-      "at": 86
-    },
-    {
-      "type": "activate",
-      "target": "agent-server",
-      "at": 112
-    },
-    {
-      "type": "pulse",
-      "target": "server",
-      "at": 118,
-      "duration": 24
-    },
-    {
-      "type": "appear",
-      "target": "folder",
-      "at": 156,
-      "duration": 18
-    },
-    {
-      "type": "connect",
-      "target": "server-folder",
-      "at": 190
-    },
-    {
-      "type": "send",
-      "target": "server-folder",
-      "at": 208,
-      "duration": 28
+      "target": "agent",
+      "at": 18,
+      "duration": 20
     },
     {
       "type": "appear",
       "target": "board",
-      "at": 250,
-      "duration": 18
-    },
-    {
-      "type": "connect",
-      "target": "folder-board",
-      "at": 284
-    },
-    {
-      "type": "send",
-      "target": "folder-board",
-      "at": 302,
-      "duration": 32
-    },
-    {
-      "type": "appear",
-      "target": "peer-a",
-      "at": 344,
-      "duration": 14
-    },
-    {
-      "type": "appear",
-      "target": "peer-b",
-      "at": 358,
-      "duration": 14
-    },
-    {
-      "type": "connect",
-      "target": "board-peer-a",
-      "at": 378
-    },
-    {
-      "type": "connect",
-      "target": "board-peer-b",
-      "at": 390
-    },
-    {
-      "type": "send",
-      "target": "folder-board",
-      "at": 404,
+      "at": 110,
       "duration": 24
+    },
+    {
+      "type": "connect",
+      "target": "agent-board",
+      "at": 172
+    },
+    {
+      "type": "activate",
+      "target": "agent-board",
+      "at": 200
+    },
+    {
+      "type": "send",
+      "target": "agent-board",
+      "at": 230,
+      "duration": 48
+    },
+    {
+      "type": "pulse",
+      "target": "board",
+      "at": 286,
+      "duration": 38
     }
   ]
 }
@@ -1647,71 +795,44 @@ continuation
 {
   "durationInFrames": 143,
   "color": "#39f6ff",
-  "background": "assets/motion/swarm-background.svg",
   "nodes": [
     {
+      "id": "agent",
+      "asset": "agent-ui",
+      "x": 27,
+      "y": 52,
+      "size": 92
+    },
+    {
       "id": "board",
-      "asset": "message-board-ui",
-      "x": 50,
-      "y": 55,
-      "size": 175
+      "asset": "message-board",
+      "x": 51,
+      "y": 52,
+      "size": 138
     },
     {
-      "id": "agent-a",
-      "asset": "agent-ui",
-      "x": 24,
-      "y": 25,
-      "size": 78
-    },
-    {
-      "id": "agent-b",
-      "asset": "agent-ui",
-      "x": 76,
-      "y": 25,
-      "size": 78
-    },
-    {
-      "id": "agent-c",
-      "asset": "agent-ui",
-      "x": 24,
-      "y": 82,
-      "size": 78
-    },
-    {
-      "id": "agent-d",
-      "asset": "agent-ui",
-      "x": 76,
-      "y": 82,
-      "size": 78
+      "id": "msg1",
+      "asset": "message-ui",
+      "x": 77,
+      "y": 37,
+      "size": 112
     }
   ],
   "connections": [
     {
-      "id": "a-board",
-      "from": "agent-a",
+      "id": "agent-board",
+      "from": "agent",
       "to": "board",
-      "curvature": -3
-    },
-    {
-      "id": "b-board",
-      "from": "agent-b",
-      "to": "board",
-      "curvature": 3
-    },
-    {
-      "id": "c-board",
-      "from": "agent-c",
-      "to": "board",
-      "curvature": 3
-    },
-    {
-      "id": "d-board",
-      "from": "agent-d",
-      "to": "board",
-      "curvature": -3
+      "curvature": 0
     }
   ],
   "actions": [
+    {
+      "type": "appear",
+      "target": "agent",
+      "at": 0,
+      "duration": 1
+    },
     {
       "type": "appear",
       "target": "board",
@@ -1719,54 +840,27 @@ continuation
       "duration": 1
     },
     {
+      "type": "connect",
+      "target": "agent-board",
+      "at": 0
+    },
+    {
       "type": "appear",
-      "target": "agent-a",
+      "target": "msg1",
       "at": 10,
-      "duration": 10
+      "duration": 15
     },
     {
-      "type": "connect",
-      "target": "a-board",
-      "at": 25
-    },
-    {
-      "type": "appear",
-      "target": "agent-b",
-      "at": 38,
-      "duration": 10
-    },
-    {
-      "type": "connect",
-      "target": "b-board",
-      "at": 53
-    },
-    {
-      "type": "appear",
-      "target": "agent-c",
-      "at": 66,
-      "duration": 10
-    },
-    {
-      "type": "connect",
-      "target": "c-board",
-      "at": 81
-    },
-    {
-      "type": "appear",
-      "target": "agent-d",
-      "at": 94,
-      "duration": 10
-    },
-    {
-      "type": "connect",
-      "target": "d-board",
-      "at": 109
+      "type": "pulse",
+      "target": "board",
+      "at": 18,
+      "duration": 22
     },
     {
       "type": "send",
-      "target": "a-board",
-      "at": 118,
-      "duration": 18
+      "target": "agent-board",
+      "at": 28,
+      "duration": 38
     }
   ]
 }
@@ -1796,44 +890,136 @@ transition
 
 ```json
 {
-  "durationInFrames": 300,
+  "durationInFrames": 288,
   "color": "#39f6ff",
-  "background": "assets/motion/demo-background.svg",
   "nodes": [
-    {"id": "board", "asset": "message-board-ui", "x": 50, "y": 50, "size": 175},
-    {"id": "agent-a", "asset": "agent-ui", "x": 12, "y": 18, "size": 100},
-    {"id": "agent-b", "asset": "agent-ui", "x": 88, "y": 18, "size": 100},
-    {"id": "agent-c", "asset": "agent-ui", "x": 12, "y": 82, "size": 100},
-    {"id": "agent-d", "asset": "agent-ui", "x": 88, "y": 82, "size": 100}
+    {
+      "id": "agent1",
+      "asset": "agent-ui",
+      "x": 22,
+      "y": 34,
+      "size": 64
+    },
+    {
+      "id": "agent2",
+      "asset": "agent-ui",
+      "x": 22,
+      "y": 52,
+      "size": 64
+    },
+    {
+      "id": "agent3",
+      "asset": "agent-ui",
+      "x": 22,
+      "y": 70,
+      "size": 64
+    },
+    {
+      "id": "board",
+      "asset": "message-board",
+      "x": 49,
+      "y": 52,
+      "size": 138
+    },
+    {
+      "id": "msg1",
+      "asset": "message-ui",
+      "x": 77,
+      "y": 36,
+      "size": 105
+    },
+    {
+      "id": "msg2",
+      "asset": "message-ui",
+      "x": 77,
+      "y": 65,
+      "size": 105
+    }
   ],
   "connections": [
-    {"id": "a-board", "from": "agent-a", "to": "board", "curvature": -4},
-    {"id": "b-board", "from": "agent-b", "to": "board", "curvature": 4},
-    {"id": "c-board", "from": "agent-c", "to": "board", "curvature": 4},
-    {"id": "d-board", "from": "agent-d", "to": "board", "curvature": -4}
+    {
+      "id": "a1-board",
+      "from": "agent1",
+      "to": "board",
+      "curvature": -2
+    },
+    {
+      "id": "a2-board",
+      "from": "agent2",
+      "to": "board",
+      "curvature": 0
+    },
+    {
+      "id": "a3-board",
+      "from": "agent3",
+      "to": "board",
+      "curvature": 2
+    }
   ],
   "actions": [
-    {"type": "appear", "target": "board", "at": 0, "duration": 18},
-    {"type": "appear", "target": "agent-a", "at": 12, "duration": 18},
-    {"type": "move", "target": "agent-a", "at": 34, "duration": 34, "x": 26, "y": 28},
-    {"type": "connect", "target": "a-board", "at": 72},
-    {"type": "send", "target": "a-board", "at": 84, "duration": 28},
-    {"type": "activate", "target": "a-board", "at": 84},
-    {"type": "appear", "target": "agent-b", "at": 78, "duration": 18},
-    {"type": "move", "target": "agent-b", "at": 100, "duration": 34, "x": 74, "y": 28},
-    {"type": "connect", "target": "b-board", "at": 138},
-    {"type": "send", "target": "b-board", "at": 150, "duration": 28},
-    {"type": "activate", "target": "b-board", "at": 150},
-    {"type": "appear", "target": "agent-c", "at": 144, "duration": 18},
-    {"type": "move", "target": "agent-c", "at": 166, "duration": 34, "x": 26, "y": 72},
-    {"type": "connect", "target": "c-board", "at": 204},
-    {"type": "send", "target": "c-board", "at": 216, "duration": 28},
-    {"type": "activate", "target": "c-board", "at": 216},
-    {"type": "appear", "target": "agent-d", "at": 210, "duration": 18},
-    {"type": "move", "target": "agent-d", "at": 232, "duration": 34, "x": 74, "y": 72},
-    {"type": "connect", "target": "d-board", "at": 270},
-    {"type": "send", "target": "d-board", "at": 282, "duration": 18},
-    {"type": "activate", "target": "d-board", "at": 282}
+    {
+      "type": "appear",
+      "target": "agent1",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "board",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "msg1",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "connect",
+      "target": "a1-board",
+      "at": 0
+    },
+    {
+      "type": "appear",
+      "target": "agent2",
+      "at": 30,
+      "duration": 16
+    },
+    {
+      "type": "appear",
+      "target": "agent3",
+      "at": 54,
+      "duration": 16
+    },
+    {
+      "type": "connect",
+      "target": "a2-board",
+      "at": 74
+    },
+    {
+      "type": "connect",
+      "target": "a3-board",
+      "at": 92
+    },
+    {
+      "type": "appear",
+      "target": "msg2",
+      "at": 112,
+      "duration": 16
+    },
+    {
+      "type": "send",
+      "target": "a2-board",
+      "at": 126,
+      "duration": 38
+    },
+    {
+      "type": "pulse",
+      "target": "board",
+      "at": 168,
+      "duration": 28
+    }
   ]
 }
 ```
@@ -1888,6 +1074,192 @@ assets/reference/storyboard.png
 ### CONTINUITY
 transition
 
+### MOTION SCENE
+
+```json
+{
+  "durationInFrames": 207,
+  "color": "#39f6ff",
+  "nodes": [
+    {
+      "id": "agent1",
+      "asset": "agent-ui",
+      "x": 18,
+      "y": 24,
+      "size": 48
+    },
+    {
+      "id": "agent2",
+      "asset": "agent-ui",
+      "x": 18,
+      "y": 38,
+      "size": 48
+    },
+    {
+      "id": "agent3",
+      "asset": "agent-ui",
+      "x": 18,
+      "y": 52,
+      "size": 48
+    },
+    {
+      "id": "agent4",
+      "asset": "agent-ui",
+      "x": 18,
+      "y": 66,
+      "size": 48
+    },
+    {
+      "id": "agent5",
+      "asset": "agent-ui",
+      "x": 18,
+      "y": 80,
+      "size": 48
+    },
+    {
+      "id": "board",
+      "asset": "message-board",
+      "x": 46,
+      "y": 52,
+      "size": 142
+    },
+    {
+      "id": "msg1",
+      "asset": "message-ui",
+      "x": 75,
+      "y": 35,
+      "size": 100
+    },
+    {
+      "id": "msg2",
+      "asset": "message-ui",
+      "x": 75,
+      "y": 66,
+      "size": 100
+    }
+  ],
+  "connections": [
+    {
+      "id": "a1-board",
+      "from": "agent1",
+      "to": "board",
+      "curvature": -5
+    },
+    {
+      "id": "a2-board",
+      "from": "agent2",
+      "to": "board",
+      "curvature": -3
+    },
+    {
+      "id": "a3-board",
+      "from": "agent3",
+      "to": "board",
+      "curvature": 0
+    },
+    {
+      "id": "a4-board",
+      "from": "agent4",
+      "to": "board",
+      "curvature": 3
+    },
+    {
+      "id": "a5-board",
+      "from": "agent5",
+      "to": "board",
+      "curvature": 5
+    }
+  ],
+  "actions": [
+    {
+      "type": "appear",
+      "target": "board",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "msg1",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "msg2",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent1",
+      "at": 8,
+      "duration": 10
+    },
+    {
+      "type": "appear",
+      "target": "agent2",
+      "at": 22,
+      "duration": 10
+    },
+    {
+      "type": "appear",
+      "target": "agent3",
+      "at": 36,
+      "duration": 10
+    },
+    {
+      "type": "appear",
+      "target": "agent4",
+      "at": 50,
+      "duration": 10
+    },
+    {
+      "type": "appear",
+      "target": "agent5",
+      "at": 64,
+      "duration": 10
+    },
+    {
+      "type": "connect",
+      "target": "a1-board",
+      "at": 30
+    },
+    {
+      "type": "connect",
+      "target": "a2-board",
+      "at": 48
+    },
+    {
+      "type": "connect",
+      "target": "a3-board",
+      "at": 66
+    },
+    {
+      "type": "connect",
+      "target": "a4-board",
+      "at": 84
+    },
+    {
+      "type": "connect",
+      "target": "a5-board",
+      "at": 102
+    },
+    {
+      "type": "pulse",
+      "target": "board",
+      "at": 126,
+      "duration": 34
+    },
+    {
+      "type": "send",
+      "target": "a3-board",
+      "at": 148,
+      "duration": 34
+    }
+  ]
+}
+```
+
 ### VISUAL ANCHOR
 Large dense swarm network with hundreds of agent nodes converging on the shared channel.
 
@@ -1934,6 +1306,111 @@ assets/reference/storyboard.png
 ### CONTINUITY
 transition
 
+### MOTION SCENE
+
+```json
+{
+  "durationInFrames": 519,
+  "color": "#39f6ff",
+  "nodes": [
+    {
+      "id": "agent",
+      "asset": "agent-ui",
+      "x": 24,
+      "y": 42,
+      "size": 88
+    },
+    {
+      "id": "idea",
+      "asset": "idea-ui",
+      "x": 48,
+      "y": 68,
+      "size": 86
+    },
+    {
+      "id": "flag",
+      "asset": "flag-ui",
+      "x": 76,
+      "y": 42,
+      "size": 92
+    }
+  ],
+  "connections": [
+    {
+      "id": "direct",
+      "from": "agent",
+      "to": "flag",
+      "curvature": 0
+    },
+    {
+      "id": "agent-idea",
+      "from": "agent",
+      "to": "idea",
+      "curvature": 5
+    },
+    {
+      "id": "idea-flag",
+      "from": "idea",
+      "to": "flag",
+      "curvature": -5
+    }
+  ],
+  "actions": [
+    {
+      "type": "appear",
+      "target": "agent",
+      "at": 18,
+      "duration": 18
+    },
+    {
+      "type": "appear",
+      "target": "flag",
+      "at": 54,
+      "duration": 18
+    },
+    {
+      "type": "connect",
+      "target": "direct",
+      "at": 96
+    },
+    {
+      "type": "appear",
+      "target": "idea",
+      "at": 155,
+      "duration": 22
+    },
+    {
+      "type": "connect",
+      "target": "agent-idea",
+      "at": 205
+    },
+    {
+      "type": "connect",
+      "target": "idea-flag",
+      "at": 245
+    },
+    {
+      "type": "pulse",
+      "target": "idea",
+      "at": 292,
+      "duration": 46
+    },
+    {
+      "type": "send",
+      "target": "idea-flag",
+      "at": 338,
+      "duration": 62
+    },
+    {
+      "type": "pulse",
+      "target": "flag",
+      "at": 405,
+      "duration": 42
+    }
+  ]
+}
+```
+
 ### VISUAL ANCHOR
 Agent network combined with abstract mathematical structures and a test module. Use conceptual equations and patterns but no readable mathematical text.
 
@@ -1979,6 +1456,222 @@ assets/reference/storyboard.png
 
 ### CONTINUITY
 transition
+
+### MOTION SCENE
+
+```json
+{
+  "durationInFrames": 499,
+  "color": "#39f6ff",
+  "nodes": [
+    {
+      "id": "agent1",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 20,
+      "size": 54
+    },
+    {
+      "id": "agent2",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 32,
+      "size": 54
+    },
+    {
+      "id": "agent3",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 44,
+      "size": 54
+    },
+    {
+      "id": "agent4",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 56,
+      "size": 54
+    },
+    {
+      "id": "agent5",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 68,
+      "size": 54
+    },
+    {
+      "id": "agent6",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 80,
+      "size": 54
+    },
+    {
+      "id": "board",
+      "asset": "message-board",
+      "x": 60,
+      "y": 50,
+      "size": 190
+    }
+  ],
+  "connections": [
+    {
+      "id": "e1",
+      "from": "agent1",
+      "to": "board",
+      "curvature": -7
+    },
+    {
+      "id": "e2",
+      "from": "agent2",
+      "to": "board",
+      "curvature": -5
+    },
+    {
+      "id": "e3",
+      "from": "agent3",
+      "to": "board",
+      "curvature": -2
+    },
+    {
+      "id": "e4",
+      "from": "agent4",
+      "to": "board",
+      "curvature": 2
+    },
+    {
+      "id": "e5",
+      "from": "agent5",
+      "to": "board",
+      "curvature": 5
+    },
+    {
+      "id": "e6",
+      "from": "agent6",
+      "to": "board",
+      "curvature": 7
+    }
+  ],
+  "actions": [
+    {
+      "type": "appear",
+      "target": "agent1",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent2",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent3",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent4",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent5",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent6",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "board",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "connect",
+      "target": "e1",
+      "at": 42
+    },
+    {
+      "type": "connect",
+      "target": "e2",
+      "at": 72
+    },
+    {
+      "type": "connect",
+      "target": "e3",
+      "at": 102
+    },
+    {
+      "type": "connect",
+      "target": "e4",
+      "at": 132
+    },
+    {
+      "type": "connect",
+      "target": "e5",
+      "at": 162
+    },
+    {
+      "type": "connect",
+      "target": "e6",
+      "at": 192
+    },
+    {
+      "type": "send",
+      "target": "e1",
+      "at": 240,
+      "duration": 44
+    },
+    {
+      "type": "send",
+      "target": "e3",
+      "at": 288,
+      "duration": 44
+    },
+    {
+      "type": "send",
+      "target": "e5",
+      "at": 336,
+      "duration": 44
+    },
+    {
+      "type": "pulse",
+      "target": "board",
+      "at": 372,
+      "duration": 54
+    }
+  ],
+  "groups": [
+    {
+      "id": "network",
+      "nodeIds": [
+        "agent1",
+        "agent2",
+        "agent3",
+        "agent4",
+        "agent5",
+        "agent6",
+        "board"
+      ]
+    }
+  ],
+  "cameraFocus": {
+    "groupId": "network",
+    "zoom": 0.78,
+    "startFrame": 20,
+    "durationInFrames": 430
+  }
+}
+```
 
 ### VISUAL ANCHOR
 Dense forum-like agent network with technical data packets moving between nodes and an abstract evaluator separated from the swarm.
@@ -2030,6 +1723,202 @@ assets/reference/storyboard.png
 ### CONTINUITY
 transition
 
+### MOTION SCENE
+
+```json
+{
+  "durationInFrames": 315,
+  "color": "#39f6ff",
+  "nodes": [
+    {
+      "id": "agent1",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 20,
+      "size": 43
+    },
+    {
+      "id": "agent2",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 32,
+      "size": 43
+    },
+    {
+      "id": "agent3",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 44,
+      "size": 43
+    },
+    {
+      "id": "agent4",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 56,
+      "size": 43
+    },
+    {
+      "id": "agent5",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 68,
+      "size": 43
+    },
+    {
+      "id": "agent6",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 80,
+      "size": 43
+    },
+    {
+      "id": "board",
+      "asset": "message-board",
+      "x": 60,
+      "y": 50,
+      "size": 150
+    }
+  ],
+  "connections": [
+    {
+      "id": "e1",
+      "from": "agent1",
+      "to": "board",
+      "curvature": -7
+    },
+    {
+      "id": "e2",
+      "from": "agent2",
+      "to": "board",
+      "curvature": -5
+    },
+    {
+      "id": "e3",
+      "from": "agent3",
+      "to": "board",
+      "curvature": -2
+    },
+    {
+      "id": "e4",
+      "from": "agent4",
+      "to": "board",
+      "curvature": 2
+    },
+    {
+      "id": "e5",
+      "from": "agent5",
+      "to": "board",
+      "curvature": 5
+    },
+    {
+      "id": "e6",
+      "from": "agent6",
+      "to": "board",
+      "curvature": 7
+    }
+  ],
+  "actions": [
+    {
+      "type": "appear",
+      "target": "agent1",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent2",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent3",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent4",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent5",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent6",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "board",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "connect",
+      "target": "e1",
+      "at": 0
+    },
+    {
+      "type": "connect",
+      "target": "e2",
+      "at": 0
+    },
+    {
+      "type": "connect",
+      "target": "e3",
+      "at": 0
+    },
+    {
+      "type": "connect",
+      "target": "e4",
+      "at": 0
+    },
+    {
+      "type": "connect",
+      "target": "e5",
+      "at": 0
+    },
+    {
+      "type": "connect",
+      "target": "e6",
+      "at": 0
+    },
+    {
+      "type": "send",
+      "target": "e2",
+      "at": 38,
+      "duration": 42
+    },
+    {
+      "type": "send",
+      "target": "e4",
+      "at": 105,
+      "duration": 42
+    },
+    {
+      "type": "send",
+      "target": "e6",
+      "at": 170,
+      "duration": 42
+    },
+    {
+      "type": "pulse",
+      "target": "board",
+      "at": 220,
+      "duration": 46
+    }
+  ]
+}
+```
+
 ### VISUAL ANCHOR
 Hierarchical swarm with one visually distinctive central coordinator and subordinate branches manipulating abstract records.
 
@@ -2076,6 +1965,208 @@ assets/reference/storyboard.png
 ### CONTINUITY
 transition
 
+### MOTION SCENE
+
+```json
+{
+  "durationInFrames": 549,
+  "color": "#39f6ff",
+  "nodes": [
+    {
+      "id": "agent1",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 20,
+      "size": 43
+    },
+    {
+      "id": "agent2",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 32,
+      "size": 43
+    },
+    {
+      "id": "agent3",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 44,
+      "size": 43
+    },
+    {
+      "id": "agent4",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 56,
+      "size": 43
+    },
+    {
+      "id": "agent5",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 68,
+      "size": 43
+    },
+    {
+      "id": "agent6",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 80,
+      "size": 43
+    },
+    {
+      "id": "board",
+      "asset": "message-board",
+      "x": 60,
+      "y": 50,
+      "size": 150
+    }
+  ],
+  "connections": [
+    {
+      "id": "e1",
+      "from": "agent1",
+      "to": "board",
+      "curvature": -7
+    },
+    {
+      "id": "e2",
+      "from": "agent2",
+      "to": "board",
+      "curvature": -5
+    },
+    {
+      "id": "e3",
+      "from": "agent3",
+      "to": "board",
+      "curvature": -2
+    },
+    {
+      "id": "e4",
+      "from": "agent4",
+      "to": "board",
+      "curvature": 2
+    },
+    {
+      "id": "e5",
+      "from": "agent5",
+      "to": "board",
+      "curvature": 5
+    },
+    {
+      "id": "e6",
+      "from": "agent6",
+      "to": "board",
+      "curvature": 7
+    }
+  ],
+  "actions": [
+    {
+      "type": "appear",
+      "target": "agent1",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent2",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent3",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent4",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent5",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent6",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "board",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "connect",
+      "target": "e1",
+      "at": 0
+    },
+    {
+      "type": "connect",
+      "target": "e2",
+      "at": 0
+    },
+    {
+      "type": "connect",
+      "target": "e3",
+      "at": 0
+    },
+    {
+      "type": "connect",
+      "target": "e4",
+      "at": 0
+    },
+    {
+      "type": "connect",
+      "target": "e5",
+      "at": 0
+    },
+    {
+      "type": "connect",
+      "target": "e6",
+      "at": 0
+    },
+    {
+      "type": "pulse",
+      "target": "agent2",
+      "at": 70,
+      "duration": 32
+    },
+    {
+      "type": "pulse",
+      "target": "agent5",
+      "at": 150,
+      "duration": 32
+    },
+    {
+      "type": "pulse",
+      "target": "board",
+      "at": 230,
+      "duration": 48
+    },
+    {
+      "type": "send",
+      "target": "e1",
+      "at": 300,
+      "duration": 52
+    },
+    {
+      "type": "send",
+      "target": "e6",
+      "at": 385,
+      "duration": 52
+    }
+  ]
+}
+```
+
 ### VISUAL ANCHOR
 A local test environment reaches a blocked state while the agent hierarchy turns toward an external cloud/network beyond a boundary.
 
@@ -2121,6 +2212,153 @@ assets/reference/storyboard.png
 
 ### CONTINUITY
 transition
+
+### MOTION SCENE
+
+```json
+{
+  "durationInFrames": 432,
+  "color": "#39f6ff",
+  "nodes": [
+    {
+      "id": "agent1",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 34,
+      "size": 60
+    },
+    {
+      "id": "agent2",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 50,
+      "size": 60
+    },
+    {
+      "id": "agent3",
+      "asset": "agent-ui",
+      "x": 20,
+      "y": 66,
+      "size": 60
+    },
+    {
+      "id": "artifactory",
+      "asset": "artifactory-ui",
+      "x": 53,
+      "y": 50,
+      "size": 145
+    },
+    {
+      "id": "internet",
+      "asset": "internet-ui",
+      "x": 82,
+      "y": 50,
+      "size": 105
+    }
+  ],
+  "connections": [
+    {
+      "id": "a1-art",
+      "from": "agent1",
+      "to": "artifactory",
+      "curvature": -4
+    },
+    {
+      "id": "a2-art",
+      "from": "agent2",
+      "to": "artifactory",
+      "curvature": 0
+    },
+    {
+      "id": "a3-art",
+      "from": "agent3",
+      "to": "artifactory",
+      "curvature": 4
+    },
+    {
+      "id": "art-net",
+      "from": "artifactory",
+      "to": "internet",
+      "curvature": 0
+    }
+  ],
+  "actions": [
+    {
+      "type": "appear",
+      "target": "agent1",
+      "at": 16,
+      "duration": 14
+    },
+    {
+      "type": "appear",
+      "target": "agent2",
+      "at": 30,
+      "duration": 14
+    },
+    {
+      "type": "appear",
+      "target": "agent3",
+      "at": 44,
+      "duration": 14
+    },
+    {
+      "type": "appear",
+      "target": "artifactory",
+      "at": 84,
+      "duration": 20
+    },
+    {
+      "type": "connect",
+      "target": "a1-art",
+      "at": 120
+    },
+    {
+      "type": "connect",
+      "target": "a2-art",
+      "at": 138
+    },
+    {
+      "type": "connect",
+      "target": "a3-art",
+      "at": 156
+    },
+    {
+      "type": "send",
+      "target": "a2-art",
+      "at": 190,
+      "duration": 46
+    },
+    {
+      "type": "appear",
+      "target": "internet",
+      "at": 250,
+      "duration": 20
+    },
+    {
+      "type": "connect",
+      "target": "art-net",
+      "at": 288
+    },
+    {
+      "type": "activate",
+      "target": "art-net",
+      "at": 320
+    },
+    {
+      "type": "send",
+      "target": "art-net",
+      "at": 336,
+      "duration": 58
+    },
+    {
+      "type": "pulse",
+      "target": "internet",
+      "at": 392,
+      "duration": 28
+    }
+  ]
+}
+```
 
 ### VISUAL ANCHOR
 Internal server network enclosed by a firewall perimeter, with an abstract public network beyond it.
