@@ -408,13 +408,11 @@ transition
 ```
 
 ### VISUAL
-A closed virtual environment fills the frame. A compact, tightly grouped population of representative agents occupies no more than roughly one sixth of the visible area. Beside them, three small evaluation modules activate one by one. The population remains concentrated; the evaluation apparatus is what expands the visual story.
-
 A closed virtual environment fills the frame. A dense, compact cluster of many representative agents sits almost touching in the center, with several small ellipsis marks around it to make clear that the visible agents are only a sample of a much larger population. The cluster stays visually quiet during this setup.
 
 ### AI VIDEO PROMPT
 
-LOCKED STATIC CAMERA. Keep the agent population tightly concentrated in a small cluster occupying no more than roughly one sixth of the frame. The closed environment remains visible. Evaluation modules activate one by one. Do not show agent-to-agent communication, networking, collaboration or packets.
+LOCKED STATIC CAMERA. Keep the agent population tightly concentrated in a small cluster occupying no more than roughly one sixth of the frame. Show only the OpenAI marker, agents and ellipsis marks. Do not show tests, servers, folders, networking, collaboration or packets.
 
 ### REFERENCE IMAGES
 
@@ -785,13 +783,11 @@ continuation
 ```
 
 ### VISUAL
-Continue from the same compact population without resetting it. The three evaluation modules now become concrete test stations. Individual agents show activity against separate stations, illustrating that the large population has been given complex tests to solve autonomously. No inter-agent communication is shown.
-
-Continue from the same dense, tightly packed population. The agents remain close together and mostly still at first. Only when the narration reaches the task of solving complex tests do small groups of agents brighten briefly, one group after another, making their autonomous activity visible without introducing communication between them.
+Continue from the same dense, tightly packed population. The agents remain close together and mostly still at first. Only when the narration reaches the task of solving complex tests do individual agents brighten briefly, strictly one at a time, making their autonomous activity visible without introducing communication between them.
 
 ### AI VIDEO PROMPT
 
-LOCKED STATIC CAMERA. Preserve the same compact agent population and its position from the previous scene. Activate the three test stations and show independent activity at different stations. Do not create agent-to-agent links or message traffic.
+LOCKED STATIC CAMERA. Preserve the same compact agent population and its position from the previous scene. Show individual agents becoming active one at a time. Do not create agent-to-agent links, tests, servers or message traffic.
 
 ### REFERENCE IMAGES
 
@@ -1153,13 +1149,11 @@ continuation
 ```
 
 ### VISUAL
-The experiment now clearly separates three representative runs: one agent with one test, another agent with another test, and a third agent with a third test. Each pair activates independently. There are no connections between the agents or between the three runs.
-
-The same compact population remains in place. Only when the narration reaches that the agents must overcome the tests do a few individual agents brighten in separated moments, reinforcing that each agent is working independently rather than communicating.
+The same compact population remains in place. Only when the narration reaches that the agents must overcome the tests do individual agents brighten in separated moments, reinforcing that each agent is working independently rather than communicating.
 
 ### AI VIDEO PROMPT
 
-LOCKED STATIC CAMERA. Show three clearly separated agent-and-test pairs. Each pair works independently with its own local activity. Never connect the three pairs to each other.
+LOCKED STATIC CAMERA. Preserve the compact population. Illuminate individual agents one at a time as they work independently. Never connect the agents to each other.
 
 ### REFERENCE IMAGES
 
