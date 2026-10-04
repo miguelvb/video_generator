@@ -441,7 +441,7 @@ const sameVisualStructure = (a:any,b:any) => {
 const hasStoryboardBoundaryTransition = (prevScene:any, prevIndex:number, nextScene:any, nextIndex:number) => {
   const prevFlags=storyboardTransitionFlags(String(prevScene.scene_id),prevIndex);
   const nextFlags=storyboardTransitionFlags(String(nextScene.scene_id),nextIndex);
-  return prevFlags.fadeOut || nextFlags.fadeIn ||
+  return prevFlags.fadeOut || nextFlags.fadeIn || nextFlags.fadeOut ||
     String(prevScene.continuity ?? '').toLowerCase() === 'transition' ||
     String(nextScene.continuity ?? '').toLowerCase() === 'transition';
 };
@@ -498,6 +498,8 @@ const buildVisualGroups = ():VisualGroup[] => {
       endIndex,
       startFrame:absoluteFrame,
       duration,
+      fadeIn:storyboardTransitionFlags(String(scenes[startIndex].scene_id),startIndex).fadeIn,
+      fadeOut:storyboardTransitionFlags(String(scenes[endIndex].scene_id),endIndex).fadeOut,
       motionScene:mergedMotionScene,
     });
     absoluteFrame+=duration;
@@ -533,8 +535,18 @@ export const MainVideo: React.FC = () => {
         </Sequence>;
       }
 
+      const fadeInFrames = Math.max(1, Math.round(1.0 * FPS));
+      const fadeOutStart = Math.max(0, group.duration - fadeInFrames);
+      const fadeInOpacity = group.fadeIn
+        ? interpolate(useCurrentFrame(), [0, fadeInFrames], [0, 1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
+        : 1;
+      const fadeOutOpacity = group.fadeOut
+        ? interpolate(useCurrentFrame(), [fadeOutStart, group.duration], [1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
+        : 1;
       return <Sequence key={`visual-${group.startIndex}`} from={currentOffset} durationInFrames={group.duration}>
-        <MotionScriptScene scene={group.motionScene} durationInFrames={group.duration} />
+        <AbsoluteFill style={{opacity:Math.min(fadeInOpacity,fadeOutOpacity)}}>
+          <MotionScriptScene scene={group.motionScene} durationInFrames={group.duration} />
+        </AbsoluteFill>
       </Sequence>;
     })}
     {scenes.map((scene:any,index:number)=>{
