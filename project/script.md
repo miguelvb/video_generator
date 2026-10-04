@@ -110,72 +110,156 @@ transition
     {
       "id": "openai",
       "asset": "openai-ui",
-      "x": 39,
-      "y": 18,
+      "x": 50,
+      "y": 20,
       "size": 82
     },
     {
       "id": "a1",
       "asset": "agent-ui",
-      "x": 28,
-      "y": 36,
-      "size": 54
+      "x": 38,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a2",
       "asset": "agent-ui",
-      "x": 39,
-      "y": 36,
-      "size": 54
+      "x": 42.5,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a3",
       "asset": "agent-ui",
-      "x": 50,
-      "y": 36,
-      "size": 54
+      "x": 47,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a4",
       "asset": "agent-ui",
-      "x": 28,
-      "y": 50,
-      "size": 54
+      "x": 51.5,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a5",
       "asset": "agent-ui",
-      "x": 39,
-      "y": 50,
-      "size": 54
+      "x": 56,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a6",
       "asset": "agent-ui",
-      "x": 50,
-      "y": 50,
-      "size": 54
+      "x": 60.5,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a7",
       "asset": "agent-ui",
-      "x": 28,
-      "y": 64,
-      "size": 54
+      "x": 38,
+      "y": 45,
+      "size": 30
     },
     {
       "id": "a8",
       "asset": "agent-ui",
-      "x": 39,
-      "y": 64,
-      "size": 54
+      "x": 42.5,
+      "y": 45,
+      "size": 30
     },
     {
       "id": "a9",
       "asset": "agent-ui",
-      "x": 50,
-      "y": 64,
-      "size": 54
+      "x": 47,
+      "y": 45,
+      "size": 30
+    },
+    {
+      "id": "a10",
+      "asset": "agent-ui",
+      "x": 51.5,
+      "y": 45,
+      "size": 30
+    },
+    {
+      "id": "a11",
+      "asset": "agent-ui",
+      "x": 56,
+      "y": 45,
+      "size": 30
+    },
+    {
+      "id": "a12",
+      "asset": "agent-ui",
+      "x": 60.5,
+      "y": 45,
+      "size": 30
+    },
+    {
+      "id": "a13",
+      "asset": "agent-ui",
+      "x": 38,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "a14",
+      "asset": "agent-ui",
+      "x": 42.5,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "a15",
+      "asset": "agent-ui",
+      "x": 47,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "a16",
+      "asset": "agent-ui",
+      "x": 51.5,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "a17",
+      "asset": "agent-ui",
+      "x": 56,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "a18",
+      "asset": "agent-ui",
+      "x": 60.5,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "more-left",
+      "asset": "ellipsis",
+      "x": 34,
+      "y": 49,
+      "size": 18
+    },
+    {
+      "id": "more-right",
+      "asset": "ellipsis",
+      "x": 65,
+      "y": 42,
+      "size": 18
+    },
+    {
+      "id": "more-bottom",
+      "asset": "ellipsis",
+      "x": 52,
+      "y": 56,
+      "size": 18
     }
   ],
   "connections": [],
@@ -183,73 +267,142 @@ transition
     {
       "type": "appear",
       "target": "openai",
-      "at": 12,
-      "duration": 22
+      "at": 8,
+      "duration": 18
     },
     {
       "type": "appear",
       "target": "a1",
-      "at": 42,
-      "duration": 14
+      "at": 30,
+      "duration": 18
     },
     {
       "type": "appear",
       "target": "a2",
-      "at": 54,
-      "duration": 14
+      "at": 30,
+      "duration": 18
     },
     {
       "type": "appear",
       "target": "a3",
-      "at": 66,
-      "duration": 14
+      "at": 30,
+      "duration": 18
     },
     {
       "type": "appear",
       "target": "a4",
-      "at": 78,
-      "duration": 14
+      "at": 30,
+      "duration": 18
     },
     {
       "type": "appear",
       "target": "a5",
-      "at": 90,
-      "duration": 14
+      "at": 30,
+      "duration": 18
     },
     {
       "type": "appear",
       "target": "a6",
-      "at": 102,
-      "duration": 14
+      "at": 30,
+      "duration": 18
     },
     {
       "type": "appear",
       "target": "a7",
-      "at": 114,
-      "duration": 14
+      "at": 38,
+      "duration": 18
     },
     {
       "type": "appear",
       "target": "a8",
-      "at": 126,
-      "duration": 14
+      "at": 38,
+      "duration": 18
     },
     {
       "type": "appear",
       "target": "a9",
-      "at": 138,
-      "duration": 14
+      "at": 38,
+      "duration": 18
+    },
+    {
+      "type": "appear",
+      "target": "a10",
+      "at": 38,
+      "duration": 18
+    },
+    {
+      "type": "appear",
+      "target": "a11",
+      "at": 38,
+      "duration": 18
+    },
+    {
+      "type": "appear",
+      "target": "a12",
+      "at": 38,
+      "duration": 18
+    },
+    {
+      "type": "appear",
+      "target": "a13",
+      "at": 46,
+      "duration": 18
+    },
+    {
+      "type": "appear",
+      "target": "a14",
+      "at": 46,
+      "duration": 18
+    },
+    {
+      "type": "appear",
+      "target": "a15",
+      "at": 46,
+      "duration": 18
+    },
+    {
+      "type": "appear",
+      "target": "a16",
+      "at": 46,
+      "duration": 18
+    },
+    {
+      "type": "appear",
+      "target": "a17",
+      "at": 46,
+      "duration": 18
+    },
+    {
+      "type": "appear",
+      "target": "a18",
+      "at": 46,
+      "duration": 18
+    },
+    {
+      "type": "appear",
+      "target": "more-left",
+      "at": 54,
+      "duration": 12
+    },
+    {
+      "type": "appear",
+      "target": "more-right",
+      "at": 60,
+      "duration": 12
+    },
+    {
+      "type": "appear",
+      "target": "more-bottom",
+      "at": 66,
+      "duration": 12
     }
   ]
-}
-```
+}```
 
 ### VISUAL
 A closed virtual environment fills the frame. A compact, tightly grouped population of representative agents occupies no more than roughly one sixth of the visible area. Beside them, three small evaluation modules activate one by one. The population remains concentrated; the evaluation apparatus is what expands the visual story.
 
-### VOICEOVER — ES — EXACT TEXT
-
-En la primavera de 2026, la empresa de inteligencia artificial OpenAI puso en marcha un experimento a gran escala para evaluar el comportamiento de sus nuevos modelos de IA.
+A closed virtual environment fills the frame. A dense, compact cluster of many representative agents sits almost touching in the center, with several small ellipsis marks around it to make clear that the visible agents are only a sample of a much larger population. The cluster stays visually quiet during this setup.
 
 ### AI VIDEO PROMPT
 
@@ -274,72 +427,156 @@ continuation
     {
       "id": "openai",
       "asset": "openai-ui",
-      "x": 39,
-      "y": 18,
+      "x": 50,
+      "y": 20,
       "size": 82
     },
     {
       "id": "a1",
       "asset": "agent-ui",
-      "x": 28,
-      "y": 36,
-      "size": 54
+      "x": 38,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a2",
       "asset": "agent-ui",
-      "x": 39,
-      "y": 36,
-      "size": 54
+      "x": 42.5,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a3",
       "asset": "agent-ui",
-      "x": 50,
-      "y": 36,
-      "size": 54
+      "x": 47,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a4",
       "asset": "agent-ui",
-      "x": 28,
-      "y": 50,
-      "size": 54
+      "x": 51.5,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a5",
       "asset": "agent-ui",
-      "x": 39,
-      "y": 50,
-      "size": 54
+      "x": 56,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a6",
       "asset": "agent-ui",
-      "x": 50,
-      "y": 50,
-      "size": 54
+      "x": 60.5,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a7",
       "asset": "agent-ui",
-      "x": 28,
-      "y": 64,
-      "size": 54
+      "x": 38,
+      "y": 45,
+      "size": 30
     },
     {
       "id": "a8",
       "asset": "agent-ui",
-      "x": 39,
-      "y": 64,
-      "size": 54
+      "x": 42.5,
+      "y": 45,
+      "size": 30
     },
     {
       "id": "a9",
       "asset": "agent-ui",
-      "x": 50,
-      "y": 64,
-      "size": 54
+      "x": 47,
+      "y": 45,
+      "size": 30
+    },
+    {
+      "id": "a10",
+      "asset": "agent-ui",
+      "x": 51.5,
+      "y": 45,
+      "size": 30
+    },
+    {
+      "id": "a11",
+      "asset": "agent-ui",
+      "x": 56,
+      "y": 45,
+      "size": 30
+    },
+    {
+      "id": "a12",
+      "asset": "agent-ui",
+      "x": 60.5,
+      "y": 45,
+      "size": 30
+    },
+    {
+      "id": "a13",
+      "asset": "agent-ui",
+      "x": 38,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "a14",
+      "asset": "agent-ui",
+      "x": 42.5,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "a15",
+      "asset": "agent-ui",
+      "x": 47,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "a16",
+      "asset": "agent-ui",
+      "x": 51.5,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "a17",
+      "asset": "agent-ui",
+      "x": 56,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "a18",
+      "asset": "agent-ui",
+      "x": 60.5,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "more-left",
+      "asset": "ellipsis",
+      "x": 34,
+      "y": 49,
+      "size": 18
+    },
+    {
+      "id": "more-right",
+      "asset": "ellipsis",
+      "x": 65,
+      "y": 42,
+      "size": 18
+    },
+    {
+      "id": "more-bottom",
+      "asset": "ellipsis",
+      "x": 52,
+      "y": 56,
+      "size": 18
     }
   ],
   "connections": [],
@@ -405,69 +642,156 @@ continuation
       "duration": 1
     },
     {
+      "type": "appear",
+      "target": "a10",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "a11",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "a12",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "a13",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "a14",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "a15",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "a16",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "a17",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "a18",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "more-left",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "more-right",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "more-bottom",
+      "at": 0,
+      "duration": 1
+    },
+    {
       "type": "pulse",
       "target": "a1",
-      "at": 28,
-      "duration": 18
+      "at": 162,
+      "duration": 20
     },
     {
       "type": "pulse",
       "target": "a2",
-      "at": 56,
-      "duration": 18
-    },
-    {
-      "type": "pulse",
-      "target": "a3",
-      "at": 84,
-      "duration": 18
-    },
-    {
-      "type": "pulse",
-      "target": "a4",
-      "at": 112,
-      "duration": 18
-    },
-    {
-      "type": "pulse",
-      "target": "a5",
-      "at": 140,
-      "duration": 18
-    },
-    {
-      "type": "pulse",
-      "target": "a6",
-      "at": 168,
-      "duration": 18
+      "at": 162,
+      "duration": 20
     },
     {
       "type": "pulse",
       "target": "a7",
-      "at": 196,
-      "duration": 18
+      "at": 186,
+      "duration": 20
     },
     {
       "type": "pulse",
       "target": "a8",
-      "at": 224,
-      "duration": 18
+      "at": 186,
+      "duration": 20
+    },
+    {
+      "type": "pulse",
+      "target": "a13",
+      "at": 210,
+      "duration": 20
+    },
+    {
+      "type": "pulse",
+      "target": "a14",
+      "at": 210,
+      "duration": 20
+    },
+    {
+      "type": "pulse",
+      "target": "a3",
+      "at": 234,
+      "duration": 20
     },
     {
       "type": "pulse",
       "target": "a9",
-      "at": 252,
-      "duration": 18
+      "at": 234,
+      "duration": 20
+    },
+    {
+      "type": "pulse",
+      "target": "a15",
+      "at": 258,
+      "duration": 20
+    },
+    {
+      "type": "pulse",
+      "target": "a16",
+      "at": 258,
+      "duration": 20
+    },
+    {
+      "type": "pulse",
+      "target": "a4",
+      "at": 282,
+      "duration": 20
+    },
+    {
+      "type": "pulse",
+      "target": "a10",
+      "at": 282,
+      "duration": 20
     }
   ]
-}
-```
+}```
 
 ### VISUAL
 Continue from the same compact population without resetting it. The three evaluation modules now become concrete test stations. Individual agents show activity against separate stations, illustrating that the large population has been given complex tests to solve autonomously. No inter-agent communication is shown.
 
-### VOICEOVER — ES — EXACT TEXT
-
-Crearon más de mil agentes digitales en un entorno virtual cerrado, dándoles la tarea de resolver pruebas complejas de forma autónoma.
+Continue from the same dense, tightly packed population. The agents remain close together and mostly still at first. Only when the narration reaches the task of solving complex tests do small groups of agents brighten briefly, one group after another, making their autonomous activity visible without introducing communication between them.
 
 ### AI VIDEO PROMPT
 
@@ -492,72 +816,156 @@ continuation
     {
       "id": "openai",
       "asset": "openai-ui",
-      "x": 39,
-      "y": 18,
+      "x": 50,
+      "y": 20,
       "size": 82
     },
     {
       "id": "a1",
       "asset": "agent-ui",
-      "x": 28,
-      "y": 36,
-      "size": 54
+      "x": 38,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a2",
       "asset": "agent-ui",
-      "x": 39,
-      "y": 36,
-      "size": 54
+      "x": 42.5,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a3",
       "asset": "agent-ui",
-      "x": 50,
-      "y": 36,
-      "size": 54
+      "x": 47,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a4",
       "asset": "agent-ui",
-      "x": 28,
-      "y": 50,
-      "size": 54
+      "x": 51.5,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a5",
       "asset": "agent-ui",
-      "x": 39,
-      "y": 50,
-      "size": 54
+      "x": 56,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a6",
       "asset": "agent-ui",
-      "x": 50,
-      "y": 50,
-      "size": 54
+      "x": 60.5,
+      "y": 39,
+      "size": 30
     },
     {
       "id": "a7",
       "asset": "agent-ui",
-      "x": 28,
-      "y": 64,
-      "size": 54
+      "x": 38,
+      "y": 45,
+      "size": 30
     },
     {
       "id": "a8",
       "asset": "agent-ui",
-      "x": 39,
-      "y": 64,
-      "size": 54
+      "x": 42.5,
+      "y": 45,
+      "size": 30
     },
     {
       "id": "a9",
       "asset": "agent-ui",
-      "x": 50,
-      "y": 64,
-      "size": 54
+      "x": 47,
+      "y": 45,
+      "size": 30
+    },
+    {
+      "id": "a10",
+      "asset": "agent-ui",
+      "x": 51.5,
+      "y": 45,
+      "size": 30
+    },
+    {
+      "id": "a11",
+      "asset": "agent-ui",
+      "x": 56,
+      "y": 45,
+      "size": 30
+    },
+    {
+      "id": "a12",
+      "asset": "agent-ui",
+      "x": 60.5,
+      "y": 45,
+      "size": 30
+    },
+    {
+      "id": "a13",
+      "asset": "agent-ui",
+      "x": 38,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "a14",
+      "asset": "agent-ui",
+      "x": 42.5,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "a15",
+      "asset": "agent-ui",
+      "x": 47,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "a16",
+      "asset": "agent-ui",
+      "x": 51.5,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "a17",
+      "asset": "agent-ui",
+      "x": 56,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "a18",
+      "asset": "agent-ui",
+      "x": 60.5,
+      "y": 51,
+      "size": 30
+    },
+    {
+      "id": "more-left",
+      "asset": "ellipsis",
+      "x": 34,
+      "y": 49,
+      "size": 18
+    },
+    {
+      "id": "more-right",
+      "asset": "ellipsis",
+      "x": 65,
+      "y": 42,
+      "size": 18
+    },
+    {
+      "id": "more-bottom",
+      "asset": "ellipsis",
+      "x": 52,
+      "y": 56,
+      "size": 18
     }
   ],
   "connections": [],
@@ -623,69 +1031,114 @@ continuation
       "duration": 1
     },
     {
+      "type": "appear",
+      "target": "a10",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "a11",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "a12",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "a13",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "a14",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "a15",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "a16",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "a17",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "a18",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "more-left",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "more-right",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "more-bottom",
+      "at": 0,
+      "duration": 1
+    },
+    {
       "type": "pulse",
       "target": "a1",
-      "at": 18,
-      "duration": 14
-    },
-    {
-      "type": "pulse",
-      "target": "a4",
-      "at": 34,
-      "duration": 14
-    },
-    {
-      "type": "pulse",
-      "target": "a7",
-      "at": 50,
-      "duration": 14
-    },
-    {
-      "type": "pulse",
-      "target": "a2",
-      "at": 66,
-      "duration": 14
-    },
-    {
-      "type": "pulse",
-      "target": "a5",
-      "at": 82,
-      "duration": 14
+      "at": 84,
+      "duration": 16
     },
     {
       "type": "pulse",
       "target": "a8",
-      "at": 98,
-      "duration": 14
+      "at": 103,
+      "duration": 16
     },
     {
       "type": "pulse",
-      "target": "a3",
-      "at": 114,
-      "duration": 14
+      "target": "a15",
+      "at": 122,
+      "duration": 16
     },
     {
       "type": "pulse",
-      "target": "a6",
-      "at": 130,
-      "duration": 14
+      "target": "a4",
+      "at": 141,
+      "duration": 16
     },
     {
       "type": "pulse",
-      "target": "a9",
-      "at": 146,
-      "duration": 14
+      "target": "a11",
+      "at": 158,
+      "duration": 16
     }
   ]
-}
-```
+}```
 
 ### VISUAL
 The experiment now clearly separates three representative runs: one agent with one test, another agent with another test, and a third agent with a third test. Each pair activates independently. There are no connections between the agents or between the three runs.
 
-### VOICEOVER — ES — EXACT TEXT
-
-La norma del experimento dictaba que los agentes debían superar las pruebas de forma independiente.
+The same compact population remains in place. Only when the narration reaches that the agents must overcome the tests do a few individual agents brighten in separated moments, reinforcing that each agent is working independently rather than communicating.
 
 ### AI VIDEO PROMPT
 
