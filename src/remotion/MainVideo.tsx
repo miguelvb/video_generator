@@ -455,22 +455,45 @@ const hasStoryboardBoundaryTransition = (prevScene:any, prevIndex:number, nextSc
 };
 
 const resolveCue = (action:any, source:any) => {
-  if (!action?.cue) return null;
+  if (!action?.cue && !action?.cueWord) return null;
   const timing = TIMINGS[timingKey(source)];
   if (!timing?.segments) return null;
   for (const segment of timing.segments as any[]) {
-    const phrase = (segment.phrases ?? []).find((p:any) => p.id === action.cue);
-    if (phrase) {
-      return {
-        atSeconds: Number(phrase.startSeconds ?? phrase.start_seconds ?? 0) + Number(action.cueOffsetSeconds ?? 0),
-        durationSeconds: Number(action.cueDurationSeconds ?? phrase.durationSeconds ?? phrase.duration_seconds ?? 0),
-      };
+    if (action.cueWord) {
+      const wanted = String(action.cueWord).toLowerCase().replace(/[^\\p{L}\\p{N}]/gu, '');
+      const occurrence = Math.max(1, Number(action.cueOccurrence ?? 1));
+      const matches = (segment.words ?? []).filter((w:any) =>
+        String(w.word ?? '').toLowerCase().replace(/[^\\p{L}\\p{N}]/gu, '') === wanted
+      );
+      if (matches[occurrence - 1]) {
+        return {
+          atSeconds: Number(matches[occurrence - 1].startSeconds ?? matches[occurrence - 1].start_seconds ?? 0) + Number(action.cueOffsetSeconds ?? 0),
+          durationSeconds: Number(action.cueDurationSeconds ?? 0),
+        };
+      }
     }
-    if (segment.id === action.cue) {
-      return {
-        atSeconds: Number(segment.startSeconds ?? segment.start_seconds ?? 0) + Number(action.cueOffsetSeconds ?? 0),
-        durationSeconds: Number(action.cueDurationSeconds ?? segment.durationSeconds ?? segment.duration_seconds ?? 0),
-      };
+    if (action.cue) {
+      const phrase = (segment.phrases ?? []).find((p:any) => p.id === action.cue);
+      if (phrase) {
+        return {
+          atSeconds: Number(phrase.startSeconds ?? phrase.start_seconds ?? 0) + Number(action.cueOffsetSeconds ?? 0),
+          durationSeconds: Number(action.cueDurationSeconds ?? phrase.durationSeconds ?? phrase.duration_seconds ?? 0),
+        };
+      }
+      if (segment.id === action.cue) {
+        return {
+          atSeconds: Number(segment.startSeconds ?? segment.start_seconds ?? 0) + Number(action.cueOffsetSeconds ?? 0),
+          durationSeconds: Number(action.cueDurationSeconds ?? segment.durationSeconds ?? segment.duration_seconds ?? 0),
+        };
+      }
+    }
+  }
+  // If word alignment is not present yet, preserve the authored fallback.
+  if (action.cueWord && action.cue) {
+    const fallback = resolveCue({...action, cueWord:undefined}, source);
+    if (fallback) {
+      fallback.atSeconds += Number(action.cueWordFallbackOffsetSeconds ?? 0);
+      return fallback;
     }
   }
   return null;
