@@ -14,6 +14,11 @@ export const MotionConnection: React.FC<{
   const to = nodesById[edge.to];
   if (!from || !to) return null;
 
+  // A connection is never allowed to exist while either endpoint is still
+  // invisible. The scheduler also gates edge.delay, but this final render-side
+  // guard makes the invariant hold even for malformed/legacy scenes.
+  if ((from.opacity ?? 1) <= 0 || (to.opacity ?? 1) <= 0) return null;
+
   const progress = edgeProgress(frame, edge.delay ?? 0);
   const control = getQuadraticControlPoint(from, to, edge.curvature ?? 0);
   const path = `M ${from.x} ${from.y} Q ${control.x} ${control.y} ${to.x} ${to.y}`;
