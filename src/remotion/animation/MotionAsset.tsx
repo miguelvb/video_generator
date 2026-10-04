@@ -39,6 +39,27 @@ export const MotionAsset: React.FC<{
     ? interpolate(activePhase, [0, 0.5, 1], [0.82, 1, 0.82], {extrapolateLeft:'clamp',extrapolateRight:'clamp'})
     : 1;
 
+  if (node.shape === 'boundary') {
+    const boundaryOpacity = opacity * (node.opacity ?? 1);
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          left: '10%',
+          top: '25%',
+          width: '80%',
+          height: '50%',
+          boxSizing: 'border-box',
+          border: '1.5px solid rgba(216,251,255,.62)',
+          borderRadius: 10,
+          background: 'rgba(216,251,255,.035)',
+          opacity: boundaryOpacity,
+          pointerEvents: 'none',
+        }}
+      />
+    );
+  }
+
   return (
     <div
       style={{
