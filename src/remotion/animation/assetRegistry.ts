@@ -45,12 +45,6 @@ export const MOTION_ASSETS: Record<MotionAssetType, MotionAssetDefinition> = {
     label: 'Document',
     category: 'communication',
   },
-  'message-ui': {
-    type: 'message-ui',
-    path: 'assets/motion/message-ui.svg',
-    label: 'Message',
-    category: 'communication',
-  },
   'flag-ui': {
     type: 'flag-ui',
     path: 'assets/motion/flag-ui.svg',
