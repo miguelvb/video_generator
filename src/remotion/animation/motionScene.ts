@@ -1,6 +1,6 @@
 import type {MotionAction, MotionAssetType, MotionEdge, MotionNode, TwoDMotionEngineProps} from './motionTypes';
 
-export type MotionSceneNode = {id:string; asset:MotionAssetType; x:number; y:number; size?:number};
+export type MotionSceneNode = {id:string; asset?:MotionAssetType; label?:string; x:number; y:number; size?:number};
 export type MotionSceneConnection = {id:string; from:string; to:string; curvature?:number};
 export type MotionSceneAction =
   | {type:'appear';target:string;at:number;duration?:number}
@@ -46,7 +46,7 @@ export const compileMotionScene=(scene:MotionSceneDefinition,durationOverride?:n
  const authoredDuration=Math.max(1,scene.durationInFrames);
  const durationInFrames=Math.max(1,Math.round(durationOverride??authoredDuration));
  const scale=durationInFrames/authoredDuration;
- const nodes:MotionNode[]=scene.nodes.map(node=>({id:node.id,x:node.x,y:node.y,size:node.size,asset:node.asset}));
+ const nodes:MotionNode[]=scene.nodes.map(node=>({id:node.id,x:node.x,y:node.y,size:node.size,asset:node.asset,label:node.label}));
  const edges:MotionEdge[]=scene.connections.map(c=>({id:c.id,from:c.from,to:c.to,curvature:c.curvature}));
  return{
   nodes,edges,
