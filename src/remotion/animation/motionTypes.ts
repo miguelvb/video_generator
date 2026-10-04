@@ -6,7 +6,6 @@ export type MotionAssetType =
   | 'ellipsis'
   | 'openai-ui'
   | 'document-ui'
-  | 'message-ui'
   | 'flag-ui'
   | 'idea-ui'
   | 'artifactory-ui'
