@@ -22,8 +22,8 @@ export const MOTION_ASSETS: Record<MotionAssetType, MotionAssetDefinition> = {
   },
   server: {
     type: 'server',
-    path: 'assets/motion/server.svg',
-    label: 'Server',
+    path: 'assets/motion/artifactory-ui.svg',
+    label: 'Artifactory',
     category: 'infrastructure',
   },
   folder: {
