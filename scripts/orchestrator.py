@@ -52,7 +52,9 @@ load_dotenv(ROOT / ".env")
 
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 OPENAI_TTS_URL = "https://api.openai.com/v1/audio/speech"
+OPENAI_TRANSCRIPTIONS_URL = "https://api.openai.com/v1/audio/transcriptions"
 AUDIO_FORMAT = "wav"
+ENABLE_WORD_TIMINGS = os.environ.get("ENABLE_WORD_TIMINGS", "true").lower() in {"1", "true", "yes", "on"}
 
 
 def resolve_models(project: dict) -> dict:
@@ -442,6 +444,107 @@ def tts_request(segment: dict, output_path: Path, tracker: CostTracker | None = 
         tracker.record(provider=models["tts_provider"], operation="text_to_speech", model=models["tts_model"], scene_id=scene_id, segment_id=segment["id"], cost_usd=None, cost_status="not_returned_by_endpoint", usage={"input_characters":len(segment["text"])}, request_id=response.headers.get("x-request-id"), note="OpenAI Speech API does not document a per-request cost field.")
     print(f"Generated TTS: {output_path}")
 
+def _normalise_word(value: str) -> str:
+    return "".join(ch.lower() for ch in value if ch.isalnum())
+
+
+def transcribe_word_timings(path: Path, tracker: CostTracker | None = None, scene_id: str | None = None, segment_id: str | None = None) -> list[dict]:
+    """Return word-level timestamps for a generated TTS segment.
+
+    Whisper-1 is used only for alignment; the narration text in script.md
+    remains authoritative. The returned timestamps are relative to this
+    segment's WAV file.
+    """
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        raise RuntimeError("OPENAI_API_KEY is not set. Put it in .env or export it in the shell.")
+    with path.open("rb") as audio_file:
+        response = requests.post(
+            OPENAI_TRANSCRIPTIONS_URL,
+            headers={"Authorization": f"Bearer {api_key}"},
+            files={"file": (path.name, audio_file, "audio/wav")},
+            data={
+                "model": "whisper-1",
+                "response_format": "verbose_json",
+                "timestamp_granularities[]": "word",
+            },
+            timeout=180,
+        )
+    if not response.ok:
+        raise RuntimeError(f"OpenAI transcription failed ({response.status_code}) for {path.name}:\n{response.text}")
+    payload = response.json()
+    words = []
+    for item in payload.get("words", []) or []:
+        word = str(item.get("word", "")).strip()
+        if not word:
+            continue
+        words.append({
+            "word": word,
+            "start_seconds": round(float(item.get("start", 0.0)), 3),
+            "end_seconds": round(float(item.get("end", 0.0)), 3),
+        })
+    if tracker is not None:
+        tracker.record(
+            provider="openai",
+            operation="audio_transcription_alignment",
+            model="whisper-1",
+            scene_id=scene_id,
+            segment_id=segment_id,
+            cost_usd=None,
+            cost_status="not_returned_by_endpoint",
+            usage={"audio_seconds": round(float(payload.get("duration", 0.0) or 0.0), 3)},
+            note="Used only to obtain word-level timestamps for narration/animation alignment.",
+        )
+    return words
+
+
+def build_phrase_timings(text: str, words: list[dict], segment_id: str) -> list[dict]:
+    """Map punctuation-delimited phrases in the source text onto aligned words."""
+    raw_phrases = [p.strip() for p in re.split(r"(?<=[.!?;:])\s+", text.strip()) if p.strip()]
+    if not raw_phrases or not words:
+        return []
+    token_counts = [len(re.findall(r"\S+", phrase)) for phrase in raw_phrases]
+    if sum(token_counts) != len(words):
+        # Whisper may merge/split punctuation differently. Fall back to a
+        # proportional partition while keeping the source text authoritative.
+        total_chars = max(1, sum(len(p) for p in raw_phrases))
+        cursor = 0
+        phrase_timings = []
+        for index, phrase in enumerate(raw_phrases):
+            if index == len(raw_phrases) - 1:
+                end = len(words)
+            else:
+                target = len(words) * len(phrase) / total_chars
+                end = max(cursor + 1, min(len(words) - (len(raw_phrases) - index - 1), round(cursor + target)))
+            chunk = words[cursor:end]
+            cursor = end
+            if not chunk:
+                continue
+            phrase_timings.append({
+                "id": f"{segment_id}_p{index + 1:02d}",
+                "text": phrase,
+                "start_seconds": chunk[0]["start_seconds"],
+                "end_seconds": chunk[-1]["end_seconds"],
+                "duration_seconds": round(chunk[-1]["end_seconds"] - chunk[0]["start_seconds"], 3),
+            })
+        return phrase_timings
+    phrase_timings = []
+    cursor = 0
+    for index, count in enumerate(token_counts):
+        chunk = words[cursor:cursor + count]
+        cursor += count
+        if not chunk:
+            continue
+        phrase_timings.append({
+            "id": f"{segment_id}_p{index + 1:02d}",
+            "text": raw_phrases[index],
+            "start_seconds": chunk[0]["start_seconds"],
+            "end_seconds": chunk[-1]["end_seconds"],
+            "duration_seconds": round(chunk[-1]["end_seconds"] - chunk[0]["start_seconds"], 3),
+        })
+    return phrase_timings
+
+
 def make_silent_wav(path: Path, seconds: float, sample_rate: int = 44100) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with wave.open(str(path), "wb") as wav:
@@ -495,12 +598,17 @@ def generate_audio(script_path: Path, tracker: CostTracker | None = None, scene_
             path=scene_dir/f"{segment['id']}.wav"
             tts_request(segment,path,tracker,scene_id,models)
             duration=probe_duration(path)
-            generated.append({
+            generated_item = {
                 **segment,
                 "file":str(path.relative_to(BUILD_DIR)).replace("\\","/"),
                 "start_seconds":round(cursor,3),
                 "duration_seconds":round(duration,3)
-            })
+            }
+            if ENABLE_WORD_TIMINGS:
+                words = transcribe_word_timings(path, tracker, scene_id, segment["id"])
+                generated_item["words"] = words
+                generated_item["phrases"] = build_phrase_timings(segment["text"], words, segment["id"])
+            generated.append(generated_item)
             segment_paths.append(path)
             cursor += duration
             if segment is not segments[-1]:
@@ -510,7 +618,7 @@ def generate_audio(script_path: Path, tracker: CostTracker | None = None, scene_
         save_meta(scene_meta_path,{"version":"1.0.0","kind":"audio","scene_id":scene_id,"content_hash":scene_identity,"provider":models["tts_provider"],"model":models["tts_model"],"voice":models["tts_voice"],"file":str(public_path.relative_to(ROOT)).replace("\\","/")})
         print(f"Scene {scene_id}: {final_duration:.2f}s -> {public_path}")
     manifest={**config,"generated":True,"segment_gap_seconds":SEGMENT_GAP_SECONDS,"tracks":tracks}; save_json(GENERATED_MANIFEST,manifest)
-    timings={sid:{"durationSeconds":t["duration_seconds"],"audioFile":t["file"],"segments":[{"id":s["id"],"kind":s["kind"],"language":s["language"],"startSeconds":s["start_seconds"],"durationSeconds":s["duration_seconds"],"text":s["text"]} for s in t["segments"]]} for sid,t in tracks.items()}
+    timings={sid:{"durationSeconds":t["duration_seconds"],"audioFile":t["file"],"segments":[{"id":s["id"],"kind":s["kind"],"language":s["language"],"startSeconds":s["start_seconds"],"durationSeconds":s["duration_seconds"],"text":s["text"],"words":s.get("words",[]),"phrases":s.get("phrases",[])} for s in t["segments"]]} for sid,t in tracks.items()}
     TIMINGS_TS.parent.mkdir(parents=True,exist_ok=True); TIMINGS_TS.write_text("// AUTO-GENERATED from project/script.md + actual WAV durations.\nexport const AUDIO_TIMINGS = "+json.dumps(timings,ensure_ascii=False,indent=2)+" as const;\n",encoding="utf-8")
     print(f"Generated timings: {TIMINGS_TS}")
 
