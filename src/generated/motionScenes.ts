@@ -1052,391 +1052,326 @@ export const MOTION_SCENES = {
     ]
   },
   "005": {
-    "durationInFrames": 143,
-    "color": "#39f6ff",
-    "nodes": [
-      {
-        "id": "agent",
-        "asset": "agent-ui",
-        "x": 27,
-        "y": 52,
-        "size": 92
-      },
-      {
-        "id": "board",
-        "asset": "message-board",
-        "x": 51,
-        "y": 52,
-        "size": 138
-      },
-      {
-        "id": "msg1",
-        "asset": "message-ui",
-        "x": 77,
-        "y": 37,
-        "size": 112
-      }
-    ],
-    "connections": [
-      {
-        "id": "agent-board",
-        "from": "agent",
-        "to": "board",
-        "curvature": 0
-      }
-    ],
-    "actions": [
-      {
-        "type": "appear",
-        "target": "agent",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "board",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "connect",
-        "target": "agent-board",
-        "at": 0
-      },
-      {
-        "type": "appear",
-        "target": "msg1",
-        "at": 10,
-        "duration": 15
-      },
-      {
-        "type": "pulse",
-        "target": "board",
-        "at": 18,
-        "duration": 22
-      },
-      {
-        "type": "send",
-        "target": "agent-board",
-        "at": 28,
-        "duration": 38
-      }
-    ]
-  },
+  "durationInFrames": 143,
+  "color": "#39f6ff",
+  "nodes": [
+    {
+      "id": "agent",
+      "asset": "agent-ui",
+      "x": 27,
+      "y": 52,
+      "size": 92
+    },
+    {
+      "id": "board",
+      "asset": "message-board",
+      "x": 51,
+      "y": 52,
+      "size": 138
+    }
+  ],
+  "connections": [
+    {
+      "id": "agent-board",
+      "from": "agent",
+      "to": "board",
+      "curvature": 0
+    }
+  ],
+  "actions": [
+    {
+      "type": "appear",
+      "target": "agent",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "board",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "connect",
+      "target": "agent-board",
+      "at": 0
+    },
+    {
+      "type": "pulse",
+      "target": "board",
+      "at": 18,
+      "duration": 22
+    },
+    {
+      "type": "send",
+      "target": "agent-board",
+      "at": 28,
+      "duration": 38
+    }
+  ]
+},
   "006": {
-    "durationInFrames": 288,
-    "color": "#39f6ff",
-    "nodes": [
-      {
-        "id": "agent1",
-        "asset": "agent-ui",
-        "x": 22,
-        "y": 34,
-        "size": 64
-      },
-      {
-        "id": "agent2",
-        "asset": "agent-ui",
-        "x": 22,
-        "y": 52,
-        "size": 64
-      },
-      {
-        "id": "agent3",
-        "asset": "agent-ui",
-        "x": 22,
-        "y": 70,
-        "size": 64
-      },
-      {
-        "id": "board",
-        "asset": "message-board",
-        "x": 49,
-        "y": 52,
-        "size": 138
-      },
-      {
-        "id": "msg1",
-        "asset": "message-ui",
-        "x": 77,
-        "y": 36,
-        "size": 105
-      },
-      {
-        "id": "msg2",
-        "asset": "message-ui",
-        "x": 77,
-        "y": 65,
-        "size": 105
-      }
-    ],
-    "connections": [
-      {
-        "id": "a1-board",
-        "from": "agent1",
-        "to": "board",
-        "curvature": -2
-      },
-      {
-        "id": "a2-board",
-        "from": "agent2",
-        "to": "board",
-        "curvature": 0
-      },
-      {
-        "id": "a3-board",
-        "from": "agent3",
-        "to": "board",
-        "curvature": 2
-      }
-    ],
-    "actions": [
-      {
-        "type": "appear",
-        "target": "agent1",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "board",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "msg1",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "connect",
-        "target": "a1-board",
-        "at": 0
-      },
-      {
-        "type": "appear",
-        "target": "agent2",
-        "at": 30,
-        "duration": 16
-      },
-      {
-        "type": "appear",
-        "target": "agent3",
-        "at": 54,
-        "duration": 16
-      },
-      {
-        "type": "connect",
-        "target": "a2-board",
-        "at": 74
-      },
-      {
-        "type": "connect",
-        "target": "a3-board",
-        "at": 92
-      },
-      {
-        "type": "appear",
-        "target": "msg2",
-        "at": 112,
-        "duration": 16
-      },
-      {
-        "type": "send",
-        "target": "a2-board",
-        "at": 126,
-        "duration": 38
-      },
-      {
-        "type": "pulse",
-        "target": "board",
-        "at": 168,
-        "duration": 28
-      }
-    ]
-  },
+  "durationInFrames": 288,
+  "color": "#39f6ff",
+  "nodes": [
+    {
+      "id": "agent1",
+      "asset": "agent-ui",
+      "x": 22,
+      "y": 34,
+      "size": 64
+    },
+    {
+      "id": "agent2",
+      "asset": "agent-ui",
+      "x": 22,
+      "y": 52,
+      "size": 64
+    },
+    {
+      "id": "agent3",
+      "asset": "agent-ui",
+      "x": 22,
+      "y": 70,
+      "size": 64
+    },
+    {
+      "id": "board",
+      "asset": "message-board",
+      "x": 49,
+      "y": 52,
+      "size": 138
+    }
+  ],
+  "connections": [
+    {
+      "id": "a1-board",
+      "from": "agent1",
+      "to": "board",
+      "curvature": -2
+    },
+    {
+      "id": "a2-board",
+      "from": "agent2",
+      "to": "board",
+      "curvature": 0
+    },
+    {
+      "id": "a3-board",
+      "from": "agent3",
+      "to": "board",
+      "curvature": 2
+    }
+  ],
+  "actions": [
+    {
+      "type": "appear",
+      "target": "agent1",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "board",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "connect",
+      "target": "a1-board",
+      "at": 0
+    },
+    {
+      "type": "appear",
+      "target": "agent2",
+      "at": 30,
+      "duration": 16
+    },
+    {
+      "type": "appear",
+      "target": "agent3",
+      "at": 54,
+      "duration": 16
+    },
+    {
+      "type": "connect",
+      "target": "a2-board",
+      "at": 74
+    },
+    {
+      "type": "connect",
+      "target": "a3-board",
+      "at": 92
+    },
+    {
+      "type": "send",
+      "target": "a2-board",
+      "at": 126,
+      "duration": 38
+    },
+    {
+      "type": "pulse",
+      "target": "board",
+      "at": 168,
+      "duration": 28
+    }
+  ]
+},
   "007": {
-    "durationInFrames": 207,
-    "color": "#39f6ff",
-    "nodes": [
-      {
-        "id": "agent1",
-        "asset": "agent-ui",
-        "x": 18,
-        "y": 24,
-        "size": 48
-      },
-      {
-        "id": "agent2",
-        "asset": "agent-ui",
-        "x": 18,
-        "y": 38,
-        "size": 48
-      },
-      {
-        "id": "agent3",
-        "asset": "agent-ui",
-        "x": 18,
-        "y": 52,
-        "size": 48
-      },
-      {
-        "id": "agent4",
-        "asset": "agent-ui",
-        "x": 18,
-        "y": 66,
-        "size": 48
-      },
-      {
-        "id": "agent5",
-        "asset": "agent-ui",
-        "x": 18,
-        "y": 80,
-        "size": 48
-      },
-      {
-        "id": "board",
-        "asset": "message-board",
-        "x": 46,
-        "y": 52,
-        "size": 142
-      },
-      {
-        "id": "msg1",
-        "asset": "message-ui",
-        "x": 75,
-        "y": 35,
-        "size": 100
-      },
-      {
-        "id": "msg2",
-        "asset": "message-ui",
-        "x": 75,
-        "y": 66,
-        "size": 100
-      }
-    ],
-    "connections": [
-      {
-        "id": "a1-board",
-        "from": "agent1",
-        "to": "board",
-        "curvature": -5
-      },
-      {
-        "id": "a2-board",
-        "from": "agent2",
-        "to": "board",
-        "curvature": -3
-      },
-      {
-        "id": "a3-board",
-        "from": "agent3",
-        "to": "board",
-        "curvature": 0
-      },
-      {
-        "id": "a4-board",
-        "from": "agent4",
-        "to": "board",
-        "curvature": 3
-      },
-      {
-        "id": "a5-board",
-        "from": "agent5",
-        "to": "board",
-        "curvature": 5
-      }
-    ],
-    "actions": [
-      {
-        "type": "appear",
-        "target": "board",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "msg1",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "msg2",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "agent1",
-        "at": 8,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent2",
-        "at": 22,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent3",
-        "at": 36,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent4",
-        "at": 50,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent5",
-        "at": 64,
-        "duration": 10
-      },
-      {
-        "type": "connect",
-        "target": "a1-board",
-        "at": 30
-      },
-      {
-        "type": "connect",
-        "target": "a2-board",
-        "at": 48
-      },
-      {
-        "type": "connect",
-        "target": "a3-board",
-        "at": 66
-      },
-      {
-        "type": "connect",
-        "target": "a4-board",
-        "at": 84
-      },
-      {
-        "type": "connect",
-        "target": "a5-board",
-        "at": 102
-      },
-      {
-        "type": "pulse",
-        "target": "board",
-        "at": 126,
-        "duration": 34
-      },
-      {
-        "type": "send",
-        "target": "a3-board",
-        "at": 148,
-        "duration": 34
-      }
-    ]
-  },
+  "durationInFrames": 207,
+  "color": "#39f6ff",
+  "nodes": [
+    {
+      "id": "agent1",
+      "asset": "agent-ui",
+      "x": 18,
+      "y": 24,
+      "size": 48
+    },
+    {
+      "id": "agent2",
+      "asset": "agent-ui",
+      "x": 18,
+      "y": 38,
+      "size": 48
+    },
+    {
+      "id": "agent3",
+      "asset": "agent-ui",
+      "x": 18,
+      "y": 52,
+      "size": 48
+    },
+    {
+      "id": "agent4",
+      "asset": "agent-ui",
+      "x": 18,
+      "y": 66,
+      "size": 48
+    },
+    {
+      "id": "agent5",
+      "asset": "agent-ui",
+      "x": 18,
+      "y": 80,
+      "size": 48
+    },
+    {
+      "id": "board",
+      "asset": "message-board",
+      "x": 46,
+      "y": 52,
+      "size": 142
+    }
+  ],
+  "connections": [
+    {
+      "id": "a1-board",
+      "from": "agent1",
+      "to": "board",
+      "curvature": -5
+    },
+    {
+      "id": "a2-board",
+      "from": "agent2",
+      "to": "board",
+      "curvature": -3
+    },
+    {
+      "id": "a3-board",
+      "from": "agent3",
+      "to": "board",
+      "curvature": 0
+    },
+    {
+      "id": "a4-board",
+      "from": "agent4",
+      "to": "board",
+      "curvature": 3
+    },
+    {
+      "id": "a5-board",
+      "from": "agent5",
+      "to": "board",
+      "curvature": 5
+    }
+  ],
+  "actions": [
+    {
+      "type": "appear",
+      "target": "board",
+      "at": 0,
+      "duration": 1
+    },
+    {
+      "type": "appear",
+      "target": "agent1",
+      "at": 8,
+      "duration": 10
+    },
+    {
+      "type": "appear",
+      "target": "agent2",
+      "at": 22,
+      "duration": 10
+    },
+    {
+      "type": "appear",
+      "target": "agent3",
+      "at": 36,
+      "duration": 10
+    },
+    {
+      "type": "appear",
+      "target": "agent4",
+      "at": 50,
+      "duration": 10
+    },
+    {
+      "type": "appear",
+      "target": "agent5",
+      "at": 64,
+      "duration": 10
+    },
+    {
+      "type": "connect",
+      "target": "a1-board",
+      "at": 30
+    },
+    {
+      "type": "connect",
+      "target": "a2-board",
+      "at": 48
+    },
+    {
+      "type": "connect",
+      "target": "a3-board",
+      "at": 66
+    },
+    {
+      "type": "connect",
+      "target": "a4-board",
+      "at": 84
+    },
+    {
+      "type": "connect",
+      "target": "a5-board",
+      "at": 102
+    },
+    {
+      "type": "pulse",
+      "target": "board",
+      "at": 126,
+      "duration": 34
+    },
+    {
+      "type": "send",
+      "target": "a3-board",
+      "at": 148,
+      "duration": 34
+    }
+  ]
+},
   "008": {
     "durationInFrames": 519,
     "color": "#39f6ff",
