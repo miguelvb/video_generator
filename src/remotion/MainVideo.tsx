@@ -238,7 +238,7 @@ const storyboardTransitionFlags = (sceneId:string, sceneIndex:number) => {
   if (Number.isFinite(n) && n >= 1 && n <= 12) {
     return {
       // A continuation is literally the same visual shot. Never fade it in/out.
-      fadeIn: STORYBOARD_FADE_IN.has(sceneId) && sceneIndex === 0,
+      fadeIn: STORYBOARD_FADE_IN.has(sceneId) && (sceneIndex === 0 || String(scenes[sceneIndex - 1]?.continuity ?? '').toLowerCase() !== 'continuation'),
       fadeOut: STORYBOARD_FADE_OUT.has(sceneId) && !nextIsContinuation,
     };
   }
