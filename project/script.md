@@ -273,7 +273,9 @@ transition
       "type": "appear",
       "target": "openai",
       "at": 8,
-      "duration": 18
+      "duration": 18,
+      "cueWord": "OpenAI",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
@@ -602,7 +604,9 @@ continuation
       "type": "appear",
       "target": "a1",
       "at": 0,
-      "duration": 1
+      "duration": 1,
+      "cueWord": "Crearon",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
@@ -620,7 +624,9 @@ continuation
       "type": "appear",
       "target": "a4",
       "at": 0,
-      "duration": 1
+      "duration": 1,
+      "cueWord": "autónoma",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
@@ -644,7 +650,9 @@ continuation
       "type": "appear",
       "target": "a8",
       "at": 0,
-      "duration": 1
+      "duration": 1,
+      "cueWord": "agentes",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
@@ -662,7 +670,9 @@ continuation
       "type": "appear",
       "target": "a11",
       "at": 0,
-      "duration": 1
+      "duration": 1,
+      "cueWord": "capacidad",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
@@ -686,7 +696,9 @@ continuation
       "type": "appear",
       "target": "a15",
       "at": 0,
-      "duration": 1
+      "duration": 1,
+      "cueWord": "tarea",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
@@ -704,7 +716,9 @@ continuation
       "type": "appear",
       "target": "a18",
       "at": 0,
-      "duration": 1
+      "duration": 1,
+      "cueWord": "organización",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
@@ -967,7 +981,9 @@ continuation
       "type": "appear",
       "target": "a1",
       "at": 0,
-      "duration": 1
+      "duration": 1,
+      "cueWord": "norma",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
@@ -985,7 +1001,9 @@ continuation
       "type": "appear",
       "target": "a4",
       "at": 0,
-      "duration": 1
+      "duration": 1,
+      "cueWord": "pruebas",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
@@ -1009,7 +1027,9 @@ continuation
       "type": "appear",
       "target": "a8",
       "at": 0,
-      "duration": 1
+      "duration": 1,
+      "cueWord": "agentes",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
@@ -1027,7 +1047,9 @@ continuation
       "type": "appear",
       "target": "a11",
       "at": 0,
-      "duration": 1
+      "duration": 1,
+      "cueWord": "independiente",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
@@ -1051,7 +1073,9 @@ continuation
       "type": "appear",
       "target": "a15",
       "at": 0,
-      "duration": 1
+      "duration": 1,
+      "cueWord": "superar",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
@@ -1183,20 +1207,26 @@ continuation
       "target": "agent",
       "cue": "004_es_01",
       "cueOffsetSeconds": 0.2,
-      "cueDurationSeconds": 0.4
+      "cueDurationSeconds": 0.4,
+      "cueWord": "Sin",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
       "target": "board",
       "cue": "004_es_01",
       "cueOffsetSeconds": 3,
-      "cueDurationSeconds": 0.5
+      "cueDurationSeconds": 0.5,
+      "cueWord": "canal",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "agent-board",
       "cue": "004_es_01",
-      "cueOffsetSeconds": 5
+      "cueOffsetSeconds": 5,
+      "cueWord": "empezó",
+      "cueOccurrence": 1
     },
     {
       "type": "send",
@@ -1265,7 +1295,9 @@ continuation
       "type": "send",
       "target": "agent-board",
       "cue": "005_en_01",
-      "cueDurationSeconds": 1.8
+      "cueDurationSeconds": 1.8,
+      "cueWord": "shared",
+      "cueOccurrence": 1
     }
   ]
 }
@@ -1354,32 +1386,42 @@ continuation
       "target": "agent1",
       "cue": "006_es_01",
       "cueOffsetSeconds": 0.5,
-      "cueDurationSeconds": 0.35
+      "cueDurationSeconds": 0.35,
+      "cueWord": "agente",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
       "target": "board",
       "cue": "006_es_01",
       "cueOffsetSeconds": 0.5,
-      "cueDurationSeconds": 0.35
+      "cueDurationSeconds": 0.35,
+      "cueWord": "tablero",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "a1-board",
       "cue": "006_es_01",
-      "cueOffsetSeconds": 1.8
+      "cueOffsetSeconds": 1.8,
+      "cueWord": "confirmó",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
       "target": "agent2",
       "cue": "006_es_01",
       "cueOffsetSeconds": 2.2,
-      "cueDurationSeconds": 0.35
+      "cueDurationSeconds": 0.35,
+      "cueWord": "agente",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "a2-board",
-      "cue": "006_en_02"
+      "cue": "006_en_02",
+      "cueWord": "Many",
+      "cueOccurrence": 1
     },
     {
       "type": "send",
@@ -1530,72 +1572,94 @@ continuation
       "target": "board",
       "cue": "007_es_01",
       "cueOffsetSeconds": 0.2,
-      "cueDurationSeconds": 0.3
+      "cueDurationSeconds": 0.3,
+      "cueWord": "horas",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
       "target": "agent1",
       "cue": "007_es_01",
       "cueOffsetSeconds": 0.5,
-      "cueDurationSeconds": 0.3
+      "cueDurationSeconds": 0.3,
+      "cueWord": "cientos",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "a1-board",
       "cue": "007_es_01",
-      "cueOffsetSeconds": 1
+      "cueOffsetSeconds": 1,
+      "cueWord": "agentes",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
       "target": "agent2",
       "cue": "007_es_01",
       "cueOffsetSeconds": 1.4,
-      "cueDurationSeconds": 0.3
+      "cueDurationSeconds": 0.3,
+      "cueWord": "encontraron",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "a2-board",
       "cue": "007_es_01",
-      "cueOffsetSeconds": 1.8
+      "cueOffsetSeconds": 1.8,
+      "cueWord": "canal",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
       "target": "agent3",
       "cue": "007_es_01",
       "cueOffsetSeconds": 2.3,
-      "cueDurationSeconds": 0.3
+      "cueDurationSeconds": 0.3,
+      "cueWord": "secreto",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "a3-board",
       "cue": "007_es_01",
-      "cueOffsetSeconds": 2.7
+      "cueOffsetSeconds": 2.7,
+      "cueWord": "autorizado",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
       "target": "agent4",
       "cue": "007_es_01",
       "cueOffsetSeconds": 3.2,
-      "cueDurationSeconds": 0.3
+      "cueDurationSeconds": 0.3,
+      "cueWord": "horas",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "a4-board",
       "cue": "007_es_01",
-      "cueOffsetSeconds": 3.6
+      "cueOffsetSeconds": 3.6,
+      "cueWord": "agentes",
+      "cueOccurrence": 1
     },
     {
       "type": "appear",
       "target": "agent5",
       "cue": "007_es_01",
       "cueOffsetSeconds": 4.1,
-      "cueDurationSeconds": 0.3
+      "cueDurationSeconds": 0.3,
+      "cueWord": "encontraron",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "a5-board",
       "cue": "007_es_01",
-      "cueOffsetSeconds": 4.5
+      "cueOffsetSeconds": 4.5,
+      "cueWord": "canal",
+      "cueOccurrence": 1
     }
   ]
 }
@@ -1926,43 +1990,57 @@ transition
       "at": 0,
       "duration": 1,
       "cue": "009_en_02",
-      "cueDurationSeconds": 0.5
+      "cueDurationSeconds": 0.5,
+      "cueWord": "MAJOR",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "agent-major-1",
       "cue": "009_es_01",
-      "cueOffsetSeconds": 1.2
+      "cueOffsetSeconds": 1.2,
+      "cueWord": "soluciones",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "agent-major-2",
       "cue": "009_es_01",
-      "cueOffsetSeconds": 2.3499999999999996
+      "cueOffsetSeconds": 2.3499999999999996,
+      "cueWord": "coordinarse",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "agent-major-3",
       "cue": "009_es_01",
-      "cueOffsetSeconds": 3.5
+      "cueOffsetSeconds": 3.5,
+      "cueWord": "compartiendo",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "agent-major-4",
       "cue": "009_es_01",
-      "cueOffsetSeconds": 4.6499999999999995
+      "cueOffsetSeconds": 4.6499999999999995,
+      "cueWord": "detalles",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "agent-major-5",
       "cue": "009_es_01",
-      "cueOffsetSeconds": 5.8
+      "cueOffsetSeconds": 5.8,
+      "cueWord": "registró",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "agent-major-6",
       "cue": "009_es_01",
-      "cueOffsetSeconds": 6.95
+      "cueOffsetSeconds": 6.95,
+      "cueWord": "registró",
+      "cueOccurrence": 1
     },
     {
       "type": "send",
@@ -2186,27 +2264,37 @@ continuation
     {
       "type": "connect",
       "target": "agent-major-1",
-      "at": 20
+      "at": 20,
+      "cueWord": "lógica",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "agent-major-2",
-      "at": 28
+      "at": 28,
+      "cueWord": "trabajo",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "agent-major-3",
-      "at": 36
+      "at": 36,
+      "cueWord": "compartido",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "agent-major-4",
-      "at": 44
+      "at": 44,
+      "cueWord": "manipular",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "agent-major-5",
-      "at": 52
+      "at": 52,
+      "cueWord": "falsear",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
@@ -2593,7 +2681,9 @@ transition
       "type": "appear",
       "target": "artifactory",
       "at": 84,
-      "duration": 20
+      "duration": 20,
+      "cueWord": "servidor",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
@@ -2620,12 +2710,16 @@ transition
       "type": "appear",
       "target": "internet",
       "at": 250,
-      "duration": 20
+      "duration": 20,
+      "cueWord": "pública",
+      "cueOccurrence": 1
     },
     {
       "type": "connect",
       "target": "art-net",
-      "at": 288
+      "at": 288,
+      "cueWord": "peticiones",
+      "cueOccurrence": 1
     },
     {
       "type": "send",
