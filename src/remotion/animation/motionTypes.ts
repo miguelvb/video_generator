@@ -1,13 +1,7 @@
 export type MotionAssetType =
   | 'agent'
-  | 'message-board'
-  | 'server'
-  | 'folder'
   | 'agent-ui'
-  | 'server-ui'
-  | 'message-board-ui'
   | 'task-module-ui'
-  | 'folder-ui'
   | 'experiment-ui'
   | 'ellipsis'
   | 'openai-ui'
