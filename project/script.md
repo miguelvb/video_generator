@@ -1210,7 +1210,7 @@ continuation
 ```
 
 ### VISUAL
-The narrative changes with “Sin embargo”. One representative agent leaves its isolated test context and reaches an internal server. The server reveals an unintended route into digital folders. That route becomes a shared message board, and two other agents appear at the end of the route. This is the first deliberate communication event in the film.
+The narrative changes with “Sin embargo”. One representative agent leaves its isolated test context and reaches the shared Artifactory message board. This is the first deliberate communication event in the film.
 
 ### VOICEOVER — ES — EXACT TEXT
 
@@ -1218,7 +1218,7 @@ Sin embargo, uno de los sistemas encontró un canal no previsto en el servidor i
 
 ### AI VIDEO PROMPT
 
-LOCKED STATIC CAMERA. Start with one isolated agent. Reveal the internal server, then the digital folder route, then the shared message board and two other agents. Animate the route in the same order as the narration. Do not show a broader swarm yet.
+LOCKED STATIC CAMERA. Start with one isolated agent and reveal the Artifactory message board. Animate the connection in the same order as the narration. Do not show servers, folders or unrelated infrastructure assets.
 
 ### REFERENCE IMAGES
 
@@ -2636,7 +2636,7 @@ transition
 ```
 
 ### VISUAL ANCHOR
-Internal server network enclosed by a firewall perimeter, with an abstract public network beyond it.
+Artifactory as the shared internal message store, connected to the public Internet beyond the isolation boundary.
 
 ### START STATE
 Stable composition before the described action begins.
@@ -2648,7 +2648,7 @@ The final visual state described by the shot is clearly established.
 push_in
 
 ### VISUAL
-Internal server network enclosed by a firewall perimeter, with an abstract public network beyond it.
+Artifactory as the shared internal message store, connected to the public Internet beyond the isolation boundary.
 
 ### VOICEOVER — ES — EXACT TEXT
 
@@ -2656,7 +2656,7 @@ Aprovechando una rendija de seguridad en la configuración del servidor interno 
 
 ### IMAGE PROMPT
 
-Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. Internal server network enclosed by a firewall perimeter, with an abstract public network beyond it. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
+Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. Artifactory as the shared internal message store, connected to the public Internet beyond the isolation boundary. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
 
 ### NEGATIVE PROMPT
 
