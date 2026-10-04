@@ -1788,8 +1788,7 @@ transition
       "type": "appear",
       "target": "flag",
       "at": 245,
-      "duration": 18,
-      "after": ["idea"]
+      "duration": 18
     },
     {
       "type": "connect",
