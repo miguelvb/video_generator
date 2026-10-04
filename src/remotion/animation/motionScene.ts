@@ -44,26 +44,54 @@ export type MotionSceneDefinition = {
   readonly background?:string;
 };
 
-const compileAction=(action:MotionSceneAction):MotionAction=>{
+const fail=(message:string):never=>{
+  throw new Error(`Motion scene: ${message}`);
+};
+
+const compileAction=(
+  action:MotionSceneAction,
+  nodeIds:Set<string>,
+  edgeIds:Set<string>,
+):MotionAction=>{
+  const isNode=nodeIds.has(action.target);
+  const isEdge=edgeIds.has(action.target);
+  if(!isNode&&!isEdge) fail(`"${action.type}" targets unknown id "${action.target}"`);
+  const needNode=()=>{if(!isNode) fail(`"${action.type}" needs a node, but "${action.target}" is a connection`);};
+  const needEdge=()=>{if(!isEdge) fail(`"${action.type}" needs a connection, but "${action.target}" is a node`);};
+  if(!Number.isFinite(action.at)) fail(`"${action.type}" on "${action.target}" has no frame number in "at"`);
+  if('duration' in action&&action.duration!==undefined&&!(action.duration>0)) fail(`"${action.type}" on "${action.target}" needs a positive "duration"`);
+  if(['move','pulse','fade','send'].includes(action.type)&&!('duration' in action&&action.duration!==undefined)){
+    fail(`"${action.type}" on "${action.target}" needs a "duration" in frames`);
+  }
+
   switch(action.type){
     case'appear':
+      needNode();
       return {type:'appear',targetId:action.target,startFrame:action.at,durationInFrames:action.duration};
     case'move':
+      needNode();
       return {type:'move',targetId:action.target,startFrame:action.at,durationInFrames:action.duration,x:action.x,y:action.y};
     case'pulse':
+      needNode();
       return {type:'pulse',targetId:action.target,startFrame:action.at,durationInFrames:action.duration};
     case'fade':
+      needNode();
       return {type:'fade',targetId:action.target,startFrame:action.at,durationInFrames:action.duration,to:action.to};
     case'connect':
+      needEdge();
       return {type:'connect',targetId:action.target,startFrame:action.at};
     case'send':
+      needEdge();
       return {type:'send',targetId:action.target,startFrame:action.at,durationInFrames:action.duration};
     case'activate':
-      return {type:'set-edge-state',targetId:action.target,frame:action.at,state:'active'};
     case'succeed':
-      return {type:'set-node-state',targetId:action.target,frame:action.at,state:'success'};
-    case'error':
-      return {type:'set-node-state',targetId:action.target,frame:action.at,state:'error'};
+    case'error':{
+      // State actions work on both nodes and connections.
+      const state=action.type==='activate'?'active':action.type==='succeed'?'success':'error';
+      return isNode
+        ? {type:'set-node-state',targetId:action.target,frame:action.at,state}
+        : {type:'set-edge-state',targetId:action.target,frame:action.at,state};
+    }
   }
 };
 
@@ -85,20 +113,27 @@ export const compileMotionScene=(
     label:node.label,
     shape:node.shape,
   }));
+  const nodeIds=new Set(nodes.map(node=>node.id));
 
-  const edges:MotionEdge[]=scene.connections.map(connection=>({
-    id:connection.id,
-    from:connection.from,
-    to:connection.to,
-    curvature:connection.curvature,
-  }));
+  const edges:MotionEdge[]=scene.connections.map(connection=>{
+    if(!nodeIds.has(connection.from)||!nodeIds.has(connection.to)){
+      fail(`connection "${connection.id}" joins unknown node(s) "${connection.from}" → "${connection.to}"`);
+    }
+    return {
+      id:connection.id,
+      from:connection.from,
+      to:connection.to,
+      curvature:connection.curvature,
+    };
+  });
+  const edgeIds=new Set(edges.map(edge=>edge.id));
 
   return {
     nodes,
     edges,
-    groups:scene.groups?.map(group=>({...group})),
+    groups:scene.groups?.map(group=>({id:group.id,nodeIds:[...group.nodeIds]})),
     cameraFocus:scene.cameraFocus?{...scene.cameraFocus}:undefined,
-    actions:scene.actions.map(compileAction),
+    actions:scene.actions.map(action=>compileAction(action,nodeIds,edgeIds)),
     durationInFrames,
     color:scene.color,
     backgroundAsset:scene.background,

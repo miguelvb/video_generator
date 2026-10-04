@@ -21,11 +21,8 @@ export const moveProgress = (frame: number, start: number, duration: number) => 
   return 6 * t ** 5 - 15 * t ** 4 + 10 * t ** 3;
 };
 
-export const nodeProgress = (frame: number, delay: number) =>
-  smoothProgress(frame, delay, 18);
-
-export const edgeProgress = (frame: number, delay: number) =>
-  smoothProgress(frame, delay, 24);
+export const edgeProgress = (frame: number, connectFrame: number) =>
+  smoothProgress(frame, connectFrame, 24);
 
 export const getQuadraticControlPoint = (
   from: MotionNode,

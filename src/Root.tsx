@@ -6,6 +6,7 @@ import {MotionEngineTest} from './remotion/animation/TwoDMotionEngine';
 import {MotionCameraTest} from './remotion/animation/MotionCameraTest';
 import {MotionSceneExample} from './remotion/animation/MotionSceneExample';
 import {MotionScriptScene} from './remotion/animation/MotionScriptScene';
+import type {MotionSceneDefinition} from './remotion/animation/motionScene';
 import {DEMO_COLLECTIVE_MOTION_SCENE} from './generated/demoCollectiveMotionScene';
 
 export const Root: React.FC = () => {
@@ -14,6 +15,7 @@ export const Root: React.FC = () => {
       <Composition
         id="DemoCollective"
         component={MotionScriptScene}
+        defaultProps={{scene: DEMO_COLLECTIVE_MOTION_SCENE as unknown as MotionSceneDefinition}}
         durationInFrames={Number(DEMO_COLLECTIVE_MOTION_SCENE.durationInFrames)}
         fps={Number(VIDEO_CONFIG.fps)}
         width={Number(VIDEO_CONFIG.width)}

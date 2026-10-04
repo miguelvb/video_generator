@@ -5,7 +5,7 @@ import {compileMotionScene, type MotionSceneDefinition} from './motionScene';
 const scene: MotionSceneDefinition = {
   nodes: [
     {id: 'agent-a', asset: 'agent-ui', x: 18, y: 50, size: 150},
-    {id: 'server', asset: 'server-ui', x: 50, y: 50, size: 180},
+    {id: 'server', asset: 'artifactory-ui', x: 50, y: 50, size: 180},
     {id: 'agent-b', asset: 'agent-ui', x: 82, y: 28, size: 150},
     {id: 'agent-c', asset: 'agent-ui', x: 82, y: 72, size: 150},
   ],

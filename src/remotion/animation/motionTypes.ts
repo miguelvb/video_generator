@@ -14,32 +14,61 @@ export type MotionAssetType =
 export type MotionNodeState = 'normal' | 'active' | 'success' | 'error';
 export type MotionEdgeState = 'normal' | 'active' | 'success' | 'error';
 
-export type MotionStateChange<T extends string> = { frame: number; state: T };
-export type MotionPositionChange = { startFrame: number; durationInFrames: number; x: number; y: number };
-
-
+/** Low-level actions consumed by the engine. Frames are local to the scene. */
 export type MotionAction =
-  | ({ type: 'appear'; targetId: string; startFrame: number; durationInFrames?: number })
-  | ({ type: 'move'; targetId: string; startFrame: number; durationInFrames: number; x: number; y: number })
-  | ({ type: 'pulse'; targetId: string; startFrame: number; durationInFrames: number })
-  | ({ type: 'fade'; targetId: string; startFrame: number; durationInFrames: number; to: number })
-  | ({ type: 'activate' | 'succeed' | 'error'; targetId: string; frame: number })
-  | ({ type: 'connect'; targetId: string; startFrame: number })
-  | ({ type: 'send'; targetId: string; startFrame: number; durationInFrames: number })
-  | ({ type: 'focus'; groupId: string; startFrame: number; durationInFrames: number; zoom: number | 'fit' })
-  | ({ type: 'set-node-state'; targetId: string; frame: number; state: MotionNodeState })
-  | ({ type: 'set-edge-state'; targetId: string; frame: number; state: MotionEdgeState });
+  | {type: 'appear'; targetId: string; startFrame: number; durationInFrames?: number}
+  | {type: 'move'; targetId: string; startFrame: number; durationInFrames: number; x: number; y: number}
+  | {type: 'pulse'; targetId: string; startFrame: number; durationInFrames: number}
+  | {type: 'fade'; targetId: string; startFrame: number; durationInFrames: number; to: number}
+  | {type: 'connect'; targetId: string; startFrame: number}
+  | {type: 'send'; targetId: string; startFrame: number; durationInFrames: number}
+  | {type: 'set-node-state'; targetId: string; frame: number; state: MotionNodeState}
+  | {type: 'set-edge-state'; targetId: string; frame: number; state: MotionEdgeState};
 
 export type MotionNode = {
-  id: string; x: number; y: number; size?: number; opacity?: number; delay?: number;
-  asset?: MotionAssetType; label?: string; state?: MotionNodeState;
-  stateChanges?: MotionStateChange<MotionNodeState>[]; positionChanges?: MotionPositionChange[];
+  id: string;
+  x: number;
+  y: number;
+  size?: number;
+  opacity?: number;
+  asset?: MotionAssetType;
+  label?: string;
+  shape?: 'boundary';
+  state?: MotionNodeState;
 };
-export type MotionGroup = { id: string; nodeIds: string[]; offsetX?: number; offsetY?: number; delay?: number; durationInFrames?: number };
-export type MotionEdge = { id: string; from: string; to: string; delay?: number; curvature?: number; state?: MotionEdgeState; stateChanges?: MotionStateChange<MotionEdgeState>[]; sendAction?: {startFrame:number;durationInFrames:number} };
-export type MotionCameraFocus = { groupId: string; zoom: number | 'fit'; startFrame?: number; durationInFrames?: number };
+
+export type MotionSend = {startFrame: number; durationInFrames: number};
+
+export type MotionEdge = {
+  id: string;
+  from: string;
+  to: string;
+  curvature?: number;
+  state?: MotionEdgeState;
+  /** Frame at which the line starts drawing. Undefined = present (no draw-on). */
+  connectFrame?: number;
+  /** Every authored packet on this connection. No entry = no packet. */
+  sends?: MotionSend[];
+};
+
+/** Groups only define a set of nodes for camera focus; they are never drawn. */
+export type MotionGroup = {id: string; nodeIds: string[]};
+
+export type MotionCameraFocus = {
+  groupId: string;
+  zoom: number | 'fit';
+  startFrame?: number;
+  durationInFrames?: number;
+};
 
 export type TwoDMotionEngineProps = {
-  nodes: MotionNode[]; edges: MotionEdge[]; groups?: MotionGroup[]; cameraFocus?: MotionCameraFocus;
-  durationInFrames: number; color?: string; actions?: MotionAction[]; showDebugLabel?: boolean; backgroundAsset?: string;
+  nodes: MotionNode[];
+  edges: MotionEdge[];
+  groups?: MotionGroup[];
+  cameraFocus?: MotionCameraFocus;
+  durationInFrames: number;
+  color?: string;
+  actions?: MotionAction[];
+  showDebugLabel?: boolean;
+  backgroundAsset?: string;
 };

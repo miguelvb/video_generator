@@ -3,18 +3,10 @@ import {AbsoluteFill, staticFile, useCurrentFrame} from 'remotion';
 import {MotionAsset} from './MotionAsset';
 import {MotionConnection} from './MotionConnection';
 import {MotionPacket} from './MotionPacket';
-import {MotionGroup} from './MotionGroup';
-import {resolveGroupedNodes} from './motionGroups';
-import {resolveNodePositions} from './motionPositions';
 import {resolveMotionActions} from './motionActions';
 import {MotionCamera} from './MotionCamera';
 import {resolveCameraFocus} from './motionCameraFocus';
-import type {
-  MotionEdge,
-  MotionNode,
-  MotionGroup as MotionGroupType,
-  TwoDMotionEngineProps,
-} from './motionTypes';
+import type {MotionEdge, MotionNode, TwoDMotionEngineProps} from './motionTypes';
 
 export type {MotionAssetType, MotionEdge, MotionGroup, MotionNode, TwoDMotionEngineProps} from './motionTypes';
 
@@ -25,15 +17,12 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
   cameraFocus,
   durationInFrames,
   actions,
-  showDebugLabel = true,
+  showDebugLabel = false,
   backgroundAsset,
   color = '#ff0000',
 }) => {
   const frame = useCurrentFrame();
-  const actionResult = resolveMotionActions(nodes, edges, actions, frame);
-  const positionedNodes = resolveNodePositions(actionResult.nodes, frame);
-  const resolvedNodes = resolveGroupedNodes(positionedNodes, groups ?? [], frame);
-  const resolvedEdges = actionResult.edges;
+  const {nodes: resolvedNodes, edges: resolvedEdges} = resolveMotionActions(nodes, edges, actions, frame);
   const nodesById = Object.fromEntries(
     resolvedNodes.map((node) => [node.id, node]),
   );
@@ -116,16 +105,6 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
         ))}
       </svg>
 
-      {(groups ?? []).map((group: MotionGroupType) => (
-        <MotionGroup
-          key={group.id}
-          group={group}
-          nodes={resolvedNodes.filter((node) => group.nodeIds.includes(node.id))}
-          frame={frame}
-          color={color}
-        />
-      ))}
-
       {resolvedEdges.map((edge) => (
         <MotionPacket
           key={`packet-${edge.id}`}
@@ -173,7 +152,6 @@ export const MotionEngineTest: React.FC = () => {
       x: 25,
       y: 50,
       size: 170,
-      delay: 0,
       asset: 'agent-ui',
     },
     {
@@ -181,7 +159,6 @@ export const MotionEngineTest: React.FC = () => {
       x: 75,
       y: 50,
       size: 190,
-      delay: 0,
       asset: 'artifactory-ui',
     },
   ];
@@ -191,7 +168,6 @@ export const MotionEngineTest: React.FC = () => {
       id: 'agent-server',
       from: 'agent-a',
       to: 'server',
-      delay: 0,
       curvature: 0,
     },
   ];
@@ -230,6 +206,7 @@ export const MotionEngineTest: React.FC = () => {
       ]}
       durationInFrames={210}
       color="#ff0000"
+      showDebugLabel
     />
   );
 };

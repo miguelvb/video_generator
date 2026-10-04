@@ -2,7 +2,6 @@ import React from 'react';
 import {interpolate} from 'remotion';
 import {edgeProgress, getQuadraticControlPoint} from './motionGeometry';
 import type {MotionEdge, MotionNode} from './motionTypes';
-import {resolveMotionState} from './motionState';
 
 export const MotionConnection: React.FC<{
   edge: MotionEdge;
@@ -14,19 +13,22 @@ export const MotionConnection: React.FC<{
   const to = nodesById[edge.to];
   if (!from || !to) return null;
 
-  // A connection is only visible when both endpoints are visible. This is a
-  // render-side guard for each independent scene.
-  if ((from.opacity ?? 1) <= 0 || (to.opacity ?? 1) <= 0) return null;
+  // A connection is never more visible than its least visible endpoint, so it
+  // fades in with its nodes instead of popping in.
+  const endpointOpacity = Math.min(from.opacity ?? 1, to.opacity ?? 1);
+  if (endpointOpacity <= 0) return null;
 
-  const progress = edgeProgress(frame, edge.delay ?? 0);
+  // With a connect action the line draws on from that frame; without one it
+  // is simply present (and follows its endpoints' visibility).
+  const progress = edge.connectFrame === undefined ? 1 : edgeProgress(frame, edge.connectFrame);
   const control = getQuadraticControlPoint(from, to, edge.curvature ?? 0);
   const path = `M ${from.x} ${from.y} Q ${control.x} ${control.y} ${to.x} ${to.y}`;
-  const opacity = interpolate(progress, [0, 1], [0, 1], {
+  const opacity = endpointOpacity * interpolate(progress, [0, 1], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  const state = resolveMotionState(edge.state ?? 'normal', edge.stateChanges, frame);
+  const state = edge.state ?? 'normal';
   const stateColor =
     state === 'error'
       ? '#ff5b67'
