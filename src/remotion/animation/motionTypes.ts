@@ -20,16 +20,16 @@ export type MotionPositionChange = { startFrame: number; durationInFrames: numbe
 type MotionActionDependency = { afterTargetIds?: string[] };
 
 export type MotionAction =
-  | ({ type: 'appear'; targetId: string; startFrame: number; durationInFrames?: number } & MotionActionDependency)
-  | ({ type: 'move'; targetId: string; startFrame: number; durationInFrames: number; x: number; y: number } & MotionActionDependency)
-  | ({ type: 'pulse'; targetId: string; startFrame: number; durationInFrames: number } & MotionActionDependency)
-  | ({ type: 'fade'; targetId: string; startFrame: number; durationInFrames: number; to: number } & MotionActionDependency)
-  | ({ type: 'activate' | 'succeed' | 'error'; targetId: string; frame: number } & MotionActionDependency)
-  | ({ type: 'connect'; targetId: string; startFrame: number } & MotionActionDependency)
-  | ({ type: 'send'; targetId: string; startFrame: number; durationInFrames: number } & MotionActionDependency)
-  | ({ type: 'focus'; groupId: string; startFrame: number; durationInFrames: number; zoom: number | 'fit' } & MotionActionDependency)
-  | ({ type: 'set-node-state'; targetId: string; frame: number; state: MotionNodeState } & MotionActionDependency)
-  | ({ type: 'set-edge-state'; targetId: string; frame: number; state: MotionEdgeState } & MotionActionDependency);
+  | ({ type: 'appear'; targetId: string; startFrame: number; durationInFrames?: number })
+  | ({ type: 'move'; targetId: string; startFrame: number; durationInFrames: number; x: number; y: number })
+  | ({ type: 'pulse'; targetId: string; startFrame: number; durationInFrames: number })
+  | ({ type: 'fade'; targetId: string; startFrame: number; durationInFrames: number; to: number })
+  | ({ type: 'activate' | 'succeed' | 'error'; targetId: string; frame: number })
+  | ({ type: 'connect'; targetId: string; startFrame: number })
+  | ({ type: 'send'; targetId: string; startFrame: number; durationInFrames: number })
+  | ({ type: 'focus'; groupId: string; startFrame: number; durationInFrames: number; zoom: number | 'fit' })
+  | ({ type: 'set-node-state'; targetId: string; frame: number; state: MotionNodeState })
+  | ({ type: 'set-edge-state'; targetId: string; frame: number; state: MotionEdgeState });
 
 export type MotionNode = {
   id: string; x: number; y: number; size?: number; opacity?: number; delay?: number;
