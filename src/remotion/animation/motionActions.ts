@@ -33,7 +33,7 @@ export const resolveMotionActions = (
   const sendActions = actions.filter((action) => action.type === 'send');
   const connectActions = actions.filter((action) => action.type === 'connect');
   const activateActions = actions.filter((action) => action.type === 'activate');
-  const appearActions = actions.filter((action) => action.type === 'appear');
+  const appearActions = actions.filter((action) => action.type === 'appear');\n  const pulseActions = actions.filter((action) => action.type === 'pulse');
 
   const resolvedNodes = nodes.map((node) => {
     const moves = moveActions.filter((action) => action.targetId === node.id);
@@ -55,6 +55,13 @@ export const resolveMotionActions = (
       .filter((action) => action.type === 'set-node-state' && action.targetId === node.id)
       .map((action) => ({frame: action.frame, state: action.state as MotionNodeState}));
 
+    const nodePulses = pulseActions
+      .filter((action) => action.targetId === node.id)
+      .flatMap((action) => [
+        {frame: action.startFrame, state: 'active' as MotionNodeState},
+        {frame: action.startFrame + action.durationInFrames, state: 'normal' as MotionNodeState},
+      ]);
+
     let opacity = 1;
     if (appears.length > 0) {
       opacity = 0;
@@ -71,7 +78,7 @@ export const resolveMotionActions = (
       ...node,
       x,
       y,
-      state: stateAt(node.state ?? 'normal', stateChanges, frame),
+      state: stateAt(\n        node.state ?? 'normal',\n        [...stateChanges, ...nodePulses].sort((a, b) => a.frame - b.frame),\n        frame,\n      ),
       opacity,
     };
   });
