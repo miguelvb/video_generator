@@ -16,9 +16,9 @@ export const MOTION_ASSETS: Record<MotionAssetType, MotionAssetDefinition> = {
   },
   'message-board': {
     type: 'message-board',
-    path: 'assets/motion/message-board.svg',
-    label: 'Message board',
-    category: 'communication',
+    path: 'assets/motion/artifactory-ui.svg',
+    label: 'Artifactory',
+    category: 'infrastructure',
   },
   server: {
     type: 'server',
@@ -40,9 +40,9 @@ export const MOTION_ASSETS: Record<MotionAssetType, MotionAssetDefinition> = {
   },
   'message-board-ui': {
     type: 'message-board-ui',
-    path: 'assets/motion/message-board-ui.svg',
-    label: 'Message Board UI',
-    category: 'communication',
+    path: 'assets/motion/artifactory-ui.svg',
+    label: 'Artifactory',
+    category: 'infrastructure',
   },
   'server-ui': {
     type: 'server-ui',
