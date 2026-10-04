@@ -442,7 +442,6 @@ const EndingCard: React.FC = () => {
 type VisualGroup = {
   startIndex:number;
   endIndex:number;
-  startFrame:number;
   duration:number;
   fadeIn:boolean;
   fadeOut:boolean;
@@ -477,7 +476,6 @@ const scaleMergedAction = (action:any, source:any, actualDuration:number, offset
 const buildVisualGroups = ():VisualGroup[] => {
   const groups:VisualGroup[]=[];
   let i=0;
-  let absoluteFrame=0;
   while (i<scenes.length) {
     const startIndex=i;
     let endIndex=i;
@@ -497,9 +495,9 @@ const buildVisualGroups = ():VisualGroup[] => {
       }
       const nextOffset=duration;
       for (const action of (next.motion_scene?.actions ?? [])) {
-        actions.push(scaleMergedAction(action,next,nextDuration(nextIndex),nextOffset));
+        actions.push(scaleMergedAction(action,next,sceneFrames[nextIndex],nextOffset));
       }
-      duration += nextDuration(nextIndex);
+      duration += sceneFrames[nextIndex];
       endIndex=nextIndex;
     }
 
@@ -512,19 +510,16 @@ const buildVisualGroups = ():VisualGroup[] => {
     groups.push({
       startIndex,
       endIndex,
-      startFrame:absoluteFrame,
       duration,
       fadeIn:storyboardTransitionFlags(String(scenes[startIndex].scene_id),startIndex).fadeIn,
       fadeOut:storyboardTransitionFlags(String(scenes[endIndex].scene_id),endIndex).fadeOut,
       motionScene:mergedMotionScene,
     });
-    absoluteFrame+=duration;
     i=endIndex+1;
   }
   return groups;
 };
 
-const nextDuration=(index:number)=>sceneFrames[index];
 
 export const MainVideo: React.FC = () => {
   const visualGroups=buildVisualGroups();
