@@ -174,6 +174,7 @@ const QuoteOverlay: React.FC<{
     color: motionStyle ? '#d8fbff' : '#2f2a24',
     textAlign:'center',
     opacity,
+    zIndex: 30,
     transform: `translateY(${translateY}px)`,
     textShadow: motionStyle ? '0 0 8px rgba(57,246,255,.18)' : 'none',
   }}>{`“${text}”`}</div>;
