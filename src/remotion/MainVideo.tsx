@@ -293,27 +293,6 @@ const SceneVisual: React.FC<{
   </AbsoluteFill>;
 };
 
-const Scene: React.FC<{scene:any; sceneIndex:number; duration:number; visualDuration:number; contentOffset:number}> = ({scene,sceneIndex,duration,visualDuration,contentOffset}) => {
-  const timing = TIMINGS[timingKey(scene)];
-  if (!timing?.audioFile) throw new Error(`Missing audio file timing for scene ${scene.scene_id}`);
-  return <AbsoluteFill style={{background:'transparent', overflow:'hidden'}}>
-    <SceneVisual
-      scene={scene}
-      duration={duration}
-      fadeIn={storyboardTransitionFlags(String(scene.scene_id), sceneIndex).fadeIn}
-      fadeOut={storyboardTransitionFlags(String(scene.scene_id), sceneIndex).fadeOut}
-      contentOffset={contentOffset}
-    />
-    <Sequence from={contentOffset} durationInFrames={duration}>
-      <Audio src={staticFile(timing.audioFile)} />
-    </Sequence>
-    <Sequence from={contentOffset} durationInFrames={duration}>
-      <QuoteSegments scene={scene} duration={duration}/>
-      <StoryboardSceneText sceneId={String(scene.scene_id)} />
-    </Sequence>
-  </AbsoluteFill>;
-};
-
 const VisualMotionGroup: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut:boolean}> = ({scene,duration,fadeIn,fadeOut}) => {
   const frame=useCurrentFrame();
   const fadeFrames=Math.max(1,Math.round(1.0*FPS));
