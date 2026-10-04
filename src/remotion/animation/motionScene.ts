@@ -23,7 +23,7 @@ export type MotionSceneConnection = {
 
 export type MotionSceneAction =
   | {type: 'appear'; target: string; at: number; duration?: number}
-  | {type: 'move'; target: string; at: number; duration: number; x: number; y: number}
+  | {type: 'move'; target: string; at: number; duration: number; x: number; y: number}\n  | {type: 'pulse'; target: string; at: number; duration: number}
   | {type: 'connect'; target: string; at: number}
   | {type: 'send'; target: string; at: number; duration: number}
   | {type: 'activate'; target: string; at: number}
@@ -62,6 +62,13 @@ const compileAction = (action: MotionSceneAction): MotionAction => {
         type: 'connect',
         targetId: action.target,
         startFrame: action.at,
+      };
+    case 'pulse':
+      return {
+        type: 'pulse',
+        targetId: action.target,
+        startFrame: action.at,
+        durationInFrames: action.duration,
       };
     case 'send':
       return {
