@@ -314,6 +314,21 @@ const Scene: React.FC<{scene:any; sceneIndex:number; duration:number; visualDura
   </AbsoluteFill>;
 };
 
+const VisualMotionGroup: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut:boolean}> = ({scene,duration,fadeIn,fadeOut}) => {
+  const frame=useCurrentFrame();
+  const fadeFrames=Math.max(1,Math.round(1.0*FPS));
+  const fadeOutStart=Math.max(0,duration-fadeFrames);
+  const fadeInOpacity=fadeIn
+    ? interpolate(frame,[0,fadeFrames],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'})
+    : 1;
+  const fadeOutOpacity=fadeOut
+    ? interpolate(frame,[fadeOutStart,duration],[1,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'})
+    : 1;
+  return <AbsoluteFill style={{opacity:Math.min(fadeInOpacity,fadeOutOpacity)}}>
+    <MotionScriptScene scene={scene} durationInFrames={duration}/>
+  </AbsoluteFill>;
+};
+
 const BackgroundMusic: React.FC = () => {
   const frame = useCurrentFrame();
   const props = getInputProps() as any;
@@ -535,18 +550,13 @@ export const MainVideo: React.FC = () => {
         </Sequence>;
       }
 
-      const fadeInFrames = Math.max(1, Math.round(1.0 * FPS));
-      const fadeOutStart = Math.max(0, group.duration - fadeInFrames);
-      const fadeInOpacity = group.fadeIn
-        ? interpolate(useCurrentFrame(), [0, fadeInFrames], [0, 1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
-        : 1;
-      const fadeOutOpacity = group.fadeOut
-        ? interpolate(useCurrentFrame(), [fadeOutStart, group.duration], [1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
-        : 1;
       return <Sequence key={`visual-${group.startIndex}`} from={currentOffset} durationInFrames={group.duration}>
-        <AbsoluteFill style={{opacity:Math.min(fadeInOpacity,fadeOutOpacity)}}>
-          <MotionScriptScene scene={group.motionScene} durationInFrames={group.duration} />
-        </AbsoluteFill>
+        <VisualMotionGroup
+          scene={group.motionScene}
+          duration={group.duration}
+          fadeIn={group.fadeIn}
+          fadeOut={group.fadeOut}
+        />
       </Sequence>;
     })}
     {scenes.map((scene:any,index:number)=>{
