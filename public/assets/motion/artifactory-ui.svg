@@ -1,1 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 200"><rect x="3" y="3" width="334" height="194" rx="24" fill="#07141a" stroke="#39f6ff" stroke-width="3"/><rect x="10" y="10" width="320" height="180" rx="18" fill="none" stroke="#39f6ff" stroke-opacity=".16"/><path d="M94 54l76-24 76 24-76 24z" fill="#0c2c34" stroke="#39f6ff" stroke-width="3"/><path d="M94 54v88l76 28V78zM246 54v88l-76 28V78z" fill="#0a222a" stroke="#39f6ff" stroke-width="3"/><path d="M123 76l47 17 47-17M123 99l47 17 47-17M123 122l47 17 47-17" fill="none" stroke="#6e9da5" stroke-width="4"/><circle cx="170" cy="54" r="7" fill="#39f6ff"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 200">
+  <rect x="3" y="3" width="334" height="194" rx="24" fill="#07141a" stroke="#39f6ff" stroke-width="3"/>
+  <rect x="10" y="10" width="320" height="180" rx="18" fill="none" stroke="#39f6ff" stroke-opacity=".16"/>
+  <rect x="55" y="48" width="230" height="104" rx="10" fill="#0c2c34" stroke="#39f6ff" stroke-width="3"/>
+  <rect x="72" y="66" width="196" height="42" rx="6" fill="#07141a" stroke="#39f6ff" stroke-opacity=".45"/>
+  <text x="170" y="94" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="600" letter-spacing="1.5" fill="#d8fbff">ARTIFACTORY</text>
+  <circle cx="82" cy="129" r="5" fill="#39f6ff"/>
+  <rect x="96" y="126" width="76" height="6" rx="3" fill="#6e9da5"/>
+  <rect x="181" y="126" width="55" height="6" rx="3" fill="#39f6ff" opacity=".7"/>
+</svg>
