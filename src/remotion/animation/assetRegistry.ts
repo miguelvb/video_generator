@@ -10,7 +10,7 @@ export type MotionAssetDefinition = {
 export const MOTION_ASSETS: Record<MotionAssetType, MotionAssetDefinition> = {
   agent: {
     type: 'agent',
-    path: 'assets/motion/agent.svg',
+    path: 'assets/motion/agent-ui.svg',
     label: 'Agent',
     category: 'agent',
   },
@@ -46,8 +46,8 @@ export const MOTION_ASSETS: Record<MotionAssetType, MotionAssetDefinition> = {
   },
   'server-ui': {
     type: 'server-ui',
-    path: 'assets/motion/server-ui.svg',
-    label: 'Server UI',
+    path: 'assets/motion/artifactory-ui.svg',
+    label: 'Artifactory',
     category: 'infrastructure',
   },
   'task-module-ui': {
