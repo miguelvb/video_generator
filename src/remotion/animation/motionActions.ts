@@ -70,7 +70,9 @@ const resolveTemporalSchedule=(nodes:MotionNode[],edges:MotionEdge[],actions:Mot
       if(edge){
         at=Math.max(at,(edgeTimes.get(edge.id)??0)+1,nodeTimes.get(edge.from)??0,nodeTimes.get(edge.to)??0);
       }
-    } else if(action.type==='succeed'||action.type==='error'||action.type==='set-node-state'){
+    } else if(action.type==='succeed'||action.type==='error'||action.type==='set-node-state'||
+      action.type==='move'||action.type==='pulse'||action.type==='fade'){
+      // No operation on a node can begin before that node exists.
       at=Math.max(at,nodeTimes.get(action.targetId)??0);
     }
     const previous=startFrames.get(action)??0;
