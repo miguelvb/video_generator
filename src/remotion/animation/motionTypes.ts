@@ -1,4 +1,22 @@
-export type MotionAssetType = 'agent' | 'message-board' | 'server' | 'folder' | 'agent-ui' | 'server-ui' | 'message-board-ui' | 'task-module-ui' | 'folder-ui' | 'experiment-ui' | 'ellipsis';
+export type MotionAssetType =
+  | 'agent'
+  | 'message-board'
+  | 'server'
+  | 'folder'
+  | 'agent-ui'
+  | 'server-ui'
+  | 'message-board-ui'
+  | 'task-module-ui'
+  | 'folder-ui'
+  | 'experiment-ui'
+  | 'ellipsis'
+  | 'openai-ui'
+  | 'document-ui'
+  | 'message-ui'
+  | 'flag-ui'
+  | 'idea-ui'
+  | 'artifactory-ui'
+  | 'internet-ui';
 
 export type MotionNodeState = 'normal' | 'active' | 'success' | 'error';
 export type MotionEdgeState = 'normal' | 'active' | 'success' | 'error';
