@@ -72,7 +72,7 @@ export type MotionAction =
       state: MotionEdgeState;
     };
 
-export type MotionNode = {
+export type MotionCameraFocus = {\n  groupId: string;\n  zoom: number | 'fit';\n  startFrame?: number;\n  durationInFrames?: number;\n};\n\nexport type MotionNode = {
   id: string;
   x: number;
   y: number;
