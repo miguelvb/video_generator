@@ -38,7 +38,7 @@ export type MotionAction =
 
 export type MotionNode = {
   id: string; x: number; y: number; size?: number; opacity?: number; delay?: number;
-  asset?: MotionAssetType; state?: MotionNodeState;
+  asset?: MotionAssetType; label?: string; state?: MotionNodeState;
   stateChanges?: MotionStateChange<MotionNodeState>[]; positionChanges?: MotionPositionChange[];
 };
 export type MotionGroup = { id: string; nodeIds: string[]; offsetX?: number; offsetY?: number; delay?: number; durationInFrames?: number };
