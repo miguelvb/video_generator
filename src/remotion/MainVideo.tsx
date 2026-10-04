@@ -454,240 +454,88 @@ const EndingCard: React.FC = () => {
   </AbsoluteFill>;
 };
 
-type VisualGroup = {
-  startIndex:number;
-  endIndex:number;
+const SceneVisual: React.FC<{
+  scene:any;
   duration:number;
   fadeIn:boolean;
   fadeOut:boolean;
-  motionScene:any;
+}> = ({scene,duration,fadeIn,fadeOut}) => {
+  const frame = useCurrentFrame();
+  const fadeInOpacity = fadeIn
+    ? interpolate(frame, [0, TRANSITION_FRAMES], [0, 1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
+    : 1;
+  const fadeOutStart = Math.max(0, duration - TRANSITION_FRAMES);
+  const fadeOutOpacity = fadeOut
+    ? interpolate(frame, [fadeOutStart, duration], [1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
+    : 1;
+
+  const motionScene = scene.motion_scene;
+  return (
+    <AbsoluteFill style={{opacity: Math.min(fadeInOpacity, fadeOutOpacity)}}>
+      {motionScene
+        ? <MotionScriptScene scene={motionScene} durationInFrames={duration} />
+        : <AnimatedAIClip scene={{...scene, __durationFrames: duration}} duration={duration} />}
+    </AbsoluteFill>
+  );
 };
 
-const sameVisualStructure = (a:any,b:any) => {
-  if (!a?.motion_scene || !b?.motion_scene) return false;
-  const keys = ['nodes','connections','groups','cameraFocus','color','background'];
-  return keys.every((key) => JSON.stringify(a.motion_scene?.[key] ?? null) === JSON.stringify(b.motion_scene?.[key] ?? null));
-};
-
-const canContinueVisual = (a:any,b:any,ai:number,bi:number) => {
-  if (!a?.motion_scene || !b?.motion_scene) return false;
-  if (hasStoryboardBoundaryTransition(a,ai,b,bi)) return false;
-  if (String(b.continuity ?? '').toLowerCase() !== 'continuation') return false;
-  if (sameVisualStructure(a,b)) return true;
-  // A continuation may change the number of visible elements. Preserve the
-  // existing logical nodes and add only genuinely new nodes/edges.
-  const aNodes = new Map((a.motion_scene.nodes ?? []).map((n:any)=>[n.id,n]));
-  const shared = (b.motion_scene.nodes ?? []).filter((n:any)=>aNodes.has(n.id));
-  return shared.length > 0;
-};
-
-const hasStoryboardBoundaryTransition = (prevScene:any, prevIndex:number, nextScene:any, nextIndex:number) => {
-  const prevFlags=storyboardTransitionFlags(String(prevScene.scene_id),prevIndex);
-  const nextFlags=storyboardTransitionFlags(String(nextScene.scene_id),nextIndex);
-  // CONTINUITY describes the incoming scene. A previous scene marked
-  // "transition" must NOT create a cut after itself.
-  return prevFlags.fadeOut || nextFlags.fadeIn || nextFlags.fadeOut ||
-    String(nextScene.continuity ?? '').toLowerCase() === 'transition';
-};
-
-const resolveCue = (action:any, source:any) => {
-  if (!action?.cue && !action?.cueWord) return null;
-  const timing = TIMINGS[timingKey(source)];
-  if (!timing?.segments) return null;
-  for (const segment of timing.segments as any[]) {
-    if (action.cueWord) {
-      const wanted = String(action.cueWord).toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
-      const occurrence = Math.max(1, Number(action.cueOccurrence ?? 1));
-      const matches = (segment.words ?? []).filter((w:any) =>
-        String(w.word ?? '').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '') === wanted
-      );
-      if (matches[occurrence - 1]) {
-        return {
-          atSeconds: Number(matches[occurrence - 1].startSeconds ?? matches[occurrence - 1].start_seconds ?? 0) + Number(action.cueOffsetSeconds ?? 0),
-          durationSeconds: Number(action.cueDurationSeconds ?? 0),
-        };
-      }
-    }
-    if (action.cue) {
-      const phrase = (segment.phrases ?? []).find((p:any) => p.id === action.cue);
-      if (phrase) {
-        return {
-          atSeconds: Number(phrase.startSeconds ?? phrase.start_seconds ?? 0) + Number(action.cueOffsetSeconds ?? 0),
-          durationSeconds: Number(action.cueDurationSeconds ?? phrase.durationSeconds ?? phrase.duration_seconds ?? 0),
-        };
-      }
-      if (segment.id === action.cue) {
-        return {
-          atSeconds: Number(segment.startSeconds ?? segment.start_seconds ?? 0) + Number(action.cueOffsetSeconds ?? 0),
-          durationSeconds: Number(action.cueDurationSeconds ?? segment.durationSeconds ?? segment.duration_seconds ?? 0),
-        };
-      }
-    }
-  }
-  // If word alignment is not present yet, preserve the authored fallback.
-  if (action.cueWord && action.cue) {
-    const fallback = resolveCue({...action, cueWord:undefined}, source);
-    if (fallback) {
-      fallback.atSeconds += Number(action.cueWordFallbackOffsetSeconds ?? 0);
-      return fallback;
-    }
-  }
-  return null;
-};
-
-const mergeMotionScenes = (first:any, second:any) => {
-  const nodes = [...(first.nodes ?? [])];
-  const nodeIds = new Set(nodes.map((n:any)=>n.id));
-  for (const node of (second.nodes ?? [])) {
-    if (!nodeIds.has(node.id)) {
-      nodes.push(node.opacity === undefined ? {...node, opacity:0} : node);
-      nodeIds.add(node.id);
-    }
-  }
-  const connections = [...(first.connections ?? [])];
-  const connectionIds = new Set(connections.map((e:any)=>e.id));
-  for (const edge of (second.connections ?? [])) {
-    if (!connectionIds.has(edge.id)) {
-      connections.push(edge);
-      connectionIds.add(edge.id);
-    }
-  }
-  return {
-    ...first,
-    nodes,
-    connections,
-    groups: second.groups ?? first.groups,
-    cameraFocus: second.cameraFocus ?? first.cameraFocus,
-    color: second.color ?? first.color,
-    background: second.background ?? first.background,
-  };
-};
-
-const scaleMergedAction = (action:any, source:any, actualDuration:number, offset:number) => {
-  const cue = resolveCue(action, source);
-  if (cue) {
-    const at = offset + Math.max(0, Math.round(cue.atSeconds * FPS));
-    const durationSeconds = cue.durationSeconds;
-    if (action.type === 'appear' || action.type === 'connect' || action.type === 'activate' ||
-        action.type === 'succeed' || action.type === 'error') {
-      return {...action, at};
-    }
-    const duration = action.cueDurationSeconds !== undefined
-      ? Math.max(1, Math.round(durationSeconds * FPS))
-      : Math.max(1, Math.round(Number(action.duration ?? 1) * (FPS / 30)));
-    return {...action, at, duration};
-  }
-  const authored=Math.max(1,Number(source.motion_scene.durationInFrames ?? actualDuration));
-  const scale=actualDuration/authored;
-  const at=offset + Math.max(0,Math.round(Number(action.at ?? 0)*scale));
-  if (action.type === 'appear' || action.type === 'connect' || action.type === 'activate' ||
-      action.type === 'succeed' || action.type === 'error') {
-    return {...action,at};
-  }
-  return {...action,at,duration:Math.max(1,Math.round(Number(action.duration ?? 1)*scale))};
-};
-
-const buildVisualGroups = ():VisualGroup[] => {
-  const groups:VisualGroup[]=[];
-  let i=0;
-  while (i<scenes.length) {
-    const startIndex=i;
-    let endIndex=i;
-    let duration=sceneFrames[i];
-    const actions:any[]=[];
-    for (const action of (scenes[i].motion_scene?.actions ?? [])) {
-      actions.push(scaleMergedAction(action,scenes[i],sceneFrames[i],0));
-    }
-
-    while (endIndex+1<scenes.length) {
-      const nextIndex=endIndex+1;
-      const current=scenes[endIndex];
-      const next=scenes[nextIndex];
-      if (!canContinueVisual(current,next,endIndex,nextIndex)) {
-        break;
-      }
-      const nextOffset=duration;
-      for (const action of (next.motion_scene?.actions ?? [])) {
-        actions.push(scaleMergedAction(action,next,sceneFrames[nextIndex],nextOffset));
-      }
-      duration += sceneFrames[nextIndex];
-      endIndex=nextIndex;
-    }
-
-    let mergedMotionScene=scenes[startIndex].motion_scene
-      ? {...scenes[startIndex].motion_scene}
-      : null;
-    for (let mergeIndex=startIndex+1; mergeIndex<=endIndex; mergeIndex++) {
-      mergedMotionScene = mergeMotionScenes(mergedMotionScene, scenes[mergeIndex].motion_scene);
-    }
-    if (mergedMotionScene) {
-      mergedMotionScene = {
-        ...mergedMotionScene,
-        durationInFrames:duration,
-        actions,
-      };
-    }
-    groups.push({
-      startIndex,
-      endIndex,
-      duration,
-      fadeIn:storyboardTransitionFlags(String(scenes[startIndex].scene_id),startIndex).fadeIn,
-      fadeOut:storyboardTransitionFlags(String(scenes[endIndex].scene_id),endIndex).fadeOut,
-      motionScene:mergedMotionScene,
-    });
-    i=endIndex+1;
-  }
-  return groups;
+const storyboardTransitionFlags = (sceneId:string) => {
+  const fadeIn = STORYBOARD_FADE_IN.has(sceneId);
+  const fadeOut = STORYBOARD_FADE_OUT.has(sceneId);
+  return {fadeIn, fadeOut};
 };
 
 
 export const MainVideo: React.FC = () => {
-  const visualGroups=buildVisualGroups();
-  let offset=0;
-  return <AbsoluteFill>
-    {introEnabled && <Sequence from={0} durationInFrames={introFrames}><IntroCard /></Sequence>}
-    {visualGroups.map((group:any)=>{
-      const currentOffset=offset + introFrames;
-      offset+=group.duration;
-      if (!group.motionScene) {
-        return <Sequence key={`visual-${group.startIndex}`} from={currentOffset} durationInFrames={group.duration}>
-          {scenes.slice(group.startIndex,group.endIndex+1).map((scene:any,localIndex:number)=>{
-            const index=group.startIndex+localIndex;
-            return <SceneVisual
-              key={scene.scene_id}
-              scene={scene}
-              duration={sceneFrames[index]}
-              fadeIn={storyboardTransitionFlags(String(scene.scene_id),index).fadeIn}
-              fadeOut={storyboardTransitionFlags(String(scene.scene_id),index).fadeOut}
-              contentOffset={offset - group.duration}
-            />;
-          })}
-        </Sequence>;
-      }
+  let offset = introFrames;
 
-      return <Sequence key={`visual-${group.startIndex}`} from={currentOffset} durationInFrames={group.duration}>
-        <VisualMotionGroup
-          scene={group.motionScene}
-          duration={group.duration}
-          fadeIn={group.fadeIn}
-          fadeOut={group.fadeOut}
-        />
-      </Sequence>;
-    })}
-    {scenes.map((scene:any,index:number)=>{
-      const sceneStart=scenes.slice(0,index).reduce((sum,_s,i)=>sum+sceneFrames[i],0) + introFrames;
-      const duration=sceneFrames[index];
-      return <Sequence key={`audio-${scene.scene_id}`} from={sceneStart} durationInFrames={duration}>
-        <Sequence from={0} durationInFrames={duration}>
-          <Audio src={staticFile(TIMINGS[timingKey(scene)].audioFile)} />
+  return <AbsoluteFill>
+    {introEnabled && (
+      <Sequence from={0} durationInFrames={introFrames}>
+        <IntroCard />
+      </Sequence>
+    )}
+
+    {scenes.map((scene:any,index:number) => {
+      const duration = sceneFrames[index];
+      const sceneId = String(scene.scene_id);
+      const flags = storyboardTransitionFlags(sceneId);
+      const sceneStart = offset;
+      offset += duration;
+
+      return (
+        <Sequence key={"visual-" + sceneId} from={sceneStart} durationInFrames={duration}>
+          <SceneVisual
+            scene={scene}
+            duration={duration}
+            fadeIn={flags.fadeIn}
+            fadeOut={flags.fadeOut}
+          />
         </Sequence>
-        <QuoteSegments scene={scene} duration={duration}/>
-        <StoryboardSceneText sceneId={String(scene.scene_id)} />
-      </Sequence>;
+      );
     })}
-    {endingEnabled && <Sequence from={introFrames + SCENE_TOTAL_FRAMES} durationInFrames={endingFrames}>
-      <EndingCard />
-    </Sequence>}
+
+    {scenes.map((scene:any,index:number) => {
+      const sceneStart =
+        introFrames +
+        scenes.slice(0,index).reduce((sum,_s,i) => sum + sceneFrames[i], 0);
+      const duration = sceneFrames[index];
+
+      return (
+        <Sequence key={"audio-" + scene.scene_id} from={sceneStart} durationInFrames={duration}>
+          <Audio src={staticFile(TIMINGS[timingKey(scene)].audioFile)} />
+          <QuoteSegments scene={scene} duration={duration}/>
+          <StoryboardSceneText sceneId={String(scene.scene_id)} />
+        </Sequence>
+      );
+    })}
+
+    {endingEnabled && (
+      <Sequence from={introFrames + SCENE_TOTAL_FRAMES} durationInFrames={endingFrames}>
+        <EndingCard />
+      </Sequence>
+    )}
+
     <BackgroundMusic />
   </AbsoluteFill>;
 };
