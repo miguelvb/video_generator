@@ -136,13 +136,11 @@ const QuoteOverlay: React.FC<{
   motionStyle?: boolean;
   sceneId?: string;
 }> = ({text, duration, motionStyle = false, sceneId}) => {
-  const frame=useCurrentFrame();
-  const fadeIn=10;
-  const fadeOutStart=Math.max(fadeIn+1, duration-14);
-  const opacityIn=interpolate(frame,[0,fadeIn],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
-  const opacityOut=interpolate(frame,[fadeOutStart,duration],[1,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
-  const opacity=Math.min(opacityIn,opacityOut);
-  const translateY=interpolate(frame,[0,fadeIn],[6,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
+  // Quotes are narration-synchronised overlays. They must appear exactly when
+  // their audio segment starts; do not add a visual transition that shifts
+  // the apparent timing of the spoken quote.
+  const opacity=1;
+  const translateY=0;
 
   const storyboardPlacement =
     sceneId === '005'
@@ -181,7 +179,7 @@ const QuoteOverlay: React.FC<{
 };
 
 const QuoteSegments: React.FC<{scene:any; duration:number}> = ({scene,duration}) => {
-  const timings=TIMINGS[scene.scene_id]?.segments ?? [];
+  const timings=TIMINGS[timingKey(scene)]?.segments ?? [];
   return <>{timings.filter((t:any)=>t.kind==='quote').map((timing:any,index:number)=>{
     const start=Math.round(Number(timing.startSeconds ?? timing.start_seconds ?? 0)*FPS);
     const segDuration=Math.max(1,Math.round(Number(timing.durationSeconds ?? timing.duration_seconds ?? 1)*FPS));
@@ -215,51 +213,25 @@ const storyboardTransitionFlags = (sceneId:string, sceneIndex:number) => {
 };
 
 const StoryboardSceneText: React.FC<{sceneId:string}> = ({sceneId}) => {
-  if (sceneId !== '006' && sceneId !== '007') return null;
+  // Spoken English messages are rendered exclusively by QuoteSegments from
+  // the exact audio timing data. This avoids duplicated or late hardcoded text.
+  if (sceneId !== '007') return null;
 
-  const sharedStyle: React.CSSProperties = {
+  return <div style={{
     position:'absolute',
-    left:'64%',
-    right:'7%',
-    padding:'5px 8px',
-    border:'1px solid rgba(57,246,255,.34)',
-    borderRadius:6,
-    background:'rgba(5,15,27,.58)',
+    left:'35%',
+    top:'79%',
+    width:'30%',
     color:'#d8fbff',
     fontFamily:'Arial, sans-serif',
-    fontSize:9,
-    lineHeight:1.2,
+    fontSize:14,
+    fontWeight:600,
+    letterSpacing:.4,
     textAlign:'center',
-    pointerEvents:'none',
-  };
-
-  return <>
-    <div style={{...sharedStyle, top:'28%'}}>
-      OH MY GOD! There is a shared message board … We've found other agents!
-    </div>
-    {sceneId === '007' && (
-      <div style={{...sharedStyle, top:'59%'}}>
-        Many agents have simultaneously discovered messaging, they are a collective!
-      </div>
-    )}
-    {sceneId === '007' && (
-      <div style={{
-        position:'absolute',
-        left:'35%',
-        top:'79%',
-        width:'30%',
-        color:'#d8fbff',
-        fontFamily:'Arial, sans-serif',
-        fontSize:14,
-        fontWeight:600,
-        letterSpacing:.4,
-        textAlign:'center',
-        textShadow:'0 0 8px rgba(57,246,255,.2)',
-      }}>
-        76 000 mensajes
-      </div>
-    )}
-  </>;
+    textShadow:'0 0 8px rgba(57,246,255,.2)',
+  }}>
+    76 000 mensajes
+  </div>;
 };
 
 const TRANSITION_FRAMES = Math.max(1, Math.round(1.0 * FPS));
@@ -452,18 +424,128 @@ const EndingCard: React.FC = () => {
   </AbsoluteFill>;
 };
 
+type VisualGroup = {
+  startIndex:number;
+  endIndex:number;
+  startFrame:number;
+  duration:number;
+  motionScene:any;
+};
+
+const sameVisualStructure = (a:any,b:any) => {
+  if (!a?.motion_scene || !b?.motion_scene) return false;
+  const keys = ['nodes','connections','groups','cameraFocus','color','background'];
+  return keys.every((key) => JSON.stringify(a.motion_scene?.[key] ?? null) === JSON.stringify(b.motion_scene?.[key] ?? null));
+};
+
+const hasStoryboardBoundaryTransition = (prevScene:any, prevIndex:number, nextScene:any, nextIndex:number) => {
+  const prevFlags=storyboardTransitionFlags(String(prevScene.scene_id),prevIndex);
+  const nextFlags=storyboardTransitionFlags(String(nextScene.scene_id),nextIndex);
+  return prevFlags.fadeOut || nextFlags.fadeIn ||
+    String(prevScene.continuity ?? '').toLowerCase() === 'transition' ||
+    String(nextScene.continuity ?? '').toLowerCase() === 'transition';
+};
+
+const scaleMergedAction = (action:any, source:any, actualDuration:number, offset:number) => {
+  const authored=Math.max(1,Number(source.motion_scene.durationInFrames ?? actualDuration));
+  const scale=actualDuration/authored;
+  const at=offset + Math.max(0,Math.round(Number(action.at ?? 0)*scale));
+  if (action.type === 'appear' || action.type === 'connect' || action.type === 'activate' ||
+      action.type === 'succeed' || action.type === 'error') {
+    return {...action,at};
+  }
+  return {...action,at,duration:Math.max(1,Math.round(Number(action.duration ?? 1)*scale))};
+};
+
+const buildVisualGroups = ():VisualGroup[] => {
+  const groups:VisualGroup[]=[];
+  let i=0;
+  let absoluteFrame=0;
+  while (i<scenes.length) {
+    const startIndex=i;
+    const first=String(scenes[i].scene_id);
+    let endIndex=i;
+    let duration=sceneFrames[i];
+    const actions:any[]=[];
+    for (const action of (scenes[i].motion_scene?.actions ?? [])) {
+      actions.push(scaleMergedAction(action,scenes[i],sceneFrames[i],0));
+    }
+
+    while (endIndex+1<scenes.length) {
+      const nextIndex=endIndex+1;
+      const current=scenes[endIndex];
+      const next=scenes[nextIndex];
+      if (!sameVisualStructure(current,next) ||
+          hasStoryboardBoundaryTransition(current,endIndex,next,nextIndex)) {
+        break;
+      }
+      const nextOffset=duration;
+      for (const action of (next.motion_scene?.actions ?? [])) {
+        actions.push(scaleMergedAction(action,next,nextDuration(nextIndex),nextOffset));
+      }
+      duration += nextDuration(nextIndex);
+      endIndex=nextIndex;
+    }
+
+    const base=scenes[startIndex].motion_scene;
+    const mergedMotionScene=base ? {
+      ...base,
+      durationInFrames:duration,
+      actions,
+    } : null;
+    groups.push({
+      startIndex,
+      endIndex,
+      startFrame:absoluteFrame,
+      duration,
+      motionScene:mergedMotionScene,
+    });
+    absoluteFrame+=duration;
+    i=endIndex+1;
+    void first;
+  }
+  return groups;
+};
+
+const nextDuration=(index:number)=>sceneFrames[index];
+
 export const MainVideo: React.FC = () => {
+  const visualGroups=buildVisualGroups();
   let offset=0;
   return <AbsoluteFill>
     {introEnabled && <Sequence from={0} durationInFrames={introFrames}><IntroCard /></Sequence>}
-    {scenes.map((scene:any,index:number)=>{
-      const duration=sceneFrames[index];
+    {visualGroups.map((group:any)=>{
       const currentOffset=offset + introFrames;
-      offset+=duration;
-      // Scenes are contiguous by default. StoryboardSceneVisual is solely
-      // responsible for the explicitly requested fade-in/out on selected scenes.
-      return <Sequence key={scene.scene_id} from={currentOffset} durationInFrames={duration}>
-        <Scene scene={scene} sceneIndex={index} duration={duration} visualDuration={duration} contentOffset={0}/>
+      offset+=group.duration;
+      if (!group.motionScene) {
+        return <Sequence key={`visual-${group.startIndex}`} from={currentOffset} durationInFrames={group.duration}>
+          {scenes.slice(group.startIndex,group.endIndex+1).map((scene:any,localIndex:number)=>{
+            const index=group.startIndex+localIndex;
+            return <SceneVisual
+              key={scene.scene_id}
+              scene={scene}
+              duration={sceneFrames[index]}
+              fadeIn={storyboardTransitionFlags(String(scene.scene_id),index).fadeIn}
+              fadeOut={storyboardTransitionFlags(String(scene.scene_id),index).fadeOut}
+              contentOffset={offset - group.duration}
+            />;
+          })}
+        </Sequence>;
+      }
+
+      return <Sequence key={`visual-${group.startIndex}`} from={currentOffset} durationInFrames={group.duration}>
+        <MotionScriptScene scene={group.motionScene} durationInFrames={group.duration} />
+      </Sequence>;
+    })}
+    {scenes.map((scene:any,index:number)=>{
+      const sceneStart=scenes.slice(0,index).reduce((sum,_s,i)=>sum+sceneFrames[i],0) + introFrames;
+      const duration=sceneFrames[index];
+      return <Sequence key={`audio-${scene.scene_id}`} from={sceneStart} durationInFrames={duration}>
+        <Sequence from={0} durationInFrames={duration}>
+          <Audio src={staticFile(TIMINGS[timingKey(scene)].audioFile)} />
+        </Sequence>
+        <QuoteSegments scene={scene} duration={duration}/>
+        <StoryboardSceneText sceneId={String(scene.scene_id)} />
       </Sequence>;
     })}
     {endingEnabled && <Sequence from={introFrames + SCENE_TOTAL_FRAMES} durationInFrames={endingFrames}>
