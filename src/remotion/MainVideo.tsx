@@ -459,11 +459,10 @@ export const MainVideo: React.FC = () => {
       const duration=sceneFrames[index];
       const currentOffset=offset + introFrames;
       offset+=duration;
-      const overlap = index > 0 ? TRANSITION_FRAMES : 0;
-      const visualStart = Math.max(0, currentOffset - overlap);
-      const visualDuration = duration + overlap;
-      return <Sequence key={scene.scene_id} from={visualStart} durationInFrames={visualDuration}>
-        <Scene scene={scene} sceneIndex={index} duration={duration} visualDuration={visualDuration} contentOffset={overlap}/>
+      // Scenes are contiguous by default. StoryboardSceneVisual is solely
+      // responsible for the explicitly requested fade-in/out on selected scenes.
+      return <Sequence key={scene.scene_id} from={currentOffset} durationInFrames={duration}>
+        <Scene scene={scene} sceneIndex={index} duration={duration} visualDuration={duration} contentOffset={0}/>
       </Sequence>;
     })}
     {endingEnabled && <Sequence from={introFrames + SCENE_TOTAL_FRAMES} durationInFrames={endingFrames}>
