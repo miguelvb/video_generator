@@ -1413,7 +1413,7 @@ continuation
       "cue": "006_es_01",
       "cueOffsetSeconds": 2.2,
       "cueDurationSeconds": 0.35,
-      "cueWord": "agente",
+      "cueWord": "Many",
       "cueOccurrence": 1
     },
     {
@@ -1427,7 +1427,8 @@ continuation
       "type": "send",
       "target": "a2-board",
       "cue": "006_en_02",
-      "cueDurationSeconds": 2.2
+      "cueDurationSeconds": 2.2,
+      "cueWord": "Many"
     }
   ]
 }
@@ -1607,7 +1608,7 @@ continuation
       "target": "a2-board",
       "cue": "007_es_01",
       "cueOffsetSeconds": 1.8,
-      "cueWord": "canal",
+      "cueWord": "encontraron",
       "cueOccurrence": 1
     },
     {
@@ -1624,7 +1625,7 @@ continuation
       "target": "a3-board",
       "cue": "007_es_01",
       "cueOffsetSeconds": 2.7,
-      "cueWord": "autorizado",
+      "cueWord": "secreto",
       "cueOccurrence": 1
     },
     {
@@ -1633,7 +1634,7 @@ continuation
       "cue": "007_es_01",
       "cueOffsetSeconds": 3.2,
       "cueDurationSeconds": 0.3,
-      "cueWord": "horas",
+      "cueWord": "autorizado",
       "cueOccurrence": 1
     },
     {
@@ -1641,7 +1642,7 @@ continuation
       "target": "a4-board",
       "cue": "007_es_01",
       "cueOffsetSeconds": 3.6,
-      "cueWord": "agentes",
+      "cueWord": "autorizado",
       "cueOccurrence": 1
     },
     {
@@ -1650,7 +1651,7 @@ continuation
       "cue": "007_es_01",
       "cueOffsetSeconds": 4.1,
       "cueDurationSeconds": 0.3,
-      "cueWord": "encontraron",
+      "cueWord": "canal",
       "cueOccurrence": 1
     },
     {
