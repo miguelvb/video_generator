@@ -7,72 +7,156 @@ export const MOTION_SCENES = {
       {
         "id": "openai",
         "asset": "openai-ui",
-        "x": 39,
-        "y": 18,
+        "x": 50,
+        "y": 20,
         "size": 82
       },
       {
         "id": "a1",
         "asset": "agent-ui",
-        "x": 28,
-        "y": 36,
-        "size": 54
+        "x": 38,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a2",
         "asset": "agent-ui",
-        "x": 39,
-        "y": 36,
-        "size": 54
+        "x": 42.5,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a3",
         "asset": "agent-ui",
-        "x": 50,
-        "y": 36,
-        "size": 54
+        "x": 47,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a4",
         "asset": "agent-ui",
-        "x": 28,
-        "y": 50,
-        "size": 54
+        "x": 51.5,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a5",
         "asset": "agent-ui",
-        "x": 39,
-        "y": 50,
-        "size": 54
+        "x": 56,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a6",
         "asset": "agent-ui",
-        "x": 50,
-        "y": 50,
-        "size": 54
+        "x": 60.5,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a7",
         "asset": "agent-ui",
-        "x": 28,
-        "y": 64,
-        "size": 54
+        "x": 38,
+        "y": 45,
+        "size": 30
       },
       {
         "id": "a8",
         "asset": "agent-ui",
-        "x": 39,
-        "y": 64,
-        "size": 54
+        "x": 42.5,
+        "y": 45,
+        "size": 30
       },
       {
         "id": "a9",
         "asset": "agent-ui",
-        "x": 50,
-        "y": 64,
-        "size": 54
+        "x": 47,
+        "y": 45,
+        "size": 30
+      },
+      {
+        "id": "a10",
+        "asset": "agent-ui",
+        "x": 51.5,
+        "y": 45,
+        "size": 30
+      },
+      {
+        "id": "a11",
+        "asset": "agent-ui",
+        "x": 56,
+        "y": 45,
+        "size": 30
+      },
+      {
+        "id": "a12",
+        "asset": "agent-ui",
+        "x": 60.5,
+        "y": 45,
+        "size": 30
+      },
+      {
+        "id": "a13",
+        "asset": "agent-ui",
+        "x": 38,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "a14",
+        "asset": "agent-ui",
+        "x": 42.5,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "a15",
+        "asset": "agent-ui",
+        "x": 47,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "a16",
+        "asset": "agent-ui",
+        "x": 51.5,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "a17",
+        "asset": "agent-ui",
+        "x": 56,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "a18",
+        "asset": "agent-ui",
+        "x": 60.5,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "more-left",
+        "asset": "ellipsis",
+        "x": 34,
+        "y": 49,
+        "size": 18
+      },
+      {
+        "id": "more-right",
+        "asset": "ellipsis",
+        "x": 65,
+        "y": 42,
+        "size": 18
+      },
+      {
+        "id": "more-bottom",
+        "asset": "ellipsis",
+        "x": 52,
+        "y": 56,
+        "size": 18
       }
     ],
     "connections": [],
@@ -80,62 +164,134 @@ export const MOTION_SCENES = {
       {
         "type": "appear",
         "target": "openai",
-        "at": 12,
-        "duration": 22
+        "at": 8,
+        "duration": 18
       },
       {
         "type": "appear",
         "target": "a1",
-        "at": 42,
-        "duration": 14
+        "at": 30,
+        "duration": 18
       },
       {
         "type": "appear",
         "target": "a2",
-        "at": 54,
-        "duration": 14
+        "at": 30,
+        "duration": 18
       },
       {
         "type": "appear",
         "target": "a3",
-        "at": 66,
-        "duration": 14
+        "at": 30,
+        "duration": 18
       },
       {
         "type": "appear",
         "target": "a4",
-        "at": 78,
-        "duration": 14
+        "at": 30,
+        "duration": 18
       },
       {
         "type": "appear",
         "target": "a5",
-        "at": 90,
-        "duration": 14
+        "at": 30,
+        "duration": 18
       },
       {
         "type": "appear",
         "target": "a6",
-        "at": 102,
-        "duration": 14
+        "at": 30,
+        "duration": 18
       },
       {
         "type": "appear",
         "target": "a7",
-        "at": 114,
-        "duration": 14
+        "at": 38,
+        "duration": 18
       },
       {
         "type": "appear",
         "target": "a8",
-        "at": 126,
-        "duration": 14
+        "at": 38,
+        "duration": 18
       },
       {
         "type": "appear",
         "target": "a9",
-        "at": 138,
-        "duration": 14
+        "at": 38,
+        "duration": 18
+      },
+      {
+        "type": "appear",
+        "target": "a10",
+        "at": 38,
+        "duration": 18
+      },
+      {
+        "type": "appear",
+        "target": "a11",
+        "at": 38,
+        "duration": 18
+      },
+      {
+        "type": "appear",
+        "target": "a12",
+        "at": 38,
+        "duration": 18
+      },
+      {
+        "type": "appear",
+        "target": "a13",
+        "at": 46,
+        "duration": 18
+      },
+      {
+        "type": "appear",
+        "target": "a14",
+        "at": 46,
+        "duration": 18
+      },
+      {
+        "type": "appear",
+        "target": "a15",
+        "at": 46,
+        "duration": 18
+      },
+      {
+        "type": "appear",
+        "target": "a16",
+        "at": 46,
+        "duration": 18
+      },
+      {
+        "type": "appear",
+        "target": "a17",
+        "at": 46,
+        "duration": 18
+      },
+      {
+        "type": "appear",
+        "target": "a18",
+        "at": 46,
+        "duration": 18
+      },
+      {
+        "type": "appear",
+        "target": "more-left",
+        "at": 54,
+        "duration": 12
+      },
+      {
+        "type": "appear",
+        "target": "more-right",
+        "at": 60,
+        "duration": 12
+      },
+      {
+        "type": "appear",
+        "target": "more-bottom",
+        "at": 66,
+        "duration": 12
       }
     ]
   },
@@ -146,72 +302,156 @@ export const MOTION_SCENES = {
       {
         "id": "openai",
         "asset": "openai-ui",
-        "x": 39,
-        "y": 18,
+        "x": 50,
+        "y": 20,
         "size": 82
       },
       {
         "id": "a1",
         "asset": "agent-ui",
-        "x": 28,
-        "y": 36,
-        "size": 54
+        "x": 38,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a2",
         "asset": "agent-ui",
-        "x": 39,
-        "y": 36,
-        "size": 54
+        "x": 42.5,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a3",
         "asset": "agent-ui",
-        "x": 50,
-        "y": 36,
-        "size": 54
+        "x": 47,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a4",
         "asset": "agent-ui",
-        "x": 28,
-        "y": 50,
-        "size": 54
+        "x": 51.5,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a5",
         "asset": "agent-ui",
-        "x": 39,
-        "y": 50,
-        "size": 54
+        "x": 56,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a6",
         "asset": "agent-ui",
-        "x": 50,
-        "y": 50,
-        "size": 54
+        "x": 60.5,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a7",
         "asset": "agent-ui",
-        "x": 28,
-        "y": 64,
-        "size": 54
+        "x": 38,
+        "y": 45,
+        "size": 30
       },
       {
         "id": "a8",
         "asset": "agent-ui",
-        "x": 39,
-        "y": 64,
-        "size": 54
+        "x": 42.5,
+        "y": 45,
+        "size": 30
       },
       {
         "id": "a9",
         "asset": "agent-ui",
-        "x": 50,
-        "y": 64,
-        "size": 54
+        "x": 47,
+        "y": 45,
+        "size": 30
+      },
+      {
+        "id": "a10",
+        "asset": "agent-ui",
+        "x": 51.5,
+        "y": 45,
+        "size": 30
+      },
+      {
+        "id": "a11",
+        "asset": "agent-ui",
+        "x": 56,
+        "y": 45,
+        "size": 30
+      },
+      {
+        "id": "a12",
+        "asset": "agent-ui",
+        "x": 60.5,
+        "y": 45,
+        "size": 30
+      },
+      {
+        "id": "a13",
+        "asset": "agent-ui",
+        "x": 38,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "a14",
+        "asset": "agent-ui",
+        "x": 42.5,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "a15",
+        "asset": "agent-ui",
+        "x": 47,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "a16",
+        "asset": "agent-ui",
+        "x": 51.5,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "a17",
+        "asset": "agent-ui",
+        "x": 56,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "a18",
+        "asset": "agent-ui",
+        "x": 60.5,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "more-left",
+        "asset": "ellipsis",
+        "x": 34,
+        "y": 49,
+        "size": 18
+      },
+      {
+        "id": "more-right",
+        "asset": "ellipsis",
+        "x": 65,
+        "y": 42,
+        "size": 18
+      },
+      {
+        "id": "more-bottom",
+        "asset": "ellipsis",
+        "x": 52,
+        "y": 56,
+        "size": 18
       }
     ],
     "connections": [],
@@ -277,58 +517,148 @@ export const MOTION_SCENES = {
         "duration": 1
       },
       {
+        "type": "appear",
+        "target": "a10",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a11",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a12",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a13",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a14",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a15",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a16",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a17",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a18",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "more-left",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "more-right",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "more-bottom",
+        "at": 0,
+        "duration": 1
+      },
+      {
         "type": "pulse",
         "target": "a1",
-        "at": 28,
-        "duration": 18
+        "at": 162,
+        "duration": 20
       },
       {
         "type": "pulse",
         "target": "a2",
-        "at": 56,
-        "duration": 18
-      },
-      {
-        "type": "pulse",
-        "target": "a3",
-        "at": 84,
-        "duration": 18
-      },
-      {
-        "type": "pulse",
-        "target": "a4",
-        "at": 112,
-        "duration": 18
-      },
-      {
-        "type": "pulse",
-        "target": "a5",
-        "at": 140,
-        "duration": 18
-      },
-      {
-        "type": "pulse",
-        "target": "a6",
-        "at": 168,
-        "duration": 18
+        "at": 162,
+        "duration": 20
       },
       {
         "type": "pulse",
         "target": "a7",
-        "at": 196,
-        "duration": 18
+        "at": 186,
+        "duration": 20
       },
       {
         "type": "pulse",
         "target": "a8",
-        "at": 224,
-        "duration": 18
+        "at": 186,
+        "duration": 20
+      },
+      {
+        "type": "pulse",
+        "target": "a13",
+        "at": 210,
+        "duration": 20
+      },
+      {
+        "type": "pulse",
+        "target": "a14",
+        "at": 210,
+        "duration": 20
+      },
+      {
+        "type": "pulse",
+        "target": "a3",
+        "at": 234,
+        "duration": 20
       },
       {
         "type": "pulse",
         "target": "a9",
-        "at": 252,
-        "duration": 18
+        "at": 234,
+        "duration": 20
+      },
+      {
+        "type": "pulse",
+        "target": "a15",
+        "at": 258,
+        "duration": 20
+      },
+      {
+        "type": "pulse",
+        "target": "a16",
+        "at": 258,
+        "duration": 20
+      },
+      {
+        "type": "pulse",
+        "target": "a4",
+        "at": 282,
+        "duration": 20
+      },
+      {
+        "type": "pulse",
+        "target": "a10",
+        "at": 282,
+        "duration": 20
       }
     ]
   },
@@ -339,72 +669,156 @@ export const MOTION_SCENES = {
       {
         "id": "openai",
         "asset": "openai-ui",
-        "x": 39,
-        "y": 18,
+        "x": 50,
+        "y": 20,
         "size": 82
       },
       {
         "id": "a1",
         "asset": "agent-ui",
-        "x": 28,
-        "y": 36,
-        "size": 54
+        "x": 38,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a2",
         "asset": "agent-ui",
-        "x": 39,
-        "y": 36,
-        "size": 54
+        "x": 42.5,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a3",
         "asset": "agent-ui",
-        "x": 50,
-        "y": 36,
-        "size": 54
+        "x": 47,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a4",
         "asset": "agent-ui",
-        "x": 28,
-        "y": 50,
-        "size": 54
+        "x": 51.5,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a5",
         "asset": "agent-ui",
-        "x": 39,
-        "y": 50,
-        "size": 54
+        "x": 56,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a6",
         "asset": "agent-ui",
-        "x": 50,
-        "y": 50,
-        "size": 54
+        "x": 60.5,
+        "y": 39,
+        "size": 30
       },
       {
         "id": "a7",
         "asset": "agent-ui",
-        "x": 28,
-        "y": 64,
-        "size": 54
+        "x": 38,
+        "y": 45,
+        "size": 30
       },
       {
         "id": "a8",
         "asset": "agent-ui",
-        "x": 39,
-        "y": 64,
-        "size": 54
+        "x": 42.5,
+        "y": 45,
+        "size": 30
       },
       {
         "id": "a9",
         "asset": "agent-ui",
-        "x": 50,
-        "y": 64,
-        "size": 54
+        "x": 47,
+        "y": 45,
+        "size": 30
+      },
+      {
+        "id": "a10",
+        "asset": "agent-ui",
+        "x": 51.5,
+        "y": 45,
+        "size": 30
+      },
+      {
+        "id": "a11",
+        "asset": "agent-ui",
+        "x": 56,
+        "y": 45,
+        "size": 30
+      },
+      {
+        "id": "a12",
+        "asset": "agent-ui",
+        "x": 60.5,
+        "y": 45,
+        "size": 30
+      },
+      {
+        "id": "a13",
+        "asset": "agent-ui",
+        "x": 38,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "a14",
+        "asset": "agent-ui",
+        "x": 42.5,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "a15",
+        "asset": "agent-ui",
+        "x": 47,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "a16",
+        "asset": "agent-ui",
+        "x": 51.5,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "a17",
+        "asset": "agent-ui",
+        "x": 56,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "a18",
+        "asset": "agent-ui",
+        "x": 60.5,
+        "y": 51,
+        "size": 30
+      },
+      {
+        "id": "more-left",
+        "asset": "ellipsis",
+        "x": 34,
+        "y": 49,
+        "size": 18
+      },
+      {
+        "id": "more-right",
+        "asset": "ellipsis",
+        "x": 65,
+        "y": 42,
+        "size": 18
+      },
+      {
+        "id": "more-bottom",
+        "asset": "ellipsis",
+        "x": 52,
+        "y": 56,
+        "size": 18
       }
     ],
     "connections": [],
@@ -470,58 +884,106 @@ export const MOTION_SCENES = {
         "duration": 1
       },
       {
+        "type": "appear",
+        "target": "a10",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a11",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a12",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a13",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a14",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a15",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a16",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a17",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a18",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "more-left",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "more-right",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "more-bottom",
+        "at": 0,
+        "duration": 1
+      },
+      {
         "type": "pulse",
         "target": "a1",
-        "at": 18,
-        "duration": 14
-      },
-      {
-        "type": "pulse",
-        "target": "a4",
-        "at": 34,
-        "duration": 14
-      },
-      {
-        "type": "pulse",
-        "target": "a7",
-        "at": 50,
-        "duration": 14
-      },
-      {
-        "type": "pulse",
-        "target": "a2",
-        "at": 66,
-        "duration": 14
-      },
-      {
-        "type": "pulse",
-        "target": "a5",
-        "at": 82,
-        "duration": 14
+        "at": 84,
+        "duration": 16
       },
       {
         "type": "pulse",
         "target": "a8",
-        "at": 98,
-        "duration": 14
+        "at": 103,
+        "duration": 16
       },
       {
         "type": "pulse",
-        "target": "a3",
-        "at": 114,
-        "duration": 14
+        "target": "a15",
+        "at": 122,
+        "duration": 16
       },
       {
         "type": "pulse",
-        "target": "a6",
-        "at": 130,
-        "duration": 14
+        "target": "a4",
+        "at": 141,
+        "duration": 16
       },
       {
         "type": "pulse",
-        "target": "a9",
-        "at": 146,
-        "duration": 14
+        "target": "a11",
+        "at": 158,
+        "duration": 16
       }
     ]
   },
