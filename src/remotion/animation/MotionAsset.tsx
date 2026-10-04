@@ -49,7 +49,7 @@ export const MotionAsset: React.FC<{
         height: size,
         transform: `translate(-50%, -50%) scale(${scale})`,
         opacity: opacity * (node.opacity ?? 1) * activeOpacity,
-        filter: state === 'active' ? `brightness(${activeBrightness}) drop-shadow(0 0 8px ${stateColor})` : 'none',
+        filter: isAgent && state === 'active' ? `brightness(${activeBrightness}) drop-shadow(0 0 8px ${stateColor})` : 'none',
       }}
     >
       {node.asset && (
