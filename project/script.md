@@ -1262,13 +1262,6 @@ continuation
       "x": 51,
       "y": 52,
       "size": 138
-    },
-    {
-      "id": "msg1",
-      "asset": "message-ui",
-      "x": 77,
-      "y": 37,
-      "size": 112
     }
   ],
   "connections": [
@@ -1298,12 +1291,6 @@ continuation
       "at": 0
     },
     {
-      "type": "appear",
-      "target": "msg1",
-      "at": 10,
-      "duration": 15
-    },
-    {
       "type": "pulse",
       "target": "board",
       "at": 18,
@@ -1316,8 +1303,7 @@ continuation
       "duration": 38
     }
   ]
-}
-```
+}```
 
 ### VISUAL
 Continue directly from the discovered message board. The board remains central while additional agents reveal themselves around it one by one. Connections to the same board appear as each agent is discovered.
@@ -1373,20 +1359,6 @@ transition
       "x": 49,
       "y": 52,
       "size": 138
-    },
-    {
-      "id": "msg1",
-      "asset": "message-ui",
-      "x": 77,
-      "y": 36,
-      "size": 105
-    },
-    {
-      "id": "msg2",
-      "asset": "message-ui",
-      "x": 77,
-      "y": 65,
-      "size": 105
     }
   ],
   "connections": [
@@ -1423,12 +1395,6 @@ transition
       "duration": 1
     },
     {
-      "type": "appear",
-      "target": "msg1",
-      "at": 0,
-      "duration": 1
-    },
-    {
       "type": "connect",
       "target": "a1-board",
       "at": 0
@@ -1456,12 +1422,6 @@ transition
       "at": 92
     },
     {
-      "type": "appear",
-      "target": "msg2",
-      "at": 112,
-      "duration": 16
-    },
-    {
       "type": "send",
       "target": "a2-board",
       "at": 126,
@@ -1474,8 +1434,7 @@ transition
       "duration": 28
     }
   ]
-}
-```
+}```
 
 ### VISUAL ANCHOR
 A wider network has formed around the same message-board anchor, with many agents now connected.
@@ -1575,20 +1534,6 @@ transition
       "x": 46,
       "y": 52,
       "size": 142
-    },
-    {
-      "id": "msg1",
-      "asset": "message-ui",
-      "x": 75,
-      "y": 35,
-      "size": 100
-    },
-    {
-      "id": "msg2",
-      "asset": "message-ui",
-      "x": 75,
-      "y": 66,
-      "size": 100
     }
   ],
   "connections": [
@@ -1627,18 +1572,6 @@ transition
     {
       "type": "appear",
       "target": "board",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "msg1",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "msg2",
       "at": 0,
       "duration": 1
     },
@@ -1710,8 +1643,7 @@ transition
       "duration": 34
     }
   ]
-}
-```
+}```
 
 ### VISUAL ANCHOR
 Large dense swarm network with hundreds of agent nodes converging on the shared channel.
