@@ -62,7 +62,7 @@ export const MOTION_ASSETS: Record<MotionAssetType, MotionAssetDefinition> = {
     label: 'Folder UI',
     category: 'infrastructure',
   },
-  'experiment-ui': {
+  ellipsis: { type: 'ellipsis', path: 'assets/motion/ellipsis.svg', label: 'Ellipsis', category: 'infrastructure' },\n  'experiment-ui': {
     type: 'experiment-ui',
     path: 'assets/motion/experiment-ui.svg',
     label: 'Experiment UI',
