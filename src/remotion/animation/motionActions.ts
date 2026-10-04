@@ -33,7 +33,8 @@ export const resolveMotionActions = (
   const sendActions = actions.filter((action) => action.type === 'send');
   const connectActions = actions.filter((action) => action.type === 'connect');
   const activateActions = actions.filter((action) => action.type === 'activate');
-  const appearActions = actions.filter((action) => action.type === 'appear');\n  const pulseActions = actions.filter((action) => action.type === 'pulse');
+  const appearActions = actions.filter((action) => action.type === 'appear');
+  const pulseActions = actions.filter((action) => action.type === 'pulse');
 
   const resolvedNodes = nodes.map((node) => {
     const moves = moveActions.filter((action) => action.targetId === node.id);
@@ -78,7 +79,11 @@ export const resolveMotionActions = (
       ...node,
       x,
       y,
-      state: stateAt(\n        node.state ?? 'normal',\n        [...stateChanges, ...nodePulses].sort((a, b) => a.frame - b.frame),\n        frame,\n      ),
+      state: stateAt(
+        node.state ?? 'normal',
+        [...stateChanges, ...nodePulses].sort((a, b) => a.frame - b.frame),
+        frame,
+      ),
       opacity,
     };
   });
