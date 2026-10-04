@@ -2,16 +2,17 @@ import type {MotionAction, MotionAssetType, MotionEdge, MotionNode, TwoDMotionEn
 
 export type MotionSceneNode = {id:string; asset?:MotionAssetType; label?:string; x:number; y:number; size?:number};
 export type MotionSceneConnection = {id:string; from:string; to:string; curvature?:number};
+type MotionSceneActionDependency = {after?: string[]};
 export type MotionSceneAction =
-  | {type:'appear';target:string;at:number;duration?:number}
-  | {type:'move';target:string;at:number;duration:number;x:number;y:number}
-  | {type:'pulse';target:string;at:number;duration:number}
-  | {type:'fade';target:string;at:number;duration:number;to:number}
-  | {type:'connect';target:string;at:number}
-  | {type:'send';target:string;at:number;duration:number}
-  | {type:'activate';target:string;at:number}
-  | {type:'succeed';target:string;at:number}
-  | {type:'error';target:string;at:number};
+  | ({type:'appear';target:string;at:number;duration?:number} & MotionSceneActionDependency)
+  | ({type:'move';target:string;at:number;duration:number;x:number;y:number} & MotionSceneActionDependency)
+  | ({type:'pulse';target:string;at:number;duration:number} & MotionSceneActionDependency)
+  | ({type:'fade';target:string;at:number;duration:number;to:number} & MotionSceneActionDependency)
+  | ({type:'connect';target:string;at:number} & MotionSceneActionDependency)
+  | ({type:'send';target:string;at:number;duration:number} & MotionSceneActionDependency)
+  | ({type:'activate';target:string;at:number} & MotionSceneActionDependency)
+  | ({type:'succeed';target:string;at:number} & MotionSceneActionDependency)
+  | ({type:'error';target:string;at:number} & MotionSceneActionDependency);
 
 export type MotionSceneDefinition = {
   readonly nodes: readonly MotionSceneNode[];
@@ -25,16 +26,17 @@ export type MotionSceneDefinition = {
 };
 
 const compileAction=(action:MotionSceneAction):MotionAction=>{
+ const afterTargetIds=action.after?.filter(Boolean);
  switch(action.type){
-  case'appear':return{type:'appear',targetId:action.target,startFrame:action.at,durationInFrames:action.duration};
-  case'move':return{type:'move',targetId:action.target,startFrame:action.at,durationInFrames:action.duration,x:action.x,y:action.y};
-  case'pulse':return{type:'pulse',targetId:action.target,startFrame:action.at,durationInFrames:action.duration};
-  case'fade':return{type:'fade',targetId:action.target,startFrame:action.at,durationInFrames:action.duration,to:action.to};
-  case'connect':return{type:'connect',targetId:action.target,startFrame:action.at};
-  case'send':return{type:'send',targetId:action.target,startFrame:action.at,durationInFrames:action.duration};
-  case'activate':return{type:'set-edge-state',targetId:action.target,frame:action.at,state:'active'};
-  case'succeed':return{type:'set-node-state',targetId:action.target,frame:action.at,state:'success'};
-  case'error':return{type:'set-node-state',targetId:action.target,frame:action.at,state:'error'};
+  case'appear':return{type:'appear',targetId:action.target,startFrame:action.at,durationInFrames:action.duration,afterTargetIds};
+  case'move':return{type:'move',targetId:action.target,startFrame:action.at,durationInFrames:action.duration,x:action.x,y:action.y,afterTargetIds};
+  case'pulse':return{type:'pulse',targetId:action.target,startFrame:action.at,durationInFrames:action.duration,afterTargetIds};
+  case'fade':return{type:'fade',targetId:action.target,startFrame:action.at,durationInFrames:action.duration,to:action.to,afterTargetIds};
+  case'connect':return{type:'connect',targetId:action.target,startFrame:action.at,afterTargetIds};
+  case'send':return{type:'send',targetId:action.target,startFrame:action.at,durationInFrames:action.duration,afterTargetIds};
+  case'activate':return{type:'set-edge-state',targetId:action.target,frame:action.at,state:'active',afterTargetIds};
+  case'succeed':return{type:'set-node-state',targetId:action.target,frame:action.at,state:'success',afterTargetIds};
+  case'error':return{type:'set-node-state',targetId:action.target,frame:action.at,state:'error',afterTargetIds};
  }
 };
 const scaleFrame=(frame:number,scale:number)=>Math.max(0,Math.round(frame*scale));
