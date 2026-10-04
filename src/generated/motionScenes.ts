@@ -472,24 +472,28 @@ export const MOTION_SCENES = {
         "duration": 10
       },
       {
-        "type": "activate",
+        "type": "pulse",
         "target": "test-a",
-        "at": 112
+        "at": 112,
+        "duration": 18
       },
       {
-        "type": "activate",
+        "type": "pulse",
         "target": "test-b",
-        "at": 120
+        "at": 120,
+        "duration": 18
       },
       {
-        "type": "activate",
+        "type": "pulse",
         "target": "test-c",
-        "at": 128
+        "at": 128,
+        "duration": 18
       },
       {
-        "type": "activate",
+        "type": "pulse",
         "target": "test-d",
-        "at": 136
+        "at": 136,
+        "duration": 18
       },
       {
         "type": "activate",
@@ -942,19 +946,22 @@ export const MOTION_SCENES = {
         "duration": 1
       },
       {
-        "type": "activate",
+        "type": "pulse",
         "target": "task-a",
-        "at": 150
+        "at": 150,
+        "duration": 24
       },
       {
-        "type": "activate",
+        "type": "pulse",
         "target": "task-b",
-        "at": 162
+        "at": 162,
+        "duration": 24
       },
       {
-        "type": "activate",
+        "type": "pulse",
         "target": "task-c",
-        "at": 174
+        "at": 174,
+        "duration": 24
       },
       {
         "type": "pulse",
