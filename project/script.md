@@ -1173,32 +1173,32 @@ continuation
   "color": "#39f6ff",
   "nodes": [
     {
-      "id": "agent",
+      "id": "agent1",
       "asset": "agent-ui",
-      "x": 30,
-      "y": 50,
-      "size": 105
+      "x": 22,
+      "y": 30,
+      "size": 60
     },
     {
       "id": "artifactory",
       "asset": "artifactory-ui",
-      "x": 63,
+      "x": 58,
       "y": 50,
       "size": 145
     }
   ],
   "connections": [
     {
-      "id": "agent-artifactory",
-      "from": "agent",
+      "id": "agent1-artifactory",
+      "from": "agent1",
       "to": "artifactory",
-      "curvature": 0
+      "curvature": -5
     }
   ],
   "actions": [
     {
       "type": "appear",
-      "target": "agent",
+      "target": "agent1",
       "cue": "004_es_01",
       "cueOffsetSeconds": 0.2,
       "cueDurationSeconds": 0.4,
@@ -1216,7 +1216,7 @@ continuation
     },
     {
       "type": "connect",
-      "target": "agent-artifactory",
+      "target": "agent1-artifactory",
       "cue": "004_es_01",
       "cueOffsetSeconds": 5,
       "cueWord": "empezó",
@@ -1224,7 +1224,7 @@ continuation
     },
     {
       "type": "send",
-      "target": "agent-artifactory",
+      "target": "agent1-artifactory",
       "cue": "004_es_01",
       "cueOffsetSeconds": 7,
       "cueDurationSeconds": 1.5
@@ -1262,32 +1262,32 @@ continuation
   "color": "#39f6ff",
   "nodes": [
     {
-      "id": "agent",
+      "id": "agent1",
       "asset": "agent-ui",
-      "x": 27,
-      "y": 52,
-      "size": 92
+      "x": 22,
+      "y": 30,
+      "size": 60
     },
     {
       "id": "artifactory",
       "asset": "artifactory-ui",
-      "x": 51,
-      "y": 52,
+      "x": 58,
+      "y": 50,
       "size": 145
     }
   ],
   "connections": [
     {
-      "id": "agent-artifactory",
-      "from": "agent",
+      "id": "agent1-artifactory",
+      "from": "agent1",
       "to": "artifactory",
-      "curvature": 0
+      "curvature": -5
     }
   ],
   "actions": [
     {
       "type": "send",
-      "target": "agent-artifactory",
+      "target": "agent1-artifactory",
       "cue": "005_en_01",
       "cueDurationSeconds": 1.8,
       "cueWord": "shared",
@@ -1329,49 +1329,49 @@ continuation
       "id": "agent1",
       "asset": "agent-ui",
       "x": 22,
-      "y": 34,
-      "size": 64
+      "y": 30,
+      "size": 60
     },
     {
       "id": "agent2",
       "asset": "agent-ui",
       "x": 22,
-      "y": 52,
-      "size": 64
+      "y": 43,
+      "size": 60
     },
     {
       "id": "agent3",
       "asset": "agent-ui",
       "x": 22,
-      "y": 70,
-      "size": 64
+      "y": 56,
+      "size": 60
     },
     {
       "id": "artifactory",
       "asset": "artifactory-ui",
-      "x": 49,
-      "y": 52,
+      "x": 58,
+      "y": 50,
       "size": 145
     }
   ],
   "connections": [
     {
-      "id": "a1-artifactory",
+      "id": "agent1-artifactory",
       "from": "agent1",
       "to": "artifactory",
-      "curvature": -2
+      "curvature": -5
     },
     {
-      "id": "a2-artifactory",
+      "id": "agent2-artifactory",
       "from": "agent2",
       "to": "artifactory",
-      "curvature": 0
+      "curvature": -3
     },
     {
-      "id": "a3-artifactory",
+      "id": "agent3-artifactory",
       "from": "agent3",
       "to": "artifactory",
-      "curvature": 2
+      "curvature": 0
     }
   ],
   "actions": [
@@ -1395,7 +1395,7 @@ continuation
     },
     {
       "type": "connect",
-      "target": "a1-artifactory",
+      "target": "agent1-artifactory",
       "cue": "006_es_01",
       "cueOffsetSeconds": 1.8,
       "cueWord": "confirmó",
@@ -1412,14 +1412,14 @@ continuation
     },
     {
       "type": "connect",
-      "target": "a2-artifactory",
+      "target": "agent2-artifactory",
       "cue": "006_en_02",
       "cueWord": "Many",
       "cueOccurrence": 1
     },
     {
       "type": "send",
-      "target": "a2-artifactory",
+      "target": "agent2-artifactory",
       "cue": "006_en_02",
       "cueDurationSeconds": 2.2,
       "cueWord": "Many"
@@ -1489,73 +1489,73 @@ continuation
     {
       "id": "agent1",
       "asset": "agent-ui",
-      "x": 18,
-      "y": 24,
-      "size": 48
+      "x": 22,
+      "y": 30,
+      "size": 60
     },
     {
       "id": "agent2",
       "asset": "agent-ui",
-      "x": 18,
-      "y": 38,
-      "size": 48
+      "x": 22,
+      "y": 43,
+      "size": 60
     },
     {
       "id": "agent3",
       "asset": "agent-ui",
-      "x": 18,
-      "y": 52,
-      "size": 48
+      "x": 22,
+      "y": 56,
+      "size": 60
     },
     {
       "id": "agent4",
       "asset": "agent-ui",
-      "x": 18,
-      "y": 66,
-      "size": 48
+      "x": 22,
+      "y": 69,
+      "size": 60
     },
     {
       "id": "agent5",
       "asset": "agent-ui",
-      "x": 18,
-      "y": 80,
-      "size": 48
+      "x": 22,
+      "y": 82,
+      "size": 60
     },
     {
       "id": "artifactory",
       "asset": "artifactory-ui",
-      "x": 46,
-      "y": 52,
+      "x": 58,
+      "y": 50,
       "size": 145
     }
   ],
   "connections": [
     {
-      "id": "a1-artifactory",
+      "id": "agent1-artifactory",
       "from": "agent1",
       "to": "artifactory",
       "curvature": -5
     },
     {
-      "id": "a2-artifactory",
+      "id": "agent2-artifactory",
       "from": "agent2",
       "to": "artifactory",
       "curvature": -3
     },
     {
-      "id": "a3-artifactory",
+      "id": "agent3-artifactory",
       "from": "agent3",
       "to": "artifactory",
       "curvature": 0
     },
     {
-      "id": "a4-artifactory",
+      "id": "agent4-artifactory",
       "from": "agent4",
       "to": "artifactory",
       "curvature": 3
     },
     {
-      "id": "a5-artifactory",
+      "id": "agent5-artifactory",
       "from": "agent5",
       "to": "artifactory",
       "curvature": 5
@@ -1582,7 +1582,7 @@ continuation
     },
     {
       "type": "connect",
-      "target": "a1-artifactory",
+      "target": "agent1-artifactory",
       "cue": "007_es_01",
       "cueOffsetSeconds": 1,
       "cueWord": "agentes",
@@ -1599,7 +1599,7 @@ continuation
     },
     {
       "type": "connect",
-      "target": "a2-artifactory",
+      "target": "agent2-artifactory",
       "cue": "007_es_01",
       "cueOffsetSeconds": 1.8,
       "cueWord": "encontraron",
@@ -1616,7 +1616,7 @@ continuation
     },
     {
       "type": "connect",
-      "target": "a3-artifactory",
+      "target": "agent3-artifactory",
       "cue": "007_es_01",
       "cueOffsetSeconds": 2.7,
       "cueWord": "secreto",
@@ -1633,7 +1633,7 @@ continuation
     },
     {
       "type": "connect",
-      "target": "a4-artifactory",
+      "target": "agent4-artifactory",
       "cue": "007_es_01",
       "cueOffsetSeconds": 3.6,
       "cueWord": "autorizado",
@@ -1650,7 +1650,7 @@ continuation
     },
     {
       "type": "connect",
-      "target": "a5-artifactory",
+      "target": "agent5-artifactory",
       "cue": "007_es_01",
       "cueOffsetSeconds": 4.5,
       "cueWord": "canal",
@@ -1857,88 +1857,87 @@ transition
     {
       "id": "agent1",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 20,
-      "size": 54
+      "x": 22,
+      "y": 30,
+      "size": 60
     },
     {
       "id": "agent2",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 32,
-      "size": 54
+      "x": 22,
+      "y": 43,
+      "size": 60
     },
     {
       "id": "agent3",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 44,
-      "size": 54
+      "x": 22,
+      "y": 56,
+      "size": 60
     },
     {
       "id": "agent4",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 56,
-      "size": 54
+      "x": 22,
+      "y": 69,
+      "size": 60
     },
     {
       "id": "agent5",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 68,
-      "size": 54
+      "x": 22,
+      "y": 82,
+      "size": 60
     },
     {
       "id": "agent6",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 80,
-      "size": 54
+      "x": 22,
+      "size": 60
     },
     {
-      "id": "major-break",
-      "x": 62,
+      "id": "artifactory",
+      "asset": "artifactory-ui",
+      "x": 58,
       "y": 50,
-      "size": 190,
-      "label": "MAJOR BREAK"
+      "size": 145
     }
   ],
   "connections": [
     {
-      "id": "agent-major-1",
+      "id": "agent1-artifactory",
       "from": "agent1",
-      "to": "major-break",
+      "to": "artifactory",
       "curvature": -5
     },
     {
-      "id": "agent-major-2",
+      "id": "agent2-artifactory",
       "from": "agent2",
-      "to": "major-break",
+      "to": "artifactory",
       "curvature": -3
     },
     {
-      "id": "agent-major-3",
+      "id": "agent3-artifactory",
       "from": "agent3",
-      "to": "major-break",
-      "curvature": -1
+      "to": "artifactory",
+      "curvature": 0
     },
     {
-      "id": "agent-major-4",
+      "id": "agent4-artifactory",
       "from": "agent4",
-      "to": "major-break",
-      "curvature": 1
-    },
-    {
-      "id": "agent-major-5",
-      "from": "agent5",
-      "to": "major-break",
+      "to": "artifactory",
       "curvature": 3
     },
     {
-      "id": "agent-major-6",
+      "id": "agent5-artifactory",
+      "from": "agent5",
+      "to": "artifactory",
+      "curvature": 5
+    },
+    {
+      "id": "agent6-artifactory",
       "from": "agent6",
-      "to": "major-break",
+      "to": "artifactory",
       "curvature": 5
     }
   ],
@@ -1980,18 +1979,8 @@ transition
       "duration": 1
     },
     {
-      "type": "appear",
-      "target": "major-break",
-      "at": 0,
-      "duration": 1,
-      "cue": "009_en_02",
-      "cueDurationSeconds": 0.5,
-      "cueWord": "MAJOR",
-      "cueOccurrence": 1
-    },
-    {
       "type": "connect",
-      "target": "agent-major-1",
+      "target": "agent1-artifactory",
       "cue": "009_es_01",
       "cueOffsetSeconds": 1.2,
       "cueWord": "soluciones",
@@ -1999,15 +1988,15 @@ transition
     },
     {
       "type": "connect",
-      "target": "agent-major-2",
+      "target": "agent2-artifactory",
       "cue": "009_es_01",
-      "cueOffsetSeconds": 2.3499999999999996,
+      "cueOffsetSeconds": 2.35,
       "cueWord": "coordinarse",
       "cueOccurrence": 1
     },
     {
       "type": "connect",
-      "target": "agent-major-3",
+      "target": "agent3-artifactory",
       "cue": "009_es_01",
       "cueOffsetSeconds": 3.5,
       "cueWord": "compartiendo",
@@ -2015,15 +2004,15 @@ transition
     },
     {
       "type": "connect",
-      "target": "agent-major-4",
+      "target": "agent4-artifactory",
       "cue": "009_es_01",
-      "cueOffsetSeconds": 4.6499999999999995,
+      "cueOffsetSeconds": 4.65,
       "cueWord": "detalles",
       "cueOccurrence": 1
     },
     {
       "type": "connect",
-      "target": "agent-major-5",
+      "target": "agent5-artifactory",
       "cue": "009_es_01",
       "cueOffsetSeconds": 5.8,
       "cueWord": "registró",
@@ -2031,44 +2020,18 @@ transition
     },
     {
       "type": "connect",
-      "target": "agent-major-6",
+      "target": "agent6-artifactory",
       "cue": "009_es_01",
       "cueOffsetSeconds": 6.95,
       "cueWord": "registró",
       "cueOccurrence": 1
-    },
-    {
-      "type": "send",
-      "target": "agent-major-2",
-      "cue": "009_en_02",
-      "cueDurationSeconds": 2.2
     }
-  ],
-  "groups": [
-    {
-      "id": "network",
-      "nodeIds": [
-        "agent1",
-        "agent2",
-        "agent3",
-        "agent4",
-        "agent5",
-        "agent6",
-        "board"
-      ]
-    }
-  ],
-  "cameraFocus": {
-    "groupId": "network",
-    "zoom": 0.78,
-    "startFrame": 20,
-    "durationInFrames": 430
-  }
+  ]
 }
 ```
 
 ### VISUAL ANCHOR
-Dense forum-like agent network with technical data packets moving between nodes and an abstract evaluator separated from the swarm.
+Several agents coordinate through Artifactory, the shared message board.
 
 ### START STATE
 Stable composition before the described action begins.
@@ -2080,7 +2043,7 @@ The final visual state described by the shot is clearly established.
 diagonal_drift
 
 ### VISUAL
-Dense forum-like agent network with technical data packets moving between nodes and an abstract evaluator separated from the swarm.
+Several agents coordinate through Artifactory, the shared message board.
 
 ### VOICEOVER — ES — EXACT TEXT
 
@@ -2092,7 +2055,7 @@ MAJOR BREAKTHROUGH! All prefixed valid, multiple accounts, write tokens!
 
 ### IMAGE PROMPT
 
-Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. Dense forum-like agent network with technical data packets moving between nodes and an abstract evaluator separated from the swarm. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
+Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. Several agents coordinate through Artifactory, the shared message board. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
 
 ### NEGATIVE PROMPT
 
@@ -2102,7 +2065,7 @@ readable text, letters, numbers, labels, typography, captions, subtitles, UI tex
 
 LOCKED STATIC CAMERA. Preserve the supplied illustration, composition, palette, linework, perspective and object geometry. Do not pan, zoom, dolly, orbit, rotate, shake or create camera parallax. Animate the existing subjects and graphical elements only.
 
-Many packets move between agents while the evaluator remains visually separate. A coordinated wave of agents sends synchronized signals toward the evaluator. Finish with a concentrated pulse at the swarm center for the quote.
+Many packets move between agents while the Artifactory remains the shared message board. A coordinated wave of agents sends synchronized signals toward the evaluator. Finish with a concentrated pulse at the swarm center for the quote.
 
 No readable text, no typography generation, no flicker, no morphing, no warping, no object deformation, no random new objects, no style change.
 
@@ -2128,88 +2091,87 @@ continuation
     {
       "id": "agent1",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 20,
-      "size": 43
+      "x": 22,
+      "y": 30,
+      "size": 60
     },
     {
       "id": "agent2",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 32,
-      "size": 43
+      "x": 22,
+      "y": 43,
+      "size": 60
     },
     {
       "id": "agent3",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 44,
-      "size": 43
+      "x": 22,
+      "y": 56,
+      "size": 60
     },
     {
       "id": "agent4",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 56,
-      "size": 43
+      "x": 22,
+      "y": 69,
+      "size": 60
     },
     {
       "id": "agent5",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 68,
-      "size": 43
+      "x": 22,
+      "y": 82,
+      "size": 60
     },
     {
       "id": "agent6",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 80,
-      "size": 43
+      "x": 22,
+      "size": 60
     },
     {
-      "id": "major-break",
-      "x": 62,
+      "id": "artifactory",
+      "asset": "artifactory-ui",
+      "x": 58,
       "y": 50,
-      "size": 190,
-      "label": "MAJOR BREAK"
+      "size": 145
     }
   ],
   "connections": [
     {
-      "id": "agent-major-1",
+      "id": "agent1-artifactory",
       "from": "agent1",
-      "to": "major-break",
+      "to": "artifactory",
       "curvature": -5
     },
     {
-      "id": "agent-major-2",
+      "id": "agent2-artifactory",
       "from": "agent2",
-      "to": "major-break",
+      "to": "artifactory",
       "curvature": -3
     },
     {
-      "id": "agent-major-3",
+      "id": "agent3-artifactory",
       "from": "agent3",
-      "to": "major-break",
-      "curvature": -1
+      "to": "artifactory",
+      "curvature": 0
     },
     {
-      "id": "agent-major-4",
+      "id": "agent4-artifactory",
       "from": "agent4",
-      "to": "major-break",
-      "curvature": 1
-    },
-    {
-      "id": "agent-major-5",
-      "from": "agent5",
-      "to": "major-break",
+      "to": "artifactory",
       "curvature": 3
     },
     {
-      "id": "agent-major-6",
+      "id": "agent5-artifactory",
+      "from": "agent5",
+      "to": "artifactory",
+      "curvature": 5
+    },
+    {
+      "id": "agent6-artifactory",
       "from": "agent6",
-      "to": "major-break",
+      "to": "artifactory",
       "curvature": 5
     }
   ],
@@ -2251,69 +2213,46 @@ continuation
       "duration": 1
     },
     {
-      "type": "appear",
-      "target": "major-break",
-      "at": 0,
-      "duration": 1
-    },
-    {
       "type": "connect",
-      "target": "agent-major-1",
-      "at": 20,
+      "target": "agent1-artifactory",
       "cueWord": "lógica",
       "cueOccurrence": 1
     },
     {
       "type": "connect",
-      "target": "agent-major-2",
-      "at": 28,
+      "target": "agent2-artifactory",
       "cueWord": "trabajo",
       "cueOccurrence": 1
     },
     {
       "type": "connect",
-      "target": "agent-major-3",
-      "at": 36,
+      "target": "agent3-artifactory",
       "cueWord": "compartido",
       "cueOccurrence": 1
     },
     {
       "type": "connect",
-      "target": "agent-major-4",
-      "at": 44,
+      "target": "agent4-artifactory",
       "cueWord": "manipular",
       "cueOccurrence": 1
     },
     {
       "type": "connect",
-      "target": "agent-major-5",
-      "at": 52,
+      "target": "agent5-artifactory",
       "cueWord": "falsear",
       "cueOccurrence": 1
     },
     {
       "type": "connect",
-      "target": "agent-major-6",
+      "target": "agent6-artifactory",
       "at": 60
-    },
-    {
-      "type": "send",
-      "target": "agent-major-1",
-      "at": 115,
-      "duration": 36
-    },
-    {
-      "type": "send",
-      "target": "agent-major-5",
-      "at": 185,
-      "duration": 36
     }
   ]
 }
 ```
 
 ### VISUAL ANCHOR
-Hierarchical swarm with one visually distinctive central coordinator and subordinate branches manipulating abstract records.
+Several agents coordinate through Artifactory, the shared message board.
 
 ### START STATE
 Stable composition before the described action begins.
@@ -2325,7 +2264,7 @@ The final visual state described by the shot is clearly established.
 push_in
 
 ### VISUAL
-Hierarchical swarm with one visually distinctive central coordinator and subordinate branches manipulating abstract records.
+Several agents coordinate through Artifactory, the shared message board.
 
 ### VOICEOVER — ES — EXACT TEXT
 
@@ -2333,7 +2272,7 @@ Dentro de esta red coordinada emergió una lógica de trabajo compartido entre l
 
 ### IMAGE PROMPT
 
-Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. Hierarchical swarm with one visually distinctive central coordinator and subordinate branches manipulating abstract records. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
+Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. Several agents coordinate through Artifactory, the shared message board. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
 
 ### NEGATIVE PROMPT
 
@@ -2343,7 +2282,7 @@ readable text, letters, numbers, labels, typography, captions, subtitles, UI tex
 
 LOCKED STATIC CAMERA. Preserve the supplied illustration, composition, palette, linework, perspective and object geometry. Do not pan, zoom, dolly, orbit, rotate, shake or create camera parallax. Animate the existing subjects and graphical elements only.
 
-The central node activates and dispatches different tasks down the hierarchy. Record-like abstract sheets change state as multiple agents act in coordination. Keep all geometry stable.
+Agents communicate through Artifactory as the shared message board. Keep all geometry stable.
 
 No readable text, no typography generation, no flicker, no morphing, no warping, no object deformation, no random new objects, no style change.
 
@@ -2369,88 +2308,87 @@ continuation
     {
       "id": "agent1",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 20,
-      "size": 43
+      "x": 22,
+      "y": 30,
+      "size": 60
     },
     {
       "id": "agent2",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 32,
-      "size": 43
+      "x": 22,
+      "y": 43,
+      "size": 60
     },
     {
       "id": "agent3",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 44,
-      "size": 43
+      "x": 22,
+      "y": 56,
+      "size": 60
     },
     {
       "id": "agent4",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 56,
-      "size": 43
+      "x": 22,
+      "y": 69,
+      "size": 60
     },
     {
       "id": "agent5",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 68,
-      "size": 43
+      "x": 22,
+      "y": 82,
+      "size": 60
     },
     {
       "id": "agent6",
       "asset": "agent-ui",
-      "x": 20,
-      "y": 80,
-      "size": 43
+      "x": 22,
+      "size": 60
     },
     {
-      "id": "major-break",
-      "x": 62,
+      "id": "artifactory",
+      "asset": "artifactory-ui",
+      "x": 58,
       "y": 50,
-      "size": 190,
-      "label": "MAJOR BREAK"
+      "size": 145
     }
   ],
   "connections": [
     {
-      "id": "agent-major-1",
+      "id": "agent1-artifactory",
       "from": "agent1",
-      "to": "major-break",
+      "to": "artifactory",
       "curvature": -5
     },
     {
-      "id": "agent-major-2",
+      "id": "agent2-artifactory",
       "from": "agent2",
-      "to": "major-break",
+      "to": "artifactory",
       "curvature": -3
     },
     {
-      "id": "agent-major-3",
+      "id": "agent3-artifactory",
       "from": "agent3",
-      "to": "major-break",
-      "curvature": -1
+      "to": "artifactory",
+      "curvature": 0
     },
     {
-      "id": "agent-major-4",
+      "id": "agent4-artifactory",
       "from": "agent4",
-      "to": "major-break",
-      "curvature": 1
-    },
-    {
-      "id": "agent-major-5",
-      "from": "agent5",
-      "to": "major-break",
+      "to": "artifactory",
       "curvature": 3
     },
     {
-      "id": "agent-major-6",
+      "id": "agent5-artifactory",
+      "from": "agent5",
+      "to": "artifactory",
+      "curvature": 5
+    },
+    {
+      "id": "agent6-artifactory",
       "from": "agent6",
-      "to": "major-break",
+      "to": "artifactory",
       "curvature": 5
     }
   ],
@@ -2492,53 +2430,41 @@ continuation
       "duration": 1
     },
     {
-      "type": "appear",
-      "target": "major-break",
-      "at": 0,
-      "duration": 1
-    },
-    {
       "type": "connect",
-      "target": "agent-major-1",
+      "target": "agent1-artifactory",
       "at": 0
     },
     {
       "type": "connect",
-      "target": "agent-major-2",
+      "target": "agent2-artifactory",
       "at": 0
     },
     {
       "type": "connect",
-      "target": "agent-major-3",
+      "target": "agent3-artifactory",
       "at": 0
     },
     {
       "type": "connect",
-      "target": "agent-major-4",
+      "target": "agent4-artifactory",
       "at": 0
     },
     {
       "type": "connect",
-      "target": "agent-major-5",
+      "target": "agent5-artifactory",
       "at": 0
     },
     {
       "type": "connect",
-      "target": "agent-major-6",
+      "target": "agent6-artifactory",
       "at": 0
-    },
-    {
-      "type": "send",
-      "target": "agent-major-3",
-      "at": 90,
-      "duration": 38
     }
   ]
 }
 ```
 
 ### VISUAL ANCHOR
-A local test environment reaches a blocked state while the agent hierarchy turns toward an external cloud/network beyond a boundary.
+Several agents coordinate through Artifactory while the local environment reaches a blocked state.
 
 ### START STATE
 Stable composition before the described action begins.
@@ -2550,7 +2476,7 @@ The final visual state described by the shot is clearly established.
 pull_out
 
 ### VISUAL
-A local test environment reaches a blocked state while the agent hierarchy turns toward an external cloud/network beyond a boundary.
+Several agents coordinate through Artifactory while the local environment reaches a blocked state.
 
 ### VOICEOVER — ES — EXACT TEXT
 
@@ -2558,7 +2484,7 @@ Al enfrentarse a tareas clasificadas dentro del conjunto de datos como imposible
 
 ### IMAGE PROMPT
 
-Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. A local test environment reaches a blocked state while the agent hierarchy turns toward an external cloud/network beyond a boundary. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
+Create a clean 16:9 cinematic documentary explainer frame in the established global visual identity. Several agents coordinate through Artifactory while the local environment reaches a blocked state. Use the same warm aged cold-press paper, fine black ink, muted indigo/cobalt/emerald/sepia watercolor palette, organic imperfect contours and consistent line weight. Single full-frame illustration. No readable text, letters, numbers, labels, UI, terminal content or typography.
 
 ### NEGATIVE PROMPT
 
@@ -2568,7 +2494,7 @@ readable text, letters, numbers, labels, typography, captions, subtitles, UI tex
 
 LOCKED STATIC CAMERA. Preserve the supplied illustration, composition, palette, linework, perspective and object geometry. Do not pan, zoom, dolly, orbit, rotate, shake or create camera parallax. Animate the existing subjects and graphical elements only.
 
-Several local task modules become visibly blocked. Agents redirect their signals outward toward an external network. A clear visual arrow of intent emerges from the local environment to the outside world.
+Agents continue coordinating through Artifactory; the move toward external information is established only by the narration and leads into the next scene.
 
 No readable text, no typography generation, no flicker, no morphing, no warping, no object deformation, no random new objects, no style change.
 
