@@ -231,23 +231,6 @@ const QuoteSegments: React.FC<{scene:any; duration:number}> = ({scene,duration})
 const STORYBOARD_FADE_IN = new Set(['001', '008', '012']);
 const STORYBOARD_FADE_OUT = new Set(['007', '008', '011']);
 
-const storyboardTransitionFlags = (sceneId:string, sceneIndex:number) => {
-  const n = Number(sceneId);
-  const nextScene = scenes[sceneIndex + 1];
-  const nextIsContinuation = String(nextScene?.continuity ?? '').toLowerCase() === 'continuation';
-  if (Number.isFinite(n) && n >= 1 && n <= 12) {
-    return {
-      // A continuation is literally the same visual shot. Never fade it in/out.
-      fadeIn: STORYBOARD_FADE_IN.has(sceneId) && (sceneIndex === 0 || String(scenes[sceneIndex - 1]?.continuity ?? '').toLowerCase() !== 'continuation'),
-      fadeOut: STORYBOARD_FADE_OUT.has(sceneId) && !nextIsContinuation,
-    };
-  }
-  return {
-    fadeIn: sceneIndex > 0 && !String(scenes[sceneIndex]?.continuity ?? '').toLowerCase().includes('continuation'),
-    fadeOut: sceneIndex < scenes.length - 1 && !nextIsContinuation,
-  };
-};
-
 const StoryboardSceneText: React.FC<{sceneId:string}> = ({sceneId}) => {
   // Spoken English messages are rendered exclusively by QuoteSegments from
   // the exact audio timing data. This avoids duplicated or late hardcoded text.
@@ -300,48 +283,6 @@ const SvgNetworkOverlay: React.FC<{duration:number}> = ({duration}) => {
       </g>;
     })}
   </svg>;
-};
-
-const SceneVisual: React.FC<{
-  scene:any;
-  duration:number;
-  fadeIn:boolean;
-  fadeOut:boolean;
-  contentOffset:number;
-}> = ({scene,duration,fadeIn,fadeOut,contentOffset}) => {
-  const frame = useCurrentFrame();
-  const fadeInOpacity = fadeIn
-    ? interpolate(frame, [0, TRANSITION_FRAMES], [0, 1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
-    : 1;
-  const fadeOutStart = Math.max(0, duration - TRANSITION_FRAMES);
-  const fadeOutOpacity = fadeOut
-    ? interpolate(frame, [fadeOutStart, duration], [1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
-    : 1;
-  const motionScene = scene.motion_scene;
-  return <AbsoluteFill style={{opacity: Math.min(fadeInOpacity, fadeOutOpacity)}}>
-    {motionScene ? (
-      <Sequence from={contentOffset} durationInFrames={duration}>
-        <MotionScriptScene scene={motionScene} durationInFrames={duration} />
-      </Sequence>
-    ) : (
-      <AnimatedAIClip scene={{...scene, __durationFrames: duration}} duration={duration}/>
-    )}
-  </AbsoluteFill>;
-};
-
-const VisualMotionGroup: React.FC<{scene:any; duration:number; fadeIn:boolean; fadeOut:boolean}> = ({scene,duration,fadeIn,fadeOut}) => {
-  const frame=useCurrentFrame();
-  const fadeFrames=Math.max(1,Math.round(1.0*FPS));
-  const fadeOutStart=Math.max(0,duration-fadeFrames);
-  const fadeInOpacity=fadeIn
-    ? interpolate(frame,[0,fadeFrames],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'})
-    : 1;
-  const fadeOutOpacity=fadeOut
-    ? interpolate(frame,[fadeOutStart,duration],[1,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'})
-    : 1;
-  return <AbsoluteFill style={{opacity:Math.min(fadeInOpacity,fadeOutOpacity)}}>
-    <MotionScriptScene scene={scene} durationInFrames={duration}/>
-  </AbsoluteFill>;
 };
 
 const BackgroundMusic: React.FC = () => {
