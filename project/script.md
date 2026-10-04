@@ -1924,7 +1924,9 @@ transition
       "type": "appear",
       "target": "major-break",
       "at": 0,
-      "duration": 1
+      "duration": 1,
+      "cue": "009_en_02",
+      "cueDurationSeconds": 0.5
     },
     {
       "type": "connect",
