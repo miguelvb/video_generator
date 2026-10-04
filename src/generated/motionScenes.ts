@@ -1280,7 +1280,21 @@ export const MOTION_SCENES = {
       "at": 158,
       "duration": 24
     }
-  ]
+  ],
+  "groups": [
+    {
+      "id": "focused-agent",
+      "nodeIds": [
+        "focus-agent"
+      ]
+    }
+  ],
+  "cameraFocus": {
+    "groupId": "focused-agent",
+    "zoom": 2.2,
+    "startFrame": 72,
+    "durationInFrames": 65
+  }
 },
   "004": {
   "durationInFrames": 446,
