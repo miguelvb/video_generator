@@ -655,7 +655,21 @@ def rebuild_audio_timings(script_path: Path, scene_selection: str | None = None)
         if not old_track: raise RuntimeError(f"No timing metadata for scene {sid}. Run audio once to create it.")
         duration=probe_duration(public_path)
         if abs(duration-float(old_track.get("duration_seconds",-1))) > 0.02: raise RuntimeError(f"Audio duration changed for scene {sid}; run audio to rebuild metadata.")
-        tracks[sid]={**old_track,"duration_seconds":round(duration,3)}
+        rebuilt_track={**old_track,"duration_seconds":round(duration,3)}
+        if ENABLE_WORD_TIMINGS:
+            aligned_segments=[]
+            for seg in rebuilt_track.get("segments",[]):
+                aligned=dict(seg)
+                segment_path=BUILD_DIR / seg.get("file","")
+                if not segment_path.exists():
+                    segment_path=BUILD_DIR / "audio" / sid / (str(seg.get("id","")) + ".wav")
+                if segment_path.exists() and not seg.get("words"):
+                    words=transcribe_word_timings(segment_path,None,sid,seg.get("id"))
+                    aligned["words"]=words
+                    aligned["phrases"]=build_phrase_timings(seg.get("text",""),words,seg.get("id","segment"))
+                aligned_segments.append(aligned)
+            rebuilt_track["segments"]=aligned_segments
+        tracks[sid]=rebuilt_track
     timings={sid:{"durationSeconds":t["duration_seconds"],"audioFile":t["file"],"segments":t["segments"]} for sid,t in tracks.items()}
     TIMINGS_TS.parent.mkdir(parents=True,exist_ok=True); TIMINGS_TS.write_text("// AUTO-GENERATED from existing validated WAV files.\nexport const AUDIO_TIMINGS = "+json.dumps(timings,ensure_ascii=False,indent=2)+" as const;\n",encoding="utf-8")
     print(f"Rebuilt timings without generating audio: {TIMINGS_TS}")
