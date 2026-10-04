@@ -460,10 +460,10 @@ const resolveCue = (action:any, source:any) => {
   if (!timing?.segments) return null;
   for (const segment of timing.segments as any[]) {
     if (action.cueWord) {
-      const wanted = String(action.cueWord).toLowerCase().replace(/[^\\p{L}\\p{N}]/gu, '');
+      const wanted = String(action.cueWord).toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
       const occurrence = Math.max(1, Number(action.cueOccurrence ?? 1));
       const matches = (segment.words ?? []).filter((w:any) =>
-        String(w.word ?? '').toLowerCase().replace(/[^\\p{L}\\p{N}]/gu, '') === wanted
+        String(w.word ?? '').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '') === wanted
       );
       if (matches[occurrence - 1]) {
         return {
