@@ -8,169 +8,169 @@ export const MOTION_SCENES = {
     {
       "id": "agent-01",
       "asset": "agent-ui",
-      "x": 25,
+      "x": 43,
       "y": 42,
       "size": 24
     },
     {
       "id": "agent-02",
       "asset": "agent-ui",
-      "x": 35,
+      "x": 46,
       "y": 42,
       "size": 24
     },
     {
       "id": "agent-03",
       "asset": "agent-ui",
-      "x": 45,
+      "x": 49,
       "y": 42,
       "size": 24
     },
     {
       "id": "agent-04",
       "asset": "agent-ui",
-      "x": 55,
+      "x": 52,
       "y": 42,
       "size": 24
     },
     {
       "id": "agent-05",
       "asset": "agent-ui",
-      "x": 65,
+      "x": 55,
       "y": 42,
       "size": 24
     },
     {
       "id": "agent-06",
       "asset": "agent-ui",
-      "x": 75,
+      "x": 58,
       "y": 42,
       "size": 24
     },
     {
       "id": "agent-07",
       "asset": "agent-ui",
-      "x": 25,
-      "y": 50,
+      "x": 43,
+      "y": 47,
       "size": 24
     },
     {
       "id": "agent-08",
       "asset": "agent-ui",
-      "x": 35,
-      "y": 50,
+      "x": 46,
+      "y": 47,
       "size": 24
     },
     {
       "id": "agent-09",
       "asset": "agent-ui",
-      "x": 45,
-      "y": 50,
+      "x": 49,
+      "y": 47,
       "size": 24
     },
     {
       "id": "agent-10",
       "asset": "agent-ui",
-      "x": 55,
-      "y": 50,
+      "x": 52,
+      "y": 47,
       "size": 24
     },
     {
       "id": "agent-11",
       "asset": "agent-ui",
-      "x": 65,
-      "y": 50,
+      "x": 55,
+      "y": 47,
       "size": 24
     },
     {
       "id": "agent-12",
       "asset": "agent-ui",
-      "x": 75,
-      "y": 50,
+      "x": 58,
+      "y": 47,
       "size": 24
     },
     {
       "id": "agent-13",
       "asset": "agent-ui",
-      "x": 25,
-      "y": 58,
+      "x": 43,
+      "y": 52,
       "size": 24
     },
     {
       "id": "agent-14",
       "asset": "agent-ui",
-      "x": 35,
-      "y": 58,
+      "x": 46,
+      "y": 52,
       "size": 24
     },
     {
       "id": "agent-15",
       "asset": "agent-ui",
-      "x": 45,
-      "y": 58,
+      "x": 49,
+      "y": 52,
       "size": 24
     },
     {
       "id": "agent-16",
       "asset": "agent-ui",
-      "x": 55,
-      "y": 58,
+      "x": 52,
+      "y": 52,
       "size": 24
     },
     {
       "id": "agent-17",
       "asset": "agent-ui",
-      "x": 65,
-      "y": 58,
+      "x": 55,
+      "y": 52,
       "size": 24
     },
     {
       "id": "agent-18",
       "asset": "agent-ui",
-      "x": 75,
-      "y": 58,
+      "x": 58,
+      "y": 52,
       "size": 24
     },
     {
       "id": "agent-19",
       "asset": "agent-ui",
-      "x": 25,
-      "y": 66,
+      "x": 43,
+      "y": 57,
       "size": 24
     },
     {
       "id": "agent-20",
       "asset": "agent-ui",
-      "x": 35,
-      "y": 66,
+      "x": 46,
+      "y": 57,
       "size": 24
     },
     {
       "id": "agent-21",
       "asset": "agent-ui",
-      "x": 45,
-      "y": 66,
+      "x": 49,
+      "y": 57,
       "size": 24
     },
     {
       "id": "agent-22",
       "asset": "agent-ui",
-      "x": 55,
-      "y": 66,
+      "x": 52,
+      "y": 57,
       "size": 24
     },
     {
       "id": "agent-23",
       "asset": "agent-ui",
-      "x": 65,
-      "y": 66,
+      "x": 55,
+      "y": 57,
       "size": 24
     },
     {
       "id": "agent-24",
       "asset": "agent-ui",
-      "x": 75,
-      "y": 66,
+      "x": 58,
+      "y": 57,
       "size": 24
     },
     {
