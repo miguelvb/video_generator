@@ -175,7 +175,7 @@ const QuoteOverlay: React.FC<{
     zIndex: 100,
     transform: `translateY(${translateY}px)`,
     textShadow: motionStyle ? '0 0 8px rgba(57,246,255,.18)' : 'none',
-  }}>{`“${text}”`}</div>;
+  }}>{text}</div>;
 };
 
 const QuoteSegments: React.FC<{scene:any; duration:number}> = ({scene,duration}) => {
