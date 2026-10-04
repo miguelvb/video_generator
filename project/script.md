@@ -1738,12 +1738,6 @@ transition
   ],
   "connections": [
     {
-      "id": "direct",
-      "from": "agent",
-      "to": "flag",
-      "curvature": 0
-    },
-    {
       "id": "agent-idea",
       "from": "agent",
       "to": "idea",
@@ -1765,17 +1759,6 @@ transition
     },
     {
       "type": "appear",
-      "target": "flag",
-      "at": 54,
-      "duration": 18
-    },
-    {
-      "type": "connect",
-      "target": "direct",
-      "at": 96
-    },
-    {
-      "type": "appear",
       "target": "idea",
       "at": 155,
       "duration": 22
@@ -1786,9 +1769,16 @@ transition
       "at": 205
     },
     {
+      "type": "appear",
+      "target": "flag",
+      "at": 245,
+      "duration": 18,
+      "after": ["idea"]
+    },
+    {
       "type": "connect",
       "target": "idea-flag",
-      "at": 245
+      "at": 280
     },
     {
       "type": "send",
