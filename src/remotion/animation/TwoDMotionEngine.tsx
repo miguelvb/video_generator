@@ -6,7 +6,7 @@ import {MotionPacket} from './MotionPacket';
 import {resolveMotionActions} from './motionActions';
 import {MotionCamera} from './MotionCamera';
 import {resolveCameraFocus} from './motionCameraFocus';
-import type {MotionEdge, MotionNode, TwoDMotionEngineProps} from './motionTypes';
+import type {TwoDMotionEngineProps} from './motionTypes';
 
 export type {MotionAssetType, MotionEdge, MotionGroup, MotionNode, TwoDMotionEngineProps} from './motionTypes';
 
@@ -17,7 +17,6 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
   cameraFocus,
   durationInFrames,
   actions,
-  showDebugLabel = false,
   backgroundAsset,
   color = '#ff0000',
 }) => {
@@ -125,88 +124,6 @@ export const TwoDMotionEngine: React.FC<TwoDMotionEngineProps> = ({
 
       </MotionCamera>
 
-      {showDebugLabel && (
-        <div
-          style={{
-            position: 'absolute',
-            left: 32,
-            top: 28,
-            color: '#39f6ff',
-            fontFamily: 'Arial, sans-serif',
-            fontSize: 26,
-            fontWeight: 800,
-            letterSpacing: 1,
-          }}
-        >
-          MOTION ASSET NETWORK TEST
-        </div>
-      )}
     </AbsoluteFill>
-  );
-};
-
-export const MotionEngineTest: React.FC = () => {
-  const nodes: MotionNode[] = [
-    {
-      id: 'agent-a',
-      x: 25,
-      y: 50,
-      size: 170,
-      asset: 'agent-ui',
-    },
-    {
-      id: 'server',
-      x: 75,
-      y: 50,
-      size: 190,
-      asset: 'artifactory-ui',
-    },
-  ];
-
-  const edges: MotionEdge[] = [
-    {
-      id: 'agent-server',
-      from: 'agent-a',
-      to: 'server',
-      curvature: 0,
-    },
-  ];
-
-  return (
-    <TwoDMotionEngine
-      nodes={nodes}
-      edges={edges}
-      actions={[
-        {
-          type: 'move',
-          targetId: 'agent-a',
-          startFrame: 45,
-          durationInFrames: 45,
-          x: 45,
-          y: 50,
-        },
-        {
-          type: 'connect',
-          targetId: 'agent-server',
-          startFrame: 90,
-        },
-        {
-          type: 'send',
-          targetId: 'agent-server',
-          startFrame: 105,
-          durationInFrames: 42,
-        },
-        {
-          type: 'set-edge-state',
-          targetId: 'agent-server',
-          frame: 105,
-          state: 'active',
-        },
-
-      ]}
-      durationInFrames={210}
-      color="#ff0000"
-      showDebugLabel
-    />
   );
 };

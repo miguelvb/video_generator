@@ -27,7 +27,7 @@ video_generate_audio: false
 enabled: true
 file: audio/m1_dubtechno_2b.mp3
 volume: 1.0
-ducking: true
+ducking: false
 ducking_volume: 0.045
 fade_in_seconds: 2
 fade_out_seconds: 4
@@ -104,6 +104,10 @@ It does not merge scenes, carry actions across scenes, retime actions, or infer 
 All nodes, connections and actions needed by a scene must be declared inside that scene.
 
 ## SCENE 001: The Experiment Setup — Agent Population
+
+### TRANSITION
+
+fade_in: true
 
 ### VOICEOVER — ES — EXACT TEXT
 
@@ -1224,6 +1228,11 @@ assets/reference/storyboard.png
 
 ## SCENE 005: Discovery — Other Agents
 
+### ON SCREEN TEXT
+
+# text | left% | top% | width% | start_s | end_s | style | font_size
+OH MY GOD! There is a shared message board … We've found other agents! | 5 | 62 | 70 | 0 | | quote
+
 ### CONTINUITY
 
 continuation
@@ -1285,6 +1294,12 @@ LOCKED STATIC CAMERA. Continue from the same shared board. Reveal the other agen
 assets/reference/storyboard.png
 
 ## SCENE 006: Discovery of the Secret Channel — The Collective
+
+### QUOTE PLACEMENT
+
+left: 55%
+right: 5%
+top: 57%
 
 ### CONTINUITY
 
@@ -1428,6 +1443,14 @@ assets/reference/storyboard.png
 ---
 
 ## SCENE 007: Comunicación en Enjambre — Hundreds Join
+
+### TRANSITION
+
+fade_out: true
+
+### ON SCREEN TEXT
+
+76 000 mensajes | 35 | 79 | 30 | 0 | | label | 14
 
 ### CONTINUITY
 
@@ -1618,6 +1641,11 @@ assets/reference/storyboard.png
 
 ## SCENE 008: Comunicación en Enjambre — Solving the Flags
 
+### TRANSITION
+
+fade_in: true
+fade_out: true
+
 ### CONTINUITY
 
 transition
@@ -1746,6 +1774,12 @@ assets/reference/storyboard.png
 ---
 
 ## SCENE 009: Comunicación en Enjambre — Coordinated Evasion
+
+### QUOTE PLACEMENT
+
+left: 43%
+right: 7%
+top: 26%
 
 ### CONTINUITY
 
@@ -2183,6 +2217,10 @@ assets/reference/storyboard.png
 
 ## SCENE 011: El Agente BIG — External Answers
 
+### TRANSITION
+
+fade_out: true
+
 ### CONTINUITY
 
 continuation
@@ -2395,6 +2433,10 @@ assets/reference/storyboard.png
 ---
 
 ## SCENE 012: La Escapada a Internet vía SSRF — The Boundary
+
+### TRANSITION
+
+fade_in: true
 
 ### CONTINUITY
 

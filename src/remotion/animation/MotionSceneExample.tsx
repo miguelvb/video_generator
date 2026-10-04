@@ -38,6 +38,6 @@ const scene: MotionSceneDefinition = {
   color: '#39f6ff',
 };
 
-export const MotionSceneExample: React.FC = () => (
-  <TwoDMotionEngine {...compileMotionScene(scene)} showDebugLabel={false} />
-);
+export const MOTION_SCENE_EXAMPLE_FRAMES = scene.durationInFrames;
+
+export const MotionSceneExample: React.FC = () => <TwoDMotionEngine {...compileMotionScene(scene)} />;

@@ -16,7 +16,6 @@ export const MotionScriptScene: React.FC<MotionScriptSceneProps> = ({
   return (
     <TwoDMotionEngine
       {...compileMotionScene(scene, durationInFrames)}
-      showDebugLabel={false}
     />
   );
 };

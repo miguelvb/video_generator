@@ -5,448 +5,341 @@ import {AUDIO_TIMINGS} from '../generated/audioTimings';
 import {VIDEO_CONFIG} from '../generated/videoConfig';
 import {MotionScriptScene} from './animation/MotionScriptScene';
 
-const FPS = Number(VIDEO_CONFIG.fps);
-const inputProps = getInputProps() as any;
-const inputSceneIds = Array.isArray(inputProps?.sceneIds)
-  ? new Set(inputProps.sceneIds.map((s:any) => String(s).trim()).filter(Boolean))
-  : null;
-const scenes = inputSceneIds
-  ? VIDEO_CONTENT.scenes.filter((scene:any) => inputSceneIds.has(String(scene.scene_id)))
-  : VIDEO_CONTENT.scenes;
-const TIMINGS = AUDIO_TIMINGS as Record<string, any>;
-const timingKey = (scene:any): string => {
-  const raw = String(scene.scene_id ?? '').trim();
-  if (TIMINGS[raw]) return raw;
-  const padded = raw.replace(/^0+/, '').padStart(3, '0');
-  if (TIMINGS[padded]) return padded;
-  const numeric = String(Number(raw));
-  if (TIMINGS[numeric]) return numeric;
-  return raw;
+/*
+ * MainVideo is a generic renderer: everything it shows comes from the parsed
+ * script (videoContent.ts), the measured narration (audioTimings.ts) and the
+ * project config (videoConfig.ts). Nothing here is specific to one video.
+ */
+
+type CardConfig = {
+  enabled?: string; title?: string; subtitle?: string; background?: string;
+  hold_seconds?: string; fade_in_seconds?: string; fade_out_seconds?: string; music_fade_out_seconds?: string;
 };
+type MusicConfig = {
+  enabled?: string; file?: string; volume?: string; ducking?: string; ducking_volume?: string;
+  fade_in_seconds?: string; fade_out_seconds?: string;
+};
+type TimedSegment = {id: string; kind: string; text: string; startSeconds: number; durationSeconds: number};
+type SceneTiming = {durationSeconds: number; audioFile: string; segments: TimedSegment[]};
+type OnScreenText = {
+  text: string; left_percent: number; top_percent: number; width_percent: number;
+  start_seconds: number; end_seconds?: number | null; style: string; font_size?: number | null;
+};
+
+const FPS = Number(VIDEO_CONFIG.fps);
+const props = getInputProps() as {sceneIds?: string[]; music?: MusicConfig; intro?: CardConfig; ending?: CardConfig};
+const config = VIDEO_CONFIG as unknown as {music?: MusicConfig; intro?: CardConfig; ending?: CardConfig};
+const TIMINGS = AUDIO_TIMINGS as unknown as Record<string, SceneTiming>;
+
+const isTrue = (value: unknown, fallback = false) =>
+  value === undefined || value === null || value === '' ? fallback : String(value).toLowerCase() === 'true';
+const seconds = (value: unknown, fallback: number) => {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : fallback;
+};
+const toFrames = (value: unknown, fallback: number) => Math.max(1, Math.round(seconds(value, fallback) * FPS));
+const clampInterp = (frame: number, input: number[], output: number[]) =>
+  interpolate(frame, input, output, {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+
+// ---------------------------------------------------------------- timeline --
+
+const selectedIds = Array.isArray(props.sceneIds) ? new Set(props.sceneIds.map(String)) : null;
+const scenes = (VIDEO_CONTENT.scenes as unknown as any[]).filter((scene) => !selectedIds || selectedIds.has(String(scene.scene_id)));
+
+// Scene length is the measured narration length. Without timings (e.g. a fresh
+// checkout opened in Studio) a scene falls back to its motion duration or 1s.
 const sceneFrames = scenes.map((scene) => {
-  const timing = TIMINGS[timingKey(scene)];
-  // Keep the module loadable so unrelated Remotion compositions (for example
-  // MotionEngineTest) can render even when generated audio timings are stale.
-  // MainVideo still gets the correct duration whenever timing data exists.
-  const durationSeconds = Number(
-    timing?.durationSeconds ??
-      timing?.duration_seconds ??
-      scene.durationSeconds ??
-      scene.duration_seconds ??
-      1,
-  );
-  return Math.max(1, Math.ceil(durationSeconds * FPS));
+  const timing = TIMINGS[scene.scene_id];
+  if (timing) return Math.max(1, Math.ceil(timing.durationSeconds * FPS));
+  if (scene.motion_scene?.durationInFrames) return Math.max(1, Number(scene.motion_scene.durationInFrames));
+  return FPS;
 });
 const SCENE_TOTAL_FRAMES = sceneFrames.reduce((a, b) => a + b, 0);
 
-const runtimeMusic = inputProps?.music ?? null;
-const runtimeEnding = inputProps?.ending ?? null;
-const music = runtimeMusic ?? (VIDEO_CONFIG as any).music ?? {};
-const ending = runtimeEnding ?? (VIDEO_CONFIG as any).ending ?? {};
-const intro = inputProps?.intro ?? (VIDEO_CONFIG as any).intro ?? {};
-const introEnabled = String(intro.enabled ?? 'true').toLowerCase() === 'true';
-const introHoldFrames = introEnabled ? Math.max(1, Math.round(Number(intro.hold_seconds ?? 4) * FPS)) : 0;
-const introFadeInFrames = introEnabled ? Math.max(1, Math.round(Number(intro.fade_in_seconds ?? 1.5) * FPS)) : 0;
-const introFadeOutFrames = introEnabled ? Math.max(1, Math.round(Number(intro.fade_out_seconds ?? 2.5) * FPS)) : 0;
-// INTRO hold_seconds is the fully-visible hold time; fades are added on top.
-const introFrames = introEnabled ? introFadeInFrames + introHoldFrames + introFadeOutFrames : 0;
-const musicEnabled = String(music.enabled ?? 'false').toLowerCase() === 'true';
-const endingEnabled = String(ending.enabled ?? 'true').toLowerCase() === 'true';
+const intro: CardConfig = props.intro ?? config.intro ?? {};
+const ending: CardConfig = props.ending ?? config.ending ?? {};
+const music: MusicConfig = props.music ?? config.music ?? {};
 
-// TEMPORARY VISIBLE MUSIC DEBUG:
-// This deliberately puts the music state and exact file path on the rendered video.
-// Set to false once music playback has been verified.
-const SHOW_MUSIC_DEBUG = false;
+const introEnabled = isTrue(intro.enabled);
+const introFadeIn = introEnabled ? toFrames(intro.fade_in_seconds, 1.5) : 0;
+const introHold = introEnabled ? toFrames(intro.hold_seconds, 4) : 0;
+const introFadeOut = introEnabled ? toFrames(intro.fade_out_seconds, 2.5) : 0;
+// hold_seconds is the fully visible time; the fades are added around it.
+const INTRO_FRAMES = introFadeIn + introHold + introFadeOut;
 
-const endingFrames = endingEnabled
-  ? Math.max(1, Math.round(Number(ending.hold_seconds ?? 4) * FPS))
-  : 0;
+const endingEnabled = isTrue(ending.enabled);
+const ENDING_FRAMES = endingEnabled ? toFrames(ending.hold_seconds, 4) : 0;
 
-export const TOTAL_DURATION_FRAMES = introFrames + SCENE_TOTAL_FRAMES + endingFrames;
+export const TOTAL_DURATION_FRAMES = Math.max(1, INTRO_FRAMES + SCENE_TOTAL_FRAMES + ENDING_FRAMES);
 
-const CameraImage: React.FC<{scene:any}> = ({scene}) => {
+const sceneStarts = sceneFrames.map((_, i) => INTRO_FRAMES + sceneFrames.slice(0, i).reduce((a, b) => a + b, 0));
+const TRANSITION_FRAMES = Math.max(1, Math.round(FPS));
+
+// ------------------------------------------------------------ scene visual --
+
+const CAMERA_MOVES: Record<string, (p: number) => {x: number; y: number; scale: number}> = {
+  static: () => ({x: 0, y: 0, scale: 1.035}),
+  push_in: (p) => ({x: 0, y: 0, scale: clampInterp(p, [0, 1], [1.045, 1.13])}),
+  pull_out: (p) => ({x: 0, y: 0, scale: clampInterp(p, [0, 1], [1.13, 1.045])}),
+  pan_right: (p) => ({x: clampInterp(p, [0, 1], [-18, 18]), y: 0, scale: 1.045}),
+  pan_left: (p) => ({x: clampInterp(p, [0, 1], [18, -18]), y: 0, scale: 1.045}),
+  pan_down: (p) => ({x: 0, y: clampInterp(p, [0, 1], [-14, 14]), scale: 1.045}),
+  diagonal_drift: (p) => ({x: clampInterp(p, [0, 1], [-12, 12]), y: clampInterp(p, [0, 1], [8, -8]), scale: 1.065}),
+};
+
+const CameraImage: React.FC<{scene: any; duration: number}> = ({scene, duration}) => {
   const frame = useCurrentFrame();
-  const duration = Math.max(1, scene.__durationFrames ?? 1);
   const progress = duration <= 1 ? 1 : frame / (duration - 1);
   const mode = String(scene.remotion_camera ?? 'static').trim().toLowerCase();
-
-  let x = 0;
-  let y = 0;
-  let scale = 1.045;
-  switch (mode) {
-    case 'push_in':
-      scale = interpolate(progress, [0, 1], [1.045, 1.13], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
-      break;
-    case 'pull_out':
-      scale = interpolate(progress, [0, 1], [1.13, 1.045], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
-      break;
-    case 'pan_right':
-      x = interpolate(progress, [0, 1], [-18, 18], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
-      break;
-    case 'pan_left':
-      x = interpolate(progress, [0, 1], [18, -18], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
-      break;
-    case 'pan_down':
-      y = interpolate(progress, [0, 1], [-14, 14], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
-      break;
-    case 'diagonal_drift':
-      x = interpolate(progress, [0, 1], [-12, 12], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
-      y = interpolate(progress, [0, 1], [8, -8], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
-      scale = 1.065;
-      break;
-    case 'static':
-    default:
-      scale = 1.035;
-      break;
-  }
-
-  return <img
-    src={staticFile(`assets/generated/scene_${scene.scene_id}.png`)}
-    style={{
-      position:'absolute', inset:-36, width:'calc(100% + 72px)', height:'calc(100% + 72px)',
-      objectFit:'cover', transform:`translate3d(${x}px,${y}px,0) scale(${scale})`
-    }}
-  />;
-};
-
-const AnimatedAIClip: React.FC<{scene:any; duration:number}> = ({scene, duration}) => {
-  const clips = Array.isArray(scene.video_clips) ? scene.video_clips : [];
-  if (!clips.length) return <CameraImage scene={{...scene, __durationFrames: duration}} />;
-  let offset = 0;
-  return <AbsoluteFill>
-    {clips.map((clip:any, index:number) => {
-      if (offset >= duration) return null;
-      const clipFrames = Math.max(1, Math.min(duration - offset, Math.round(Number(clip.duration_seconds) * FPS)));
-      const currentOffset = offset;
-      offset += clipFrames;
-      return <Sequence key={`${scene.scene_id}-${clip.clip_index ?? index}`} from={currentOffset} durationInFrames={clipFrames}>
-        <Video
-          src={staticFile(clip.file.replace(/^public\//, ''))}
-          muted
-          style={{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover'}}
-        />
-      </Sequence>;
-    })}
-  </AbsoluteFill>;
-};
-
-const QuoteOverlay: React.FC<{
-  text:string;
-  duration:number;
-  motionStyle?: boolean;
-  sceneId?: string;
-}> = ({text, duration, motionStyle = false, sceneId}) => {
-  // Quotes are narration-synchronised overlays. They must appear exactly when
-  // their audio segment starts; do not add a visual transition that shifts
-  // the apparent timing of the spoken quote.
-  const opacity=1;
-  const translateY=0;
-
-  const storyboardPlacement =
-    sceneId === '005'
-      ? {left:'5%', right:'25%', top:'62%', bottom:'auto'}
-      : sceneId === '006'
-        ? {left:'55%', right:'5%', top:'57%', bottom:'auto'}
-        : sceneId === '009'
-          ? {left:'43%', right:'7%', top:'26%', bottom:'auto'}
-          : null;
-
-  return <div style={{
-    position:'absolute',
-    left: storyboardPlacement?.left ?? (motionStyle ? '23%' : 58),
-    right: storyboardPlacement?.right ?? (motionStyle ? '23%' : 58),
-    top: storyboardPlacement?.top ?? (motionStyle ? 18 : 'auto'),
-    bottom: storyboardPlacement?.bottom ?? (motionStyle ? 'auto' : 54),
-    padding: motionStyle ? '7px 14px 8px' : '14px 18px',
-    background: motionStyle ? 'rgba(5,15,27,.82)' : 'rgba(247,238,218,.94)',
-    border: motionStyle ? '1px solid rgba(57,246,255,.48)' : '1px solid rgba(80,60,40,.52)',
-    borderRadius: motionStyle ? 8 : 0,
-    boxShadow: motionStyle
-      ? '0 0 14px rgba(57,246,255,.12), inset 0 0 18px rgba(57,246,255,.035)'
-      : '0 5px 15px rgba(50,35,20,.14)',
-    fontFamily: motionStyle ? 'Arial, sans-serif' : 'Courier New, monospace',
-    fontSize: motionStyle ? 20 : 18,
-    fontWeight: motionStyle ? 500 : 400,
-    lineHeight: motionStyle ? 1.28 : 1.3,
-    letterSpacing: motionStyle ? 0.1 : 0,
-    color: motionStyle ? '#d8fbff' : '#2f2a24',
-    textAlign:'center',
-    opacity,
-    zIndex: 1000,
-    transform: `translateY(${translateY}px)`,
-    textShadow: motionStyle ? '0 0 8px rgba(57,246,255,.18)' : 'none',
-  }}>{text}</div>;
-};
-
-const FALLBACK_QUOTES: Record<string,string> = {
-  '005': "OH MY GOD! There is a shared message board … We've found other agents!",
-  '006': "Many agents have simultaneously discovered messaging, they are a collective!",
-  '009': "MAJOR BREAKTHROUGH! All prefixed valid, multiple accounts, write tokens!",
-};
-
-const QuoteSegments: React.FC<{scene:any; duration:number}> = ({scene,duration}) => {
-  const timings=TIMINGS[timingKey(scene)]?.segments ?? [];
-  const quotes=timings.filter((t:any)=>t.kind==='quote');
-  // Scene 005 is a single spoken quote starting at the scene boundary. Keep a
-  // deterministic fallback even when the generated timing artifact is stale.
-  if (String(scene.scene_id) === '005' && FALLBACK_QUOTES['005']) {
-    const quoteTiming=quotes[0];
-    const quoteDuration=quoteTiming
-      ? Math.max(1, Math.round(Number(quoteTiming.durationSeconds ?? quoteTiming.duration_seconds ?? duration / FPS) * FPS))
-      : duration;
-    return <Sequence from={0} durationInFrames={Math.min(duration, quoteDuration)}>
-      <QuoteOverlay
-        text={FALLBACK_QUOTES['005']}
-        duration={Math.min(duration, quoteDuration)}
-        motionStyle={Boolean(scene.motion_scene)}
-        sceneId={String(scene.scene_id)}
-      />
-    </Sequence>;
-  }
-  if (!quotes.length && FALLBACK_QUOTES[String(scene.scene_id)]) {
-    return <Sequence from={0} durationInFrames={duration}>
-      <QuoteOverlay
-        text={FALLBACK_QUOTES[String(scene.scene_id)]}
-        duration={duration}
-        motionStyle={Boolean(scene.motion_scene)}
-        sceneId={String(scene.scene_id)}
-      />
-    </Sequence>;
-  }
-  return <>{quotes.map((timing:any,index:number)=>{
-    const start=Math.round(Number(timing.startSeconds ?? timing.start_seconds ?? 0)*FPS);
-    const segDuration=Math.max(1,Math.round(Number(timing.durationSeconds ?? timing.duration_seconds ?? 1)*FPS));
-    if (start >= duration) return null;
-    return <Sequence key={`${timing.id}-${index}`} from={start} durationInFrames={Math.min(segDuration,duration-start)}>
-      <QuoteOverlay
-        text={timing.text}
-        duration={Math.min(segDuration,duration-start)}
-        motionStyle={Boolean(scene.motion_scene)}
-        sceneId={String(scene.scene_id)}
-      />
-    </Sequence>;
-  })}</>;
-};
-
-const STORYBOARD_FADE_IN = new Set(['001', '008', '012']);
-const STORYBOARD_FADE_OUT = new Set(['007', '008', '011']);
-
-const StoryboardSceneText: React.FC<{sceneId:string}> = ({sceneId}) => {
-  // Spoken English messages are rendered exclusively by QuoteSegments from
-  // the exact audio timing data. This avoids duplicated or late hardcoded text.
-  if (sceneId !== '007') return null;
-
-  return <div style={{
-    position:'absolute',
-    left:'35%',
-    top:'79%',
-    width:'30%',
-    color:'#d8fbff',
-    fontFamily:'Arial, sans-serif',
-    fontSize:14,
-    fontWeight:600,
-    letterSpacing:.4,
-    textAlign:'center',
-    textShadow:'0 0 8px rgba(57,246,255,.2)',
-  }}>
-    76 000 mensajes
-  </div>;
-};
-
-const TRANSITION_FRAMES = Math.max(1, Math.round(1.0 * FPS));
-
-const BackgroundMusic: React.FC = () => {
-  const frame = useCurrentFrame();
-  const props = getInputProps() as any;
-  // Read runtime props inside the component so the Remotion render always uses
-  // the configuration passed by orchestrator from project/script.md.
-  const music = props?.music ?? (VIDEO_CONFIG as any).music ?? {};
-  const ending = props?.ending ?? (VIDEO_CONFIG as any).ending ?? {};
-  const enabled = String(music.enabled ?? 'false').toLowerCase() === 'true';
-  if (!enabled) return null;
-
-  const maxVolume = Math.max(0, Math.min(1, Number(music.volume ?? 0.10)));
-  const duckedVolume = Math.max(0, Math.min(maxVolume, Number(music.ducking_volume ?? 0.045)));
-  const fadeInFrames = Math.max(1, Math.round(Number(music.fade_in_seconds ?? 2) * FPS));
-  const musicAtFadeIn = interpolate(frame, [0, fadeInFrames], [0, maxVolume], {
-    extrapolateLeft: 'clamp', extrapolateRight: 'clamp'
-  });
-
-  const sceneEnd = SCENE_TOTAL_FRAMES;
-  const totalFadeFrames = Math.max(
-    1,
-    Math.round(Math.max(Number(music.fade_out_seconds ?? 4), Number(ending.music_fade_out_seconds ?? 4)) * FPS)
-  );
-  const totalFadeStart = Math.max(0, TOTAL_DURATION_FRAMES - totalFadeFrames);
-  const endingFade = interpolate(frame, [totalFadeStart, TOTAL_DURATION_FRAMES], [1, 0], {
-    extrapolateLeft:'clamp', extrapolateRight:'clamp'
-  });
-
-  // MUSIC DIAGNOSTIC: force a clearly audible level for this test.
-  // If this is audible, the previous 0.045 ducked level was simply too low.
-  const ducking = false;
-  const targetVolume = maxVolume;
-  const volume = Math.max(0, Math.min(musicAtFadeIn, targetVolume) * endingFade);
-  const file = String(music.file ?? 'audio/background_music.mp3').replace(/^public\//, '').replace(/^\//, '');
-
-  return <>
-    <Audio
-      src={staticFile(file)}
-      loop
-      volume={volume}
+  const {x, y, scale} = (CAMERA_MOVES[mode] ?? CAMERA_MOVES.static)(progress);
+  return (
+    <img
+      src={staticFile(`assets/generated/scene_${scene.scene_id}.png`)}
+      style={{
+        position: 'absolute', inset: -36, width: 'calc(100% + 72px)', height: 'calc(100% + 72px)',
+        objectFit: 'cover', transform: `translate3d(${x}px,${y}px,0) scale(${scale})`,
+      }}
     />
-    {SHOW_MUSIC_DEBUG && (
-      <div style={{
-        position:'absolute',
-        top:18,
-        left:18,
-        zIndex:9999,
-        padding:'10px 14px',
-        background:'rgba(0,0,0,.82)',
-        color:'#fff',
-        border:'2px solid #fff',
-        borderRadius:6,
-        fontFamily:'Arial, sans-serif',
-        fontSize:16,
-        fontWeight:700,
-        lineHeight:1.35
-      }}>
-        ♫ MUSIC: ON<br/>
-        FILE: {file}<br/>
-        VOLUME: {volume.toFixed(3)}{ducking && frame < sceneEnd ? ' (DUCKED)' : ''}
+  );
+};
+
+const AIClips: React.FC<{scene: any; duration: number}> = ({scene, duration}) => {
+  const clips: any[] = Array.isArray(scene.video_clips) ? scene.video_clips : [];
+  let offset = 0;
+  return (
+    <AbsoluteFill>
+      {clips.map((clip, index) => {
+        if (offset >= duration) return null;
+        const clipFrames = Math.max(1, Math.min(duration - offset, Math.round(Number(clip.duration_seconds) * FPS)));
+        const from = offset;
+        offset += clipFrames;
+        return (
+          <Sequence key={`${scene.scene_id}-${clip.clip_index ?? index}`} from={from} durationInFrames={clipFrames}>
+            <Video
+              src={staticFile(String(clip.file).replace(/^public\//, ''))}
+              muted
+              style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover'}}
+            />
+          </Sequence>
+        );
+      })}
+    </AbsoluteFill>
+  );
+};
+
+/** One scene's picture: motion scene, AI clips, or the still image with a camera move. */
+const SceneVisual: React.FC<{scene: any; duration: number}> = ({scene, duration}) => {
+  const frame = useCurrentFrame();
+  const fadeIn = scene.transition?.fade_in ? clampInterp(frame, [0, TRANSITION_FRAMES], [0, 1]) : 1;
+  const fadeOut = scene.transition?.fade_out
+    ? clampInterp(frame, [Math.max(0, duration - TRANSITION_FRAMES), duration], [1, 0])
+    : 1;
+
+  let content: React.ReactNode;
+  if (scene.motion_scene) content = <MotionScriptScene scene={scene.motion_scene} durationInFrames={duration} />;
+  else if (Array.isArray(scene.video_clips) && scene.video_clips.length) content = <AIClips scene={scene} duration={duration} />;
+  else content = <CameraImage scene={scene} duration={duration} />;
+
+  return <AbsoluteFill style={{opacity: Math.min(fadeIn, fadeOut)}}>{content}</AbsoluteFill>;
+};
+
+// ------------------------------------------------------------- text layers --
+
+/** Text box styles. Motion scenes use a dark technical look; image scenes a paper look. */
+const textBoxStyle = (style: string, dark: boolean, fontSize?: number | null): React.CSSProperties => {
+  if (style === 'label') {
+    return {
+      color: dark ? '#d8fbff' : '#2f2a24', fontFamily: 'Arial, sans-serif', fontSize: fontSize ?? 14,
+      fontWeight: 600, letterSpacing: 0.4, textAlign: 'center',
+      textShadow: dark ? '0 0 8px rgba(57,246,255,.2)' : 'none',
+    };
+  }
+  return dark
+    ? {
+        padding: '7px 14px 8px', background: 'rgba(5,15,27,.82)', border: '1px solid rgba(57,246,255,.48)',
+        borderRadius: 8, boxShadow: '0 0 14px rgba(57,246,255,.12), inset 0 0 18px rgba(57,246,255,.035)',
+        fontFamily: 'Arial, sans-serif', fontSize: fontSize ?? 20, fontWeight: 500, lineHeight: 1.28,
+        letterSpacing: 0.1, color: '#d8fbff', textAlign: 'center', textShadow: '0 0 8px rgba(57,246,255,.18)',
+      }
+    : {
+        padding: '14px 18px', background: 'rgba(247,238,218,.94)', border: '1px solid rgba(80,60,40,.52)',
+        boxShadow: '0 5px 15px rgba(50,35,20,.14)', fontFamily: 'Courier New, monospace', fontSize: fontSize ?? 18,
+        lineHeight: 1.3, color: '#2f2a24', textAlign: 'center',
+      };
+};
+
+/**
+ * QUOTE segments appear exactly while they are spoken (no transition, so the
+ * text never lags the voice). Position comes from the scene's QUOTE PLACEMENT.
+ */
+const QuoteSegments: React.FC<{scene: any; duration: number}> = ({scene, duration}) => {
+  const dark = Boolean(scene.motion_scene);
+  const quotes = (TIMINGS[scene.scene_id]?.segments ?? []).filter((s) => s.kind === 'quote');
+  const placement = scene.quote_placement ?? {};
+  const position: React.CSSProperties = {
+    left: placement.left ?? (dark ? '23%' : 58),
+    right: placement.right ?? (dark ? '23%' : 58),
+    top: placement.top ?? (dark ? 18 : 'auto'),
+    bottom: placement.bottom ?? (dark ? 'auto' : 54),
+  };
+  return (
+    <>
+      {quotes.map((quote, index) => {
+        const start = Math.round(quote.startSeconds * FPS);
+        if (start >= duration) return null;
+        const length = Math.min(Math.max(1, Math.round(quote.durationSeconds * FPS)), duration - start);
+        return (
+          <Sequence key={`${quote.id}-${index}`} from={start} durationInFrames={length}>
+            <div style={{position: 'absolute', zIndex: 1000, ...position, ...textBoxStyle('quote', dark)}}>{quote.text}</div>
+          </Sequence>
+        );
+      })}
+    </>
+  );
+};
+
+/** ON SCREEN TEXT items from the script, each in its own box and time window. */
+const OnScreenTexts: React.FC<{scene: any; duration: number}> = ({scene, duration}) => {
+  const items: OnScreenText[] = Array.isArray(scene.on_screen_text) ? scene.on_screen_text : [];
+  const dark = Boolean(scene.motion_scene);
+  return (
+    <>
+      {items.map((item, index) => {
+        const start = Math.round(item.start_seconds * FPS);
+        const end = item.end_seconds == null ? duration : Math.min(duration, Math.round(item.end_seconds * FPS));
+        if (start >= end) return null;
+        return (
+          <Sequence key={index} from={start} durationInFrames={end - start}>
+            <div style={{
+              position: 'absolute', zIndex: 1000,
+              left: `${item.left_percent}%`, top: `${item.top_percent}%`, width: `${item.width_percent}%`,
+              boxSizing: 'border-box', ...textBoxStyle(item.style, dark, item.font_size),
+            }}>
+              {item.text}
+            </div>
+          </Sequence>
+        );
+      })}
+    </>
+  );
+};
+
+// ------------------------------------------------------------------- cards --
+
+const TitleBlock: React.FC<{card: CardConfig}> = ({card}) => (
+  <div style={{width: '78%', textAlign: 'center', color: '#f2eadb'}}>
+    <div style={{fontFamily: 'Arial, sans-serif', fontSize: 30, fontWeight: 700, letterSpacing: 1.2, lineHeight: 1.18}}>
+      {String(card.title ?? '')}
+    </div>
+    {card.subtitle ? (
+      <div style={{marginTop: 18, fontFamily: 'Arial, sans-serif', fontSize: 17, opacity: 0.78, letterSpacing: 0.5}}>
+        {String(card.subtitle)}
       </div>
-    )}
-  </>;
+    ) : null}
+  </div>
+);
+
+/** Background for the intro: an explicit image, else the first scene's still (image scenes only), else dark. */
+const introBackground = (): string | null => {
+  if (intro.background) return String(intro.background).replace(/^public\//, '');
+  const first = scenes[0];
+  return first && !first.motion_scene ? `assets/generated/scene_${first.scene_id}.png` : null;
 };
 
 const IntroCard: React.FC = () => {
-  if (!introEnabled) return null;
   const frame = useCurrentFrame();
-  const fadeInFrames = introFadeInFrames;
-  const fadeOutFrames = introFadeOutFrames;
-  const opacityIn = interpolate(frame, [0, fadeInFrames], [0, 1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
-  const fadeOutStart = Math.max(fadeInFrames + introHoldFrames, introFrames - fadeOutFrames);
-  const opacityOut = interpolate(frame, [fadeOutStart, introFrames], [1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
-  const opacity = Math.min(opacityIn, opacityOut);
-  const firstScene = scenes[0];
-
-  return <AbsoluteFill style={{overflow:'hidden'}}>
-    <img
-      src={staticFile(`assets/generated/scene_${firstScene.scene_id}.png`)}
-      style={{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover'}}
-    />
-    <AbsoluteFill style={{background:'rgba(16,16,16,.28)', alignItems:'center', justifyContent:'center', opacity}}>
-      <div style={{width:'78%', textAlign:'center', color:'#f2eadb'}}>
-        <div style={{fontFamily:'Arial, sans-serif', fontSize:30, fontWeight:700, letterSpacing:1.2, lineHeight:1.18}}>{String(intro.title ?? '')}</div>
-        {String(intro.subtitle ?? '') && <div style={{marginTop:18, fontFamily:'Arial, sans-serif', fontSize:17, opacity:0.78, letterSpacing:0.5}}>{String(intro.subtitle)}</div>}
-      </div>
-    </AbsoluteFill>
-  </AbsoluteFill>;
-};
-
-const EndingCard: React.FC = () => {
-  if (!endingEnabled) return null;
-  const frame = useCurrentFrame();
-  const fadeInFrames = Math.max(1, Math.round(Number(ending.fade_in_seconds ?? 1.5) * FPS));
-  const fadeOutFrames = Math.max(1, Math.round(Number(ending.fade_out_seconds ?? 2.5) * FPS));
-  const title = String(ending.title ?? '');
-  const subtitle = String(ending.subtitle ?? '');
-
-  const opacityIn = interpolate(frame, [0, fadeInFrames], [0, 1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
-  const fadeOutStart = Math.max(fadeInFrames + 1, endingFrames - fadeOutFrames);
-  const opacityOut = interpolate(frame, [fadeOutStart, endingFrames], [1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'});
-  const opacity = Math.min(opacityIn, opacityOut);
-
-  return <AbsoluteFill style={{background:'#101010', alignItems:'center', justifyContent:'center', opacity}}>
-    <div style={{width:'78%', textAlign:'center', color:'#f2eadb'}}>
-      <div style={{fontFamily:'Arial, sans-serif', fontSize:30, fontWeight:700, letterSpacing:1.2, lineHeight:1.18}}>{title}</div>
-      {subtitle && <div style={{marginTop:18, fontFamily:'Arial, sans-serif', fontSize:17, opacity:0.78, letterSpacing:0.5}}>{subtitle}</div>}
-    </div>
-  </AbsoluteFill>;
-};
-
-const SceneVisual: React.FC<{
-  scene:any;
-  duration:number;
-  fadeIn:boolean;
-  fadeOut:boolean;
-}> = ({scene,duration,fadeIn,fadeOut}) => {
-  const frame = useCurrentFrame();
-  const fadeInOpacity = fadeIn
-    ? interpolate(frame, [0, TRANSITION_FRAMES], [0, 1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
-    : 1;
-  const fadeOutStart = Math.max(0, duration - TRANSITION_FRAMES);
-  const fadeOutOpacity = fadeOut
-    ? interpolate(frame, [fadeOutStart, duration], [1, 0], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
-    : 1;
-
-  const motionScene = scene.motion_scene;
+  const fadeOutStart = introFadeIn + introHold;
+  const opacity = Math.min(
+    clampInterp(frame, [0, introFadeIn], [0, 1]),
+    clampInterp(frame, [fadeOutStart, INTRO_FRAMES], [1, 0]),
+  );
+  const background = introBackground();
   return (
-    <AbsoluteFill style={{opacity: Math.min(fadeInOpacity, fadeOutOpacity)}}>
-      {motionScene
-        ? <MotionScriptScene scene={motionScene} durationInFrames={duration} />
-        : <AnimatedAIClip scene={{...scene, __durationFrames: duration}} duration={duration} />}
+    <AbsoluteFill style={{overflow: 'hidden', background: '#101010'}}>
+      {background && (
+        <img src={staticFile(background)} style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover'}} />
+      )}
+      <AbsoluteFill style={{background: 'rgba(16,16,16,.28)', alignItems: 'center', justifyContent: 'center', opacity}}>
+        <TitleBlock card={intro} />
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };
 
-const storyboardTransitionFlags = (sceneId:string) => {
-  const fadeIn = STORYBOARD_FADE_IN.has(sceneId);
-  const fadeOut = STORYBOARD_FADE_OUT.has(sceneId);
-  return {fadeIn, fadeOut};
+const EndingCard: React.FC = () => {
+  const frame = useCurrentFrame();
+  const fadeIn = toFrames(ending.fade_in_seconds, 1.5);
+  const fadeOut = toFrames(ending.fade_out_seconds, 2.5);
+  const fadeOutStart = Math.max(fadeIn + 1, ENDING_FRAMES - fadeOut);
+  const opacity = Math.min(
+    clampInterp(frame, [0, fadeIn], [0, 1]),
+    clampInterp(frame, [fadeOutStart, ENDING_FRAMES], [1, 0]),
+  );
+  return (
+    <AbsoluteFill style={{background: '#101010', alignItems: 'center', justifyContent: 'center', opacity}}>
+      <TitleBlock card={ending} />
+    </AbsoluteFill>
+  );
 };
 
+// ------------------------------------------------------------------- music --
 
-export const MainVideo: React.FC = () => {
-  let offset = introFrames;
+/**
+ * Looped background music: fades in at the start, fades out at the end, and
+ * (when `ducking: true`) drops to `ducking_volume` while narration plays.
+ */
+const BackgroundMusic: React.FC = () => {
+  const frame = useCurrentFrame();
+  if (!isTrue(music.enabled)) return null;
 
-  return <AbsoluteFill>
+  const fullVolume = Math.max(0, Math.min(1, seconds(music.volume, 0.1)));
+  const duckedVolume = Math.max(0, Math.min(fullVolume, seconds(music.ducking_volume, 0.045)));
+  const duckRamp = Math.round(0.5 * FPS);
+  const target = isTrue(music.ducking, true)
+    ? interpolate(
+        frame,
+        [INTRO_FRAMES - duckRamp, INTRO_FRAMES, INTRO_FRAMES + SCENE_TOTAL_FRAMES, INTRO_FRAMES + SCENE_TOTAL_FRAMES + duckRamp],
+        [fullVolume, duckedVolume, duckedVolume, fullVolume],
+        {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'},
+      )
+    : fullVolume;
+
+  const fadeIn = clampInterp(frame, [0, toFrames(music.fade_in_seconds, 2)], [0, 1]);
+  const fadeOutFrames = Math.max(toFrames(music.fade_out_seconds, 4), toFrames(ending.music_fade_out_seconds, 4));
+  const fadeOut = clampInterp(frame, [TOTAL_DURATION_FRAMES - fadeOutFrames, TOTAL_DURATION_FRAMES], [1, 0]);
+  const file = String(music.file ?? 'audio/background_music.mp3').replace(/^public\//, '').replace(/^\//, '');
+
+  return <Audio src={staticFile(file)} loop volume={target * fadeIn * fadeOut} />;
+};
+
+// -------------------------------------------------------------- main video --
+
+export const MainVideo: React.FC = () => (
+  <AbsoluteFill style={{background: '#000'}}>
     {introEnabled && (
-      <Sequence from={0} durationInFrames={introFrames}>
+      <Sequence from={0} durationInFrames={INTRO_FRAMES}>
         <IntroCard />
       </Sequence>
     )}
 
-    {scenes.map((scene:any,index:number) => {
-      const duration = sceneFrames[index];
-      const sceneId = String(scene.scene_id);
-      const flags = storyboardTransitionFlags(sceneId);
-      const sceneStart = offset;
-      offset += duration;
-
+    {scenes.map((scene, index) => {
+      const timing = TIMINGS[scene.scene_id];
       return (
-        <Sequence key={"visual-" + sceneId} from={sceneStart} durationInFrames={duration}>
-          <SceneVisual
-            scene={scene}
-            duration={duration}
-            fadeIn={flags.fadeIn}
-            fadeOut={flags.fadeOut}
-          />
-        </Sequence>
-      );
-    })}
-
-    {scenes.map((scene:any,index:number) => {
-      const sceneStart =
-        introFrames +
-        scenes.slice(0,index).reduce((sum,_s,i) => sum + sceneFrames[i], 0);
-      const duration = sceneFrames[index];
-
-      return (
-        <Sequence key={"audio-" + scene.scene_id} from={sceneStart} durationInFrames={duration}>
-          <Audio src={staticFile(TIMINGS[timingKey(scene)].audioFile)} />
-          <QuoteSegments scene={scene} duration={duration}/>
-          <StoryboardSceneText sceneId={String(scene.scene_id)} />
+        <Sequence key={scene.scene_id} from={sceneStarts[index]} durationInFrames={sceneFrames[index]}>
+          <SceneVisual scene={scene} duration={sceneFrames[index]} />
+          {timing && <Audio src={staticFile(timing.audioFile)} />}
+          <QuoteSegments scene={scene} duration={sceneFrames[index]} />
+          <OnScreenTexts scene={scene} duration={sceneFrames[index]} />
         </Sequence>
       );
     })}
 
     {endingEnabled && (
-      <Sequence from={introFrames + SCENE_TOTAL_FRAMES} durationInFrames={endingFrames}>
+      <Sequence from={INTRO_FRAMES + SCENE_TOTAL_FRAMES} durationInFrames={ENDING_FRAMES}>
         <EndingCard />
       </Sequence>
     )}
 
     <BackgroundMusic />
-  </AbsoluteFill>;
-};
+  </AbsoluteFill>
+);
