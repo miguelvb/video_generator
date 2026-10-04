@@ -444,6 +444,8 @@ type VisualGroup = {
   endIndex:number;
   startFrame:number;
   duration:number;
+  fadeIn:boolean;
+  fadeOut:boolean;
   motionScene:any;
 };
 
@@ -478,7 +480,6 @@ const buildVisualGroups = ():VisualGroup[] => {
   let absoluteFrame=0;
   while (i<scenes.length) {
     const startIndex=i;
-    const first=String(scenes[i].scene_id);
     let endIndex=i;
     let duration=sceneFrames[i];
     const actions:any[]=[];
@@ -519,7 +520,6 @@ const buildVisualGroups = ():VisualGroup[] => {
     });
     absoluteFrame+=duration;
     i=endIndex+1;
-    void first;
   }
   return groups;
 };
