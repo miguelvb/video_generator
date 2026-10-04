@@ -255,36 +255,6 @@ const StoryboardSceneText: React.FC<{sceneId:string}> = ({sceneId}) => {
 
 const TRANSITION_FRAMES = Math.max(1, Math.round(1.0 * FPS));
 
-const SvgNetworkOverlay: React.FC<{duration:number}> = ({duration}) => {
-  const frame = useCurrentFrame();
-  const progress = interpolate(frame, [0, Math.max(1, Math.round(duration * 0.8))], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  const nodes = [
-    [12, 28], [30, 18], [50, 32], [70, 20], [88, 34],
-    [24, 68], [46, 78], [66, 62], [84, 76],
-  ];
-  const edges = [[0,1],[1,2],[2,3],[3,4],[0,5],[1,6],[2,6],[2,7],[3,7],[4,8],[6,7],[7,8]];
-  return <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{position:'absolute',inset:0,width:'100%',height:'100%',pointerEvents:'none'}}>
-    {edges.map(([a,b], i) => {
-      const [x1,y1] = nodes[a]; const [x2,y2] = nodes[b];
-      const edgeProgress = Math.max(0, Math.min(1, (progress - i * 0.055) / 0.45));
-      const opacity = interpolate(edgeProgress, [0,1], [0,0.72], {extrapolateLeft:'clamp',extrapolateRight:'clamp'});
-      const length = Math.hypot(x2-x1, y2-y1);
-      return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#315b67" strokeWidth="0.35" opacity={opacity} strokeDasharray={length} strokeDashoffset={length * (1-edgeProgress)} />;
-    })}
-    {nodes.map(([x,y], i) => {
-      const nodeProgress = Math.max(0, Math.min(1, (progress - i * 0.06) / 0.3));
-      const scale = interpolate(nodeProgress,[0,1],[0,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
-      return <g key={i} transform={`translate(${x} ${y}) scale(${scale})`}>
-        <circle r="1.25" fill="#f2eadb" stroke="#263d4a" strokeWidth="0.45" />
-        <circle r="0.42" fill="#527c7b" opacity={0.85} />
-      </g>;
-    })}
-  </svg>;
-};
-
 const BackgroundMusic: React.FC = () => {
   const frame = useCurrentFrame();
   const props = getInputProps() as any;
