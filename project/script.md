@@ -436,6 +436,13 @@ continuation
   "color": "#39f6ff",
   "nodes": [
     {
+      "id": "environment",
+      "shape": "boundary",
+      "x": 50,
+      "y": 50,
+      "size": 100
+    },
+    {
       "id": "openai",
       "asset": "openai-ui",
       "x": 50,
@@ -592,6 +599,15 @@ continuation
   ],
   "connections": [],
   "actions": [
+    {
+      "type": "appear",
+      "target": "environment",
+      "at": 0,
+      "duration": 18,
+      "cue": "002_es_01",
+      "cueWord": "entorno",
+      "cueOccurrence": 1
+    },
     {
       "type": "appear",
       "target": "openai",
