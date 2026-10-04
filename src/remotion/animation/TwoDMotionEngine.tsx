@@ -182,7 +182,7 @@ export const MotionEngineTest: React.FC = () => {
       y: 50,
       size: 190,
       delay: 0,
-      asset: 'server-ui',
+      asset: 'artifactory-ui',
     },
   ];
 
