@@ -392,376 +392,434 @@ export const MOTION_SCENES = {
       }
     ]
   },
-  "002": {
-  "durationInFrames": 356,
-  "color": "#39f6ff",
-  "background": "assets/motion/swarm-background.svg",
-  "nodes": [
-    {
-      "id": "swarm-01",
-      "asset": "agent-ui",
-      "x": 25,
-      "y": 42,
-      "size": 24
-    },
-    {
-      "id": "swarm-02",
-      "asset": "agent-ui",
-      "x": 35,
-      "y": 42,
-      "size": 24
-    },
-    {
-      "id": "swarm-03",
-      "asset": "agent-ui",
-      "x": 45,
-      "y": 42,
-      "size": 24
-    },
-    {
-      "id": "swarm-04",
-      "asset": "agent-ui",
-      "x": 55,
-      "y": 42,
-      "size": 24
-    },
-    {
-      "id": "swarm-05",
-      "asset": "agent-ui",
-      "x": 65,
-      "y": 42,
-      "size": 24
-    },
-    {
-      "id": "swarm-06",
-      "asset": "agent-ui",
-      "x": 75,
-      "y": 42,
-      "size": 24
-    },
-    {
-      "id": "swarm-07",
-      "asset": "agent-ui",
-      "x": 25,
-      "y": 50,
-      "size": 24
-    },
-    {
-      "id": "swarm-08",
-      "asset": "agent-ui",
-      "x": 35,
-      "y": 50,
-      "size": 24
-    },
-    {
-      "id": "swarm-09",
-      "asset": "agent-ui",
-      "x": 45,
-      "y": 50,
-      "size": 24
-    },
-    {
-      "id": "swarm-10",
-      "asset": "agent-ui",
-      "x": 55,
-      "y": 50,
-      "size": 24
-    },
-    {
-      "id": "swarm-11",
-      "asset": "agent-ui",
-      "x": 65,
-      "y": 50,
-      "size": 24
-    },
-    {
-      "id": "swarm-12",
-      "asset": "agent-ui",
-      "x": 75,
-      "y": 50,
-      "size": 24
-    },
-    {
-      "id": "swarm-13",
-      "asset": "agent-ui",
-      "x": 25,
-      "y": 58,
-      "size": 24
-    },
-    {
-      "id": "swarm-14",
-      "asset": "agent-ui",
-      "x": 35,
-      "y": 58,
-      "size": 24
-    },
-    {
-      "id": "swarm-15",
-      "asset": "agent-ui",
-      "x": 45,
-      "y": 58,
-      "size": 24
-    },
-    {
-      "id": "swarm-16",
-      "asset": "agent-ui",
-      "x": 55,
-      "y": 58,
-      "size": 24
-    },
-    {
-      "id": "swarm-17",
-      "asset": "agent-ui",
-      "x": 65,
-      "y": 58,
-      "size": 24
-    },
-    {
-      "id": "swarm-18",
-      "asset": "agent-ui",
-      "x": 75,
-      "y": 58,
-      "size": 24
-    },
-    {
-      "id": "swarm-19",
-      "asset": "agent-ui",
-      "x": 25,
-      "y": 66,
-      "size": 24
-    },
-    {
-      "id": "swarm-20",
-      "asset": "agent-ui",
-      "x": 35,
-      "y": 66,
-      "size": 24
-    },
-    {
-      "id": "swarm-21",
-      "asset": "agent-ui",
-      "x": 45,
-      "y": 66,
-      "size": 24
-    },
-    {
-      "id": "swarm-22",
-      "asset": "agent-ui",
-      "x": 55,
-      "y": 66,
-      "size": 24
-    },
-    {
-      "id": "swarm-23",
-      "asset": "agent-ui",
-      "x": 65,
-      "y": 66,
-      "size": 24
-    },
-    {
-      "id": "swarm-24",
-      "asset": "agent-ui",
-      "x": 75,
-      "y": 66,
-      "size": 24
-    }
-  ],
-  "connections": [],
-  "actions": [
-    {
-      "type": "appear",
-      "target": "swarm-01",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-02",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-03",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-04",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-05",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-06",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-07",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-08",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-09",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-10",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-11",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-12",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-13",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-14",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-15",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-16",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-17",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-18",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-19",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-20",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-21",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-22",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-23",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "swarm-24",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "pulse",
-      "target": "swarm-01",
-      "at": 80,
-      "duration": 18
-    },
-    {
-      "type": "pulse",
-      "target": "swarm-04",
-      "at": 89,
-      "duration": 18
-    },
-    {
-      "type": "pulse",
-      "target": "swarm-07",
-      "at": 98,
-      "duration": 18
-    },
-    {
-      "type": "pulse",
-      "target": "swarm-10",
-      "at": 107,
-      "duration": 18
-    },
-    {
-      "type": "pulse",
-      "target": "swarm-13",
-      "at": 116,
-      "duration": 18
-    },
-    {
-      "type": "pulse",
-      "target": "swarm-16",
-      "at": 125,
-      "duration": 18
-    },
-    {
-      "type": "pulse",
-      "target": "swarm-19",
-      "at": 134,
-      "duration": 18
-    },
-    {
-      "type": "pulse",
-      "target": "swarm-22",
-      "at": 143,
-      "duration": 18
-    }
-  ]
-},
+  "002":   {
+    "durationInFrames": 356,
+    "color": "#39f6ff",
+    "background": "assets/motion/swarm-background.svg",
+    "nodes": [
+      {
+        "id": "swarm-1",
+        "asset": "agent-ui",
+        "x": 43,
+        "y": 42,
+        "size": 22
+      },
+      {
+        "id": "swarm-2",
+        "asset": "agent-ui",
+        "x": 46,
+        "y": 42,
+        "size": 22
+      },
+      {
+        "id": "swarm-3",
+        "asset": "agent-ui",
+        "x": 49,
+        "y": 42,
+        "size": 22
+      },
+      {
+        "id": "swarm-4",
+        "asset": "agent-ui",
+        "x": 52,
+        "y": 42,
+        "size": 22
+      },
+      {
+        "id": "swarm-5",
+        "asset": "agent-ui",
+        "x": 55,
+        "y": 42,
+        "size": 22
+      },
+      {
+        "id": "swarm-6",
+        "asset": "agent-ui",
+        "x": 58,
+        "y": 42,
+        "size": 22
+      },
+      {
+        "id": "swarm-7",
+        "asset": "agent-ui",
+        "x": 43,
+        "y": 47,
+        "size": 22
+      },
+      {
+        "id": "swarm-8",
+        "asset": "agent-ui",
+        "x": 46,
+        "y": 47,
+        "size": 22
+      },
+      {
+        "id": "swarm-9",
+        "asset": "agent-ui",
+        "x": 49,
+        "y": 47,
+        "size": 22
+      },
+      {
+        "id": "swarm-10",
+        "asset": "agent-ui",
+        "x": 52,
+        "y": 47,
+        "size": 22
+      },
+      {
+        "id": "swarm-11",
+        "asset": "agent-ui",
+        "x": 55,
+        "y": 47,
+        "size": 22
+      },
+      {
+        "id": "swarm-12",
+        "asset": "agent-ui",
+        "x": 58,
+        "y": 47,
+        "size": 22
+      },
+      {
+        "id": "swarm-13",
+        "asset": "agent-ui",
+        "x": 43,
+        "y": 52,
+        "size": 22
+      },
+      {
+        "id": "swarm-14",
+        "asset": "agent-ui",
+        "x": 46,
+        "y": 52,
+        "size": 22
+      },
+      {
+        "id": "swarm-15",
+        "asset": "agent-ui",
+        "x": 49,
+        "y": 52,
+        "size": 22
+      },
+      {
+        "id": "swarm-16",
+        "asset": "agent-ui",
+        "x": 52,
+        "y": 52,
+        "size": 22
+      },
+      {
+        "id": "swarm-17",
+        "asset": "agent-ui",
+        "x": 55,
+        "y": 52,
+        "size": 22
+      },
+      {
+        "id": "swarm-18",
+        "asset": "agent-ui",
+        "x": 58,
+        "y": 52,
+        "size": 22
+      },
+      {
+        "id": "swarm-19",
+        "asset": "agent-ui",
+        "x": 43,
+        "y": 57,
+        "size": 22
+      },
+      {
+        "id": "swarm-20",
+        "asset": "agent-ui",
+        "x": 46,
+        "y": 57,
+        "size": 22
+      },
+      {
+        "id": "swarm-21",
+        "asset": "agent-ui",
+        "x": 49,
+        "y": 57,
+        "size": 22
+      },
+      {
+        "id": "swarm-22",
+        "asset": "agent-ui",
+        "x": 52,
+        "y": 57,
+        "size": 22
+      },
+      {
+        "id": "swarm-23",
+        "asset": "agent-ui",
+        "x": 55,
+        "y": 57,
+        "size": 22
+      },
+      {
+        "id": "swarm-24",
+        "asset": "agent-ui",
+        "x": 58,
+        "y": 57,
+        "size": 22
+      },
+      {
+        "id": "ellipsis",
+        "asset": "ellipsis",
+        "x": 60,
+        "y": 62,
+        "size": 26
+      },
+      {
+        "id": "test-a",
+        "asset": "task-module-ui",
+        "x": 68,
+        "y": 40,
+        "size": 62
+      },
+      {
+        "id": "test-b",
+        "asset": "task-module-ui",
+        "x": 68,
+        "y": 52,
+        "size": 62
+      },
+      {
+        "id": "test-c",
+        "asset": "task-module-ui",
+        "x": 68,
+        "y": 64,
+        "size": 62
+      }
+    ],
+    "connections": [],
+    "actions": [
+      {
+        "type": "appear",
+        "target": "swarm-1",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-2",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-3",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-4",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-5",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-6",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-7",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-8",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-9",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-10",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-11",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-12",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-13",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-14",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-15",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-16",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-17",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-18",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-19",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-20",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-21",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-22",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-23",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "swarm-24",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "ellipsis",
+        "at": 5,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "test-a",
+        "at": 28,
+        "duration": 14
+      },
+      {
+        "type": "appear",
+        "target": "test-b",
+        "at": 48,
+        "duration": 14
+      },
+      {
+        "type": "appear",
+        "target": "test-c",
+        "at": 68,
+        "duration": 14
+      },
+      {
+        "type": "pulse",
+        "target": "test-a",
+        "at": 104,
+        "duration": 24
+      },
+      {
+        "type": "pulse",
+        "target": "swarm-3",
+        "at": 112,
+        "duration": 18
+      },
+      {
+        "type": "pulse",
+        "target": "test-b",
+        "at": 144,
+        "duration": 24
+      },
+      {
+        "type": "pulse",
+        "target": "swarm-12",
+        "at": 152,
+        "duration": 18
+      },
+      {
+        "type": "pulse",
+        "target": "test-c",
+        "at": 184,
+        "duration": 24
+      },
+      {
+        "type": "pulse",
+        "target": "swarm-21",
+        "at": 192,
+        "duration": 18
+      },
+      {
+        "type": "pulse",
+        "target": "swarm-6",
+        "at": 224,
+        "duration": 18
+      },
+      {
+        "type": "pulse",
+        "target": "swarm-17",
+        "at": 250,
+        "duration": 18
+      },
+      {
+        "type": "pulse",
+        "target": "swarm-24",
+        "at": 276,
+        "duration": 18
+      }
+    ]
+  },
   "003": {
   "durationInFrames": 188,
   "color": "#39f6ff",
