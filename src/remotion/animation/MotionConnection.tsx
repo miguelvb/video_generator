@@ -14,9 +14,8 @@ export const MotionConnection: React.FC<{
   const to = nodesById[edge.to];
   if (!from || !to) return null;
 
-  // A connection is never allowed to exist while either endpoint is still
-  // invisible. The scheduler also gates edge.delay, but this final render-side
-  // guard makes the invariant hold even for malformed/legacy scenes.
+  // A connection is only visible when both endpoints are visible. This is a
+  // render-side guard for each independent scene.
   if ((from.opacity ?? 1) <= 0 || (to.opacity ?? 1) <= 0) return null;
 
   const progress = edgeProgress(frame, edge.delay ?? 0);
