@@ -64,30 +64,6 @@ export const MotionAsset: React.FC<{
           }}
         />
       )}
-      {node.label && (
-        <div style={{
-          position:'absolute',
-          inset:0,
-          display:'flex',
-          alignItems:'center',
-          justifyContent:'center',
-          padding:'12px 20px',
-          boxSizing:'border-box',
-          border:'2px solid #111',
-          borderRadius:12,
-          background:'#f4efe3',
-          color:'#111',
-          fontFamily:'Arial, Helvetica, sans-serif',
-          fontSize:Math.max(18,size*0.13),
-          fontWeight:800,
-          letterSpacing:1.2,
-          textAlign:'center',
-          lineHeight:1.05,
-        }}>
-          {node.label}
-        </div>
-      )}
-
     </div>
   );
 };
