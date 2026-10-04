@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 170">
+<defs><linearGradient id="e" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07131c"/><stop offset="1" stop-color="#161026"/></linearGradient><filter id="g"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<rect x="10" y="10" width="400" height="150" rx="20" fill="url(#e)" stroke="#39f6ff" stroke-width="3" filter="url(#g)"/>
+<rect x="28" y="28" width="364" height="114" rx="14" fill="#050b12" stroke="#39f6ff" stroke-opacity=".35" stroke-width="2"/>
+<circle cx="70" cy="85" r="24" fill="none" stroke="#39f6ff" stroke-width="3"/>
+<path d="M58 85c7-16 19-16 24 0-5 16-17 16-24 0Z" fill="none" stroke="#b56cff" stroke-width="3"/>
+<text x="108" y="82" fill="#d8fbff" font-family="Arial, sans-serif" font-size="27" font-weight="700" letter-spacing="1.5">EXPLOITGYM</text>
+<text x="108" y="111" fill="#6e9da6" font-family="Arial, sans-serif" font-size="13" letter-spacing="2">AI EVALUATION</text>
+</svg>
