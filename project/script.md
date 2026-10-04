@@ -281,9 +281,7 @@ transition
       "type": "appear",
       "target": "openai",
       "at": 8,
-      "duration": 18,
-      "cueWord": "OpenAI",
-      "cueOccurrence": 1
+      "duration": 18
     },
     {
       "type": "appear",
@@ -611,10 +609,7 @@ continuation
       "type": "appear",
       "target": "environment",
       "at": 0,
-      "duration": 18,
-      "cue": "002_es_01",
-      "cueWord": "entorno",
-      "cueOccurrence": 1
+      "duration": 18
     },
     {
       "type": "appear",
@@ -626,9 +621,7 @@ continuation
       "type": "appear",
       "target": "a1",
       "at": 0,
-      "duration": 1,
-      "cueWord": "Crearon",
-      "cueOccurrence": 1
+      "duration": 1
     },
     {
       "type": "appear",
@@ -646,9 +639,7 @@ continuation
       "type": "appear",
       "target": "a4",
       "at": 0,
-      "duration": 1,
-      "cueWord": "autónoma",
-      "cueOccurrence": 1
+      "duration": 1
     },
     {
       "type": "appear",
@@ -672,9 +663,7 @@ continuation
       "type": "appear",
       "target": "a8",
       "at": 0,
-      "duration": 1,
-      "cueWord": "agentes",
-      "cueOccurrence": 1
+      "duration": 1
     },
     {
       "type": "appear",
@@ -692,9 +681,7 @@ continuation
       "type": "appear",
       "target": "a11",
       "at": 0,
-      "duration": 1,
-      "cueWord": "capacidad",
-      "cueOccurrence": 1
+      "duration": 1
     },
     {
       "type": "appear",
@@ -718,9 +705,7 @@ continuation
       "type": "appear",
       "target": "a15",
       "at": 0,
-      "duration": 1,
-      "cueWord": "tarea",
-      "cueOccurrence": 1
+      "duration": 1
     },
     {
       "type": "appear",
@@ -738,9 +723,7 @@ continuation
       "type": "appear",
       "target": "a18",
       "at": 0,
-      "duration": 1,
-      "cueWord": "organización",
-      "cueOccurrence": 1
+      "duration": 1
     },
     {
       "type": "appear",
@@ -763,44 +746,38 @@ continuation
     {
       "type": "pulse",
       "target": "a1",
-      "cue": "002_es_01",
-      "cueOffsetSeconds": 4.2,
-      "cueDurationSeconds": 0.35
+      "at": 126,
+      "duration": 10
     },
     {
       "type": "pulse",
       "target": "a8",
-      "cue": "002_es_01",
-      "cueOffsetSeconds": 4.9,
-      "cueDurationSeconds": 0.35
+      "at": 147,
+      "duration": 10
     },
     {
       "type": "pulse",
       "target": "a15",
-      "cue": "002_es_01",
-      "cueOffsetSeconds": 5.6,
-      "cueDurationSeconds": 0.35
+      "at": 168,
+      "duration": 10
     },
     {
       "type": "pulse",
       "target": "a4",
-      "cue": "002_es_01",
-      "cueOffsetSeconds": 6.3,
-      "cueDurationSeconds": 0.35
+      "at": 189,
+      "duration": 10
     },
     {
       "type": "pulse",
       "target": "a11",
-      "cue": "002_es_01",
-      "cueOffsetSeconds": 7,
-      "cueDurationSeconds": 0.35
+      "at": 210,
+      "duration": 10
     },
     {
       "type": "pulse",
       "target": "a18",
-      "cue": "002_es_01",
-      "cueOffsetSeconds": 7.7,
-      "cueDurationSeconds": 0.35
+      "at": 231,
+      "duration": 10
     }
   ]
 }
@@ -1001,9 +978,7 @@ continuation
       "type": "appear",
       "target": "a1",
       "at": 0,
-      "duration": 1,
-      "cueWord": "norma",
-      "cueOccurrence": 1
+      "duration": 1
     },
     {
       "type": "appear",
@@ -1021,9 +996,7 @@ continuation
       "type": "appear",
       "target": "a4",
       "at": 0,
-      "duration": 1,
-      "cueWord": "pruebas",
-      "cueOccurrence": 1
+      "duration": 1
     },
     {
       "type": "appear",
@@ -1047,9 +1020,7 @@ continuation
       "type": "appear",
       "target": "a8",
       "at": 0,
-      "duration": 1,
-      "cueWord": "agentes",
-      "cueOccurrence": 1
+      "duration": 1
     },
     {
       "type": "appear",
@@ -1067,9 +1038,7 @@ continuation
       "type": "appear",
       "target": "a11",
       "at": 0,
-      "duration": 1,
-      "cueWord": "independiente",
-      "cueOccurrence": 1
+      "duration": 1
     },
     {
       "type": "appear",
@@ -1093,9 +1062,7 @@ continuation
       "type": "appear",
       "target": "a15",
       "at": 0,
-      "duration": 1,
-      "cueWord": "superar",
-      "cueOccurrence": 1
+      "duration": 1
     },
     {
       "type": "appear",
@@ -1136,37 +1103,32 @@ continuation
     {
       "type": "pulse",
       "target": "a1",
-      "cue": "003_es_01",
-      "cueOffsetSeconds": 1,
-      "cueDurationSeconds": 0.35
+      "at": 30,
+      "duration": 10
     },
     {
       "type": "pulse",
       "target": "a8",
-      "cue": "003_es_01",
-      "cueOffsetSeconds": 2,
-      "cueDurationSeconds": 0.35
+      "at": 60,
+      "duration": 10
     },
     {
       "type": "pulse",
       "target": "a15",
-      "cue": "003_es_01",
-      "cueOffsetSeconds": 3,
-      "cueDurationSeconds": 0.35
+      "at": 90,
+      "duration": 10
     },
     {
       "type": "pulse",
       "target": "a4",
-      "cue": "003_es_01",
-      "cueOffsetSeconds": 4,
-      "cueDurationSeconds": 0.35
+      "at": 120,
+      "duration": 10
     },
     {
       "type": "pulse",
       "target": "a11",
-      "cue": "003_es_01",
-      "cueOffsetSeconds": 5,
-      "cueDurationSeconds": 0.35
+      "at": 150,
+      "duration": 10
     }
   ]
 }
@@ -1223,35 +1185,23 @@ continuation
     {
       "type": "appear",
       "target": "agent1",
-      "cue": "004_es_01",
-      "cueOffsetSeconds": 0.2,
-      "cueDurationSeconds": 0.4,
-      "cueWord": "Sin",
-      "cueOccurrence": 1
+      "at": 6
     },
     {
       "type": "appear",
       "target": "artifactory",
-      "cue": "004_es_01",
-      "cueOffsetSeconds": 3,
-      "cueDurationSeconds": 0.5,
-      "cueWord": "canal",
-      "cueOccurrence": 1
+      "at": 90
     },
     {
       "type": "connect",
       "target": "agent1-artifactory",
-      "cue": "004_es_01",
-      "cueOffsetSeconds": 5,
-      "cueWord": "empezó",
-      "cueOccurrence": 1
+      "at": 150
     },
     {
       "type": "send",
       "target": "agent1-artifactory",
-      "cue": "004_es_01",
-      "cueOffsetSeconds": 7,
-      "cueDurationSeconds": 1.5
+      "at": 210,
+      "duration": 45
     }
   ]
 }
@@ -1312,10 +1262,8 @@ continuation
     {
       "type": "send",
       "target": "agent1-artifactory",
-      "cue": "005_en_01",
-      "cueDurationSeconds": 1.8,
-      "cueWord": "shared",
-      "cueOccurrence": 1
+      "at": 0,
+      "duration": 54
     }
   ]
 }
@@ -1402,51 +1350,33 @@ continuation
     {
       "type": "appear",
       "target": "agent1",
-      "cue": "006_es_01",
-      "cueOffsetSeconds": 0.5,
-      "cueDurationSeconds": 0.35,
-      "cueWord": "agente",
-      "cueOccurrence": 1
+      "at": 15
     },
     {
       "type": "appear",
       "target": "artifactory",
-      "cue": "006_es_01",
-      "cueOffsetSeconds": 0.5,
-      "cueDurationSeconds": 0.35,
-      "cueWord": "tablero",
-      "cueOccurrence": 1
+      "at": 15
     },
     {
       "type": "connect",
       "target": "agent1-artifactory",
-      "cue": "006_es_01",
-      "cueOffsetSeconds": 1.8,
-      "cueWord": "confirmó",
-      "cueOccurrence": 1
+      "at": 54
     },
     {
       "type": "appear",
       "target": "agent2",
-      "cue": "006_es_01",
-      "cueOffsetSeconds": 2.2,
-      "cueDurationSeconds": 0.35,
-      "cueWord": "Many",
-      "cueOccurrence": 1
+      "at": 66
     },
     {
       "type": "connect",
       "target": "agent2-artifactory",
-      "cue": "006_en_02",
-      "cueWord": "Many",
-      "cueOccurrence": 1
+      "at": 122
     },
     {
       "type": "send",
       "target": "agent2-artifactory",
-      "cue": "006_en_02",
-      "cueDurationSeconds": 2.2,
-      "cueWord": "Many"
+      "at": 122,
+      "duration": 66
     }
   ]
 }
@@ -1589,96 +1519,57 @@ continuation
     {
       "type": "appear",
       "target": "artifactory",
-      "cue": "007_es_01",
-      "cueOffsetSeconds": 0.2,
-      "cueDurationSeconds": 0.3,
-      "cueWord": "horas",
-      "cueOccurrence": 1
+      "at": 6
     },
     {
       "type": "appear",
       "target": "agent1",
-      "cue": "007_es_01",
-      "cueOffsetSeconds": 0.5,
-      "cueDurationSeconds": 0.3,
-      "cueWord": "cientos",
-      "cueOccurrence": 1
+      "at": 15
     },
     {
       "type": "connect",
       "target": "agent1-artifactory",
-      "cue": "007_es_01",
-      "cueOffsetSeconds": 1,
-      "cueWord": "agentes",
-      "cueOccurrence": 1
+      "at": 30
     },
     {
       "type": "appear",
       "target": "agent2",
-      "cue": "007_es_01",
-      "cueOffsetSeconds": 1.4,
-      "cueDurationSeconds": 0.3,
-      "cueWord": "encontraron",
-      "cueOccurrence": 1
+      "at": 42
     },
     {
       "type": "connect",
       "target": "agent2-artifactory",
-      "cue": "007_es_01",
-      "cueOffsetSeconds": 1.8,
-      "cueWord": "encontraron",
-      "cueOccurrence": 1
+      "at": 54
     },
     {
       "type": "appear",
       "target": "agent3",
-      "cue": "007_es_01",
-      "cueOffsetSeconds": 2.3,
-      "cueDurationSeconds": 0.3,
-      "cueWord": "secreto",
-      "cueOccurrence": 1
+      "at": 69
     },
     {
       "type": "connect",
       "target": "agent3-artifactory",
-      "cue": "007_es_01",
-      "cueOffsetSeconds": 2.7,
-      "cueWord": "secreto",
-      "cueOccurrence": 1
+      "at": 81
     },
     {
       "type": "appear",
       "target": "agent4",
-      "cue": "007_es_01",
-      "cueOffsetSeconds": 3.2,
-      "cueDurationSeconds": 0.3,
-      "cueWord": "autorizado",
-      "cueOccurrence": 1
+      "at": 96
     },
     {
       "type": "connect",
       "target": "agent4-artifactory",
-      "cue": "007_es_01",
-      "cueOffsetSeconds": 3.6,
-      "cueWord": "autorizado",
-      "cueOccurrence": 1
+      "at": 108
     },
     {
       "type": "appear",
       "target": "agent5",
-      "cue": "007_es_01",
-      "cueOffsetSeconds": 4.1,
-      "cueDurationSeconds": 0.3,
-      "cueWord": "canal",
-      "cueOccurrence": 1
+      "at": 123
     },
     {
       "type": "connect",
       "target": "agent5-artifactory",
-      "cue": "007_es_01",
-      "cueOffsetSeconds": 4.5,
-      "cueWord": "canal",
-      "cueOccurrence": 1
+      "at": 135
     }
   ]
 }
@@ -1995,56 +1886,38 @@ transition
     {
       "type": "connect",
       "target": "agent1-artifactory",
-      "cue": "009_es_01",
-      "cueOffsetSeconds": 1.2,
-      "cueWord": "soluciones",
-      "cueOccurrence": 1
+      "at": 36
     },
     {
       "type": "connect",
       "target": "agent2-artifactory",
-      "cue": "009_es_01",
-      "cueOffsetSeconds": 2.35,
-      "cueWord": "coordinarse",
-      "cueOccurrence": 1
+      "at": 70
     },
     {
       "type": "connect",
       "target": "agent3-artifactory",
-      "cue": "009_es_01",
-      "cueOffsetSeconds": 3.5,
-      "cueWord": "compartiendo",
-      "cueOccurrence": 1
+      "at": 105
     },
     {
       "type": "connect",
       "target": "agent4-artifactory",
-      "cue": "009_es_01",
-      "cueOffsetSeconds": 4.65,
-      "cueWord": "detalles",
-      "cueOccurrence": 1
+      "at": 140
     },
     {
       "type": "connect",
       "target": "agent5-artifactory",
-      "cue": "009_es_01",
-      "cueOffsetSeconds": 5.8,
-      "cueWord": "registró",
-      "cueOccurrence": 1
+      "at": 174
     },
     {
       "type": "connect",
       "target": "agent6-artifactory",
-      "cue": "009_es_01",
-      "cueOffsetSeconds": 6.95,
-      "cueWord": "registró",
-      "cueOccurrence": 1
+      "at": 208
     },
     {
       "type": "send",
       "target": "agent2-artifactory",
-      "cue": "009_en_02",
-      "cueDurationSeconds": 2.2
+      "at": 326,
+      "duration": 66
     }
   ]
 }
@@ -2236,32 +2109,27 @@ continuation
     {
       "type": "connect",
       "target": "agent1-artifactory",
-      "cueWord": "lógica",
-      "cueOccurrence": 1
+      "at": 0
     },
     {
       "type": "connect",
       "target": "agent2-artifactory",
-      "cueWord": "trabajo",
-      "cueOccurrence": 1
+      "at": 0
     },
     {
       "type": "connect",
       "target": "agent3-artifactory",
-      "cueWord": "compartido",
-      "cueOccurrence": 1
+      "at": 0
     },
     {
       "type": "connect",
       "target": "agent4-artifactory",
-      "cueWord": "manipular",
-      "cueOccurrence": 1
+      "at": 0
     },
     {
       "type": "connect",
       "target": "agent5-artifactory",
-      "cueWord": "falsear",
-      "cueOccurrence": 1
+      "at": 0
     },
     {
       "type": "connect",
@@ -2624,9 +2492,7 @@ transition
       "type": "appear",
       "target": "artifactory",
       "at": 84,
-      "duration": 20,
-      "cueWord": "servidor",
-      "cueOccurrence": 1
+      "duration": 20
     },
     {
       "type": "connect",
@@ -2653,16 +2519,12 @@ transition
       "type": "appear",
       "target": "internet",
       "at": 250,
-      "duration": 20,
-      "cueWord": "pública",
-      "cueOccurrence": 1
+      "duration": 20
     },
     {
       "type": "connect",
       "target": "art-net",
-      "at": 288,
-      "cueWord": "peticiones",
-      "cueOccurrence": 1
+      "at": 288
     },
     {
       "type": "send",

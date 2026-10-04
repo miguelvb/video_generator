@@ -76,7 +76,7 @@ appropriate. Never handheld, shaky, spinning or randomly zooming.
   "color": "#39f6ff",
   "nodes": [
     {"id": "agent-a", "asset": "agent-ui", "x": 20, "y": 50, "size": 150},
-    {"id": "server", "asset": "server-ui", "x": 75, "y": 50, "size": 180}
+    {"id": "server", "asset": "artifactory-ui", "x": 75, "y": 50, "size": 180}
   ],
   "connections": [
     {"id": "agent-server", "from": "agent-a", "to": "server"}
@@ -91,6 +91,17 @@ appropriate. Never handheld, shaky, spinning or randomly zooming.
   ]
 }
 ```
+
+# Motion rules (all frames are local to this scene, 30 fps):
+# - Every action needs "at" (a frame number). move/pulse/fade/send also need "duration".
+# - Nothing happens unless authored: no automatic fade-ins, packets or retiming.
+# - A node with an "appear" action is hidden until it appears; otherwise it is visible from frame 0.
+# - A connection with "connect" draws on from that frame; without it, it is simply present.
+#   A connection is never more visible than its endpoints.
+# - A packet travels only for each "send" action (several sends per connection are allowed).
+# - appear/move/pulse/fade target nodes; connect/send target connections;
+#   activate/succeed/error work on both.
+# - Unknown ids, wrong target kinds or missing frames stop the render with a clear error.
 
 ### VOICEOVER — ES — EXACT TEXT
 
