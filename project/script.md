@@ -95,6 +95,14 @@ crossed, servers saturating and recovering, repository objects being inspected,
 cloud connections branching, alarms escalating and systems shutting down.
 Avoid decorative motion that does not explain the narration.
 
+## MOTION ENGINE RULES
+
+Each scene is an independent composition with its own local timeline.
+The storyboard is authoritative: actions execute at the authored frame within that scene.
+CONTINUATION means only that there is no visual fade between adjacent scenes.
+It does not merge scenes, carry actions across scenes, retime actions, or infer dependencies.
+All nodes, connections and actions needed by a scene must be declared inside that scene.
+
 ## SCENE 001: The Experiment Setup — Agent Population
 
 ### VOICEOVER — ES — EXACT TEXT
