@@ -144,11 +144,11 @@ const QuoteOverlay: React.FC<{
 
   const storyboardPlacement =
     sceneId === '005'
-      ? {left:'62%', right:'5%', top:'20%', bottom:'auto'}
+      ? {left:'5%', right:'42%', top:'23%', bottom:'auto'}
       : sceneId === '006'
-        ? {left:'62%', right:'5%', top:'53%', bottom:'auto'}
+        ? {left:'55%', right:'5%', top:'57%', bottom:'auto'}
         : sceneId === '009'
-          ? {left:'44%', right:'11%', top:'28%', bottom:'auto'}
+          ? {left:'43%', right:'7%', top:'26%', bottom:'auto'}
           : null;
 
   return <div style={{
@@ -165,14 +165,14 @@ const QuoteOverlay: React.FC<{
       ? '0 0 14px rgba(57,246,255,.12), inset 0 0 18px rgba(57,246,255,.035)'
       : '0 5px 15px rgba(50,35,20,.14)',
     fontFamily: motionStyle ? 'Arial, sans-serif' : 'Courier New, monospace',
-    fontSize: motionStyle ? 13 : 18,
+    fontSize: motionStyle ? 20 : 18,
     fontWeight: motionStyle ? 500 : 400,
-    lineHeight: motionStyle ? 1.25 : 1.3,
-    letterSpacing: motionStyle ? 0.2 : 0,
+    lineHeight: motionStyle ? 1.28 : 1.3,
+    letterSpacing: motionStyle ? 0.1 : 0,
     color: motionStyle ? '#d8fbff' : '#2f2a24',
     textAlign:'center',
     opacity,
-    zIndex: 30,
+    zIndex: 100,
     transform: `translateY(${translateY}px)`,
     textShadow: motionStyle ? '0 0 8px rgba(57,246,255,.18)' : 'none',
   }}>{`“${text}”`}</div>;
@@ -433,15 +433,91 @@ const sameVisualStructure = (a:any,b:any) => {
   return keys.every((key) => JSON.stringify(a.motion_scene?.[key] ?? null) === JSON.stringify(b.motion_scene?.[key] ?? null));
 };
 
+const canContinueVisual = (a:any,b:any,ai:number,bi:number) => {
+  if (!a?.motion_scene || !b?.motion_scene) return false;
+  if (hasStoryboardBoundaryTransition(a,ai,b,bi)) return false;
+  if (String(b.continuity ?? '').toLowerCase() !== 'continuation') return false;
+  if (sameVisualStructure(a,b)) return true;
+  // A continuation may change the number of visible elements. Preserve the
+  // existing logical nodes and add only genuinely new nodes/edges.
+  const aNodes = new Map((a.motion_scene.nodes ?? []).map((n:any)=>[n.id,n]));
+  const shared = (b.motion_scene.nodes ?? []).filter((n:any)=>aNodes.has(n.id));
+  return shared.length > 0;
+};
+
 const hasStoryboardBoundaryTransition = (prevScene:any, prevIndex:number, nextScene:any, nextIndex:number) => {
   const prevFlags=storyboardTransitionFlags(String(prevScene.scene_id),prevIndex);
   const nextFlags=storyboardTransitionFlags(String(nextScene.scene_id),nextIndex);
+  // CONTINUITY describes the incoming scene. A previous scene marked
+  // "transition" must NOT create a cut after itself.
   return prevFlags.fadeOut || nextFlags.fadeIn || nextFlags.fadeOut ||
-    String(prevScene.continuity ?? '').toLowerCase() === 'transition' ||
     String(nextScene.continuity ?? '').toLowerCase() === 'transition';
 };
 
+const resolveCue = (action:any, source:any) => {
+  if (!action?.cue) return null;
+  const timing = TIMINGS[timingKey(source)];
+  if (!timing?.segments) return null;
+  for (const segment of timing.segments as any[]) {
+    const phrase = (segment.phrases ?? []).find((p:any) => p.id === action.cue);
+    if (phrase) {
+      return {
+        atSeconds: Number(phrase.startSeconds ?? phrase.start_seconds ?? 0) + Number(action.cueOffsetSeconds ?? 0),
+        durationSeconds: Number(action.cueDurationSeconds ?? phrase.durationSeconds ?? phrase.duration_seconds ?? 0),
+      };
+    }
+    if (segment.id === action.cue) {
+      return {
+        atSeconds: Number(segment.startSeconds ?? segment.start_seconds ?? 0) + Number(action.cueOffsetSeconds ?? 0),
+        durationSeconds: Number(action.cueDurationSeconds ?? segment.durationSeconds ?? segment.duration_seconds ?? 0),
+      };
+    }
+  }
+  return null;
+};
+
+const mergeMotionScenes = (first:any, second:any) => {
+  const nodes = [...(first.nodes ?? [])];
+  const nodeIds = new Set(nodes.map((n:any)=>n.id));
+  for (const node of (second.nodes ?? [])) {
+    if (!nodeIds.has(node.id)) {
+      nodes.push(node);
+      nodeIds.add(node.id);
+    }
+  }
+  const connections = [...(first.connections ?? [])];
+  const connectionIds = new Set(connections.map((e:any)=>e.id));
+  for (const edge of (second.connections ?? [])) {
+    if (!connectionIds.has(edge.id)) {
+      connections.push(edge);
+      connectionIds.add(edge.id);
+    }
+  }
+  return {
+    ...first,
+    nodes,
+    connections,
+    groups: second.groups ?? first.groups,
+    cameraFocus: second.cameraFocus ?? first.cameraFocus,
+    color: second.color ?? first.color,
+    background: second.background ?? first.background,
+  };
+};
+
 const scaleMergedAction = (action:any, source:any, actualDuration:number, offset:number) => {
+  const cue = resolveCue(action, source);
+  if (cue) {
+    const at = offset + Math.max(0, Math.round(cue.atSeconds * FPS));
+    const durationSeconds = cue.durationSeconds;
+    if (action.type === 'appear' || action.type === 'connect' || action.type === 'activate' ||
+        action.type === 'succeed' || action.type === 'error') {
+      return {...action, at};
+    }
+    const duration = action.cueDurationSeconds !== undefined
+      ? Math.max(1, Math.round(durationSeconds * FPS))
+      : Math.max(1, Math.round(Number(action.duration ?? 1) * (FPS / 30)));
+    return {...action, at, duration};
+  }
   const authored=Math.max(1,Number(source.motion_scene.durationInFrames ?? actualDuration));
   const scale=actualDuration/authored;
   const at=offset + Math.max(0,Math.round(Number(action.at ?? 0)*scale));
@@ -468,8 +544,7 @@ const buildVisualGroups = ():VisualGroup[] => {
       const nextIndex=endIndex+1;
       const current=scenes[endIndex];
       const next=scenes[nextIndex];
-      if (!sameVisualStructure(current,next) ||
-          hasStoryboardBoundaryTransition(current,endIndex,next,nextIndex)) {
+      if (!canContinueVisual(current,next,endIndex,nextIndex)) {
         break;
       }
       const nextOffset=duration;
@@ -480,12 +555,19 @@ const buildVisualGroups = ():VisualGroup[] => {
       endIndex=nextIndex;
     }
 
-    const base=scenes[startIndex].motion_scene;
-    const mergedMotionScene=base ? {
-      ...base,
-      durationInFrames:duration,
-      actions,
-    } : null;
+    let mergedMotionScene=scenes[startIndex].motion_scene
+      ? {...scenes[startIndex].motion_scene}
+      : null;
+    for (let mergeIndex=startIndex+1; mergeIndex<=endIndex; mergeIndex++) {
+      mergedMotionScene = mergeMotionScenes(mergedMotionScene, scenes[mergeIndex].motion_scene);
+    }
+    if (mergedMotionScene) {
+      mergedMotionScene = {
+        ...mergedMotionScene,
+        durationInFrames:duration,
+        actions,
+      };
+    }
     groups.push({
       startIndex,
       endIndex,
