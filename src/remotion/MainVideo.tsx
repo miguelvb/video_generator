@@ -196,7 +196,7 @@ const QuoteSegments: React.FC<{scene:any; duration:number}> = ({scene,duration})
 };
 
 const STORYBOARD_FADE_IN = new Set(['001', '008', '012']);
-const STORYBOARD_FADE_OUT = new Set(['007', '011']);
+const STORYBOARD_FADE_OUT = new Set(['007', '008', '011']);
 
 const storyboardTransitionFlags = (sceneId:string, sceneIndex:number) => {
   const n = Number(sceneId);
