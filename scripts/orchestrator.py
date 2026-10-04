@@ -589,7 +589,21 @@ def generate_audio(script_path: Path, tracker: CostTracker | None = None, scene_
                 actual_duration = probe_duration(public_path)
                 if abs(actual_duration - float(old_track.get("duration_seconds", -1))) <= 0.02:
                     print(f"Reusing audio: {public_path}")
-                    tracks[scene_id] = {**old_track, "duration_seconds": round(actual_duration, 3)}
+                    reused_track = {**old_track, "duration_seconds": round(actual_duration, 3)}
+                    if ENABLE_WORD_TIMINGS:
+                        needs_alignment = any(not seg.get("words") for seg in reused_track.get("segments", []))
+                        if needs_alignment:
+                            aligned_segments = []
+                            for seg in reused_track.get("segments", []):
+                                segment_path = scene_dir / Path(seg.get("file", "")).name
+                                aligned = dict(seg)
+                                if segment_path.exists():
+                                    words = transcribe_word_timings(segment_path, tracker, scene_id, seg.get("id"))
+                                    aligned["words"] = words
+                                    aligned["phrases"] = build_phrase_timings(seg.get("text", ""), words, seg.get("id", "segment"))
+                                aligned_segments.append(aligned)
+                            reused_track["segments"] = aligned_segments
+                    tracks[scene_id] = reused_track
                     continue
         segment_paths=[]; generated=[]; cursor=0.0
         # The scene-local segments already receive neighboring narration context
