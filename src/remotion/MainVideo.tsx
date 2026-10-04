@@ -481,7 +481,7 @@ const mergeMotionScenes = (first:any, second:any) => {
   const nodeIds = new Set(nodes.map((n:any)=>n.id));
   for (const node of (second.nodes ?? [])) {
     if (!nodeIds.has(node.id)) {
-      nodes.push(node);
+      nodes.push(node.opacity === undefined ? {...node, opacity:0} : node);
       nodeIds.add(node.id);
     }
   }
