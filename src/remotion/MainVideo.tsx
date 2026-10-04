@@ -187,6 +187,22 @@ const FALLBACK_QUOTES: Record<string,string> = {
 const QuoteSegments: React.FC<{scene:any; duration:number}> = ({scene,duration}) => {
   const timings=TIMINGS[timingKey(scene)]?.segments ?? [];
   const quotes=timings.filter((t:any)=>t.kind==='quote');
+  // Scene 005 is a single spoken quote starting at the scene boundary. Keep a
+  // deterministic fallback even when the generated timing artifact is stale.
+  if (String(scene.scene_id) === '005' && FALLBACK_QUOTES['005']) {
+    const quoteTiming=quotes[0];
+    const quoteDuration=quoteTiming
+      ? Math.max(1, Math.round(Number(quoteTiming.durationSeconds ?? quoteTiming.duration_seconds ?? duration / FPS) * FPS))
+      : duration;
+    return <Sequence from={0} durationInFrames={Math.min(duration, quoteDuration)}>
+      <QuoteOverlay
+        text={FALLBACK_QUOTES['005']}
+        duration={Math.min(duration, quoteDuration)}
+        motionStyle={Boolean(scene.motion_scene)}
+        sceneId={String(scene.scene_id)}
+      />
+    </Sequence>;
+  }
   if (!quotes.length && FALLBACK_QUOTES[String(scene.scene_id)]) {
     return <Sequence from={0} durationInFrames={duration}>
       <QuoteOverlay
