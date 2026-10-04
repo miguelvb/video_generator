@@ -23,19 +23,20 @@ export const MotionAsset: React.FC<{
 
   const state = resolveMotionState(node.state ?? 'normal', node.stateChanges, frame);
   const isAgent = node.asset === 'agent-ui';
-  const isBoard = node.asset === 'message-board-ui';
   const stateColor =
     state === 'error'
       ? '#ff5b67'
       : state === 'success'
         ? '#8d7cff'
         : '#39f6ff';
-  const activePhase = ((currentFrame % 18) / 18);
-  const activeBrightness = state === 'active'
-    ? interpolate(activePhase, [0, 0.5, 1], [1, 1.22, 1], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
+  // Only agents may show activity. Message destinations and infrastructure
+  // assets never brighten, blink, pulse, or otherwise change on packet arrival.
+  const activePhase = ((currentFrame % 24) / 24);
+  const activeBrightness = isAgent && state === 'active'
+    ? interpolate(activePhase, [0, 0.5, 1], [1, 1.16, 1], {extrapolateLeft:'clamp',extrapolateRight:'clamp'})
     : 1;
-  const activeOpacity = state === 'active'
-    ? interpolate(activePhase, [0, 0.5, 1], [0.72, 1, 0.72], {extrapolateLeft:'clamp', extrapolateRight:'clamp'})
+  const activeOpacity = isAgent && state === 'active'
+    ? interpolate(activePhase, [0, 0.5, 1], [0.82, 1, 0.82], {extrapolateLeft:'clamp',extrapolateRight:'clamp'})
     : 1;
 
   return (
@@ -62,6 +63,29 @@ export const MotionAsset: React.FC<{
             objectFit: 'contain',
           }}
         />
+      )}
+      {node.label && (
+        <div style={{
+          position:'absolute',
+          inset:0,
+          display:'flex',
+          alignItems:'center',
+          justifyContent:'center',
+          padding:'12px 20px',
+          boxSizing:'border-box',
+          border:'2px solid #111',
+          borderRadius:12,
+          background:'#f4efe3',
+          color:'#111',
+          fontFamily:'Arial, Helvetica, sans-serif',
+          fontSize:Math.max(18,size*0.13),
+          fontWeight:800,
+          letterSpacing:1.2,
+          textAlign:'center',
+          lineHeight:1.05,
+        }}>
+          {node.label}
+        </div>
       )}
 
     </div>
