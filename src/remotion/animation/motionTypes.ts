@@ -31,6 +31,12 @@ export type MotionAction =
       y: number;
     }
   | {
+      type: 'pulse';
+      targetId: string;
+      startFrame: number;
+      durationInFrames: number;
+    }
+  | {
       type: 'activate' | 'succeed' | 'error';
       targetId: string;
       frame: number;
