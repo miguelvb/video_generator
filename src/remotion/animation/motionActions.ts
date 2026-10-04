@@ -34,7 +34,7 @@ export const resolveMotionActions = (
   const connectActions = actions.filter((action) => action.type === 'connect');
   const activateActions = actions.filter((action) => action.type === 'activate');
   const appearActions = actions.filter((action) => action.type === 'appear');
-  const pulseActions = actions.filter((action) => action.type === 'pulse');
+  const pulseActions = actions.filter((action) => action.type === 'pulse');\n  const fadeActions = actions.filter((action) => action.type === 'fade');
 
   const resolvedNodes = nodes.map((node) => {
     const moves = moveActions.filter((action) => action.targetId === node.id);
@@ -63,7 +63,7 @@ export const resolveMotionActions = (
         {frame: action.startFrame + action.durationInFrames, state: 'normal' as MotionNodeState},
       ]);
 
-    let opacity = 1;
+    let opacity = 1;\n    for (const fade of fadeActions.filter((action) => action.targetId === node.id)) {\n      const p = moveProgress(frame, fade.startFrame, fade.durationInFrames);\n      opacity *= 1 + (fade.to - 1) * p;\n    }
     if (appears.length > 0) {
       opacity = 0;
       for (const appear of appears) {
