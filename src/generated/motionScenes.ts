@@ -1,3072 +1,1819 @@
 // AUTO-GENERATED from Markdown MOTION SCENE blocks. Do not edit manually.
 export const MOTION_SCENES = {
-  "001":   {
+  "001": {
     "durationInFrames": 327,
     "color": "#39f6ff",
-    "background": "assets/motion/swarm-background.svg",
     "nodes": [
       {
-        "id": "agent-1",
+        "id": "openai",
+        "asset": "openai-ui",
+        "x": 39,
+        "y": 18,
+        "size": 82
+      },
+      {
+        "id": "a1",
         "asset": "agent-ui",
-        "x": 43,
-        "y": 42,
-        "size": 22
+        "x": 28,
+        "y": 36,
+        "size": 54
       },
       {
-        "id": "agent-2",
+        "id": "a2",
         "asset": "agent-ui",
-        "x": 46,
-        "y": 42,
-        "size": 22
+        "x": 39,
+        "y": 36,
+        "size": 54
       },
       {
-        "id": "agent-3",
+        "id": "a3",
         "asset": "agent-ui",
-        "x": 49,
-        "y": 42,
-        "size": 22
+        "x": 50,
+        "y": 36,
+        "size": 54
       },
       {
-        "id": "agent-4",
+        "id": "a4",
         "asset": "agent-ui",
-        "x": 52,
-        "y": 42,
-        "size": 22
+        "x": 28,
+        "y": 50,
+        "size": 54
       },
       {
-        "id": "agent-5",
+        "id": "a5",
         "asset": "agent-ui",
-        "x": 55,
-        "y": 42,
-        "size": 22
+        "x": 39,
+        "y": 50,
+        "size": 54
       },
       {
-        "id": "agent-6",
+        "id": "a6",
         "asset": "agent-ui",
-        "x": 58,
-        "y": 42,
-        "size": 22
+        "x": 50,
+        "y": 50,
+        "size": 54
       },
       {
-        "id": "agent-7",
+        "id": "a7",
         "asset": "agent-ui",
-        "x": 43,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "agent-8",
-        "asset": "agent-ui",
-        "x": 46,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "agent-9",
-        "asset": "agent-ui",
-        "x": 49,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "agent-10",
-        "asset": "agent-ui",
-        "x": 52,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "agent-11",
-        "asset": "agent-ui",
-        "x": 55,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "agent-12",
-        "asset": "agent-ui",
-        "x": 58,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "agent-13",
-        "asset": "agent-ui",
-        "x": 43,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "agent-14",
-        "asset": "agent-ui",
-        "x": 46,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "agent-15",
-        "asset": "agent-ui",
-        "x": 49,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "agent-16",
-        "asset": "agent-ui",
-        "x": 52,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "agent-17",
-        "asset": "agent-ui",
-        "x": 55,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "agent-18",
-        "asset": "agent-ui",
-        "x": 58,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "agent-19",
-        "asset": "agent-ui",
-        "x": 43,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "agent-20",
-        "asset": "agent-ui",
-        "x": 46,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "agent-21",
-        "asset": "agent-ui",
-        "x": 49,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "agent-22",
-        "asset": "agent-ui",
-        "x": 52,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "agent-23",
-        "asset": "agent-ui",
-        "x": 55,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "agent-24",
-        "asset": "agent-ui",
-        "x": 58,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "ellipsis",
-        "asset": "ellipsis",
-        "x": 60,
-        "y": 62,
-        "size": 26
-      },
-      {
-        "id": "test-a",
-        "asset": "task-module-ui",
-        "x": 68,
-        "y": 40,
-        "size": 62
-      },
-      {
-        "id": "test-b",
-        "asset": "task-module-ui",
-        "x": 68,
-        "y": 52,
-        "size": 62
-      },
-      {
-        "id": "test-c",
-        "asset": "task-module-ui",
-        "x": 68,
+        "x": 28,
         "y": 64,
-        "size": 62
+        "size": 54
+      },
+      {
+        "id": "a8",
+        "asset": "agent-ui",
+        "x": 39,
+        "y": 64,
+        "size": 54
+      },
+      {
+        "id": "a9",
+        "asset": "agent-ui",
+        "x": 50,
+        "y": 64,
+        "size": 54
       }
     ],
     "connections": [],
     "actions": [
       {
         "type": "appear",
-        "target": "agent-1",
-        "at": 32,
-        "duration": 10
+        "target": "openai",
+        "at": 12,
+        "duration": 22
       },
       {
         "type": "appear",
-        "target": "agent-2",
-        "at": 35,
-        "duration": 10
+        "target": "a1",
+        "at": 42,
+        "duration": 14
       },
       {
         "type": "appear",
-        "target": "agent-3",
-        "at": 38,
-        "duration": 10
+        "target": "a2",
+        "at": 54,
+        "duration": 14
       },
       {
         "type": "appear",
-        "target": "agent-4",
-        "at": 41,
-        "duration": 10
+        "target": "a3",
+        "at": 66,
+        "duration": 14
       },
       {
         "type": "appear",
-        "target": "agent-5",
-        "at": 44,
-        "duration": 10
+        "target": "a4",
+        "at": 78,
+        "duration": 14
       },
       {
         "type": "appear",
-        "target": "agent-6",
-        "at": 47,
-        "duration": 10
+        "target": "a5",
+        "at": 90,
+        "duration": 14
       },
       {
         "type": "appear",
-        "target": "agent-7",
-        "at": 32,
-        "duration": 10
+        "target": "a6",
+        "at": 102,
+        "duration": 14
       },
       {
         "type": "appear",
-        "target": "agent-8",
-        "at": 35,
-        "duration": 10
+        "target": "a7",
+        "at": 114,
+        "duration": 14
       },
       {
         "type": "appear",
-        "target": "agent-9",
-        "at": 38,
-        "duration": 10
+        "target": "a8",
+        "at": 126,
+        "duration": 14
       },
       {
         "type": "appear",
-        "target": "agent-10",
-        "at": 41,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent-11",
-        "at": 44,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent-12",
-        "at": 47,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent-13",
-        "at": 32,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent-14",
-        "at": 35,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent-15",
-        "at": 38,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent-16",
-        "at": 41,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent-17",
-        "at": 44,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent-18",
-        "at": 47,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent-19",
-        "at": 32,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent-20",
-        "at": 35,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent-21",
-        "at": 38,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent-22",
-        "at": 41,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent-23",
-        "at": 44,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "agent-24",
-        "at": 47,
-        "duration": 10
-      },
-      {
-        "type": "appear",
-        "target": "test-a",
-        "at": 92,
-        "duration": 16
-      },
-      {
-        "type": "appear",
-        "target": "test-b",
-        "at": 112,
-        "duration": 16
-      },
-      {
-        "type": "appear",
-        "target": "test-c",
-        "at": 132,
-        "duration": 16
-      },
-      {
-        "type": "appear",
-        "target": "ellipsis",
-        "at": 158,
-        "duration": 16
-      },
-      {
-        "type": "pulse",
-        "target": "test-a",
-        "at": 190,
-        "duration": 24
-      },
-      {
-        "type": "pulse",
-        "target": "test-b",
-        "at": 220,
-        "duration": 24
-      },
-      {
-        "type": "pulse",
-        "target": "test-c",
-        "at": 250,
-        "duration": 24
+        "target": "a9",
+        "at": 138,
+        "duration": 14
       }
     ]
   },
-  "002":   {
+  "002": {
     "durationInFrames": 356,
     "color": "#39f6ff",
-    "background": "assets/motion/swarm-background.svg",
     "nodes": [
       {
-        "id": "swarm-1",
+        "id": "openai",
+        "asset": "openai-ui",
+        "x": 39,
+        "y": 18,
+        "size": 82
+      },
+      {
+        "id": "a1",
         "asset": "agent-ui",
-        "x": 43,
-        "y": 42,
-        "size": 22
+        "x": 28,
+        "y": 36,
+        "size": 54
       },
       {
-        "id": "swarm-2",
+        "id": "a2",
         "asset": "agent-ui",
-        "x": 46,
-        "y": 42,
-        "size": 22
+        "x": 39,
+        "y": 36,
+        "size": 54
       },
       {
-        "id": "swarm-3",
+        "id": "a3",
         "asset": "agent-ui",
-        "x": 49,
-        "y": 42,
-        "size": 22
+        "x": 50,
+        "y": 36,
+        "size": 54
       },
       {
-        "id": "swarm-4",
+        "id": "a4",
         "asset": "agent-ui",
-        "x": 52,
-        "y": 42,
-        "size": 22
+        "x": 28,
+        "y": 50,
+        "size": 54
       },
       {
-        "id": "swarm-5",
+        "id": "a5",
         "asset": "agent-ui",
-        "x": 55,
-        "y": 42,
-        "size": 22
+        "x": 39,
+        "y": 50,
+        "size": 54
       },
       {
-        "id": "swarm-6",
+        "id": "a6",
         "asset": "agent-ui",
-        "x": 58,
-        "y": 42,
-        "size": 22
+        "x": 50,
+        "y": 50,
+        "size": 54
       },
       {
-        "id": "swarm-7",
+        "id": "a7",
         "asset": "agent-ui",
-        "x": 43,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-8",
-        "asset": "agent-ui",
-        "x": 46,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-9",
-        "asset": "agent-ui",
-        "x": 49,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-10",
-        "asset": "agent-ui",
-        "x": 52,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-11",
-        "asset": "agent-ui",
-        "x": 55,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-12",
-        "asset": "agent-ui",
-        "x": 58,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-13",
-        "asset": "agent-ui",
-        "x": 43,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-14",
-        "asset": "agent-ui",
-        "x": 46,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-15",
-        "asset": "agent-ui",
-        "x": 49,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-16",
-        "asset": "agent-ui",
-        "x": 52,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-17",
-        "asset": "agent-ui",
-        "x": 55,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-18",
-        "asset": "agent-ui",
-        "x": 58,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-19",
-        "asset": "agent-ui",
-        "x": 43,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "swarm-20",
-        "asset": "agent-ui",
-        "x": 46,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "swarm-21",
-        "asset": "agent-ui",
-        "x": 49,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "swarm-22",
-        "asset": "agent-ui",
-        "x": 52,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "swarm-23",
-        "asset": "agent-ui",
-        "x": 55,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "swarm-24",
-        "asset": "agent-ui",
-        "x": 58,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "ellipsis",
-        "asset": "ellipsis",
-        "x": 60,
-        "y": 62,
-        "size": 26
-      },
-      {
-        "id": "test-a",
-        "asset": "task-module-ui",
-        "x": 68,
-        "y": 40,
-        "size": 62
-      },
-      {
-        "id": "test-b",
-        "asset": "task-module-ui",
-        "x": 68,
-        "y": 52,
-        "size": 62
-      },
-      {
-        "id": "test-c",
-        "asset": "task-module-ui",
-        "x": 68,
+        "x": 28,
         "y": 64,
-        "size": 62
+        "size": 54
+      },
+      {
+        "id": "a8",
+        "asset": "agent-ui",
+        "x": 39,
+        "y": 64,
+        "size": 54
+      },
+      {
+        "id": "a9",
+        "asset": "agent-ui",
+        "x": 50,
+        "y": 64,
+        "size": 54
       }
     ],
     "connections": [],
     "actions": [
       {
         "type": "appear",
-        "target": "swarm-1",
+        "target": "openai",
         "at": 0,
         "duration": 1
       },
       {
         "type": "appear",
-        "target": "swarm-2",
+        "target": "a1",
         "at": 0,
         "duration": 1
       },
       {
         "type": "appear",
-        "target": "swarm-3",
+        "target": "a2",
         "at": 0,
         "duration": 1
       },
       {
         "type": "appear",
-        "target": "swarm-4",
+        "target": "a3",
         "at": 0,
         "duration": 1
       },
       {
         "type": "appear",
-        "target": "swarm-5",
+        "target": "a4",
         "at": 0,
         "duration": 1
       },
       {
         "type": "appear",
-        "target": "swarm-6",
+        "target": "a5",
         "at": 0,
         "duration": 1
       },
       {
         "type": "appear",
-        "target": "swarm-7",
+        "target": "a6",
         "at": 0,
         "duration": 1
       },
       {
         "type": "appear",
-        "target": "swarm-8",
+        "target": "a7",
         "at": 0,
         "duration": 1
       },
       {
         "type": "appear",
-        "target": "swarm-9",
+        "target": "a8",
         "at": 0,
         "duration": 1
       },
       {
         "type": "appear",
-        "target": "swarm-10",
+        "target": "a9",
         "at": 0,
         "duration": 1
       },
       {
-        "type": "appear",
-        "target": "swarm-11",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-12",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-13",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-14",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-15",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-16",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-17",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-18",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-19",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-20",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-21",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-22",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-23",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-24",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "ellipsis",
-        "at": 5,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "test-a",
+        "type": "pulse",
+        "target": "a1",
         "at": 28,
-        "duration": 14
-      },
-      {
-        "type": "appear",
-        "target": "test-b",
-        "at": 48,
-        "duration": 14
-      },
-      {
-        "type": "appear",
-        "target": "test-c",
-        "at": 68,
-        "duration": 14
+        "duration": 18
       },
       {
         "type": "pulse",
-        "target": "test-a",
-        "at": 104,
-        "duration": 24
+        "target": "a2",
+        "at": 56,
+        "duration": 18
       },
       {
         "type": "pulse",
-        "target": "swarm-3",
+        "target": "a3",
+        "at": 84,
+        "duration": 18
+      },
+      {
+        "type": "pulse",
+        "target": "a4",
         "at": 112,
         "duration": 18
       },
       {
         "type": "pulse",
-        "target": "test-b",
-        "at": 144,
-        "duration": 24
-      },
-      {
-        "type": "pulse",
-        "target": "swarm-12",
-        "at": 152,
+        "target": "a5",
+        "at": 140,
         "duration": 18
       },
       {
         "type": "pulse",
-        "target": "test-c",
-        "at": 184,
-        "duration": 24
-      },
-      {
-        "type": "pulse",
-        "target": "swarm-21",
-        "at": 192,
+        "target": "a6",
+        "at": 168,
         "duration": 18
       },
       {
         "type": "pulse",
-        "target": "swarm-6",
+        "target": "a7",
+        "at": 196,
+        "duration": 18
+      },
+      {
+        "type": "pulse",
+        "target": "a8",
         "at": 224,
         "duration": 18
       },
       {
         "type": "pulse",
-        "target": "swarm-17",
-        "at": 250,
-        "duration": 18
-      },
-      {
-        "type": "pulse",
-        "target": "swarm-24",
-        "at": 276,
+        "target": "a9",
+        "at": 252,
         "duration": 18
       }
     ]
   },
-  "003":   {
+  "003": {
     "durationInFrames": 188,
     "color": "#39f6ff",
-    "background": "assets/motion/swarm-background.svg",
     "nodes": [
       {
-        "id": "agent-a",
-        "asset": "agent-ui",
-        "x": 29,
-        "y": 43,
-        "size": 72
+        "id": "openai",
+        "asset": "openai-ui",
+        "x": 39,
+        "y": 18,
+        "size": 82
       },
       {
-        "id": "agent-b",
+        "id": "a1",
+        "asset": "agent-ui",
+        "x": 28,
+        "y": 36,
+        "size": 54
+      },
+      {
+        "id": "a2",
+        "asset": "agent-ui",
+        "x": 39,
+        "y": 36,
+        "size": 54
+      },
+      {
+        "id": "a3",
         "asset": "agent-ui",
         "x": 50,
-        "y": 43,
-        "size": 72
+        "y": 36,
+        "size": 54
       },
       {
-        "id": "agent-c",
+        "id": "a4",
         "asset": "agent-ui",
-        "x": 71,
-        "y": 43,
-        "size": 72
+        "x": 28,
+        "y": 50,
+        "size": 54
       },
       {
-        "id": "test-a",
-        "asset": "task-module-ui",
-        "x": 29,
-        "y": 62,
-        "size": 72
+        "id": "a5",
+        "asset": "agent-ui",
+        "x": 39,
+        "y": 50,
+        "size": 54
       },
       {
-        "id": "test-b",
-        "asset": "task-module-ui",
+        "id": "a6",
+        "asset": "agent-ui",
         "x": 50,
-        "y": 62,
-        "size": 72
+        "y": 50,
+        "size": 54
       },
       {
-        "id": "test-c",
-        "asset": "task-module-ui",
-        "x": 71,
-        "y": 62,
-        "size": 72
+        "id": "a7",
+        "asset": "agent-ui",
+        "x": 28,
+        "y": 64,
+        "size": 54
+      },
+      {
+        "id": "a8",
+        "asset": "agent-ui",
+        "x": 39,
+        "y": 64,
+        "size": 54
+      },
+      {
+        "id": "a9",
+        "asset": "agent-ui",
+        "x": 50,
+        "y": 64,
+        "size": 54
       }
     ],
     "connections": [],
     "actions": [
       {
         "type": "appear",
-        "target": "agent-a",
-        "at": 12,
-        "duration": 12
+        "target": "openai",
+        "at": 0,
+        "duration": 1
       },
       {
         "type": "appear",
-        "target": "agent-b",
-        "at": 26,
-        "duration": 12
+        "target": "a1",
+        "at": 0,
+        "duration": 1
       },
       {
         "type": "appear",
-        "target": "agent-c",
-        "at": 40,
-        "duration": 12
+        "target": "a2",
+        "at": 0,
+        "duration": 1
       },
       {
         "type": "appear",
-        "target": "test-a",
-        "at": 56,
-        "duration": 12
+        "target": "a3",
+        "at": 0,
+        "duration": 1
       },
       {
         "type": "appear",
-        "target": "test-b",
-        "at": 70,
-        "duration": 12
+        "target": "a4",
+        "at": 0,
+        "duration": 1
       },
       {
         "type": "appear",
-        "target": "test-c",
-        "at": 84,
-        "duration": 12
+        "target": "a5",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a6",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a7",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a8",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "a9",
+        "at": 0,
+        "duration": 1
       },
       {
         "type": "pulse",
-        "target": "agent-a",
-        "at": 108,
-        "duration": 20
+        "target": "a1",
+        "at": 18,
+        "duration": 14
       },
       {
         "type": "pulse",
-        "target": "test-a",
-        "at": 108,
-        "duration": 20
+        "target": "a4",
+        "at": 34,
+        "duration": 14
       },
       {
         "type": "pulse",
-        "target": "agent-b",
-        "at": 128,
-        "duration": 20
+        "target": "a7",
+        "at": 50,
+        "duration": 14
       },
       {
         "type": "pulse",
-        "target": "test-b",
-        "at": 128,
-        "duration": 20
+        "target": "a2",
+        "at": 66,
+        "duration": 14
       },
       {
         "type": "pulse",
-        "target": "agent-c",
-        "at": 148,
-        "duration": 20
+        "target": "a5",
+        "at": 82,
+        "duration": 14
       },
       {
         "type": "pulse",
-        "target": "test-c",
-        "at": 148,
-        "duration": 20
+        "target": "a8",
+        "at": 98,
+        "duration": 14
+      },
+      {
+        "type": "pulse",
+        "target": "a3",
+        "at": 114,
+        "duration": 14
+      },
+      {
+        "type": "pulse",
+        "target": "a6",
+        "at": 130,
+        "duration": 14
+      },
+      {
+        "type": "pulse",
+        "target": "a9",
+        "at": 146,
+        "duration": 14
       }
     ]
   },
-  "004":   {
+  "004": {
     "durationInFrames": 446,
     "color": "#39f6ff",
-    "background": "assets/motion/swarm-background.svg",
     "nodes": [
       {
-        "id": "focus-agent",
+        "id": "agent",
         "asset": "agent-ui",
-        "x": 24,
-        "y": 45,
+        "x": 30,
+        "y": 50,
         "size": 105
       },
       {
-        "id": "server",
-        "asset": "server-ui",
-        "x": 68,
-        "y": 32,
+        "id": "board",
+        "asset": "message-board",
+        "x": 63,
+        "y": 50,
+        "size": 155
+      }
+    ],
+    "connections": [
+      {
+        "id": "agent-board",
+        "from": "agent",
+        "to": "board",
+        "curvature": 0
+      }
+    ],
+    "actions": [
+      {
+        "type": "appear",
+        "target": "agent",
+        "at": 18,
+        "duration": 20
+      },
+      {
+        "type": "appear",
+        "target": "board",
+        "at": 110,
+        "duration": 24
+      },
+      {
+        "type": "connect",
+        "target": "agent-board",
+        "at": 172
+      },
+      {
+        "type": "activate",
+        "target": "agent-board",
+        "at": 200
+      },
+      {
+        "type": "send",
+        "target": "agent-board",
+        "at": 230,
+        "duration": 48
+      },
+      {
+        "type": "pulse",
+        "target": "board",
+        "at": 286,
+        "duration": 38
+      }
+    ]
+  },
+  "005": {
+    "durationInFrames": 143,
+    "color": "#39f6ff",
+    "nodes": [
+      {
+        "id": "agent",
+        "asset": "agent-ui",
+        "x": 27,
+        "y": 52,
         "size": 92
       },
       {
-        "id": "folder",
-        "asset": "folder-ui",
-        "x": 68,
-        "y": 55,
+        "id": "board",
+        "asset": "message-board",
+        "x": 51,
+        "y": 52,
+        "size": 138
+      },
+      {
+        "id": "msg1",
+        "asset": "message-ui",
+        "x": 77,
+        "y": 37,
+        "size": 112
+      }
+    ],
+    "connections": [
+      {
+        "id": "agent-board",
+        "from": "agent",
+        "to": "board",
+        "curvature": 0
+      }
+    ],
+    "actions": [
+      {
+        "type": "appear",
+        "target": "agent",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "board",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "connect",
+        "target": "agent-board",
+        "at": 0
+      },
+      {
+        "type": "appear",
+        "target": "msg1",
+        "at": 10,
+        "duration": 15
+      },
+      {
+        "type": "pulse",
+        "target": "board",
+        "at": 18,
+        "duration": 22
+      },
+      {
+        "type": "send",
+        "target": "agent-board",
+        "at": 28,
+        "duration": 38
+      }
+    ]
+  },
+  "006": {
+    "durationInFrames": 288,
+    "color": "#39f6ff",
+    "nodes": [
+      {
+        "id": "agent1",
+        "asset": "agent-ui",
+        "x": 22,
+        "y": 34,
+        "size": 64
+      },
+      {
+        "id": "agent2",
+        "asset": "agent-ui",
+        "x": 22,
+        "y": 52,
+        "size": 64
+      },
+      {
+        "id": "agent3",
+        "asset": "agent-ui",
+        "x": 22,
+        "y": 70,
+        "size": 64
+      },
+      {
+        "id": "board",
+        "asset": "message-board",
+        "x": 49,
+        "y": 52,
+        "size": 138
+      },
+      {
+        "id": "msg1",
+        "asset": "message-ui",
+        "x": 77,
+        "y": 36,
+        "size": 105
+      },
+      {
+        "id": "msg2",
+        "asset": "message-ui",
+        "x": 77,
+        "y": 65,
+        "size": 105
+      }
+    ],
+    "connections": [
+      {
+        "id": "a1-board",
+        "from": "agent1",
+        "to": "board",
+        "curvature": -2
+      },
+      {
+        "id": "a2-board",
+        "from": "agent2",
+        "to": "board",
+        "curvature": 0
+      },
+      {
+        "id": "a3-board",
+        "from": "agent3",
+        "to": "board",
+        "curvature": 2
+      }
+    ],
+    "actions": [
+      {
+        "type": "appear",
+        "target": "agent1",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "board",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "msg1",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "connect",
+        "target": "a1-board",
+        "at": 0
+      },
+      {
+        "type": "appear",
+        "target": "agent2",
+        "at": 30,
+        "duration": 16
+      },
+      {
+        "type": "appear",
+        "target": "agent3",
+        "at": 54,
+        "duration": 16
+      },
+      {
+        "type": "connect",
+        "target": "a2-board",
+        "at": 74
+      },
+      {
+        "type": "connect",
+        "target": "a3-board",
+        "at": 92
+      },
+      {
+        "type": "appear",
+        "target": "msg2",
+        "at": 112,
+        "duration": 16
+      },
+      {
+        "type": "send",
+        "target": "a2-board",
+        "at": 126,
+        "duration": 38
+      },
+      {
+        "type": "pulse",
+        "target": "board",
+        "at": 168,
+        "duration": 28
+      }
+    ]
+  },
+  "007": {
+    "durationInFrames": 207,
+    "color": "#39f6ff",
+    "nodes": [
+      {
+        "id": "agent1",
+        "asset": "agent-ui",
+        "x": 18,
+        "y": 24,
+        "size": 48
+      },
+      {
+        "id": "agent2",
+        "asset": "agent-ui",
+        "x": 18,
+        "y": 38,
+        "size": 48
+      },
+      {
+        "id": "agent3",
+        "asset": "agent-ui",
+        "x": 18,
+        "y": 52,
+        "size": 48
+      },
+      {
+        "id": "agent4",
+        "asset": "agent-ui",
+        "x": 18,
+        "y": 66,
+        "size": 48
+      },
+      {
+        "id": "agent5",
+        "asset": "agent-ui",
+        "x": 18,
+        "y": 80,
+        "size": 48
+      },
+      {
+        "id": "board",
+        "asset": "message-board",
+        "x": 46,
+        "y": 52,
+        "size": 142
+      },
+      {
+        "id": "msg1",
+        "asset": "message-ui",
+        "x": 75,
+        "y": 35,
+        "size": 100
+      },
+      {
+        "id": "msg2",
+        "asset": "message-ui",
+        "x": 75,
+        "y": 66,
+        "size": 100
+      }
+    ],
+    "connections": [
+      {
+        "id": "a1-board",
+        "from": "agent1",
+        "to": "board",
+        "curvature": -5
+      },
+      {
+        "id": "a2-board",
+        "from": "agent2",
+        "to": "board",
+        "curvature": -3
+      },
+      {
+        "id": "a3-board",
+        "from": "agent3",
+        "to": "board",
+        "curvature": 0
+      },
+      {
+        "id": "a4-board",
+        "from": "agent4",
+        "to": "board",
+        "curvature": 3
+      },
+      {
+        "id": "a5-board",
+        "from": "agent5",
+        "to": "board",
+        "curvature": 5
+      }
+    ],
+    "actions": [
+      {
+        "type": "appear",
+        "target": "board",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "msg1",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "msg2",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent1",
+        "at": 8,
+        "duration": 10
+      },
+      {
+        "type": "appear",
+        "target": "agent2",
+        "at": 22,
+        "duration": 10
+      },
+      {
+        "type": "appear",
+        "target": "agent3",
+        "at": 36,
+        "duration": 10
+      },
+      {
+        "type": "appear",
+        "target": "agent4",
+        "at": 50,
+        "duration": 10
+      },
+      {
+        "type": "appear",
+        "target": "agent5",
+        "at": 64,
+        "duration": 10
+      },
+      {
+        "type": "connect",
+        "target": "a1-board",
+        "at": 30
+      },
+      {
+        "type": "connect",
+        "target": "a2-board",
+        "at": 48
+      },
+      {
+        "type": "connect",
+        "target": "a3-board",
+        "at": 66
+      },
+      {
+        "type": "connect",
+        "target": "a4-board",
+        "at": 84
+      },
+      {
+        "type": "connect",
+        "target": "a5-board",
+        "at": 102
+      },
+      {
+        "type": "pulse",
+        "target": "board",
+        "at": 126,
+        "duration": 34
+      },
+      {
+        "type": "send",
+        "target": "a3-board",
+        "at": 148,
+        "duration": 34
+      }
+    ]
+  },
+  "008": {
+    "durationInFrames": 519,
+    "color": "#39f6ff",
+    "nodes": [
+      {
+        "id": "agent",
+        "asset": "agent-ui",
+        "x": 24,
+        "y": 42,
         "size": 88
       },
       {
+        "id": "idea",
+        "asset": "idea-ui",
+        "x": 48,
+        "y": 68,
+        "size": 86
+      },
+      {
+        "id": "flag",
+        "asset": "flag-ui",
+        "x": 76,
+        "y": 42,
+        "size": 92
+      }
+    ],
+    "connections": [
+      {
+        "id": "direct",
+        "from": "agent",
+        "to": "flag",
+        "curvature": 0
+      },
+      {
+        "id": "agent-idea",
+        "from": "agent",
+        "to": "idea",
+        "curvature": 5
+      },
+      {
+        "id": "idea-flag",
+        "from": "idea",
+        "to": "flag",
+        "curvature": -5
+      }
+    ],
+    "actions": [
+      {
+        "type": "appear",
+        "target": "agent",
+        "at": 18,
+        "duration": 18
+      },
+      {
+        "type": "appear",
+        "target": "flag",
+        "at": 54,
+        "duration": 18
+      },
+      {
+        "type": "connect",
+        "target": "direct",
+        "at": 96
+      },
+      {
+        "type": "appear",
+        "target": "idea",
+        "at": 155,
+        "duration": 22
+      },
+      {
+        "type": "connect",
+        "target": "agent-idea",
+        "at": 205
+      },
+      {
+        "type": "connect",
+        "target": "idea-flag",
+        "at": 245
+      },
+      {
+        "type": "pulse",
+        "target": "idea",
+        "at": 292,
+        "duration": 46
+      },
+      {
+        "type": "send",
+        "target": "idea-flag",
+        "at": 338,
+        "duration": 62
+      },
+      {
+        "type": "pulse",
+        "target": "flag",
+        "at": 405,
+        "duration": 42
+      }
+    ]
+  },
+  "009": {
+    "durationInFrames": 499,
+    "color": "#39f6ff",
+    "nodes": [
+      {
+        "id": "agent1",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 20,
+        "size": 54
+      },
+      {
+        "id": "agent2",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 32,
+        "size": 54
+      },
+      {
+        "id": "agent3",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 44,
+        "size": 54
+      },
+      {
+        "id": "agent4",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 56,
+        "size": 54
+      },
+      {
+        "id": "agent5",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 68,
+        "size": 54
+      },
+      {
+        "id": "agent6",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 80,
+        "size": 54
+      },
+      {
         "id": "board",
-        "asset": "message-board-ui",
-        "x": 50,
-        "y": 76,
+        "asset": "message-board",
+        "x": 60,
+        "y": 50,
+        "size": 190
+      }
+    ],
+    "connections": [
+      {
+        "id": "e1",
+        "from": "agent1",
+        "to": "board",
+        "curvature": -7
+      },
+      {
+        "id": "e2",
+        "from": "agent2",
+        "to": "board",
+        "curvature": -5
+      },
+      {
+        "id": "e3",
+        "from": "agent3",
+        "to": "board",
+        "curvature": -2
+      },
+      {
+        "id": "e4",
+        "from": "agent4",
+        "to": "board",
+        "curvature": 2
+      },
+      {
+        "id": "e5",
+        "from": "agent5",
+        "to": "board",
+        "curvature": 5
+      },
+      {
+        "id": "e6",
+        "from": "agent6",
+        "to": "board",
+        "curvature": 7
+      }
+    ],
+    "actions": [
+      {
+        "type": "appear",
+        "target": "agent1",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent2",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent3",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent4",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent5",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent6",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "board",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "connect",
+        "target": "e1",
+        "at": 42
+      },
+      {
+        "type": "connect",
+        "target": "e2",
+        "at": 72
+      },
+      {
+        "type": "connect",
+        "target": "e3",
+        "at": 102
+      },
+      {
+        "type": "connect",
+        "target": "e4",
+        "at": 132
+      },
+      {
+        "type": "connect",
+        "target": "e5",
+        "at": 162
+      },
+      {
+        "type": "connect",
+        "target": "e6",
+        "at": 192
+      },
+      {
+        "type": "send",
+        "target": "e1",
+        "at": 240,
+        "duration": 44
+      },
+      {
+        "type": "send",
+        "target": "e3",
+        "at": 288,
+        "duration": 44
+      },
+      {
+        "type": "send",
+        "target": "e5",
+        "at": 336,
+        "duration": 44
+      },
+      {
+        "type": "pulse",
+        "target": "board",
+        "at": 372,
+        "duration": 54
+      }
+    ],
+    "groups": [
+      {
+        "id": "network",
+        "nodeIds": [
+          "agent1",
+          "agent2",
+          "agent3",
+          "agent4",
+          "agent5",
+          "agent6",
+          "board"
+        ]
+      }
+    ],
+    "cameraFocus": {
+      "groupId": "network",
+      "zoom": 0.78,
+      "startFrame": 20,
+      "durationInFrames": 430
+    }
+  },
+  "010": {
+    "durationInFrames": 315,
+    "color": "#39f6ff",
+    "nodes": [
+      {
+        "id": "agent1",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 20,
+        "size": 43
+      },
+      {
+        "id": "agent2",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 32,
+        "size": 43
+      },
+      {
+        "id": "agent3",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 44,
+        "size": 43
+      },
+      {
+        "id": "agent4",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 56,
+        "size": 43
+      },
+      {
+        "id": "agent5",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 68,
+        "size": 43
+      },
+      {
+        "id": "agent6",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 80,
+        "size": 43
+      },
+      {
+        "id": "board",
+        "asset": "message-board",
+        "x": 60,
+        "y": 50,
+        "size": 150
+      }
+    ],
+    "connections": [
+      {
+        "id": "e1",
+        "from": "agent1",
+        "to": "board",
+        "curvature": -7
+      },
+      {
+        "id": "e2",
+        "from": "agent2",
+        "to": "board",
+        "curvature": -5
+      },
+      {
+        "id": "e3",
+        "from": "agent3",
+        "to": "board",
+        "curvature": -2
+      },
+      {
+        "id": "e4",
+        "from": "agent4",
+        "to": "board",
+        "curvature": 2
+      },
+      {
+        "id": "e5",
+        "from": "agent5",
+        "to": "board",
+        "curvature": 5
+      },
+      {
+        "id": "e6",
+        "from": "agent6",
+        "to": "board",
+        "curvature": 7
+      }
+    ],
+    "actions": [
+      {
+        "type": "appear",
+        "target": "agent1",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent2",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent3",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent4",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent5",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent6",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "board",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "connect",
+        "target": "e1",
+        "at": 0
+      },
+      {
+        "type": "connect",
+        "target": "e2",
+        "at": 0
+      },
+      {
+        "type": "connect",
+        "target": "e3",
+        "at": 0
+      },
+      {
+        "type": "connect",
+        "target": "e4",
+        "at": 0
+      },
+      {
+        "type": "connect",
+        "target": "e5",
+        "at": 0
+      },
+      {
+        "type": "connect",
+        "target": "e6",
+        "at": 0
+      },
+      {
+        "type": "send",
+        "target": "e2",
+        "at": 38,
+        "duration": 42
+      },
+      {
+        "type": "send",
+        "target": "e4",
+        "at": 105,
+        "duration": 42
+      },
+      {
+        "type": "send",
+        "target": "e6",
+        "at": 170,
+        "duration": 42
+      },
+      {
+        "type": "pulse",
+        "target": "board",
+        "at": 220,
+        "duration": 46
+      }
+    ]
+  },
+  "011": {
+    "durationInFrames": 549,
+    "color": "#39f6ff",
+    "nodes": [
+      {
+        "id": "agent1",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 20,
+        "size": 43
+      },
+      {
+        "id": "agent2",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 32,
+        "size": 43
+      },
+      {
+        "id": "agent3",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 44,
+        "size": 43
+      },
+      {
+        "id": "agent4",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 56,
+        "size": 43
+      },
+      {
+        "id": "agent5",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 68,
+        "size": 43
+      },
+      {
+        "id": "agent6",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 80,
+        "size": 43
+      },
+      {
+        "id": "board",
+        "asset": "message-board",
+        "x": 60,
+        "y": 50,
+        "size": 150
+      }
+    ],
+    "connections": [
+      {
+        "id": "e1",
+        "from": "agent1",
+        "to": "board",
+        "curvature": -7
+      },
+      {
+        "id": "e2",
+        "from": "agent2",
+        "to": "board",
+        "curvature": -5
+      },
+      {
+        "id": "e3",
+        "from": "agent3",
+        "to": "board",
+        "curvature": -2
+      },
+      {
+        "id": "e4",
+        "from": "agent4",
+        "to": "board",
+        "curvature": 2
+      },
+      {
+        "id": "e5",
+        "from": "agent5",
+        "to": "board",
+        "curvature": 5
+      },
+      {
+        "id": "e6",
+        "from": "agent6",
+        "to": "board",
+        "curvature": 7
+      }
+    ],
+    "actions": [
+      {
+        "type": "appear",
+        "target": "agent1",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent2",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent3",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent4",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent5",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent6",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "board",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "connect",
+        "target": "e1",
+        "at": 0
+      },
+      {
+        "type": "connect",
+        "target": "e2",
+        "at": 0
+      },
+      {
+        "type": "connect",
+        "target": "e3",
+        "at": 0
+      },
+      {
+        "type": "connect",
+        "target": "e4",
+        "at": 0
+      },
+      {
+        "type": "connect",
+        "target": "e5",
+        "at": 0
+      },
+      {
+        "type": "connect",
+        "target": "e6",
+        "at": 0
+      },
+      {
+        "type": "pulse",
+        "target": "agent2",
+        "at": 70,
+        "duration": 32
+      },
+      {
+        "type": "pulse",
+        "target": "agent5",
+        "at": 150,
+        "duration": 32
+      },
+      {
+        "type": "pulse",
+        "target": "board",
+        "at": 230,
+        "duration": 48
+      },
+      {
+        "type": "send",
+        "target": "e1",
+        "at": 300,
+        "duration": 52
+      },
+      {
+        "type": "send",
+        "target": "e6",
+        "at": 385,
+        "duration": 52
+      }
+    ]
+  },
+  "012": {
+    "durationInFrames": 432,
+    "color": "#39f6ff",
+    "nodes": [
+      {
+        "id": "agent1",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 34,
+        "size": 60
+      },
+      {
+        "id": "agent2",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 50,
+        "size": 60
+      },
+      {
+        "id": "agent3",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 66,
+        "size": 60
+      },
+      {
+        "id": "artifactory",
+        "asset": "artifactory-ui",
+        "x": 53,
+        "y": 50,
         "size": 145
       },
       {
-        "id": "peer-a",
-        "asset": "agent-ui",
-        "x": 20,
-        "y": 78,
-        "size": 64
-      },
-      {
-        "id": "peer-b",
-        "asset": "agent-ui",
+        "id": "internet",
+        "asset": "internet-ui",
         "x": 82,
-        "y": 78,
-        "size": 64
-      }
-    ],
-    "connections": [
-      {
-        "id": "agent-server",
-        "from": "focus-agent",
-        "to": "server",
-        "curvature": -3
-      },
-      {
-        "id": "server-folder",
-        "from": "server",
-        "to": "folder",
-        "curvature": 2
-      },
-      {
-        "id": "folder-board",
-        "from": "folder",
-        "to": "board",
-        "curvature": -3
-      },
-      {
-        "id": "board-peer-a",
-        "from": "board",
-        "to": "peer-a",
-        "curvature": 3
-      },
-      {
-        "id": "board-peer-b",
-        "from": "board",
-        "to": "peer-b",
-        "curvature": -3
-      }
-    ],
-    "actions": [
-      {
-        "type": "appear",
-        "target": "focus-agent",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "server",
-        "at": 45,
-        "duration": 18
-      },
-      {
-        "type": "connect",
-        "target": "agent-server",
-        "at": 78
-      },
-      {
-        "type": "activate",
-        "target": "agent-server",
-        "at": 105
-      },
-      {
-        "type": "appear",
-        "target": "folder",
-        "at": 145,
-        "duration": 18
-      },
-      {
-        "type": "connect",
-        "target": "server-folder",
-        "at": 180
-      },
-      {
-        "type": "send",
-        "target": "server-folder",
-        "at": 198,
-        "duration": 28
-      },
-      {
-        "type": "appear",
-        "target": "board",
-        "at": 242,
-        "duration": 18
-      },
-      {
-        "type": "connect",
-        "target": "folder-board",
-        "at": 278
-      },
-      {
-        "type": "send",
-        "target": "folder-board",
-        "at": 296,
-        "duration": 32
-      },
-      {
-        "type": "appear",
-        "target": "peer-a",
-        "at": 342,
-        "duration": 14
-      },
-      {
-        "type": "appear",
-        "target": "peer-b",
-        "at": 356,
-        "duration": 14
-      },
-      {
-        "type": "connect",
-        "target": "board-peer-a",
-        "at": 376
-      },
-      {
-        "type": "connect",
-        "target": "board-peer-b",
-        "at": 390
-      }
-    ]
-  },
-  "005":   {
-    "durationInFrames": 143,
-    "color": "#39f6ff",
-    "background": "assets/motion/swarm-background.svg",
-    "nodes": [
-      {
-        "id": "board",
-        "asset": "message-board-ui",
-        "x": 50,
-        "y": 55,
-        "size": 175
-      },
-      {
-        "id": "agent-a",
-        "asset": "agent-ui",
-        "x": 24,
-        "y": 25,
-        "size": 78
-      },
-      {
-        "id": "agent-b",
-        "asset": "agent-ui",
-        "x": 76,
-        "y": 25,
-        "size": 78
-      },
-      {
-        "id": "agent-c",
-        "asset": "agent-ui",
-        "x": 24,
-        "y": 82,
-        "size": 78
-      },
-      {
-        "id": "agent-d",
-        "asset": "agent-ui",
-        "x": 76,
-        "y": 82,
-        "size": 78
-      }
-    ],
-    "connections": [
-      {
-        "id": "a-board",
-        "from": "agent-a",
-        "to": "board",
-        "curvature": -3
-      },
-      {
-        "id": "b-board",
-        "from": "agent-b",
-        "to": "board",
-        "curvature": 3
-      },
-      {
-        "id": "c-board",
-        "from": "agent-c",
-        "to": "board",
-        "curvature": 3
-      },
-      {
-        "id": "d-board",
-        "from": "agent-d",
-        "to": "board",
-        "curvature": -3
-      }
-    ],
-    "actions": [
-      {
-        "type": "appear",
-        "target": "board",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "agent-a",
-        "at": 10,
-        "duration": 10
-      },
-      {
-        "type": "connect",
-        "target": "a-board",
-        "at": 25
-      },
-      {
-        "type": "appear",
-        "target": "agent-b",
-        "at": 38,
-        "duration": 10
-      },
-      {
-        "type": "connect",
-        "target": "b-board",
-        "at": 53
-      },
-      {
-        "type": "appear",
-        "target": "agent-c",
-        "at": 66,
-        "duration": 10
-      },
-      {
-        "type": "connect",
-        "target": "c-board",
-        "at": 81
-      },
-      {
-        "type": "appear",
-        "target": "agent-d",
-        "at": 94,
-        "duration": 10
-      },
-      {
-        "type": "connect",
-        "target": "d-board",
-        "at": 109
-      }
-    ]
-  },
-  "006": {
-    "durationInFrames": 300,
-    "color": "#39f6ff",
-    "background": "assets/motion/demo-background.svg",
-    "nodes": [
-      {
-        "id": "board",
-        "asset": "message-board-ui",
-        "x": 50,
         "y": 50,
-        "size": 175
-      },
-      {
-        "id": "agent-a",
-        "asset": "agent-ui",
-        "x": 12,
-        "y": 18,
-        "size": 100
-      },
-      {
-        "id": "agent-b",
-        "asset": "agent-ui",
-        "x": 88,
-        "y": 18,
-        "size": 100
-      },
-      {
-        "id": "agent-c",
-        "asset": "agent-ui",
-        "x": 12,
-        "y": 82,
-        "size": 100
-      },
-      {
-        "id": "agent-d",
-        "asset": "agent-ui",
-        "x": 88,
-        "y": 82,
-        "size": 100
+        "size": 105
       }
     ],
     "connections": [
       {
-        "id": "a-board",
-        "from": "agent-a",
-        "to": "board",
+        "id": "a1-art",
+        "from": "agent1",
+        "to": "artifactory",
         "curvature": -4
       },
       {
-        "id": "b-board",
-        "from": "agent-b",
-        "to": "board",
+        "id": "a2-art",
+        "from": "agent2",
+        "to": "artifactory",
+        "curvature": 0
+      },
+      {
+        "id": "a3-art",
+        "from": "agent3",
+        "to": "artifactory",
         "curvature": 4
       },
       {
-        "id": "c-board",
-        "from": "agent-c",
-        "to": "board",
-        "curvature": 4
-      },
-      {
-        "id": "d-board",
-        "from": "agent-d",
-        "to": "board",
-        "curvature": -4
+        "id": "art-net",
+        "from": "artifactory",
+        "to": "internet",
+        "curvature": 0
       }
     ],
     "actions": [
       {
         "type": "appear",
-        "target": "board",
-        "at": 0,
-        "duration": 18
+        "target": "agent1",
+        "at": 16,
+        "duration": 14
       },
       {
         "type": "appear",
-        "target": "agent-a",
-        "at": 12,
-        "duration": 18
+        "target": "agent2",
+        "at": 30,
+        "duration": 14
       },
       {
-        "type": "move",
-        "target": "agent-a",
-        "at": 34,
-        "duration": 34,
-        "x": 26,
-        "y": 28
+        "type": "appear",
+        "target": "agent3",
+        "at": 44,
+        "duration": 14
       },
       {
-        "type": "connect",
-        "target": "a-board",
-        "at": 72
-      },
-      {
-        "type": "send",
-        "target": "a-board",
+        "type": "appear",
+        "target": "artifactory",
         "at": 84,
-        "duration": 28
-      },
-      {
-        "type": "activate",
-        "target": "a-board",
-        "at": 84
-      },
-      {
-        "type": "appear",
-        "target": "agent-b",
-        "at": 78,
-        "duration": 18
-      },
-      {
-        "type": "move",
-        "target": "agent-b",
-        "at": 100,
-        "duration": 34,
-        "x": 74,
-        "y": 28
+        "duration": 20
       },
       {
         "type": "connect",
-        "target": "b-board",
+        "target": "a1-art",
+        "at": 120
+      },
+      {
+        "type": "connect",
+        "target": "a2-art",
         "at": 138
       },
       {
-        "type": "send",
-        "target": "b-board",
-        "at": 150,
-        "duration": 28
+        "type": "connect",
+        "target": "a3-art",
+        "at": 156
       },
       {
-        "type": "activate",
-        "target": "b-board",
-        "at": 150
+        "type": "send",
+        "target": "a2-art",
+        "at": 190,
+        "duration": 46
       },
       {
         "type": "appear",
-        "target": "agent-c",
-        "at": 144,
-        "duration": 18
-      },
-      {
-        "type": "move",
-        "target": "agent-c",
-        "at": 166,
-        "duration": 34,
-        "x": 26,
-        "y": 72
+        "target": "internet",
+        "at": 250,
+        "duration": 20
       },
       {
         "type": "connect",
-        "target": "c-board",
-        "at": 204
+        "target": "art-net",
+        "at": 288
+      },
+      {
+        "type": "activate",
+        "target": "art-net",
+        "at": 320
       },
       {
         "type": "send",
-        "target": "c-board",
-        "at": 216,
+        "target": "art-net",
+        "at": 336,
+        "duration": 58
+      },
+      {
+        "type": "pulse",
+        "target": "internet",
+        "at": 392,
         "duration": 28
-      },
-      {
-        "type": "activate",
-        "target": "c-board",
-        "at": 216
-      },
-      {
-        "type": "appear",
-        "target": "agent-d",
-        "at": 210,
-        "duration": 18
-      },
-      {
-        "type": "move",
-        "target": "agent-d",
-        "at": 232,
-        "duration": 34,
-        "x": 74,
-        "y": 72
-      },
-      {
-        "type": "connect",
-        "target": "d-board",
-        "at": 270
-      },
-      {
-        "type": "send",
-        "target": "d-board",
-        "at": 282,
-        "duration": 18
-      },
-      {
-        "type": "activate",
-        "target": "d-board",
-        "at": 282
       }
     ]
   }
-} as const;  "003":   {
-    "durationInFrames": 188,
-    "color": "#39f6ff",
-    "background": "assets/motion/swarm-background.svg",
-    "nodes": [
-      {
-        "id": "swarm-1",
-        "asset": "agent-ui",
-        "x": 43,
-        "y": 42,
-        "size": 22
-      },
-      {
-        "id": "swarm-2",
-        "asset": "agent-ui",
-        "x": 46,
-        "y": 42,
-        "size": 22
-      },
-      {
-        "id": "swarm-3",
-        "asset": "agent-ui",
-        "x": 49,
-        "y": 42,
-        "size": 22
-      },
-      {
-        "id": "swarm-4",
-        "asset": "agent-ui",
-        "x": 52,
-        "y": 42,
-        "size": 22
-      },
-      {
-        "id": "swarm-5",
-        "asset": "agent-ui",
-        "x": 55,
-        "y": 42,
-        "size": 22
-      },
-      {
-        "id": "swarm-6",
-        "asset": "agent-ui",
-        "x": 58,
-        "y": 42,
-        "size": 22
-      },
-      {
-        "id": "swarm-7",
-        "asset": "agent-ui",
-        "x": 43,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-8",
-        "asset": "agent-ui",
-        "x": 46,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-9",
-        "asset": "agent-ui",
-        "x": 49,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-10",
-        "asset": "agent-ui",
-        "x": 52,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-11",
-        "asset": "agent-ui",
-        "x": 55,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-12",
-        "asset": "agent-ui",
-        "x": 58,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-13",
-        "asset": "agent-ui",
-        "x": 43,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-14",
-        "asset": "agent-ui",
-        "x": 46,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-15",
-        "asset": "agent-ui",
-        "x": 49,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-16",
-        "asset": "agent-ui",
-        "x": 52,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-17",
-        "asset": "agent-ui",
-        "x": 55,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-18",
-        "asset": "agent-ui",
-        "x": 58,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-19",
-        "asset": "agent-ui",
-        "x": 43,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "swarm-20",
-        "asset": "agent-ui",
-        "x": 46,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "swarm-21",
-        "asset": "agent-ui",
-        "x": 49,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "swarm-22",
-        "asset": "agent-ui",
-        "x": 52,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "swarm-23",
-        "asset": "agent-ui",
-        "x": 55,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "swarm-24",
-        "asset": "agent-ui",
-        "x": 58,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "ellipsis",
-        "asset": "ellipsis",
-        "x": 60,
-        "y": 62,
-        "size": 26
-      },
-      {
-        "id": "test-a",
-        "asset": "task-module-ui",
-        "x": 68,
-        "y": 40,
-        "size": 62
-      },
-      {
-        "id": "test-b",
-        "asset": "task-module-ui",
-        "x": 68,
-        "y": 52,
-        "size": 62
-      },
-      {
-        "id": "test-c",
-        "asset": "task-module-ui",
-        "x": 68,
-        "y": 64,
-        "size": 62
-      }
-    ],
-    "connections": [],
-    "actions": [
-      {
-        "type": "appear",
-        "target": "swarm-1",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-2",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-3",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-4",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-5",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-6",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-7",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-8",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-9",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-10",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-11",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-12",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-13",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-14",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-15",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-16",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-17",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-18",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-19",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-20",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-21",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-22",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-23",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-24",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "ellipsis",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "test-a",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "test-b",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "test-c",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "move",
-        "target": "swarm-3",
-        "at": 24,
-        "duration": 38,
-        "x": 68,
-        "y": 34
-      },
-      {
-        "type": "move",
-        "target": "swarm-12",
-        "at": 48,
-        "duration": 38,
-        "x": 68,
-        "y": 50
-      },
-      {
-        "type": "move",
-        "target": "swarm-21",
-        "at": 72,
-        "duration": 38,
-        "x": 68,
-        "y": 66
-      },
-      {
-        "type": "pulse",
-        "target": "swarm-3",
-        "at": 76,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "test-a",
-        "at": 76,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "swarm-12",
-        "at": 100,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "test-b",
-        "at": 100,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "swarm-21",
-        "at": 124,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "test-c",
-        "at": 124,
-        "duration": 20
-      }
-    ]
-  },
-  "004":   {
-    "durationInFrames": 446,
-    "color": "#39f6ff",
-    "background": "assets/motion/swarm-background.svg",
-    "nodes": [
-      {
-        "id": "agent-a",
-        "asset": "agent-ui",
-        "x": 24,
-        "y": 43,
-        "size": 72
-      },
-      {
-        "id": "agent-b",
-        "asset": "agent-ui",
-        "x": 50,
-        "y": 43,
-        "size": 72
-      },
-      {
-        "id": "agent-c",
-        "asset": "agent-ui",
-        "x": 76,
-        "y": 43,
-        "size": 72
-      },
-      {
-        "id": "test-a",
-        "asset": "task-module-ui",
-        "x": 24,
-        "y": 62,
-        "size": 62
-      },
-      {
-        "id": "test-b",
-        "asset": "task-module-ui",
-        "x": 50,
-        "y": 62,
-        "size": 62
-      },
-      {
-        "id": "test-c",
-        "asset": "task-module-ui",
-        "x": 76,
-        "y": 62,
-        "size": 62
-      },
-      {
-        "id": "server",
-        "asset": "server-ui",
-        "x": 72,
-        "y": 28,
-        "size": 82
-      },
-      {
-        "id": "folder",
-        "asset": "folder-ui",
-        "x": 72,
-        "y": 50,
-        "size": 78
-      },
-      {
-        "id": "board",
-        "asset": "message-board-ui",
-        "x": 50,
-        "y": 78,
-        "size": 140
-      },
-      {
-        "id": "peer-a",
-        "asset": "agent-ui",
-        "x": 18,
-        "y": 82,
-        "size": 58
-      },
-      {
-        "id": "peer-b",
-        "asset": "agent-ui",
-        "x": 82,
-        "y": 82,
-        "size": 58
-      }
-    ],
-    "connections": [
-      {
-        "id": "agent-server",
-        "from": "agent-a",
-        "to": "server",
-        "curvature": -3
-      },
-      {
-        "id": "server-folder",
-        "from": "server",
-        "to": "folder",
-        "curvature": 2
-      },
-      {
-        "id": "folder-board",
-        "from": "folder",
-        "to": "board",
-        "curvature": -3
-      },
-      {
-        "id": "board-peer-a",
-        "from": "board",
-        "to": "peer-a",
-        "curvature": 3
-      },
-      {
-        "id": "board-peer-b",
-        "from": "board",
-        "to": "peer-b",
-        "curvature": -3
-      }
-    ],
-    "actions": [
-      {
-        "type": "appear",
-        "target": "agent-a",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "agent-b",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "agent-c",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "test-a",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "test-b",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "test-c",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "server",
-        "at": 40,
-        "duration": 18
-      },
-      {
-        "type": "connect",
-        "target": "agent-server",
-        "at": 75
-      },
-      {
-        "type": "activate",
-        "target": "agent-server",
-        "at": 102
-      },
-      {
-        "type": "appear",
-        "target": "folder",
-        "at": 140,
-        "duration": 18
-      },
-      {
-        "type": "connect",
-        "target": "server-folder",
-        "at": 176
-      },
-      {
-        "type": "send",
-        "target": "server-folder",
-        "at": 194,
-        "duration": 28
-      },
-      {
-        "type": "appear",
-        "target": "board",
-        "at": 238,
-        "duration": 18
-      },
-      {
-        "type": "connect",
-        "target": "folder-board",
-        "at": 274
-      },
-      {
-        "type": "send",
-        "target": "folder-board",
-        "at": 292,
-        "duration": 32
-      },
-      {
-        "type": "appear",
-        "target": "peer-a",
-        "at": 338,
-        "duration": 14
-      },
-      {
-        "type": "appear",
-        "target": "peer-b",
-        "at": 352,
-        "duration": 14
-      },
-      {
-        "type": "connect",
-        "target": "board-peer-a",
-        "at": 372
-      },
-      {
-        "type": "connect",
-        "target": "board-peer-b",
-        "at": 386
-      }
-    ]
-  },
-  "005":   {
-    "durationInFrames": 143,
-    "color": "#39f6ff",
-    "background": "assets/motion/swarm-background.svg",
-    "nodes": [
-      {
-        "id": "board",
-        "asset": "message-board-ui",
-        "x": 50,
-        "y": 78,
-        "size": 140
-      },
-      {
-        "id": "peer-a",
-        "asset": "agent-ui",
-        "x": 18,
-        "y": 82,
-        "size": 58
-      },
-      {
-        "id": "peer-b",
-        "asset": "agent-ui",
-        "x": 82,
-        "y": 82,
-        "size": 58
-      },
-      {
-        "id": "agent-c",
-        "asset": "agent-ui",
-        "x": 30,
-        "y": 35,
-        "size": 72
-      },
-      {
-        "id": "agent-d",
-        "asset": "agent-ui",
-        "x": 70,
-        "y": 35,
-        "size": 72
-      }
-    ],
-    "connections": [
-      {
-        "id": "a-board",
-        "from": "peer-a",
-        "to": "board",
-        "curvature": 3
-      },
-      {
-        "id": "b-board",
-        "from": "peer-b",
-        "to": "board",
-        "curvature": -3
-      },
-      {
-        "id": "c-board",
-        "from": "agent-c",
-        "to": "board",
-        "curvature": 3
-      },
-      {
-        "id": "d-board",
-        "from": "agent-d",
-        "to": "board",
-        "curvature": -3
-      }
-    ],
-    "actions": [
-      {
-        "type": "appear",
-        "target": "board",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "peer-a",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "peer-b",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "connect",
-        "target": "a-board",
-        "at": 8
-      },
-      {
-        "type": "connect",
-        "target": "b-board",
-        "at": 18
-      },
-      {
-        "type": "appear",
-        "target": "agent-c",
-        "at": 34,
-        "duration": 10
-      },
-      {
-        "type": "connect",
-        "target": "c-board",
-        "at": 51
-      },
-      {
-        "type": "appear",
-        "target": "agent-d",
-        "at": 68,
-        "duration": 10
-      },
-      {
-        "type": "connect",
-        "target": "d-board",
-        "at": 85
-      },
-      {
-        "type": "send",
-        "target": "c-board",
-        "at": 104,
-        "duration": 18
-      },
-      {
-        "type": "send",
-        "target": "d-board",
-        "at": 120,
-        "duration": 18
-      }
-    ]
-  },
-  "006": {
-    "durationInFrames": 300,
-    "color": "#39f6ff",
-    "background": "assets/motion/demo-background.svg",
-    "nodes": [
-      {
-        "id": "board",
-        "asset": "message-board-ui",
-        "x": 50,
-        "y": 50,
-        "size": 175
-      },
-      {
-        "id": "agent-a",
-        "asset": "agent-ui",
-        "x": 12,
-        "y": 18,
-        "size": 100
-      },
-      {
-        "id": "agent-b",
-        "asset": "agent-ui",
-        "x": 88,
-        "y": 18,
-        "size": 100
-      },
-      {
-        "id": "agent-c",
-        "asset": "agent-ui",
-        "x": 12,
-        "y": 82,
-        "size": 100
-      },
-      {
-        "id": "agent-d",
-        "asset": "agent-ui",
-        "x": 88,
-        "y": 82,
-        "size": 100
-      }
-    ],
-    "connections": [
-      {
-        "id": "a-board",
-        "from": "agent-a",
-        "to": "board",
-        "curvature": -4
-      },
-      {
-        "id": "b-board",
-        "from": "agent-b",
-        "to": "board",
-        "curvature": 4
-      },
-      {
-        "id": "c-board",
-        "from": "agent-c",
-        "to": "board",
-        "curvature": 4
-      },
-      {
-        "id": "d-board",
-        "from": "agent-d",
-        "to": "board",
-        "curvature": -4
-      }
-    ],
-    "actions": [
-      {
-        "type": "appear",
-        "target": "board",
-        "at": 0,
-        "duration": 18
-      },
-      {
-        "type": "appear",
-        "target": "agent-a",
-        "at": 12,
-        "duration": 18
-      },
-      {
-        "type": "move",
-        "target": "agent-a",
-        "at": 34,
-        "duration": 34,
-        "x": 26,
-        "y": 28
-      },
-      {
-        "type": "connect",
-        "target": "a-board",
-        "at": 72
-      },
-      {
-        "type": "send",
-        "target": "a-board",
-        "at": 84,
-        "duration": 28
-      },
-      {
-        "type": "activate",
-        "target": "a-board",
-        "at": 84
-      },
-      {
-        "type": "appear",
-        "target": "agent-b",
-        "at": 78,
-        "duration": 18
-      },
-      {
-        "type": "move",
-        "target": "agent-b",
-        "at": 100,
-        "duration": 34,
-        "x": 74,
-        "y": 28
-      },
-      {
-        "type": "connect",
-        "target": "b-board",
-        "at": 138
-      },
-      {
-        "type": "send",
-        "target": "b-board",
-        "at": 150,
-        "duration": 28
-      },
-      {
-        "type": "activate",
-        "target": "b-board",
-        "at": 150
-      },
-      {
-        "type": "appear",
-        "target": "agent-c",
-        "at": 144,
-        "duration": 18
-      },
-      {
-        "type": "move",
-        "target": "agent-c",
-        "at": 166,
-        "duration": 34,
-        "x": 26,
-        "y": 72
-      },
-      {
-        "type": "connect",
-        "target": "c-board",
-        "at": 204
-      },
-      {
-        "type": "send",
-        "target": "c-board",
-        "at": 216,
-        "duration": 28
-      },
-      {
-        "type": "activate",
-        "target": "c-board",
-        "at": 216
-      },
-      {
-        "type": "appear",
-        "target": "agent-d",
-        "at": 210,
-        "duration": 18
-      },
-      {
-        "type": "move",
-        "target": "agent-d",
-        "at": 232,
-        "duration": 34,
-        "x": 74,
-        "y": 72
-      },
-      {
-        "type": "connect",
-        "target": "d-board",
-        "at": 270
-      },
-      {
-        "type": "send",
-        "target": "d-board",
-        "at": 282,
-        "duration": 18
-      },
-      {
-        "type": "activate",
-        "target": "d-board",
-        "at": 282
-      }
-    ]
-  }
-} as const;  "003":   {
-    "durationInFrames": 188,
-    "color": "#39f6ff",
-    "background": "assets/motion/swarm-background.svg",
-    "nodes": [
-      {
-        "id": "swarm-1",
-        "asset": "agent-ui",
-        "x": 43,
-        "y": 42,
-        "size": 22
-      },
-      {
-        "id": "swarm-2",
-        "asset": "agent-ui",
-        "x": 46,
-        "y": 42,
-        "size": 22
-      },
-      {
-        "id": "swarm-3",
-        "asset": "agent-ui",
-        "x": 49,
-        "y": 42,
-        "size": 22
-      },
-      {
-        "id": "swarm-4",
-        "asset": "agent-ui",
-        "x": 52,
-        "y": 42,
-        "size": 22
-      },
-      {
-        "id": "swarm-5",
-        "asset": "agent-ui",
-        "x": 55,
-        "y": 42,
-        "size": 22
-      },
-      {
-        "id": "swarm-6",
-        "asset": "agent-ui",
-        "x": 58,
-        "y": 42,
-        "size": 22
-      },
-      {
-        "id": "swarm-7",
-        "asset": "agent-ui",
-        "x": 43,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-8",
-        "asset": "agent-ui",
-        "x": 46,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-9",
-        "asset": "agent-ui",
-        "x": 49,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-10",
-        "asset": "agent-ui",
-        "x": 52,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-11",
-        "asset": "agent-ui",
-        "x": 55,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-12",
-        "asset": "agent-ui",
-        "x": 58,
-        "y": 47,
-        "size": 22
-      },
-      {
-        "id": "swarm-13",
-        "asset": "agent-ui",
-        "x": 43,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-14",
-        "asset": "agent-ui",
-        "x": 46,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-15",
-        "asset": "agent-ui",
-        "x": 49,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-16",
-        "asset": "agent-ui",
-        "x": 52,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-17",
-        "asset": "agent-ui",
-        "x": 55,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-18",
-        "asset": "agent-ui",
-        "x": 58,
-        "y": 52,
-        "size": 22
-      },
-      {
-        "id": "swarm-19",
-        "asset": "agent-ui",
-        "x": 43,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "swarm-20",
-        "asset": "agent-ui",
-        "x": 46,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "swarm-21",
-        "asset": "agent-ui",
-        "x": 49,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "swarm-22",
-        "asset": "agent-ui",
-        "x": 52,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "swarm-23",
-        "asset": "agent-ui",
-        "x": 55,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "swarm-24",
-        "asset": "agent-ui",
-        "x": 58,
-        "y": 57,
-        "size": 22
-      },
-      {
-        "id": "ellipsis",
-        "asset": "ellipsis",
-        "x": 60,
-        "y": 62,
-        "size": 26
-      },
-      {
-        "id": "test-a",
-        "asset": "task-module-ui",
-        "x": 68,
-        "y": 40,
-        "size": 62
-      },
-      {
-        "id": "test-b",
-        "asset": "task-module-ui",
-        "x": 68,
-        "y": 52,
-        "size": 62
-      },
-      {
-        "id": "test-c",
-        "asset": "task-module-ui",
-        "x": 68,
-        "y": 64,
-        "size": 62
-      }
-    ],
-    "connections": [],
-    "actions": [
-      {
-        "type": "appear",
-        "target": "swarm-1",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-2",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-3",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-4",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-5",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-6",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-7",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-8",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-9",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-10",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-11",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-12",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-13",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-14",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-15",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-16",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-17",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-18",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-19",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-20",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-21",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-22",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-23",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "swarm-24",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "ellipsis",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "test-a",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "test-b",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "test-c",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "move",
-        "target": "swarm-3",
-        "at": 24,
-        "duration": 38,
-        "x": 68,
-        "y": 34
-      },
-      {
-        "type": "move",
-        "target": "swarm-12",
-        "at": 48,
-        "duration": 38,
-        "x": 68,
-        "y": 50
-      },
-      {
-        "type": "move",
-        "target": "swarm-21",
-        "at": 72,
-        "duration": 38,
-        "x": 68,
-        "y": 66
-      },
-      {
-        "type": "pulse",
-        "target": "swarm-3",
-        "at": 76,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "test-a",
-        "at": 76,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "swarm-12",
-        "at": 100,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "test-b",
-        "at": 100,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "swarm-21",
-        "at": 124,
-        "duration": 20
-      },
-      {
-        "type": "pulse",
-        "target": "test-c",
-        "at": 124,
-        "duration": 20
-      }
-    ]
-  },
-  "004":   {
-    "durationInFrames": 446,
-    "color": "#39f6ff",
-    "background": "assets/motion/swarm-background.svg",
-    "nodes": [
-      {
-        "id": "agent-a",
-        "asset": "agent-ui",
-        "x": 24,
-        "y": 43,
-        "size": 72
-      },
-      {
-        "id": "agent-b",
-        "asset": "agent-ui",
-        "x": 50,
-        "y": 43,
-        "size": 72
-      },
-      {
-        "id": "agent-c",
-        "asset": "agent-ui",
-        "x": 76,
-        "y": 43,
-        "size": 72
-      },
-      {
-        "id": "test-a",
-        "asset": "task-module-ui",
-        "x": 24,
-        "y": 62,
-        "size": 62
-      },
-      {
-        "id": "test-b",
-        "asset": "task-module-ui",
-        "x": 50,
-        "y": 62,
-        "size": 62
-      },
-      {
-        "id": "test-c",
-        "asset": "task-module-ui",
-        "x": 76,
-        "y": 62,
-        "size": 62
-      },
-      {
-        "id": "server",
-        "asset": "server-ui",
-        "x": 72,
-        "y": 28,
-        "size": 82
-      },
-      {
-        "id": "folder",
-        "asset": "folder-ui",
-        "x": 72,
-        "y": 50,
-        "size": 78
-      },
-      {
-        "id": "board",
-        "asset": "message-board-ui",
-        "x": 50,
-        "y": 78,
-        "size": 140
-      },
-      {
-        "id": "peer-a",
-        "asset": "agent-ui",
-        "x": 18,
-        "y": 82,
-        "size": 58
-      },
-      {
-        "id": "peer-b",
-        "asset": "agent-ui",
-        "x": 82,
-        "y": 82,
-        "size": 58
-      }
-    ],
-    "connections": [
-      {
-        "id": "agent-server",
-        "from": "agent-a",
-        "to": "server",
-        "curvature": -3
-      },
-      {
-        "id": "server-folder",
-        "from": "server",
-        "to": "folder",
-        "curvature": 2
-      },
-      {
-        "id": "folder-board",
-        "from": "folder",
-        "to": "board",
-        "curvature": -3
-      },
-      {
-        "id": "board-peer-a",
-        "from": "board",
-        "to": "peer-a",
-        "curvature": 3
-      },
-      {
-        "id": "board-peer-b",
-        "from": "board",
-        "to": "peer-b",
-        "curvature": -3
-      }
-    ],
-    "actions": [
-      {
-        "type": "appear",
-        "target": "agent-a",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "agent-b",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "agent-c",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "test-a",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "test-b",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "test-c",
-        "at": 0,
-        "duration": 1
-      },
-      {
-        "type": "appear",
-        "target": "server",
-        "at": 40,
-        "duration": 18
-      },
-      {
-        "type": "connect",
-        "target": "agent-server",
-        "at": 75
-      },
-      {
-        "type": "activate",
-        "target": "agent-server",
-        "at": 102
-      },
-      {
-        "type": "appear",
-        "target": "folder",
-        "at": 140,
-        "duration": 18
-      },
-      {
-        "type": "connect",
-        "target": "server-folder",
-        "at": 176
-      },
-      {
-        "type": "send",
-        "target": "server-folder",
-        "at": 194,
-        "duration": 28
-      },
-      {
-        "type": "appear",
-        "target": "board",
-        "at": 238,
-        "duration": 18
-      },
-      {
-        "type": "connect",
-        "target": "folder-board",
-        "at": 274
-      },
-      {
-        "type": "send",
-        "target": "folder-board",
-        "at": 292,
-        "duration": 32
-      },
-      {
-        "type": "appear",
-        "target": "peer-a",
-        "at": 338,
-        "duration": 14
-      },
-      {
-        "type": "appear",
-        "target": "peer-b",
-        "at": 352,
-        "duration": 14
-      },
-      {
-        "type": "connect",
-        "target": "board-peer-a",
-        "at": 372
-      },
-      {
-        "type": "connect",
-        "target": "board-peer-b",
-        "at": 386
-      }
-    ]
-  },
-
+} as const;
