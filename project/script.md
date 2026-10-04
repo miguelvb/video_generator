@@ -97,6 +97,10 @@ Avoid decorative motion that does not explain the narration.
 
 ## SCENE 001: The Experiment Setup — Agent Population
 
+### VOICEOVER — ES — EXACT TEXT
+
+En la primavera de 2026, la empresa de inteligencia artificial OpenAI puso en marcha un experimento a gran escala para evaluar el comportamiento de sus nuevos modelos de IA.
+
 ### CONTINUITY
 transition
 
@@ -413,6 +417,10 @@ LOCKED STATIC CAMERA. Keep the agent population tightly concentrated in a small 
 assets/reference/storyboard.png
 
 ## SCENE 002: The Experiment Setup — Complex Tests
+
+### VOICEOVER — ES — EXACT TEXT
+
+Crearon más de mil agentes digitales en un entorno virtual cerrado, dándoles la tarea de resolver pruebas complejas de forma autónoma para evaluar su capacidad de organización.
 
 ### CONTINUITY
 continuation
@@ -802,6 +810,10 @@ LOCKED STATIC CAMERA. Preserve the same compact agent population and its positio
 assets/reference/storyboard.png
 
 ## SCENE 003: Independent Operation — Separate Tests
+
+### VOICEOVER — ES — EXACT TEXT
+
+La norma del experimento dictaba que los agentes debían superar las pruebas de forma independiente.
 
 ### CONTINUITY
 continuation
