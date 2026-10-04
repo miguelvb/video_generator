@@ -73,7 +73,9 @@ export const resolveMotionActions=(
       for(const appear of appears){
         const start=actionStart(appear);
         const duration=appear.durationInFrames ?? 24;
-        const progress=Math.max(0,Math.min(1,(frame-start)/Math.max(1,duration)));
+        const progress=duration<=1
+          ? (frame>=start ? 1 : 0)
+          : Math.max(0,Math.min(1,(frame-start)/duration));
         opacity=Math.max(opacity,progress);
       }
     }
