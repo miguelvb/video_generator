@@ -233,15 +233,18 @@ const STORYBOARD_FADE_OUT = new Set(['007', '008', '011']);
 
 const storyboardTransitionFlags = (sceneId:string, sceneIndex:number) => {
   const n = Number(sceneId);
+  const nextScene = scenes[sceneIndex + 1];
+  const nextIsContinuation = String(nextScene?.continuity ?? '').toLowerCase() === 'continuation';
   if (Number.isFinite(n) && n >= 1 && n <= 12) {
     return {
-      fadeIn: STORYBOARD_FADE_IN.has(sceneId),
-      fadeOut: STORYBOARD_FADE_OUT.has(sceneId),
+      // A continuation is literally the same visual shot. Never fade it in/out.
+      fadeIn: STORYBOARD_FADE_IN.has(sceneId) && sceneIndex === 0,
+      fadeOut: STORYBOARD_FADE_OUT.has(sceneId) && !nextIsContinuation,
     };
   }
   return {
-    fadeIn: sceneIndex > 0,
-    fadeOut: sceneIndex < scenes.length - 1,
+    fadeIn: sceneIndex > 0 && !String(scenes[sceneIndex]?.continuity ?? '').toLowerCase().includes('continuation'),
+    fadeOut: sceneIndex < scenes.length - 1 && !nextIsContinuation,
   };
 };
 
