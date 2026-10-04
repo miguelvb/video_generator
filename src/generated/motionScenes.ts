@@ -1105,126 +1105,126 @@ export const MOTION_SCENES = {
       }
     ]
   },
-  "005": {
-  "durationInFrames": 143,
-  "color": "#39f6ff",
-  "background": "assets/motion/demo-background.svg",
-  "nodes": [
-    {
-      "id": "board",
-      "asset": "message-board-ui",
-      "x": 50,
-      "y": 52,
-      "size": 175
-    },
-    {
-      "id": "agent-a",
-      "asset": "agent-ui",
-      "x": 18,
-      "y": 18,
-      "size": 82
-    },
-    {
-      "id": "agent-b",
-      "asset": "agent-ui",
-      "x": 82,
-      "y": 18,
-      "size": 82
-    },
-    {
-      "id": "agent-c",
-      "asset": "agent-ui",
-      "x": 18,
-      "y": 82,
-      "size": 82
-    },
-    {
-      "id": "agent-d",
-      "asset": "agent-ui",
-      "x": 82,
-      "y": 82,
-      "size": 82
-    }
-  ],
-  "connections": [
-    {
-      "id": "a-board",
-      "from": "agent-a",
-      "to": "board",
-      "curvature": -4
-    },
-    {
-      "id": "b-board",
-      "from": "agent-b",
-      "to": "board",
-      "curvature": 4
-    },
-    {
-      "id": "c-board",
-      "from": "agent-c",
-      "to": "board",
-      "curvature": 4
-    },
-    {
-      "id": "d-board",
-      "from": "agent-d",
-      "to": "board",
-      "curvature": -4
-    }
-  ],
-  "actions": [
-    {
-      "type": "appear",
-      "target": "board",
-      "at": 0,
-      "duration": 10
-    },
-    {
-      "type": "appear",
-      "target": "agent-a",
-      "at": 18,
-      "duration": 12
-    },
-    {
-      "type": "connect",
-      "target": "a-board",
-      "at": 35
-    },
-    {
-      "type": "appear",
-      "target": "agent-b",
-      "at": 45,
-      "duration": 12
-    },
-    {
-      "type": "connect",
-      "target": "b-board",
-      "at": 62
-    },
-    {
-      "type": "appear",
-      "target": "agent-c",
-      "at": 72,
-      "duration": 12
-    },
-    {
-      "type": "connect",
-      "target": "c-board",
-      "at": 88
-    },
-    {
-      "type": "appear",
-      "target": "agent-d",
-      "at": 98,
-      "duration": 12
-    },
-    {
-      "type": "connect",
-      "target": "d-board",
-      "at": 114
-    }
-  ]
-},
+  "005":   {
+    "durationInFrames": 143,
+    "color": "#39f6ff",
+    "background": "assets/motion/swarm-background.svg",
+    "nodes": [
+      {
+        "id": "board",
+        "asset": "message-board-ui",
+        "x": 50,
+        "y": 55,
+        "size": 175
+      },
+      {
+        "id": "agent-a",
+        "asset": "agent-ui",
+        "x": 24,
+        "y": 25,
+        "size": 78
+      },
+      {
+        "id": "agent-b",
+        "asset": "agent-ui",
+        "x": 76,
+        "y": 25,
+        "size": 78
+      },
+      {
+        "id": "agent-c",
+        "asset": "agent-ui",
+        "x": 24,
+        "y": 82,
+        "size": 78
+      },
+      {
+        "id": "agent-d",
+        "asset": "agent-ui",
+        "x": 76,
+        "y": 82,
+        "size": 78
+      }
+    ],
+    "connections": [
+      {
+        "id": "a-board",
+        "from": "agent-a",
+        "to": "board",
+        "curvature": -3
+      },
+      {
+        "id": "b-board",
+        "from": "agent-b",
+        "to": "board",
+        "curvature": 3
+      },
+      {
+        "id": "c-board",
+        "from": "agent-c",
+        "to": "board",
+        "curvature": 3
+      },
+      {
+        "id": "d-board",
+        "from": "agent-d",
+        "to": "board",
+        "curvature": -3
+      }
+    ],
+    "actions": [
+      {
+        "type": "appear",
+        "target": "board",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent-a",
+        "at": 10,
+        "duration": 10
+      },
+      {
+        "type": "connect",
+        "target": "a-board",
+        "at": 25
+      },
+      {
+        "type": "appear",
+        "target": "agent-b",
+        "at": 38,
+        "duration": 10
+      },
+      {
+        "type": "connect",
+        "target": "b-board",
+        "at": 53
+      },
+      {
+        "type": "appear",
+        "target": "agent-c",
+        "at": 66,
+        "duration": 10
+      },
+      {
+        "type": "connect",
+        "target": "c-board",
+        "at": 81
+      },
+      {
+        "type": "appear",
+        "target": "agent-d",
+        "at": 94,
+        "duration": 10
+      },
+      {
+        "type": "connect",
+        "target": "d-board",
+        "at": 109
+      }
+    ]
+  },
   "006": {
     "durationInFrames": 300,
     "color": "#39f6ff",
