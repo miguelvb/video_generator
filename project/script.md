@@ -1893,7 +1893,8 @@ transition
       "id": "agent6",
       "asset": "agent-ui",
       "x": 22,
-      "size": 60
+      "size": 60,
+      "y": 82
     },
     {
       "id": "artifactory",
@@ -2025,6 +2026,12 @@ transition
       "cueOffsetSeconds": 6.95,
       "cueWord": "registró",
       "cueOccurrence": 1
+    },
+    {
+      "type": "send",
+      "target": "agent2-artifactory",
+      "cue": "009_en_02",
+      "cueDurationSeconds": 2.2
     }
   ]
 }
@@ -2127,7 +2134,8 @@ continuation
       "id": "agent6",
       "asset": "agent-ui",
       "x": 22,
-      "size": 60
+      "size": 60,
+      "y": 82
     },
     {
       "id": "artifactory",
@@ -2344,7 +2352,8 @@ continuation
       "id": "agent6",
       "asset": "agent-ui",
       "x": 22,
-      "size": 60
+      "size": 60,
+      "y": 82
     },
     {
       "id": "artifactory",
