@@ -994,7 +994,7 @@ export const MOTION_SCENES = {
         "id": "agent1",
         "asset": "agent-ui",
         "x": 22,
-        "y": 30,
+        "y": 22,
         "size": 60
       },
       {
@@ -1057,7 +1057,7 @@ export const MOTION_SCENES = {
         "id": "agent1",
         "asset": "agent-ui",
         "x": 22,
-        "y": 30,
+        "y": 22,
         "size": 60
       },
       {
@@ -1095,21 +1095,21 @@ export const MOTION_SCENES = {
         "id": "agent1",
         "asset": "agent-ui",
         "x": 22,
-        "y": 30,
+        "y": 22,
         "size": 60
       },
       {
         "id": "agent2",
         "asset": "agent-ui",
         "x": 22,
-        "y": 43,
+        "y": 34,
         "size": 60
       },
       {
         "id": "agent3",
         "asset": "agent-ui",
         "x": 22,
-        "y": 56,
+        "y": 46,
         "size": 60
       },
       {
@@ -1200,35 +1200,35 @@ export const MOTION_SCENES = {
         "id": "agent1",
         "asset": "agent-ui",
         "x": 22,
-        "y": 30,
+        "y": 22,
         "size": 60
       },
       {
         "id": "agent2",
         "asset": "agent-ui",
         "x": 22,
-        "y": 43,
+        "y": 34,
         "size": 60
       },
       {
         "id": "agent3",
         "asset": "agent-ui",
         "x": 22,
-        "y": 56,
+        "y": 46,
         "size": 60
       },
       {
         "id": "agent4",
         "asset": "agent-ui",
         "x": 22,
-        "y": 69,
+        "y": 58,
         "size": 60
       },
       {
         "id": "agent5",
         "asset": "agent-ui",
         "x": 22,
-        "y": 82,
+        "y": 70,
         "size": 60
       },
       {
@@ -1464,35 +1464,35 @@ export const MOTION_SCENES = {
         "id": "agent1",
         "asset": "agent-ui",
         "x": 22,
-        "y": 30,
+        "y": 22,
         "size": 60
       },
       {
         "id": "agent2",
         "asset": "agent-ui",
         "x": 22,
-        "y": 43,
+        "y": 34,
         "size": 60
       },
       {
         "id": "agent3",
         "asset": "agent-ui",
         "x": 22,
-        "y": 56,
+        "y": 46,
         "size": 60
       },
       {
         "id": "agent4",
         "asset": "agent-ui",
         "x": 22,
-        "y": 69,
+        "y": 58,
         "size": 60
       },
       {
         "id": "agent5",
         "asset": "agent-ui",
         "x": 22,
-        "y": 82,
+        "y": 70,
         "size": 60
       },
       {
@@ -1649,35 +1649,35 @@ export const MOTION_SCENES = {
         "id": "agent1",
         "asset": "agent-ui",
         "x": 22,
-        "y": 30,
+        "y": 22,
         "size": 60
       },
       {
         "id": "agent2",
         "asset": "agent-ui",
         "x": 22,
-        "y": 43,
+        "y": 34,
         "size": 60
       },
       {
         "id": "agent3",
         "asset": "agent-ui",
         "x": 22,
-        "y": 56,
+        "y": 46,
         "size": 60
       },
       {
         "id": "agent4",
         "asset": "agent-ui",
         "x": 22,
-        "y": 69,
+        "y": 58,
         "size": 60
       },
       {
         "id": "agent5",
         "asset": "agent-ui",
         "x": 22,
-        "y": 82,
+        "y": 70,
         "size": 60
       },
       {
@@ -1815,35 +1815,35 @@ export const MOTION_SCENES = {
         "id": "agent1",
         "asset": "agent-ui",
         "x": 22,
-        "y": 30,
+        "y": 22,
         "size": 60
       },
       {
         "id": "agent2",
         "asset": "agent-ui",
         "x": 22,
-        "y": 43,
+        "y": 34,
         "size": 60
       },
       {
         "id": "agent3",
         "asset": "agent-ui",
         "x": 22,
-        "y": 56,
+        "y": 46,
         "size": 60
       },
       {
         "id": "agent4",
         "asset": "agent-ui",
         "x": 22,
-        "y": 69,
+        "y": 58,
         "size": 60
       },
       {
         "id": "agent5",
         "asset": "agent-ui",
         "x": 22,
-        "y": 82,
+        "y": 70,
         "size": 60
       },
       {
