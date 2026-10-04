@@ -17,7 +17,6 @@ export type MotionEdgeState = 'normal' | 'active' | 'success' | 'error';
 export type MotionStateChange<T extends string> = { frame: number; state: T };
 export type MotionPositionChange = { startFrame: number; durationInFrames: number; x: number; y: number };
 
-type MotionActionDependency = { afterTargetIds?: string[] };
 
 export type MotionAction =
   | ({ type: 'appear'; targetId: string; startFrame: number; durationInFrames?: number })
