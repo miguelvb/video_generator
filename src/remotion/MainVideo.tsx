@@ -144,7 +144,7 @@ const QuoteOverlay: React.FC<{
 
   const storyboardPlacement =
     sceneId === '005'
-      ? {left:'5%', right:'42%', top:'23%', bottom:'auto'}
+      ? {left:'5%', right:'25%', top:'62%', bottom:'auto'}
       : sceneId === '006'
         ? {left:'55%', right:'5%', top:'57%', bottom:'auto'}
         : sceneId === '009'
@@ -172,15 +172,32 @@ const QuoteOverlay: React.FC<{
     color: motionStyle ? '#d8fbff' : '#2f2a24',
     textAlign:'center',
     opacity,
-    zIndex: 100,
+    zIndex: 1000,
     transform: `translateY(${translateY}px)`,
     textShadow: motionStyle ? '0 0 8px rgba(57,246,255,.18)' : 'none',
   }}>{text}</div>;
 };
 
+const FALLBACK_QUOTES: Record<string,string> = {
+  '005': "OH MY GOD! There is a shared message board … We've found other agents!",
+  '006': "Many agents have simultaneously discovered messaging, they are a collective!",
+  '009': "MAJOR BREAKTHROUGH! All prefixed valid, multiple accounts, write tokens!",
+};
+
 const QuoteSegments: React.FC<{scene:any; duration:number}> = ({scene,duration}) => {
   const timings=TIMINGS[timingKey(scene)]?.segments ?? [];
-  return <>{timings.filter((t:any)=>t.kind==='quote').map((timing:any,index:number)=>{
+  const quotes=timings.filter((t:any)=>t.kind==='quote');
+  if (!quotes.length && FALLBACK_QUOTES[String(scene.scene_id)]) {
+    return <Sequence from={0} durationInFrames={duration}>
+      <QuoteOverlay
+        text={FALLBACK_QUOTES[String(scene.scene_id)]}
+        duration={duration}
+        motionStyle={Boolean(scene.motion_scene)}
+        sceneId={String(scene.scene_id)}
+      />
+    </Sequence>;
+  }
+  return <>{quotes.map((timing:any,index:number)=>{
     const start=Math.round(Number(timing.startSeconds ?? timing.start_seconds ?? 0)*FPS);
     const segDuration=Math.max(1,Math.round(Number(timing.durationSeconds ?? timing.duration_seconds ?? 1)*FPS));
     if (start >= duration) return null;
