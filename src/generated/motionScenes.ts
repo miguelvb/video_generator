@@ -944,120 +944,167 @@ export const MOTION_SCENES = {
       }
     ]
   },
-  "004": {
-  "durationInFrames": 446,
-  "color": "#39f6ff",
-  "background": "assets/motion/demo-background.svg",
-  "nodes": [
-    {
-      "id": "focus-agent",
-      "asset": "agent-ui",
-      "x": 25,
-      "y": 32,
-      "size": 150
-    },
-    {
-      "id": "server",
-      "asset": "server-ui",
-      "x": 75,
-      "y": 32,
-      "size": 95
-    },
-    {
-      "id": "folder",
-      "asset": "folder-ui",
-      "x": 75,
-      "y": 57,
-      "size": 90
-    },
-    {
-      "id": "board",
-      "asset": "message-board-ui",
-      "x": 50,
-      "y": 70,
-      "size": 170
-    }
-  ],
-  "connections": [
-    {
-      "id": "agent-server",
-      "from": "focus-agent",
-      "to": "server",
-      "curvature": -4
-    },
-    {
-      "id": "server-folder",
-      "from": "server",
-      "to": "folder",
-      "curvature": 3
-    },
-    {
-      "id": "folder-board",
-      "from": "folder",
-      "to": "board",
-      "curvature": -3
-    }
-  ],
-  "actions": [
-    {
-      "type": "appear",
-      "target": "focus-agent",
-      "at": 0,
-      "duration": 1
-    },
-    {
-      "type": "appear",
-      "target": "server",
-      "at": 20,
-      "duration": 18
-    },
-    {
-      "type": "appear",
-      "target": "folder",
-      "at": 85,
-      "duration": 18
-    },
-    {
-      "type": "appear",
-      "target": "board",
-      "at": 150,
-      "duration": 18
-    },
-    {
-      "type": "connect",
-      "target": "agent-server",
-      "at": 60
-    },
-    {
-      "type": "connect",
-      "target": "server-folder",
-      "at": 120
-    },
-    {
-      "type": "connect",
-      "target": "folder-board",
-      "at": 180
-    },
-    {
-      "type": "send",
-      "target": "agent-server",
-      "at": 205,
-      "duration": 30
-    },
-    {
-      "type": "send",
-      "target": "server-folder",
-      "at": 250,
-      "duration": 30
-    },
-    {
-      "type": "send",
-      "target": "folder-board",
-      "at": 295,
-      "duration": 35
-    }
-  ]
-},
+  "004":   {
+    "durationInFrames": 446,
+    "color": "#39f6ff",
+    "background": "assets/motion/swarm-background.svg",
+    "nodes": [
+      {
+        "id": "focus-agent",
+        "asset": "agent-ui",
+        "x": 24,
+        "y": 45,
+        "size": 105
+      },
+      {
+        "id": "server",
+        "asset": "server-ui",
+        "x": 68,
+        "y": 32,
+        "size": 92
+      },
+      {
+        "id": "folder",
+        "asset": "folder-ui",
+        "x": 68,
+        "y": 55,
+        "size": 88
+      },
+      {
+        "id": "board",
+        "asset": "message-board-ui",
+        "x": 50,
+        "y": 76,
+        "size": 145
+      },
+      {
+        "id": "peer-a",
+        "asset": "agent-ui",
+        "x": 20,
+        "y": 78,
+        "size": 64
+      },
+      {
+        "id": "peer-b",
+        "asset": "agent-ui",
+        "x": 82,
+        "y": 78,
+        "size": 64
+      }
+    ],
+    "connections": [
+      {
+        "id": "agent-server",
+        "from": "focus-agent",
+        "to": "server",
+        "curvature": -3
+      },
+      {
+        "id": "server-folder",
+        "from": "server",
+        "to": "folder",
+        "curvature": 2
+      },
+      {
+        "id": "folder-board",
+        "from": "folder",
+        "to": "board",
+        "curvature": -3
+      },
+      {
+        "id": "board-peer-a",
+        "from": "board",
+        "to": "peer-a",
+        "curvature": 3
+      },
+      {
+        "id": "board-peer-b",
+        "from": "board",
+        "to": "peer-b",
+        "curvature": -3
+      }
+    ],
+    "actions": [
+      {
+        "type": "appear",
+        "target": "focus-agent",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "server",
+        "at": 45,
+        "duration": 18
+      },
+      {
+        "type": "connect",
+        "target": "agent-server",
+        "at": 78
+      },
+      {
+        "type": "activate",
+        "target": "agent-server",
+        "at": 105
+      },
+      {
+        "type": "appear",
+        "target": "folder",
+        "at": 145,
+        "duration": 18
+      },
+      {
+        "type": "connect",
+        "target": "server-folder",
+        "at": 180
+      },
+      {
+        "type": "send",
+        "target": "server-folder",
+        "at": 198,
+        "duration": 28
+      },
+      {
+        "type": "appear",
+        "target": "board",
+        "at": 242,
+        "duration": 18
+      },
+      {
+        "type": "connect",
+        "target": "folder-board",
+        "at": 278
+      },
+      {
+        "type": "send",
+        "target": "folder-board",
+        "at": 296,
+        "duration": 32
+      },
+      {
+        "type": "appear",
+        "target": "peer-a",
+        "at": 342,
+        "duration": 14
+      },
+      {
+        "type": "appear",
+        "target": "peer-b",
+        "at": 356,
+        "duration": 14
+      },
+      {
+        "type": "connect",
+        "target": "board-peer-a",
+        "at": 376
+      },
+      {
+        "type": "connect",
+        "target": "board-peer-b",
+        "at": 390
+      }
+    ]
+  },
   "005": {
   "durationInFrames": 143,
   "color": "#39f6ff",
