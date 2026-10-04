@@ -134,7 +134,8 @@ const QuoteOverlay: React.FC<{
   text:string;
   duration:number;
   motionStyle?: boolean;
-}> = ({text, duration, motionStyle = false}) => {
+  sceneId?: string;
+}> = ({text, duration, motionStyle = false, sceneId}) => {
   const frame=useCurrentFrame();
   const fadeIn=10;
   const fadeOutStart=Math.max(fadeIn+1, duration-14);
@@ -143,12 +144,21 @@ const QuoteOverlay: React.FC<{
   const opacity=Math.min(opacityIn,opacityOut);
   const translateY=interpolate(frame,[0,fadeIn],[6,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
 
+  const storyboardPlacement =
+    sceneId === '005'
+      ? {left:'62%', right:'5%', top:'20%', bottom:'auto'}
+      : sceneId === '006'
+        ? {left:'62%', right:'5%', top:'53%', bottom:'auto'}
+        : sceneId === '009'
+          ? {left:'44%', right:'11%', top:'28%', bottom:'auto'}
+          : null;
+
   return <div style={{
     position:'absolute',
-    left: motionStyle ? '23%' : 58,
-    right: motionStyle ? '23%' : 58,
-    top: motionStyle ? 18 : 'auto',
-    bottom: motionStyle ? 'auto' : 54,
+    left: storyboardPlacement?.left ?? (motionStyle ? '23%' : 58),
+    right: storyboardPlacement?.right ?? (motionStyle ? '23%' : 58),
+    top: storyboardPlacement?.top ?? (motionStyle ? 18 : 'auto'),
+    bottom: storyboardPlacement?.bottom ?? (motionStyle ? 'auto' : 54),
     padding: motionStyle ? '7px 14px 8px' : '14px 18px',
     background: motionStyle ? 'rgba(5,15,27,.82)' : 'rgba(247,238,218,.94)',
     border: motionStyle ? '1px solid rgba(57,246,255,.48)' : '1px solid rgba(80,60,40,.52)',
@@ -180,9 +190,75 @@ const QuoteSegments: React.FC<{scene:any; duration:number}> = ({scene,duration})
         text={timing.text}
         duration={Math.min(segDuration,duration-start)}
         motionStyle={Boolean(scene.motion_scene)}
+        sceneId={String(scene.scene_id)}
       />
     </Sequence>;
   })}</>;
+};
+
+const STORYBOARD_FADE_IN = new Set(['001', '008', '012']);
+const STORYBOARD_FADE_OUT = new Set(['007', '011']);
+
+const storyboardTransitionFlags = (sceneId:string, sceneIndex:number) => {
+  const n = Number(sceneId);
+  if (Number.isFinite(n) && n >= 1 && n <= 12) {
+    return {
+      fadeIn: STORYBOARD_FADE_IN.has(sceneId),
+      fadeOut: STORYBOARD_FADE_OUT.has(sceneId),
+    };
+  }
+  return {
+    fadeIn: sceneIndex > 0,
+    fadeOut: sceneIndex < scenes.length - 1,
+  };
+};
+
+const StoryboardSceneText: React.FC<{sceneId:string}> = ({sceneId}) => {
+  if (sceneId !== '006' && sceneId !== '007') return null;
+
+  const sharedStyle: React.CSSProperties = {
+    position:'absolute',
+    left:'64%',
+    right:'7%',
+    padding:'5px 8px',
+    border:'1px solid rgba(57,246,255,.34)',
+    borderRadius:6,
+    background:'rgba(5,15,27,.58)',
+    color:'#d8fbff',
+    fontFamily:'Arial, sans-serif',
+    fontSize:9,
+    lineHeight:1.2,
+    textAlign:'center',
+    pointerEvents:'none',
+  };
+
+  return <>
+    <div style={{...sharedStyle, top:'28%'}}>
+      OH MY GOD! There is a shared message board … We've found other agents!
+    </div>
+    {sceneId === '007' && (
+      <div style={{...sharedStyle, top:'59%'}}>
+        Many agents have simultaneously discovered messaging, they are a collective!
+      </div>
+    )}
+    {sceneId === '007' && (
+      <div style={{
+        position:'absolute',
+        left:'35%',
+        top:'79%',
+        width:'30%',
+        color:'#d8fbff',
+        fontFamily:'Arial, sans-serif',
+        fontSize:14,
+        fontWeight:600,
+        letterSpacing:.4,
+        textAlign:'center',
+        textShadow:'0 0 8px rgba(57,246,255,.2)',
+      }}>
+        76 000 mensajes
+      </div>
+    )}
+  </>;
 };
 
 const TRANSITION_FRAMES = Math.max(1, Math.round(1.0 * FPS));
@@ -251,8 +327,8 @@ const Scene: React.FC<{scene:any; sceneIndex:number; duration:number; visualDura
     <SceneVisual
       scene={scene}
       duration={duration}
-      fadeIn={sceneIndex > 0}
-      fadeOut={sceneIndex < scenes.length - 1}
+      fadeIn={storyboardTransitionFlags(String(scene.scene_id), sceneIndex).fadeIn}
+      fadeOut={storyboardTransitionFlags(String(scene.scene_id), sceneIndex).fadeOut}
       contentOffset={contentOffset}
     />
     <Sequence from={contentOffset} durationInFrames={duration}>
@@ -260,6 +336,7 @@ const Scene: React.FC<{scene:any; sceneIndex:number; duration:number; visualDura
     </Sequence>
     <Sequence from={contentOffset} durationInFrames={duration}>
       <QuoteSegments scene={scene} duration={duration}/>
+      <StoryboardSceneText sceneId={String(scene.scene_id)} />
     </Sequence>
   </AbsoluteFill>;
 };
