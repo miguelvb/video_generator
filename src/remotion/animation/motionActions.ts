@@ -26,8 +26,10 @@ const resolveTemporalSchedule=(nodes:MotionNode[],edges:MotionEdge[],actions:Mot
   const ready=new Map<string,number>();
   for(const node of nodes) ready.set(node.id,0);
   for(const action of actions) if(action.type==='appear'&&nodeIds.has(action.targetId)){
-    const end=(startFrames.get(action)??0)+actionDuration(action);
-    ready.set(action.targetId,Math.max(ready.get(action.targetId)??0,end));
+    // A node becomes causally available as soon as its appearance starts.
+    // Waiting for the whole fade-in made legitimate connections look late.
+    const start=startFrames.get(action)??0;
+    ready.set(action.targetId,Math.max(ready.get(action.targetId)??0,start));
   }
   return ready;
  };
