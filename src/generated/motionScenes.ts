@@ -1855,4 +1855,230 @@ export const MOTION_SCENES = {
       }
     ]
   },
+  "004":   {
+    "durationInFrames": 446,
+    "color": "#39f6ff",
+    "background": "assets/motion/swarm-background.svg",
+    "nodes": [
+      {
+        "id": "agent-a",
+        "asset": "agent-ui",
+        "x": 24,
+        "y": 43,
+        "size": 72
+      },
+      {
+        "id": "agent-b",
+        "asset": "agent-ui",
+        "x": 50,
+        "y": 43,
+        "size": 72
+      },
+      {
+        "id": "agent-c",
+        "asset": "agent-ui",
+        "x": 76,
+        "y": 43,
+        "size": 72
+      },
+      {
+        "id": "test-a",
+        "asset": "task-module-ui",
+        "x": 24,
+        "y": 62,
+        "size": 62
+      },
+      {
+        "id": "test-b",
+        "asset": "task-module-ui",
+        "x": 50,
+        "y": 62,
+        "size": 62
+      },
+      {
+        "id": "test-c",
+        "asset": "task-module-ui",
+        "x": 76,
+        "y": 62,
+        "size": 62
+      },
+      {
+        "id": "server",
+        "asset": "server-ui",
+        "x": 72,
+        "y": 28,
+        "size": 82
+      },
+      {
+        "id": "folder",
+        "asset": "folder-ui",
+        "x": 72,
+        "y": 50,
+        "size": 78
+      },
+      {
+        "id": "board",
+        "asset": "message-board-ui",
+        "x": 50,
+        "y": 78,
+        "size": 140
+      },
+      {
+        "id": "peer-a",
+        "asset": "agent-ui",
+        "x": 18,
+        "y": 82,
+        "size": 58
+      },
+      {
+        "id": "peer-b",
+        "asset": "agent-ui",
+        "x": 82,
+        "y": 82,
+        "size": 58
+      }
+    ],
+    "connections": [
+      {
+        "id": "agent-server",
+        "from": "agent-a",
+        "to": "server",
+        "curvature": -3
+      },
+      {
+        "id": "server-folder",
+        "from": "server",
+        "to": "folder",
+        "curvature": 2
+      },
+      {
+        "id": "folder-board",
+        "from": "folder",
+        "to": "board",
+        "curvature": -3
+      },
+      {
+        "id": "board-peer-a",
+        "from": "board",
+        "to": "peer-a",
+        "curvature": 3
+      },
+      {
+        "id": "board-peer-b",
+        "from": "board",
+        "to": "peer-b",
+        "curvature": -3
+      }
+    ],
+    "actions": [
+      {
+        "type": "appear",
+        "target": "agent-a",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent-b",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "agent-c",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "test-a",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "test-b",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "test-c",
+        "at": 0,
+        "duration": 1
+      },
+      {
+        "type": "appear",
+        "target": "server",
+        "at": 40,
+        "duration": 18
+      },
+      {
+        "type": "connect",
+        "target": "agent-server",
+        "at": 75
+      },
+      {
+        "type": "activate",
+        "target": "agent-server",
+        "at": 102
+      },
+      {
+        "type": "appear",
+        "target": "folder",
+        "at": 140,
+        "duration": 18
+      },
+      {
+        "type": "connect",
+        "target": "server-folder",
+        "at": 176
+      },
+      {
+        "type": "send",
+        "target": "server-folder",
+        "at": 194,
+        "duration": 28
+      },
+      {
+        "type": "appear",
+        "target": "board",
+        "at": 238,
+        "duration": 18
+      },
+      {
+        "type": "connect",
+        "target": "folder-board",
+        "at": 274
+      },
+      {
+        "type": "send",
+        "target": "folder-board",
+        "at": 292,
+        "duration": 32
+      },
+      {
+        "type": "appear",
+        "target": "peer-a",
+        "at": 338,
+        "duration": 14
+      },
+      {
+        "type": "appear",
+        "target": "peer-b",
+        "at": 352,
+        "duration": 14
+      },
+      {
+        "type": "connect",
+        "target": "board-peer-a",
+        "at": 372
+      },
+      {
+        "type": "connect",
+        "target": "board-peer-b",
+        "at": 386
+      }
+    ]
+  },
 
