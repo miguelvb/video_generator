@@ -55,6 +55,7 @@ export const MotionAsset: React.FC<{
           background: 'rgba(216,251,255,.035)',
           opacity: boundaryOpacity,
           pointerEvents: 'none',
+          zIndex: 0,
         }}
       />
     );
@@ -70,6 +71,7 @@ export const MotionAsset: React.FC<{
         height: size,
         transform: `translate(-50%, -50%) scale(${scale})`,
         opacity: opacity * (node.opacity ?? 1) * activeOpacity,
+        zIndex: 2,
         filter: isAgent && state === 'active' ? `brightness(${activeBrightness}) drop-shadow(0 0 8px ${stateColor})` : 'none',
       }}
     >
