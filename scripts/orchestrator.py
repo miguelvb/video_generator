@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""Content-first AI video pipeline.
+"""Script-to-video pipeline.
 
-The Markdown script is the source of truth. Generated JSON/TS files are build
-artifacts and should not be edited manually.
+    script.md ──parse──► build ──► images ──► audio ──► (AI video) ──► render ──► MP4
+
+The Markdown script is the only source of truth. Everything under build/,
+src/generated/, public/assets/generated/, public/audio/ and public/video/ is
+generated and can be deleted and rebuilt. Paid steps (images, audio, video)
+reuse earlier results whenever the inputs that produced them are unchanged.
 
 Examples:
-  python scripts/orchestrator.py build project/script.md
-  python scripts/orchestrator.py images project/script.md
-  python scripts/orchestrator.py audio project/script.md
-  python scripts/orchestrator.py render project/script.md
-  python scripts/orchestrator.py all project/script.md
-
-Legacy flags (--images/--audio/--render/--all) remain supported and use
-project/script.md.
+  python scripts/orchestrator.py check                 # tools, packages, API keys
+  python scripts/orchestrator.py validate              # script problems, no API calls
+  python scripts/orchestrator.py all --scenes 001,002  # generate + render two scenes
+  python scripts/orchestrator.py render                # render the full video
 """
 from __future__ import annotations
 
@@ -22,6 +22,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 import wave
 import hashlib
 import time
@@ -35,15 +36,15 @@ from dotenv import load_dotenv
 
 from script_parser import parse_script
 from cost_tracker import CostTracker
+from validation import check_environment, validate_project
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SCRIPT = ROOT / "project" / "script.md"
 BUILD_DIR = ROOT / "build"
-SCENE_DIR = BUILD_DIR / "scenes"
 GENERATED_DIR = ROOT / "public" / "assets" / "generated"
+SRC_GENERATED_DIR = ROOT / "src" / "generated"
 PUBLIC_AUDIO_DIR = ROOT / "public" / "audio"
 TIMINGS_TS = ROOT / "src" / "generated" / "audioTimings.ts"
-CONTENT_TS = ROOT / "src" / "generated" / "videoContent.ts"
 GENERATED_MANIFEST = BUILD_DIR / "audio_manifest.json"
 ASSET_META_DIR = BUILD_DIR / "asset_metadata"
 GENERATED_VIDEO_DIR = ROOT / "public" / "video"
@@ -55,7 +56,11 @@ OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 OPENAI_TTS_URL = "https://api.openai.com/v1/audio/speech"
 OPENAI_TRANSCRIPTIONS_URL = "https://api.openai.com/v1/audio/transcriptions"
 AUDIO_FORMAT = "wav"
-ENABLE_WORD_TIMINGS = os.environ.get("ENABLE_WORD_TIMINGS", "true").lower() in {"1", "true", "yes", "on"}
+# Word-level timestamps (Whisper) are an optional authoring aid: they land in
+# audioTimings.ts so you can see on which frame a word is spoken. Off by default
+# because nothing in the render depends on them and each call costs money.
+ENABLE_WORD_TIMINGS = os.environ.get("ENABLE_WORD_TIMINGS", "false").lower() in {"1", "true", "yes", "on"}
+SEGMENT_GAP_SECONDS = float(os.environ.get("TTS_SEGMENT_GAP_SECONDS", "0.12"))
 
 
 def resolve_models(project: dict) -> dict:
@@ -84,7 +89,7 @@ def resolve_models(project: dict) -> dict:
         "image_model": os.environ.get("DEFAULT_IMAGE_MODEL", config_defaults.get("image_model", "google/gemini-3.1-flash-image")),
         "tts_provider": os.environ.get("DEFAULT_TTS_PROVIDER", config_defaults.get("tts_provider", "openai")),
         "tts_model": os.environ.get("DEFAULT_TTS_MODEL", config_defaults.get("tts_model", "gpt-4o-mini-tts")),
-        "tts_voice": os.environ.get("DEFAULT_TTS_VOICE", config_defaults.get("tts_voice", project.get("settings", {}).get("voice", "shimmer"))),
+        "tts_voice": os.environ.get("DEFAULT_TTS_VOICE", config_defaults.get("tts_voice", "shimmer")),
         "video_provider": os.environ.get("DEFAULT_VIDEO_PROVIDER", config_defaults.get("video_provider", "")),
         "video_model": os.environ.get("DEFAULT_VIDEO_MODEL", config_defaults.get("video_model", "")),
         "video_resolution": os.environ.get("DEFAULT_VIDEO_RESOLUTION", config_defaults.get("video_resolution", "480p")),
@@ -92,6 +97,10 @@ def resolve_models(project: dict) -> dict:
         "video_generate_audio": str(os.environ.get("DEFAULT_VIDEO_GENERATE_AUDIO", str(config_defaults.get("video_generate_audio", False)))).lower() in {"1", "true", "yes"},
     }
     # script.md is the final authority: explicit values override both .env and defaults.json.
+    # `voice` in SETTINGS is the script's shorthand for MODELS tts_voice.
+    script_voice = str(project.get("settings", {}).get("voice", "")).strip()
+    if script_voice and (not models.get("tts_voice") or str(models["tts_voice"]).lower() == "default"):
+        models["tts_voice"] = script_voice
     for key, value in defaults.items():
         if not models.get(key) or str(models[key]).lower() == "default":
             models[key] = value
@@ -201,7 +210,7 @@ def scene_video_identity(scene: dict, models: dict, image_identity: str, duratio
         "duration": duration,
         "clip_index": clip_index,
         "image_identity": image_identity,
-        "animation_prompt": prompt or scene.get("animation") or scene.get("video_prompt") or scene.get("visual", ""),
+        "animation_prompt": prompt or scene.get("ai_video_prompt") or scene.get("visual", ""),
         "negative_prompt": scene.get("negative_prompt", ""),
         "continuity": scene.get("continuity", ""),
         "visual_anchor": scene.get("visual_anchor", ""),
@@ -209,7 +218,6 @@ def scene_video_identity(scene: dict, models: dict, image_identity: str, duratio
         "end_state": scene.get("end_state", ""),
     }
     return sha256_text(json.dumps(payload, ensure_ascii=False, sort_keys=True))
-SEGMENT_GAP_SECONDS = float(os.environ.get("TTS_SEGMENT_GAP_SECONDS", "0.12"))
 
 
 def save_json(path: Path, data: dict) -> None:
@@ -240,65 +248,71 @@ def image_data_url(path: Path) -> str:
     return f"data:{mime};base64,{base64.b64encode(path.read_bytes()).decode('utf-8')}"
 
 
+def write_ts_module(name: str, export: str, data: object, note: str) -> None:
+    SRC_GENERATED_DIR.mkdir(parents=True, exist_ok=True)
+    (SRC_GENERATED_DIR / name).write_text(
+        f"// AUTO-GENERATED {note}. Do not edit manually.\n"
+        f"export const {export} = {json.dumps(data, ensure_ascii=False, indent=2)} as const;\n",
+        encoding="utf-8",
+    )
+
+
 def write_generated_content(project: dict) -> None:
-    CONTENT_TS.parent.mkdir(parents=True, exist_ok=True)
-    payload = json.dumps(project["scenes"], ensure_ascii=False, indent=2)
-    CONTENT_TS.write_text(
-        "// AUTO-GENERATED from project/script.md. Do not edit manually.\n"
-        f"export const VIDEO_CONTENT = {{scenes: {payload}}} as const;\n",
-        encoding="utf-8",
+    """Write the TypeScript modules Remotion reads: content, config, and (if absent) timings."""
+    write_ts_module("videoContent.ts", "VIDEO_CONTENT", {"scenes": project["scenes"]}, f"from {project_source(project)}")
+    write_ts_module(
+        "videoConfig.ts", "VIDEO_CONFIG",
+        {**project["settings"], "models": project.get("models", {}), "music": project.get("music", {}),
+         "intro": project.get("intro", {}), "ending": project.get("ending", {})},
+        f"from {project_source(project)}",
     )
-    motion_scenes = {
-        str(scene["scene_id"]): scene["motion_scene"]
-        for scene in project["scenes"]
-        if scene.get("motion_scene")
-    }
-    motion_scenes_path = ROOT / "src" / "generated" / "motionScenes.ts"
-    motion_scenes_path.write_text(
-        "// AUTO-GENERATED from Markdown MOTION SCENE blocks. Do not edit manually.\n"
-        f"export const MOTION_SCENES = {json.dumps(motion_scenes, ensure_ascii=False, indent=2)} as const;\n",
-        encoding="utf-8",
-    )
+    if not TIMINGS_TS.exists():
+        write_timings({})
 
-    if str(project.get("source", "")).replace("\\", "/").endswith("project/demo_collective/script.md"):
-        demo_path = ROOT / "src" / "generated" / "demoCollectiveMotionScene.ts"
-        demo_scene = project["scenes"][0].get("motion_scene")
-        demo_path.write_text(
-            "// AUTO-GENERATED from project/demo_collective/script.md. Do not edit manually.\n"
-            f"export const DEMO_COLLECTIVE_MOTION_SCENE = {json.dumps(demo_scene, ensure_ascii=False, indent=2)} as const;\n",
-            encoding="utf-8",
-        )
 
-    config_path = ROOT / "src" / "generated" / "videoConfig.ts"
-    config_path.write_text(
-        "// AUTO-GENERATED from project/script.md. Do not edit manually.\n"
-        f"export const VIDEO_CONFIG = {json.dumps({**project['settings'], 'models': project.get('models', {}), 'music': project.get('music', {}), 'ending': project.get('ending', {})}, ensure_ascii=False, indent=2)} as const;\n",
-        encoding="utf-8",
-    )
+def project_source(project: dict) -> str:
+    source = Path(project.get("source", ""))
+    try:
+        return source.resolve().relative_to(ROOT).as_posix()
+    except ValueError:
+        return source.as_posix()
 
 
 def build(script_path: Path) -> dict:
+    """Parse the script, resolve models, and write the generated modules. No API calls."""
     project = parse_script(script_path)
     project["models"] = resolve_models(project)
-    BUILD_DIR.mkdir(parents=True, exist_ok=True)
-    save_json(BUILD_DIR / "parsed_script.json", project)
-
-    # Generated scene JSONs are compatibility/debug artifacts. The Markdown remains authoritative.
     for scene in project["scenes"]:
         video_meta = load_meta(asset_meta_path("videos", scene["scene_id"]))
-        if generation_mode(project) == "ai_video" and video_meta and video_meta.get("clips"):
+        if generation_mode(project) == "ai_video" and not scene.get("motion_scene") and video_meta and video_meta.get("clips"):
             scene["video_clips"] = video_meta["clips"]
-        scene_path = SCENE_DIR / scene["scene_id"] / "scene.json"
-        save_json(scene_path, scene)
-
+    save_json(BUILD_DIR / "parsed_script.json", project)
     write_generated_content(project)
-    print(f"Parsed {len(project['scenes'])} scene(s) from {script_path}")
-    print(f"Generated content module: {CONTENT_TS}")
+    refresh_timings(project)
+    print(f"Parsed {len(project['scenes'])} scene(s) from {project_source(project)}")
     return project
 
 
+def refresh_timings(project: dict) -> None:
+    """Keep audioTimings.ts in step with the audio on disk, so Studio previews use real scene lengths."""
+    if not shutil.which("ffprobe"):
+        return
+    manifest = load_meta(GENERATED_MANIFEST) or {}
+    tracks = {}
+    for scene in project["scenes"]:
+        track, _ = valid_audio_track(project, scene, manifest)
+        if track:
+            tracks[scene["scene_id"]] = track
+    write_timings(tracks)
+
+
+def needs_image(scene: dict) -> bool:
+    """Motion scenes are drawn by the motion engine; every other scene needs a still image."""
+    return not scene.get("motion_scene")
+
+
 def generate_image(project: dict, scene: dict, tracker: CostTracker | None = None) -> None:
-    models = resolve_models(project)
+    models = project["models"]
     output = GENERATED_DIR / f"scene_{scene['scene_id']}.png"
     meta_path = asset_meta_path("images", scene["scene_id"])
     identity = scene_image_identity(scene, models, project.get("visual_style"))
@@ -357,16 +371,35 @@ def selected_scenes(project: dict, scene_selection: str | None) -> list[dict]:
     return [scene for scene in project["scenes"] if str(scene["scene_id"]) in ids]
 
 
-def generate_images(script_path: Path, tracker: CostTracker | None = None, scene_selection: str | None = None) -> None:
-    project = build(script_path)
+def generate_images(project: dict, tracker: CostTracker | None = None, scene_selection: str | None = None) -> None:
     GENERATED_DIR.mkdir(parents=True, exist_ok=True)
-    scenes = selected_scenes(project, scene_selection)
-    print("Selected scenes: " + ", ".join(s["scene_id"] for s in scenes))
+    scenes = [s for s in selected_scenes(project, scene_selection) if needs_image(s)]
+    if not scenes:
+        print("No image scenes selected (motion scenes need no image).")
     for scene in scenes:
         generate_image(project, scene, tracker)
 
 
-def instructions_for(language: str, kind: str, previous_text: str = "", next_text: str = "") -> str:
+DEFAULT_NARRATOR = {
+    "es": (
+        "Speak as a warm, natural adult female narrator from Spain. "
+        "Use a clearly native Spanish from Spain (Castilian) accent. "
+        "Voice: warm, empathetic, and professional, reassuring the listener that the subject is understood. "
+        "Punctuation: well-structured with natural pauses, allowing for clarity and a steady, calming flow. "
+        "Delivery: calm and patient, with a supportive and understanding tone. "
+        "Phrasing: clear and concise, natural for a documentary/explainer narration, avoiding unnecessary jargon. "
+        "Tone: empathetic and solution-focused, with warmth and reassurance, without exaggerated acting."
+    ),
+    "en": (
+        "Speak as the same adult female narrator, using fully native American English pronunciation. "
+        "Keep the delivery natural and idiomatic. For a quotation, sound like a factual documentary quote, "
+        "with appropriate emphasis but no exaggerated acting."
+    ),
+}
+
+
+def instructions_for(language: str, kind: str, previous_text: str = "", next_text: str = "", narrator: dict | None = None) -> str:
+    """TTS voice direction: the script's NARRATOR section for this language, else the defaults above."""
     continuity = (
         "This is one continuous documentary narration. The audio before and after this segment "
         "belongs to the same uninterrupted narration. Preserve the same speaking energy, pitch, "
@@ -380,27 +413,13 @@ def instructions_for(language: str, kind: str, previous_text: str = "", next_tex
         continuity += f" Previous narration context (do not speak it): {previous_text.strip()}"
     if next_text:
         continuity += f" Following narration context (do not speak it): {next_text.strip()}"
-    if language.lower().startswith("es"):
-        return (
-            "Speak as a warm, natural adult female narrator from Spain. "
-            "Use a clearly native Spanish from Spain (Castilian) accent. "
-            "Voice: warm, empathetic, and professional, reassuring the listener that the subject is understood. "
-            "Punctuation: well-structured with natural pauses, allowing for clarity and a steady, calming flow. "
-            "Delivery: calm and patient, with a supportive and understanding tone. "
-            "Phrasing: clear and concise, natural for a documentary/explainer narration, avoiding unnecessary jargon. "
-            "Tone: empathetic and solution-focused, with warmth and reassurance, without exaggerated acting. "
-            + continuity
-        )
-    return (
-        "Speak as the same adult female narrator, using fully native American English pronunciation. "
-        "Keep the delivery natural and idiomatic. For a quotation, sound like a factual documentary quote, "
-        "with appropriate emphasis but no exaggerated acting. "
-        + continuity
-    )
+    lang = language.lower().split("-")[0]
+    direction = (narrator or {}).get(lang) or DEFAULT_NARRATOR.get(lang) or DEFAULT_NARRATOR["en"]
+    return direction.strip() + " " + continuity
 
 
 def build_voice_manifest(project: dict) -> dict:
-    models = resolve_models(project)
+    models = project["models"]
     tracks = {}
 
     # Build one ordered narration stream so every TTS request knows what was
@@ -427,7 +446,7 @@ def build_voice_manifest(project: dict) -> dict:
                 "language": language,
                 "voice": models["tts_voice"],
                 "speed": 1.0,
-                "instructions": instructions_for(language, item["kind"], previous_text, next_text),
+                "instructions": instructions_for(language, item["kind"], previous_text, next_text, project.get("narrator")),
                 "text": item["text"],
             })
         tracks[scene["scene_id"]] = segments
@@ -570,110 +589,140 @@ def concat_audio(segment_paths: list[Path], output_path: Path) -> None:
         list_file.unlink(missing_ok=True); gap_file.unlink(missing_ok=True)
 
 
-def generate_audio(script_path: Path, tracker: CostTracker | None = None, scene_selection: str | None = None) -> None:
+def align_words(track: dict, scene_id: str, tracker: CostTracker | None) -> dict:
+    """Add Whisper word/phrase timings to segments that lack them (only when enabled)."""
+    if not ENABLE_WORD_TIMINGS:
+        return track
+    segments = []
+    for seg in track.get("segments", []):
+        seg = dict(seg)
+        path = BUILD_DIR / seg.get("file", "")
+        if not seg.get("words") and path.is_file():
+            seg["words"] = transcribe_word_timings(path, tracker, scene_id, seg.get("id"))
+            seg["phrases"] = build_phrase_timings(seg.get("text", ""), seg["words"], seg.get("id", "segment"))
+        segments.append(seg)
+    return {**track, "segments": segments}
+
+
+def write_timings(tracks: dict) -> None:
+    """audioTimings.ts: measured scene and segment timings, in the camelCase shape MainVideo reads."""
+    timings = {
+        sid: {
+            "durationSeconds": t["duration_seconds"],
+            "audioFile": t["file"],
+            "segments": [
+                {
+                    "id": s["id"], "kind": s["kind"], "language": s["language"],
+                    "startSeconds": s["start_seconds"], "durationSeconds": s["duration_seconds"], "text": s["text"],
+                    **({"words": s["words"], "phrases": s.get("phrases", [])} if s.get("words") else {}),
+                }
+                for s in t["segments"]
+            ],
+        }
+        for sid, t in sorted(tracks.items())
+    }
+    write_ts_module("audioTimings.ts", "AUDIO_TIMINGS", timings, "from measured narration audio")
+
+
+def valid_audio_track(project: dict, scene: dict, manifest: dict) -> tuple[dict | None, str]:
+    """The manifest track for a scene if its audio file exists and matches the current script, else a reason."""
+    sid = scene["scene_id"]
+    public_path = PUBLIC_AUDIO_DIR / f"scene_{sid}.wav"
+    meta = load_meta(asset_meta_path("audio", sid))
+    track = manifest.get("tracks", {}).get(sid)
+    if not public_path.exists():
+        return None, f"missing {public_path.relative_to(ROOT)}"
+    if not meta or meta.get("content_hash") != scene_audio_identity(scene, project["models"]):
+        return None, "narration text, voice or TTS model changed since the audio was made"
+    if not track:
+        return None, "no timing record (run the audio step)"
+    duration = probe_duration(public_path)
+    if abs(duration - float(track.get("duration_seconds", -1))) > 0.02:
+        return None, "audio file length differs from its timing record"
+    return {**track, "duration_seconds": round(duration, 3)}, ""
+
+
+def generate_audio(project: dict, tracker: CostTracker | None = None, scene_selection: str | None = None) -> None:
     require_command("ffmpeg"); require_command("ffprobe")
-    project = build(script_path); models = resolve_models(project); config = build_voice_manifest(project); tracks = {}
+    models = project["models"]
+    config = build_voice_manifest(project)
+    # Start from the existing manifest so a partial run never drops other scenes.
+    manifest = load_meta(GENERATED_MANIFEST) or {}
+    tracks = dict(manifest.get("tracks", {}))
     selected_ids = set(parse_scene_selection(scene_selection, project))
-    for scene_id, segments in config["tracks"].items():
+
+    for scene in project["scenes"]:
+        scene_id = scene["scene_id"]
         if scene_id not in selected_ids:
             continue
-        scene = next(s for s in project["scenes"] if s["scene_id"] == scene_id)
-        scene_dir = BUILD_DIR / "audio" / scene_id; scene_dir.mkdir(parents=True, exist_ok=True)
-        scene_identity = scene_audio_identity(scene, models)
-        scene_meta_path = asset_meta_path("audio", scene_id); existing = load_meta(scene_meta_path)
-        final_path = BUILD_DIR / "audio" / f"scene_{scene_id}.wav"; public_path = PUBLIC_AUDIO_DIR / final_path.name
-        if final_path.exists() and public_path.exists() and existing and existing.get("content_hash") == scene_identity:
-            # Never trust metadata duration blindly; validate the actual WAV before reuse.
-            old = load_meta(GENERATED_MANIFEST)
-            old_track = (old or {}).get("tracks", {}).get(scene_id)
-            if old_track:
-                actual_duration = probe_duration(public_path)
-                if abs(actual_duration - float(old_track.get("duration_seconds", -1))) <= 0.02:
-                    print(f"Reusing audio: {public_path}")
-                    reused_track = {**old_track, "duration_seconds": round(actual_duration, 3)}
-                    if ENABLE_WORD_TIMINGS:
-                        needs_alignment = any(not seg.get("words") for seg in reused_track.get("segments", []))
-                        if needs_alignment:
-                            aligned_segments = []
-                            for seg in reused_track.get("segments", []):
-                                segment_path = scene_dir / Path(seg.get("file", "")).name
-                                aligned = dict(seg)
-                                if segment_path.exists():
-                                    words = transcribe_word_timings(segment_path, tracker, scene_id, seg.get("id"))
-                                    aligned["words"] = words
-                                    aligned["phrases"] = build_phrase_timings(seg.get("text", ""), words, seg.get("id", "segment"))
-                                aligned_segments.append(aligned)
-                            reused_track["segments"] = aligned_segments
-                    tracks[scene_id] = reused_track
-                    continue
-        segment_paths=[]; generated=[]; cursor=0.0
-        # The scene-local segments already receive neighboring narration context
-        # from build_voice_manifest(), so TTS preserves prosody within the scene.
-        for segment in segments:
-            path=scene_dir/f"{segment['id']}.wav"
-            tts_request(segment,path,tracker,scene_id,models)
-            duration=probe_duration(path)
-            generated_item = {
+        existing, _ = valid_audio_track(project, scene, manifest)
+        if existing:
+            print(f"Reusing audio: scene {scene_id}")
+            tracks[scene_id] = align_words(existing, scene_id, tracker)
+            continue
+
+        scene_dir = BUILD_DIR / "audio" / scene_id
+        scene_dir.mkdir(parents=True, exist_ok=True)
+        final_path = BUILD_DIR / "audio" / f"scene_{scene_id}.wav"
+        public_path = PUBLIC_AUDIO_DIR / final_path.name
+        segment_paths = []; generated = []; cursor = 0.0
+        segments = config["tracks"][scene_id]
+        for index, segment in enumerate(segments):
+            path = scene_dir / f"{segment['id']}.wav"
+            tts_request(segment, path, tracker, scene_id, models)
+            duration = probe_duration(path)
+            generated.append({
                 **segment,
-                "file":str(path.relative_to(BUILD_DIR)).replace("\\","/"),
-                "start_seconds":round(cursor,3),
-                "duration_seconds":round(duration,3)
-            }
-            if ENABLE_WORD_TIMINGS:
-                words = transcribe_word_timings(path, tracker, scene_id, segment["id"])
-                generated_item["words"] = words
-                generated_item["phrases"] = build_phrase_timings(segment["text"], words, segment["id"])
-            generated.append(generated_item)
+                "file": str(path.relative_to(BUILD_DIR)).replace("\\", "/"),
+                "start_seconds": round(cursor, 3),
+                "duration_seconds": round(duration, 3),
+            })
             segment_paths.append(path)
-            cursor += duration
-            if segment is not segments[-1]:
-                cursor += SEGMENT_GAP_SECONDS
-        concat_audio(segment_paths, final_path); final_duration=probe_duration(final_path); public_path.parent.mkdir(parents=True,exist_ok=True); shutil.copy2(final_path,public_path)
-        tracks[scene_id]={"file":f"audio/{final_path.name}","duration_seconds":round(final_duration,3),"segments":generated}
-        save_meta(scene_meta_path,{"version":"1.0.0","kind":"audio","scene_id":scene_id,"content_hash":scene_identity,"provider":models["tts_provider"],"model":models["tts_model"],"voice":models["tts_voice"],"file":str(public_path.relative_to(ROOT)).replace("\\","/")})
+            cursor += duration + (SEGMENT_GAP_SECONDS if index < len(segments) - 1 else 0)
+        concat_audio(segment_paths, final_path)
+        final_duration = probe_duration(final_path)
+        public_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(final_path, public_path)
+        tracks[scene_id] = align_words(
+            {"file": f"audio/{final_path.name}", "duration_seconds": round(final_duration, 3), "segments": generated},
+            scene_id, tracker,
+        )
+        save_meta(asset_meta_path("audio", scene_id), {
+            "version": "1.0.0", "kind": "audio", "scene_id": scene_id,
+            "content_hash": scene_audio_identity(scene, models),
+            "provider": models["tts_provider"], "model": models["tts_model"], "voice": models["tts_voice"],
+            "file": str(public_path.relative_to(ROOT)).replace("\\", "/"),
+        })
         print(f"Scene {scene_id}: {final_duration:.2f}s -> {public_path}")
-    manifest={**config,"generated":True,"segment_gap_seconds":SEGMENT_GAP_SECONDS,"tracks":tracks}; save_json(GENERATED_MANIFEST,manifest)
-    timings={sid:{"durationSeconds":t["duration_seconds"],"audioFile":t["file"],"segments":[{"id":s["id"],"kind":s["kind"],"language":s["language"],"startSeconds":s["start_seconds"],"durationSeconds":s["duration_seconds"],"text":s["text"],"words":s.get("words",[]),"phrases":s.get("phrases",[])} for s in t["segments"]]} for sid,t in tracks.items()}
-    TIMINGS_TS.parent.mkdir(parents=True,exist_ok=True); TIMINGS_TS.write_text("// AUTO-GENERATED from project/script.md + actual WAV durations.\nexport const AUDIO_TIMINGS = "+json.dumps(timings,ensure_ascii=False,indent=2)+" as const;\n",encoding="utf-8")
+
+    save_json(GENERATED_MANIFEST, {**config, "generated": True, "segment_gap_seconds": SEGMENT_GAP_SECONDS, "tracks": tracks})
+    write_timings(tracks)
     print(f"Generated timings: {TIMINGS_TS}")
 
 
-def rebuild_audio_timings(script_path: Path, scene_selection: str | None = None) -> None:
-    """Rebuild timing metadata only from existing audio, never call TTS.
+def rebuild_audio_timings(project: dict, scene_selection: str | None = None) -> dict:
+    """Rewrite audioTimings.ts from existing audio only (never calls TTS).
 
-    When a scene selection is supplied (for example the two-scene test), only
-    those scenes are validated and written to the generated timing module.
+    Selected scenes must have valid audio (or this raises). Other scenes are
+    included when their audio is still valid, so Studio previews stay complete.
+    Returns the valid tracks.
     """
     require_command("ffprobe")
-    project=build(script_path); models=resolve_models(project); tracks={}; old=load_meta(GENERATED_MANIFEST) or {}
-    scenes = selected_scenes(project, scene_selection)
-    for scene in scenes:
-        sid=scene["scene_id"]; public_path=PUBLIC_AUDIO_DIR/f"scene_{sid}.wav"; meta=load_meta(asset_meta_path("audio",sid))
-        identity=scene_audio_identity(scene,models)
-        if not public_path.exists(): raise RuntimeError(f"Missing audio for scene {sid}: {public_path}")
-        if not meta or meta.get("content_hash") != identity: raise RuntimeError(f"Audio for scene {sid} does not match current script/model configuration. Run: python scripts/orchestrator.py audio project/script.md")
-        old_track=old.get("tracks",{}).get(sid)
-        if not old_track: raise RuntimeError(f"No timing metadata for scene {sid}. Run audio once to create it.")
-        duration=probe_duration(public_path)
-        if abs(duration-float(old_track.get("duration_seconds",-1))) > 0.02: raise RuntimeError(f"Audio duration changed for scene {sid}; run audio to rebuild metadata.")
-        rebuilt_track={**old_track,"duration_seconds":round(duration,3)}
-        if ENABLE_WORD_TIMINGS:
-            aligned_segments=[]
-            for seg in rebuilt_track.get("segments",[]):
-                aligned=dict(seg)
-                segment_path=BUILD_DIR / seg.get("file","")
-                if not segment_path.exists():
-                    segment_path=BUILD_DIR / "audio" / sid / (str(seg.get("id","")) + ".wav")
-                if segment_path.exists() and not seg.get("words"):
-                    words=transcribe_word_timings(segment_path,None,sid,seg.get("id"))
-                    aligned["words"]=words
-                    aligned["phrases"]=build_phrase_timings(seg.get("text",""),words,seg.get("id","segment"))
-                aligned_segments.append(aligned)
-            rebuilt_track["segments"]=aligned_segments
-        tracks[sid]=rebuilt_track
-    timings={sid:{"durationSeconds":t["duration_seconds"],"audioFile":t["file"],"segments":t["segments"]} for sid,t in tracks.items()}
-    TIMINGS_TS.parent.mkdir(parents=True,exist_ok=True); TIMINGS_TS.write_text("// AUTO-GENERATED from existing validated WAV files.\nexport const AUDIO_TIMINGS = "+json.dumps(timings,ensure_ascii=False,indent=2)+" as const;\n",encoding="utf-8")
-    print(f"Rebuilt timings without generating audio: {TIMINGS_TS}")
+    manifest = load_meta(GENERATED_MANIFEST) or {}
+    selected_ids = set(parse_scene_selection(scene_selection, project))
+    tracks: dict = {}
+    problems = []
+    for scene in project["scenes"]:
+        track, reason = valid_audio_track(project, scene, manifest)
+        if track:
+            tracks[scene["scene_id"]] = track
+        elif scene["scene_id"] in selected_ids:
+            problems.append(f"scene {scene['scene_id']}: {reason}")
+    if problems:
+        raise RuntimeError("Narration audio is missing or out of date. Run the audio step first.\n  " + "\n  ".join(problems))
+    write_timings(tracks)
+    return tracks
+
 
 MAX_VIDEO_CLIP_SECONDS = 15
 MIN_VIDEO_CLIP_SECONDS = 4
@@ -724,7 +773,7 @@ def build_video_clip_plan(scene: dict, scene_duration: float) -> list[dict]:
 
 def build_motion_prompt(scene: dict, clip: dict, clip_count: int, project: dict | None = None) -> str:
     project = project or {}
-    base = scene.get("animation") or scene.get("video_prompt") or scene.get("visual", "")
+    base = scene.get("ai_video_prompt") or scene.get("visual", "")
     global_style = _global_style_prompt(project)
     phase = []
     for seg in clip.get("segments", []):
@@ -787,10 +836,6 @@ Narration context for this time window:
 Preserve the original illustration's composition, colors, linework, object identity and geometry. Do not redraw, morph, deform or reinterpret the artwork. Do not generate readable text, letters, numbers, labels, UI or captions. Use meaningful, clearly visible animation of already-existing visual elements. Every motion should directly illustrate the narration: agents activate, packets travel, boundaries are crossed, systems saturate, nodes connect, alarms escalate, or processes shut down. No camera shake, no handheld motion, no flicker, no warping, no morphing, no object deformation, no random zoom, no spinning camera, no new objects, no photorealism, no typography animation. Maintain the same visual style across the entire film."""
 
 
-def video_prompt(scene: dict) -> str:
-    return build_motion_prompt(scene, {"clip_index": 1, "start_seconds": 0, "end_seconds": 15, "segments": scene.get("segments", [])}, 1)
-
-
 def _video_data_url(path: Path) -> str:
     return image_data_url(path)
 
@@ -831,7 +876,7 @@ def _download_video(api_key: str, job: dict, output_path: Path) -> None:
 
 
 def generate_video_for_scene(project: dict, scene: dict, tracker: CostTracker | None = None) -> None:
-    models = resolve_models(project)
+    models = project["models"]
     if not models.get("video_provider") or models.get("video_provider") == "default" or not models.get("video_model"):
         raise RuntimeError("Video generation is enabled but no video provider/model is configured. Set video_provider/video_model in project/script.md or defaults/.env.")
     if models["video_provider"].lower() != "openrouter":
@@ -912,142 +957,154 @@ def generate_video_for_scene(project: dict, scene: dict, tracker: CostTracker | 
     scene["video_clips"] = clip_records
 
 
-def generate_videos(script_path: Path, tracker: CostTracker | None = None, scene_selection: str | None = None) -> None:
-    require_command("ffprobe")
-    project = build(script_path)
-    models = resolve_models(project)
+def generate_videos(project: dict, tracker: CostTracker | None = None, scene_selection: str | None = None) -> None:
     if generation_mode(project) != "ai_video":
         print("generation_mode=remotion; skipping AI video generation.")
         return
+    require_command("ffprobe")
+    models = project["models"]
     if models.get("video_provider") in {"", "default"} or models.get("video_model") in {"", "default"}:
-        raise RuntimeError("No video model configured. Add video_provider: openrouter and video_model: bytedance/seedance-2.0-mini to project/script.md.")
+        raise RuntimeError("No video model configured. Set video_provider and video_model in the script's MODELS section.")
     for scene in selected_scenes(project, scene_selection):
-        generate_video_for_scene(project, scene, tracker)
+        if needs_image(scene):  # motion scenes are not sent to the video model
+            generate_video_for_scene(project, scene, tracker)
     write_generated_content(project)
 
 
-def render(script_path: Path, scene_selection: str | None = None) -> None:
-    require_command("node")
-    remotion_bin = ROOT / "node_modules" / ".bin" / ("remotion.cmd" if os.name == "nt" else "remotion")
-    if not remotion_bin.exists():
-        raise RuntimeError("Remotion CLI is not installed. Run npm install first.")
-    project = json.loads((BUILD_DIR / "parsed_script.json").read_text(encoding="utf-8"))
+def render(project: dict, scene_selection: str | None = None) -> Path:
+    problems = [p for p in check_environment(project) if "API_KEY" not in p]
+    if problems:
+        raise RuntimeError("Cannot render:\n  " + "\n  ".join(problems))
     scenes = selected_scenes(project, scene_selection)
-    print("Selected scenes: " + ", ".join(s["scene_id"] for s in scenes))
-    missing_images = [f"scene_{s['scene_id']}.png" for s in scenes if not (GENERATED_DIR / f"scene_{s['scene_id']}.png").exists()]
-    if missing_images:
-        raise RuntimeError("Missing generated image(s): " + ", ".join(missing_images) + ". Run: python scripts/orchestrator.py images project/script.md")
-    missing_audio = [f"scene_{s['scene_id']}.wav" for s in scenes if not (PUBLIC_AUDIO_DIR / f"scene_{s['scene_id']}.wav").exists()]
-    if missing_audio:
-        raise RuntimeError("Missing public audio file(s): " + ", ".join(missing_audio) + ". Run: python scripts/orchestrator.py audio project/script.md")
-    music_cfg = project.get("music") or {}
-    if str(music_cfg.get("enabled", "false")).lower() == "true":
-        music_file = str(music_cfg.get("file", "audio/background_music.mp3")).replace("\\", "/").lstrip("/")
-        music_path = ROOT / "public" / music_file
-        if not music_path.exists():
-            raise RuntimeError(f"Background music is enabled but the file is missing: public/{music_file}. Add the music file or set `enabled: false` in the MUSIC section.")
-    models = resolve_models(project)
+    print("Rendering scenes: " + ", ".join(s["scene_id"] for s in scenes))
+
+    tracks = rebuild_audio_timings(project, scene_selection)
+    frames = {sid: math.ceil(t["duration_seconds"] * int(project["settings"]["fps"])) for sid, t in tracks.items()}
+    errors, warnings = validate_project(project, frames)
+    for warning in warnings:
+        print(f"warning: {warning}")
+    missing = [f"public/assets/generated/scene_{s['scene_id']}.png" for s in scenes
+               if needs_image(s) and not (GENERATED_DIR / f"scene_{s['scene_id']}.png").exists()]
+    if missing:
+        errors.append("Missing image(s), run the images step: " + ", ".join(missing))
     if generation_mode(project) == "ai_video":
-        missing_videos = []
         for s in scenes:
-            meta = load_meta(asset_meta_path("videos", s["scene_id"])) or {}
-            for clip in meta.get("clips", []):
+            for clip in (load_meta(asset_meta_path("videos", s["scene_id"])) or {}).get("clips", []):
                 if not (ROOT / clip["file"]).exists():
-                    missing_videos.append(clip["file"])
-        if missing_videos:
-            raise RuntimeError("Missing generated AI video clip(s): " + ", ".join(missing_videos) + ". Run: python scripts/orchestrator.py video project/script.md")
-    try:
-        rebuild_audio_timings(script_path, scene_selection)
-    except RuntimeError as exc:
-        raise RuntimeError(str(exc))
-    output_name = f"test_{'_'.join(s['scene_id'] for s in scenes)}.mp4" if scene_selection else "prototype.mp4"
-    output = ROOT / "output" / output_name
+                    errors.append(f"Missing AI video clip, run the video step: {clip['file']}")
+    if errors:
+        raise RuntimeError("Cannot render:\n  " + "\n  ".join(errors))
+
+    output = ROOT / "output" / (f"test_{'_'.join(s['scene_id'] for s in scenes)}.mp4" if scene_selection else "video.mp4")
     output.parent.mkdir(parents=True, exist_ok=True)
-    env = os.environ.copy()
-    render_cmd = [str(remotion_bin), "render", "src/index.ts", "MainVideo", str(output), "--concurrency=50%"]
-    # When rendering a scene subset, render only those scenes. Do not include
-    # the project intro/ending cards around an isolated scene render.
-    isolated_scene_render = scene_selection is not None
+    # A scene subset renders just those scenes, without intro/ending cards.
+    subset = scene_selection is not None
     render_props = {
         "sceneIds": [s["scene_id"] for s in scenes],
         "music": project.get("music") or {},
-        "ending": {"enabled": False} if isolated_scene_render else (project.get("ending") or {}),
-        "intro": {"enabled": False} if isolated_scene_render else (project.get("intro") or {}),
+        "intro": {"enabled": "false"} if subset else (project.get("intro") or {}),
+        "ending": {"enabled": "false"} if subset else (project.get("ending") or {}),
     }
-    render_cmd.extend(["--props", json.dumps(render_props)])
-    subprocess.run(render_cmd, cwd=ROOT, check=True, env=env)
-    print(f"Rendered: {output}")
+    remotion_bin = ROOT / "node_modules" / ".bin" / ("remotion.cmd" if os.name == "nt" else "remotion")
+    subprocess.run(
+        [str(remotion_bin), "render", "src/index.ts", "MainVideo", str(output), "--concurrency=50%", "--props", json.dumps(render_props)],
+        cwd=ROOT, check=True,
+    )
+    print(f"Rendered: {output.relative_to(ROOT)}")
+    return output
 
 
-def validate(script_path: Path) -> None:
-    project = build(script_path)
-    ids = [s["scene_id"] for s in project["scenes"]]
-    if len(ids) != len(set(ids)):
-        raise RuntimeError("Duplicate scene IDs in script.md")
-    print(f"VALIDATION OK — {len(ids)} scene(s): {', '.join(ids)}")
+def validate(project: dict) -> bool:
+    """Report script problems without calling any API. Uses measured audio lengths when available."""
+    manifest = load_meta(GENERATED_MANIFEST) or {}
+    fps = int(project["settings"]["fps"])
+    frames = {sid: math.ceil(float(t["duration_seconds"]) * fps) for sid, t in manifest.get("tracks", {}).items()}
+    errors, warnings = validate_project(project, frames)
+    image_scenes = sum(needs_image(s) for s in project["scenes"])
+    for warning in warnings:
+        print(f"warning: {warning}")
+    if errors:
+        print(f"VALIDATION FAILED — {len(errors)} problem(s):")
+        print("\n".join(f"  - {e}" for e in errors))
+        return False
+    print(f"VALIDATION OK — {len(project['scenes'])} scenes "
+          f"({len(project['scenes']) - image_scenes} motion, {image_scenes} image), mode={generation_mode(project)}")
+    return True
+
+
+def check(project: dict | None) -> bool:
+    problems = check_environment(project)
+    if problems:
+        print("ENVIRONMENT PROBLEMS:")
+        print("\n".join(f"  - {p}" for p in problems))
+        return False
+    print("ENVIRONMENT OK — ffmpeg, node, Remotion and API keys are available.")
+    return True
+
+
+COMMANDS = {
+    "check": "check tools, packages and API keys",
+    "validate": "check the script for problems (no API calls)",
+    "build": "parse the script and write src/generated/ (no API calls)",
+    "images": "generate still images for image scenes",
+    "audio": "generate narration audio and timings",
+    "audio-timings": "rebuild timings from existing audio",
+    "video": "generate AI video clips (generation_mode: ai_video only)",
+    "render": "render the MP4 with Remotion",
+    "all": "images + audio + video + render",
+}
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Content-first AI Video Engine")
-    parser.add_argument("command", nargs="?", choices=["build", "images", "audio", "audio-timings", "video", "render", "validate", "all", "test"])
-    parser.add_argument("script", nargs="?", type=Path, default=DEFAULT_SCRIPT)
-    parser.add_argument("--prepare", action="store_true")
-    parser.add_argument("--images", action="store_true")
-    parser.add_argument("--audio", action="store_true")
-    parser.add_argument("--render", action="store_true")
-    parser.add_argument("--all", action="store_true")
-    parser.add_argument("--scenes", type=str, help="Comma-separated scene IDs to process/render, e.g. 001,002")
-    parser.add_argument("--test", action="store_true", help="Test mode: first two scenes only")
+    parser = argparse.ArgumentParser(
+        description="Script-to-video pipeline.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="commands:\n" + "\n".join(f"  {name:<14}{text}" for name, text in COMMANDS.items()),
+    )
+    parser.add_argument("command", choices=list(COMMANDS), metavar="command")
+    parser.add_argument("script", nargs="?", type=Path, default=DEFAULT_SCRIPT, help="script path (default: project/script.md)")
+    parser.add_argument("--scenes", help="comma-separated scene numbers, e.g. 001,002")
+    parser.add_argument("--test", action="store_true", help="only the first two scenes")
     args = parser.parse_args()
 
-    if args.prepare:
-        require_command("ffmpeg"); require_command("ffprobe"); print("Environment OK"); return
-    script = (ROOT / args.script).resolve() if not args.script.is_absolute() else args.script.resolve()
+    script = args.script if args.script.is_absolute() else (Path.cwd() / args.script)
     if not script.exists():
-        raise SystemExit(f"Script not found: {script}")
+        script = ROOT / args.script
+    if not script.exists():
+        raise SystemExit(f"Script not found: {args.script}")
 
+    project = build(script)
     scene_selection = args.scenes
-    if args.test:
-        full_project = build(script)
-        scene_selection = ",".join(str(s["scene_id"]) for s in full_project["scenes"][:2])
-    command = args.command
-    if args.all: command = "all"
-    elif command == "test":
-        command = "all"
-        if not scene_selection:
-            full_project = build(script)
-            scene_selection = ",".join(str(s["scene_id"]) for s in full_project["scenes"][:2])
-    elif args.images: command = "images"
-    elif args.audio: command = "audio"
-    elif args.render: command = "render"
+    if args.test and not scene_selection:
+        scene_selection = ",".join(s["scene_id"] for s in project["scenes"][:2])
 
-    if command == "build":
-        build(script)
-    elif command == "validate":
-        validate(script)
-    elif command in {"images", "audio", "audio-timings", "video", "render", "all"}:
-        tracker = CostTracker(ROOT, command, script)
-        try:
-            if command == "images":
-                generate_images(script, tracker, scene_selection)
-            elif command == "audio":
-                generate_audio(script, tracker, scene_selection)
-            elif command == "audio-timings":
-                rebuild_audio_timings(script)
-            elif command == "video":
-                generate_videos(script, tracker, scene_selection)
-            elif command == "render":
-                render(script, scene_selection)
-            else:
-                generate_images(script, tracker, scene_selection)
-                generate_audio(script, tracker, scene_selection)
-                generate_videos(script, tracker, scene_selection)
-                render(script, scene_selection)
-        finally:
-            report = tracker.finish()
-            tracker.print_summary(report)
-    else:
-        parser.print_help()
+    if args.command == "check":
+        sys.exit(0 if check(project) else 1)
+    if args.command == "validate":
+        sys.exit(0 if validate(project) else 1)
+    if args.command == "build":
+        return
+    if args.command == "audio-timings":
+        rebuild_audio_timings(project, scene_selection)
+        print(f"Rebuilt timings: {TIMINGS_TS.relative_to(ROOT)}")
+        return
+    if args.command in {"images", "all"} and not validate(project):
+        sys.exit(1)
+
+    tracker = CostTracker(ROOT, args.command, script)
+    try:
+        if args.command in {"images", "all"}:
+            generate_images(project, tracker, scene_selection)
+        if args.command in {"audio", "all"}:
+            generate_audio(project, tracker, scene_selection)
+        if args.command in {"video", "all"}:
+            generate_videos(project, tracker, scene_selection)
+        if args.command in {"render", "all"}:
+            render(project, scene_selection)
+    except RuntimeError as exc:
+        sys.exit(f"\nERROR: {exc}")
+    finally:
+        tracker.print_summary(tracker.finish())
 
 
 if __name__ == "__main__":

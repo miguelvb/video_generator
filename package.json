@@ -2,17 +2,16 @@
   "name": "ai-video-prototype",
   "private": true,
   "scripts": {
-    "start": "remotion studio",
-    "render": "python scripts/orchestrator.py render project/script.md",
-    "validate": "python scripts/validate_project.py",
-    "build:content": "python scripts/orchestrator.py build project/script.md",
-    "build:demo": "python scripts/orchestrator.py build project/demo_collective/script.md",
-    "images": "python scripts/orchestrator.py images project/script.md",
-    "audio": "python scripts/orchestrator.py audio project/script.md",
-    "all": "python scripts/orchestrator.py all project/script.md",
-    "audio-timings": "python scripts/orchestrator.py audio-timings project/script.md",
-    "video": "python scripts/orchestrator.py all project/script.md",
-    "videos": "python scripts/orchestrator.py video project/script.md"
+    "start": "python scripts/orchestrator.py build && remotion studio",
+    "check": "python scripts/orchestrator.py check",
+    "validate": "python scripts/orchestrator.py validate",
+    "build": "python scripts/orchestrator.py build",
+    "images": "python scripts/orchestrator.py images",
+    "audio": "python scripts/orchestrator.py audio",
+    "video": "python scripts/orchestrator.py video",
+    "render": "python scripts/orchestrator.py render",
+    "all": "python scripts/orchestrator.py all",
+    "test": "python scripts/orchestrator.py all --test"
   },
   "dependencies": {
     "react": "19.3.0",
