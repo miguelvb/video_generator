@@ -69,6 +69,12 @@ export const MOTION_ASSETS: Record<MotionAssetType, MotionAssetDefinition> = {
     label: 'Internet',
     category: 'infrastructure',
   },
+  'repo-ui': {type: 'repo-ui', path: 'assets/motion/repo-ui.svg', label: 'Repository', category: 'infrastructure'},
+  'lock-ui': {type: 'lock-ui', path: 'assets/motion/lock-ui.svg', label: 'Lock', category: 'infrastructure'},
+  'key-ui': {type: 'key-ui', path: 'assets/motion/key-ui.svg', label: 'Key', category: 'infrastructure'},
+  'cloud-ui': {type: 'cloud-ui', path: 'assets/motion/cloud-ui.svg', label: 'Cloud', category: 'infrastructure'},
+  'database-ui': {type: 'database-ui', path: 'assets/motion/database-ui.svg', label: 'Database', category: 'infrastructure'},
+  'alarm-ui': {type: 'alarm-ui', path: 'assets/motion/alarm-ui.svg', label: 'Alarm', category: 'infrastructure'},
 };
 
 export const getMotionAsset = (type: MotionAssetType) =>

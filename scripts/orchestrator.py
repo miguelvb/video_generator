@@ -37,6 +37,7 @@ from dotenv import load_dotenv
 from script_parser import parse_script
 from cost_tracker import CostTracker
 from validation import check_environment, validate_project
+from cues import resolve_cues, uses_word_cues
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SCRIPT = ROOT / "project" / "script.md"
@@ -286,24 +287,29 @@ def build(script_path: Path) -> dict:
         video_meta = load_meta(asset_meta_path("videos", scene["scene_id"]))
         if generation_mode(project) == "ai_video" and not scene.get("motion_scene") and video_meta and video_meta.get("clips"):
             scene["video_clips"] = video_meta["clips"]
+    # Measured narration (if any) times the scenes and turns word cues into frames.
+    tracks = current_tracks(project)
+    fps = int(project["settings"]["fps"])
+    for scene in project["scenes"]:
+        resolve_cues(scene, tracks.get(scene["scene_id"]), fps)
     save_json(BUILD_DIR / "parsed_script.json", project)
     write_generated_content(project)
-    refresh_timings(project)
+    write_timings(tracks)
     print(f"Parsed {len(project['scenes'])} scene(s) from {project_source(project)}")
     return project
 
 
-def refresh_timings(project: dict) -> None:
-    """Keep audioTimings.ts in step with the audio on disk, so Studio previews use real scene lengths."""
+def current_tracks(project: dict) -> dict:
+    """Narration tracks whose audio is on disk and still matches the script."""
     if not shutil.which("ffprobe"):
-        return
+        return {}
     manifest = load_meta(GENERATED_MANIFEST) or {}
     tracks = {}
     for scene in project["scenes"]:
         track, _ = valid_audio_track(project, scene, manifest)
         if track:
             tracks[scene["scene_id"]] = track
-    write_timings(tracks)
+    return tracks
 
 
 def needs_image(scene: dict) -> bool:
@@ -589,9 +595,14 @@ def concat_audio(segment_paths: list[Path], output_path: Path) -> None:
         list_file.unlink(missing_ok=True); gap_file.unlink(missing_ok=True)
 
 
-def align_words(track: dict, scene_id: str, tracker: CostTracker | None) -> dict:
-    """Add Whisper word/phrase timings to segments that lack them (only when enabled)."""
-    if not ENABLE_WORD_TIMINGS:
+def align_words(track: dict, scene: dict, tracker: CostTracker | None) -> dict:
+    """Add Whisper word timings to segments that lack them.
+
+    Done automatically for scenes whose motion is timed to spoken words, and for
+    every scene when ENABLE_WORD_TIMINGS is on.
+    """
+    scene_id = scene["scene_id"]
+    if not (ENABLE_WORD_TIMINGS or uses_word_cues(scene)):
         return track
     segments = []
     for seg in track.get("segments", []):
@@ -658,7 +669,7 @@ def generate_audio(project: dict, tracker: CostTracker | None = None, scene_sele
         existing, _ = valid_audio_track(project, scene, manifest)
         if existing:
             print(f"Reusing audio: scene {scene_id}")
-            tracks[scene_id] = align_words(existing, scene_id, tracker)
+            tracks[scene_id] = align_words(existing, scene, tracker)
             continue
 
         scene_dir = BUILD_DIR / "audio" / scene_id
@@ -685,7 +696,7 @@ def generate_audio(project: dict, tracker: CostTracker | None = None, scene_sele
         shutil.copy2(final_path, public_path)
         tracks[scene_id] = align_words(
             {"file": f"audio/{final_path.name}", "duration_seconds": round(final_duration, 3), "segments": generated},
-            scene_id, tracker,
+            scene, tracker,
         )
         save_meta(asset_meta_path("audio", scene_id), {
             "version": "1.0.0", "kind": "audio", "scene_id": scene_id,
@@ -979,6 +990,10 @@ def render(project: dict, scene_selection: str | None = None) -> Path:
     print("Rendering scenes: " + ", ".join(s["scene_id"] for s in scenes))
 
     tracks = rebuild_audio_timings(project, scene_selection)
+    fps = int(project["settings"]["fps"])
+    for scene in project["scenes"]:  # time word cues with the audio being rendered
+        resolve_cues(scene, tracks.get(scene["scene_id"]), fps)
+    write_generated_content(project)
     frames = {sid: math.ceil(t["duration_seconds"] * int(project["settings"]["fps"])) for sid, t in tracks.items()}
     errors, warnings = validate_project(project, frames)
     for warning in warnings:
@@ -1097,6 +1112,7 @@ def main() -> None:
             generate_images(project, tracker, scene_selection)
         if args.command in {"audio", "all"}:
             generate_audio(project, tracker, scene_selection)
+            project = build(script)  # re-time word cues with the new narration
         if args.command in {"video", "all"}:
             generate_videos(project, tracker, scene_selection)
         if args.command in {"render", "all"}:

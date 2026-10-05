@@ -9,7 +9,13 @@ export type MotionAssetType =
   | 'flag-ui'
   | 'idea-ui'
   | 'artifactory-ui'
-  | 'internet-ui';
+  | 'internet-ui'
+  | 'repo-ui'
+  | 'lock-ui'
+  | 'key-ui'
+  | 'cloud-ui'
+  | 'database-ui'
+  | 'alarm-ui';
 
 export type MotionNodeState = 'normal' | 'active' | 'success' | 'error';
 export type MotionEdgeState = 'normal' | 'active' | 'success' | 'error';

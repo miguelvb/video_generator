@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import os
 import re
+
+from cues import cue_errors
 import shutil
 from pathlib import Path
 
@@ -99,7 +101,8 @@ def validate_motion_scene(scene_id: str, motion: dict, scene_frames: int | None 
         elif kind in EDGE_ACTIONS and not is_edge:
             errors.append(f"{label}: needs a connection, but the target is a node")
         if not _is_number(action.get("at")):
-            errors.append(f"{label}: needs a frame number in 'at'")
+            if "word" not in action:  # unresolved word cues are reported by cue_errors
+                errors.append(f"{label}: needs 'at' (a frame) or 'word' (a spoken word)")
             continue
         if kind in NEEDS_DURATION and not _is_number(action.get("duration")):
             errors.append(f"{label}: needs a 'duration' in frames")
@@ -150,6 +153,7 @@ def validate_project(project: dict, scene_frames: dict[str, int] | None = None) 
             if item["style"] not in TEXT_STYLES:
                 errors.append(f"Scene {sid}: ON SCREEN TEXT style {item['style']!r} is not one of {', '.join(sorted(TEXT_STYLES))}")
         if scene.get("motion_scene"):
+            errors += cue_errors(scene)
             errors += validate_motion_scene(sid, scene["motion_scene"], scene_frames.get(sid), warnings)
     return errors, warnings
 

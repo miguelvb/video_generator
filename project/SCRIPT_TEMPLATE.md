@@ -132,7 +132,13 @@ La narración de esta escena. La escena dura exactamente lo que dura esta narrac
 ```
 
 # Motion rules:
-# - Every action needs "at". move, pulse, fade and send also need "duration".
+# - Every action needs a time: either "at" (a frame) or "word" (see below).
+#   move, pulse, fade and send also need "duration".
+# - Word cue: instead of "at", give "word" (a word from this scene's narration),
+#   optional "occurrence" (n-th time it is spoken, default 1) and "offset"
+#   (seconds, may be negative). The build turns it into a frame — exact once the
+#   audio has word timings (audio step), estimated from the text until then.
+#   e.g. {"type": "appear", "target": "a1", "word": "agentes", "duration": 14}
 # - Nothing happens unless authored: no automatic fade-ins, packets or retiming.
 # - A node with an "appear" action is hidden until it appears; otherwise it is visible from frame 0.
 # - A connection with "connect" draws on from that frame; without it, it is simply present.
